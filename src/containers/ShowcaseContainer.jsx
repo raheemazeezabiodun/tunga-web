@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import {Affix} from 'react-overlays';
 
 import {openCalendlyWidget} from '../utils/router';
@@ -98,9 +98,9 @@ class ShowcaseContainer extends React.Component {
                 {Auth.isAuthenticated?(
                   <ul className="nav navbar-nav navbar-right nav-actions">
                     <li>
-                      <Link to="/home" className="primary" activeClassName="active">
+                      <NavLink to="/home" className="primary" activeClassName="active">
                         Back to Tunga
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
                 ):(
@@ -121,30 +121,30 @@ class ShowcaseContainer extends React.Component {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/signin" activeClassName="active">
+                      <NavLink to="/signin" activeClassName="active">
                         Login
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
                 )}
                 {Auth.isAuthenticated?null:(
                   <ul className="nav navbar-nav navbar-left nav-main">
                     <li>
-                      <Link
+                      <NavLink
                         to={`${pathPrefix}/our-story`}
                         activeClassName="active">
                         Our Story
-                      </Link>
+                      </NavLink>
                     </li>
                     <li>
-                      <Link to={`${pathPrefix}/quality`} activeClassName="active">
+                      <NavLink to={`${pathPrefix}/quality`} activeClassName="active">
                         Quality
-                      </Link>
+                      </NavLink>
                     </li>
                     <li>
-                      <Link to={`${pathPrefix}/pricing`} activeClassName="active">
+                      <NavLink to={`${pathPrefix}/pricing`} activeClassName="active">
                         Pricing
-                      </Link>
+                      </NavLink>
                     </li>
                     <li>
                       <a href="https://blog.tunga.io" target="_blank">

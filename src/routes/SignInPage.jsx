@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 
 import Progress from '../components/status/Progress';
 import Error from '../components/status/Error';

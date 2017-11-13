@@ -1,5 +1,4 @@
-import {browserHistory} from 'react-router';
-import {syncHistoryWithStore} from 'react-router-redux';
-import store from './store';
+import createHistory from 'history/createBrowserHistory';
 
-export default syncHistoryWithStore(browserHistory, store);
+const history = createHistory();
+export default history;

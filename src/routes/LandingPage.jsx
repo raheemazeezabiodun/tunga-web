@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import YouTube from 'react-youtube';
@@ -367,21 +367,26 @@ export class LandingPage extends ComponentWithModal {
     if (params && params.skill) {
       return params.skill;
     }
-    if (location.query && location.query.dlp_tag) {
-      return location.query.dlp_tag;
+
+    const param = new URLSearchParams(location.search);
+    if (location.query && param.get('dlp_tag')) {
+      return param.get('dlp_tag');
     }
+
     return null;
   }
 
   getDLPDesc() {
     const {location} = this.props;
+
+    const param = new URLSearchParams(location.search);
     if (
       location &&
-      location.query.dlp_desc &&
-      ['developers', 'coders', 'programmers'].indexOf(location.query.dlp_desc) >
+      param.get('dlp_tag') &&
+      ['developers', 'coders', 'programmers'].indexOf(param.get('dlp_tag')) >
         -1
     ) {
-      return location.query.dlp_desc;
+      return param.get('dlp_tag');
     }
     return null;
   }
@@ -635,10 +640,10 @@ export class LandingPage extends ComponentWithModal {
                       ? <section id="skill-profiles">
                           <div className="container">
                             <div className="row">
-                              {skill_page.profiles.map(profile => {
+                              {skill_page.profiles.map((profile, idx) => {
                                 console.log('profile', profile);
                                 return (
-                                  <div className="col-sm-4">
+                                  <div className="col-sm-4" key={idx}>
                                     <div className="card user-card">
                                       <Avatar
                                         src={profile.user.avatar_url}
@@ -661,9 +666,9 @@ export class LandingPage extends ComponentWithModal {
                                           profile.user.profile.skills,
                                         )
                                           .slice(0, 3)
-                                          .map(skill => {
+                                          .map((skill, i) => {
                                             return (
-                                              <span>
+                                              <span key={i}>
                                                 {skill.name}
                                               </span>
                                             );
@@ -781,9 +786,9 @@ export class LandingPage extends ComponentWithModal {
                         <Slider
                           className="testimonials-slider text-center"
                           {...slider_settings}>
-                          {TESTIMONIALS.map(testimonial => {
+                          {TESTIMONIALS.map((testimonial, idx) => {
                             return (
-                              <div className="testimonial">
+                              <div className="testimonial" key={idx}>
                                 <div className="body">
                                   <div>
                                     <i className="fa fa-quote-left pull-left" />
@@ -915,7 +920,7 @@ export class LandingPage extends ComponentWithModal {
                     </button>
                   </div>
 
-                  <div class="row">
+                  <div className="row">
                     <div>
                       <h1>Start hiring great developers?</h1>
                     </div>

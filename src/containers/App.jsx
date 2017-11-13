@@ -1,6 +1,7 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 import Progress from '../components/status/Progress';
 
@@ -76,34 +77,34 @@ class App extends React.Component {
       prevProps.Auth.isAuthenticated != Auth.isAuthenticated ||
       (prevProps.Auth.isVerifying != Auth.isVerifying && !Auth.isVerifying)
     ) {
-      if (requiresNoAuth(routes) && Auth.isAuthenticated) {
-        var next = Auth.next;
-        if (!next) {
-          next = location.query.next || '/home';
-        }
-        if (/^\/api\//i.test(next)) {
-          window.location.href = next;
-        } else {
-          router.replace(next);
-        }
-        return;
-      }
+      // if (requiresNoAuth(routes) && Auth.isAuthenticated) {
+      //   var next = Auth.next;
+      //   if (!next) {
+      //     next = location.query.next || '/home';
+      //   }
+      //   if (/^\/api\//i.test(next)) {
+      //     window.location.href = next;
+      //   } else {
+      //     router.history.replace(next);
+      //   }
+      //   return;
+      // }
 
-      if (
-        requiresAuthOrEmail(routes) &&
-        !Auth.isAuthenticated &&
-        !Auth.isEmailVisitor
-      ) {
-        AuthActions.authRedirect(location.pathname);
-        router.replace('/signin?next=' + location.pathname);
-        return;
-      }
+      // if (
+      //   requiresAuthOrEmail(routes) &&
+      //   !Auth.isAuthenticated &&
+      //   !Auth.isEmailVisitor
+      // ) {
+      //   AuthActions.authRedirect(location.pathname);
+      //   router.history.replace('/signin?next=' + location.pathname);
+      //   return;
+      // }
 
-      if (requiresAuth(routes) && !Auth.isAuthenticated) {
-        AuthActions.authRedirect(location.pathname);
-        router.replace('/signin?next=' + location.pathname);
-        return;
-      }
+      // if (requiresAuth(routes) && !Auth.isAuthenticated) {
+      //   AuthActions.authRedirect(location.pathname);
+      //   router.history.replace('/signin?next=' + location.pathname);
+      //   return;
+      // }
     }
 
     if (
@@ -111,7 +112,7 @@ class App extends React.Component {
       !Auth.user.type &&
       !PROFILE_COMPLETE_PATH.test(location.pathname)
     ) {
-      router.replace('/profile/complete?next=' + location.pathname);
+      router.history.replace('/profile/complete?next=' + location.pathname);
       return;
     }
 
@@ -120,7 +121,7 @@ class App extends React.Component {
       Auth.user.type &&
       PROFILE_COMPLETE_PATH.test(location.pathname)
     ) {
-      router.replace('/home?next=' + location.pathname);
+      router.history.replace('/home?next=' + location.pathname);
       return;
     }
 
@@ -129,7 +130,7 @@ class App extends React.Component {
       !Auth.isAuthenticating &&
       Auth.isEmailVisitor
     ) {
-      router.replace('/people/');
+      router.history.replace('/people/');
     }
 
     if (prevProps.location.pathname != location.pathname) {
@@ -155,7 +156,7 @@ class App extends React.Component {
     this.close();
     if (requiresAuth(routes) && !Auth.isAuthenticated) {
       AuthActions.authRedirect(location.pathname);
-      router.replace('/signin?next=' + location.pathname);
+      router.history.replace('/signin?next=' + location.pathname);
     }
   }
 
@@ -225,4 +226,4 @@ App.childContextTypes = {
   router: React.PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

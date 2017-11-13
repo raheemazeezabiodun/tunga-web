@@ -110,9 +110,9 @@ class ShowCaseFooter extends React.Component {
               <h4>Latest from our blog</h4>
               <ul className="list-unstyled">
                 {Utility.posts.length
-                  ? Utility.posts.slice(0, 4).map(article => {
+                  ? Utility.posts.slice(0, 4).map((article, idx) => {
                   return (
-                    <li>
+                    <li key={idx}>
                       <a target="_blank" href={article.url}>
                         <i className="fa fa-angle-right" /> {article.title}
                       </a>

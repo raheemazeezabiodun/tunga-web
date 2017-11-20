@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import moment from 'moment';
 
 import Progress from './status/Progress';
@@ -58,34 +58,34 @@ export default class EstimateList extends GenericListContainer {
 
         <ul className="nav nav-pills nav-top-filter">
           <li role="presentation">
-            <IndexLink to="/proposal" activeClassName="active">
+            <NavLink to="/proposal" activeClassName="active">
               All
-            </IndexLink>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/proposal/filter/submitted" activeClassName="active">
+            <NavLink to="/proposal/filter/submitted" activeClassName="active">
               Submitted
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/proposal/filter/approved" activeClassName="active">
+            <NavLink to="/proposal/filter/approved" activeClassName="active">
               Approved
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/proposal/filter/declined" activeClassName="active">
+            <NavLink to="/proposal/filter/declined" activeClassName="active">
               Declined
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/proposal/filter/accepted" activeClassName="active">
+            <NavLink to="/proposal/filter/accepted" activeClassName="active">
               Accepted
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/proposal/filter/rejected" activeClassName="active">
+            <NavLink to="/proposal/filter/rejected" activeClassName="active">
               Rejected
-            </Link>
+            </NavLink>
           </li>
         </ul>
         {Estimate.list.isFetching

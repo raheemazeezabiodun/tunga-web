@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import Progress from './status/Progress';
 import FormStatus from './status/FormStatus';
 

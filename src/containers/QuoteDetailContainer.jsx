@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import moment from 'moment';
 import momentLocalizer from 'react-widgets/lib/localizers/moment';
 
@@ -57,9 +57,9 @@ export default class QuoteDetailContainer extends React.Component {
       <div>
         <div className="sprint-head clearfix">
           <div className="pull-right">
-            <Link to={`/work/${task.id}/planning/new`} className="btn btn-grey btn-create" activeClassName="active">
+            <NavLink to={`/work/${task.id}/planning/new`} className="btn btn-grey btn-create" activeClassName="active">
               <i className="fa fa-plus"/> Create a sprint
-            </Link>
+            </NavLink>
           </div>
           {task && task.sprints && task.sprints.length?(
             <div className="nav-top-filter pull-left">
@@ -67,9 +67,9 @@ export default class QuoteDetailContainer extends React.Component {
                 let isCurrentYear = moment.utc(sprint.start_date).local().format('YYYY') == moment().local().format('YYYY'),
                   isSameYear = moment.utc(sprint.start_date).local().format('YYYY') == moment.utc(sprint.end_date).local().format('YYYY');
                 return (
-                  <Link to={`/work/${task.id}/planning/${sprint.id}`} className="btn" activeClassName="active">
+                  <NavLink to={`/work/${task.id}/planning/${sprint.id}`} className="btn" activeClassName="active">
                     {moment.utc(sprint.start_date).local().format(`Do MMM${isCurrentYear || isSameYear?'':' YYYY'}`)} - {moment.utc(sprint.end_date).local().format(`Do MMM${isCurrentYear?'':' YYYY'}`)}
-                  </Link>
+                  </NavLink>
                 );
               })}
             </div>

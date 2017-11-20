@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import {Panel, Accordion} from 'react-bootstrap';
 import Progress from './status/Progress';
 import LoadMore from './status/LoadMore';
@@ -65,20 +65,20 @@ export default class SupportPageList extends React.Component {
               {section.tags
                 ? <ul className="nav nav-pills nav-top-filter">
                     <li role="presentation">
-                      <IndexLink
+                      <NavLink
                         to={`/support/${this.getSectionSlug()}`}
                         activeClassName="active">
                         All
-                      </IndexLink>
+                      </NavLink>
                     </li>
                     {section.tags.map(tag => {
                       return (
                         <li role="presentation" key={tag.slug}>
-                          <Link
+                          <NavLink
                             to={`/support/${this.getSectionSlug()}/tag/${tag.slug}`}
                             activeClassName="active">
                             {tag.name}
-                          </Link>
+                          </NavLink>
                         </li>
                       );
                     })}

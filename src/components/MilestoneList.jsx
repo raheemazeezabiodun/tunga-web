@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import moment from 'moment';
 import Linkify from './Linkify';
 
@@ -79,30 +79,30 @@ export default class MilestoneList extends React.Component {
               </div>
               <ul className="nav nav-pills nav-top-filter">
                 <li role="presentation">
-                  <IndexLink to="/dashboard/updates" activeClassName="active">
+                  <NavLink to="/dashboard/updates" activeClassName="active">
                     All Updates
-                  </IndexLink>
+                  </NavLink>
                 </li>
                 <li role="presentation">
-                  <Link
+                  <NavLink
                     to="/dashboard/updates/filter/upcoming"
                     activeClassName="active">
                     {' '}Upcoming Updates
-                  </Link>
+                  </NavLink>
                 </li>
                 <li role="presentation">
-                  <Link
+                  <NavLink
                     to="/dashboard/updates/filter/complete"
                     activeClassName="active">
                     {' '}Completed Updates
-                  </Link>
+                  </NavLink>
                 </li>
                 <li role="presentation">
-                  <Link
+                  <NavLink
                     to="/dashboard/updates/filter/missed"
                     activeClassName="active">
                     {' '}Missed Updates
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>}

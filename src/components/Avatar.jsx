@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 
 export default class Avatar extends React.Component {

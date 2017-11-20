@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 
 import Progress from './status/Progress';
 import LoadMore from './status/LoadMore';
@@ -103,34 +103,34 @@ export default class UserList extends GenericListContainer {
                 <h2 className="pull-left">People</h2>
               </div>
               <div className="nav-top-filter">
-                <Link to="/people/filter/developers" activeClassName="active">
+                <NavLink to="/people/filter/developers" activeClassName="active">
                   Developers
-                </Link>
+                </NavLink>
                 {isAuthenticated()
                   ? [
                       isAdmin()
-                        ? <Link
+                        ? <NavLink
                             to="/people/filter/clients"
                             key="clients"
                             activeClassName="active">
                             Clients
-                          </Link>
+                          </NavLink>
                         : null,
-                      <Link
+                      <NavLink
                         to="/people/filter/team"
                         activeClassName="active"
                         key="team">
                         {isDeveloper() ? 'My friends' : 'My team'}
-                      </Link>,
+                      </NavLink>,
                       isDeveloper()
-                        ? <Link
+                        ? <NavLink
                             to="/people/filter/my-clients"
                             key="my-clients"
                             activeClassName="active">
                             My Clients
-                          </Link>
+                          </NavLink>
                         : null,
-                      <Link
+                      <NavLink
                         to="/people/filter/requests"
                         activeClassName="active"
                         key="requests"
@@ -141,14 +141,14 @@ export default class UserList extends GenericListContainer {
                               {requests}
                             </span>
                           : null}
-                      </Link>,
+                      </NavLink>,
                       isProjectOwner() || isAdmin()
-                        ? <Link
+                        ? <NavLink
                             to="/people/filter/relevant"
                             key="relevant"
                             activeClassName="active">
                             Relevant to me
-                          </Link>
+                          </NavLink>
                         : null,
                     ]
                   : null}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 import ProfileContainer from '../containers/ProfileContainer';
 
@@ -21,49 +21,49 @@ export default class ProfilePage extends React.Component {
               <h2 className="title">Profile</h2>
               <ul className="nav nav-pills nav-top-filter">
                 <li role="presentation">
-                  <Link to="/profile/personal" activeClassName="active">
+                  <NavLink to="/profile/personal" activeClassName="active">
                     Personal
-                  </Link>
+                  </NavLink>
                 </li>
                 {isDeveloper() || isProjectManager()
                   ? [
                       <li role="presentation">
-                        <Link to="/profile/stack" activeClassName="active">
+                        <NavLink to="/profile/stack" activeClassName="active">
                           Experience
-                        </Link>
+                        </NavLink>
                       </li>,
                       <li role="presentation">
-                        <Link
+                        <NavLink
                           to="/profile/id-document"
                           activeClassName="active">
                           ID Document
-                        </Link>
+                        </NavLink>
                       </li>,
                       <li role="presentation">
-                        <Link to="/profile/payment" activeClassName="active">
+                        <NavLink to="/profile/payment" activeClassName="active">
                           Payment
-                        </Link>
+                        </NavLink>
                       </li>,
                     ]
                   : <li role="presentation">
-                      <Link to="/profile/company" activeClassName="active">
+                      <NavLink to="/profile/company" activeClassName="active">
                         Company Profile
-                      </Link>
+                      </NavLink>
                     </li>}
                 <li role="presentation">
-                  <Link to="/profile/photo" activeClassName="active">
+                  <NavLink to="/profile/photo" activeClassName="active">
                     Photo
-                  </Link>
+                  </NavLink>
                 </li>
                 <li role="presentation">
-                  <Link to="/profile/account" activeClassName="active">
+                  <NavLink to="/profile/account" activeClassName="active">
                     Account
-                  </Link>
+                  </NavLink>
                 </li>
                 <li role="presentation">
-                  <Link to="/profile/security" activeClassName="active">
+                  <NavLink to="/profile/security" activeClassName="active">
                     Security
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>}

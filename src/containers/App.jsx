@@ -71,40 +71,41 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {router} = this.context;
+
     const {Auth, location, NavActions, AuthActions, routes} = this.props;
     if (
       prevProps.location.pathname != location.pathname ||
       prevProps.Auth.isAuthenticated != Auth.isAuthenticated ||
       (prevProps.Auth.isVerifying != Auth.isVerifying && !Auth.isVerifying)
     ) {
-      // if (requiresNoAuth(routes) && Auth.isAuthenticated) {
-      //   var next = Auth.next;
-      //   if (!next) {
-      //     next = location.query.next || '/home';
-      //   }
-      //   if (/^\/api\//i.test(next)) {
-      //     window.location.href = next;
-      //   } else {
-      //     router.history.replace(next);
-      //   }
-      //   return;
-      // }
+      if (/*requiresNoAuth(routes) && */ Auth.isAuthenticated) {
+        var next = Auth.next;
+        if (!next) {
+          next = location.query.next || '/home';
+        }
+        if (/^\/api\//i.test(next)) {
+          window.location.href = next;
+        } else {
+          router.history.replace(next);
+        }
+        return;
+      }
 
-      // if (
-      //   requiresAuthOrEmail(routes) &&
-      //   !Auth.isAuthenticated &&
-      //   !Auth.isEmailVisitor
-      // ) {
-      //   AuthActions.authRedirect(location.pathname);
-      //   router.history.replace('/signin?next=' + location.pathname);
-      //   return;
-      // }
+      if (
+        //requiresAuthOrEmail(routes) &&
+        !Auth.isAuthenticated &&
+        !Auth.isEmailVisitor
+      ) {
+        AuthActions.authRedirect(location.pathname);
+        router.history.replace('/signin?next=' + location.pathname);
+        return;
+      }
 
-      // if (requiresAuth(routes) && !Auth.isAuthenticated) {
-      //   AuthActions.authRedirect(location.pathname);
-      //   router.history.replace('/signin?next=' + location.pathname);
-      //   return;
-      // }
+      if (/*requiresAuth(routes) &&*/ !Auth.isAuthenticated) {
+        AuthActions.authRedirect(location.pathname);
+        router.history.replace('/signin?next=' + location.pathname);
+        return;
+      }
     }
 
     if (

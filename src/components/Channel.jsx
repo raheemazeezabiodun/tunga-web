@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import Progress from './status/Progress';
 import Avatar from './Avatar';
 import SearchBox from './SearchBox';
@@ -164,18 +164,18 @@ export default class Channel extends React.Component {
                         : <div
                             className="btn-group btn-choices select pull-right"
                             role="group">
-                            <Link
+                            <NavLink
                               to={`/conversation/${channel.id}/messages`}
                               className="btn btn-borderless"
                               activeClassName="active">
                               <i className="fa fa-comments" />
-                            </Link>
-                            <Link
+                            </NavLink>
+                            <NavLink
                               to={`/conversation/${channel.id}/files`}
                               className="btn btn-borderless"
                               activeClassName="active">
                               <i className="fa fa-paperclip" />
-                            </Link>
+                            </NavLink>
                             {isDeveloper() &&
                             channel.type == CHANNEL_TYPES.developer
                               ? null

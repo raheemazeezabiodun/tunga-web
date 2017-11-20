@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import moment from 'moment';
 import TimeAgo from 'react-timeago';
 import Linkify from './Linkify';
@@ -640,7 +640,7 @@ export default class TaskWorkflow extends ComponentWithModal {
 
           <div className="clearfix hidden-xs">
             <div className="nav-top-filter pull-left">
-              <Link to={`/work/${task.id}/?nr=true`} activeClassName="active">Meeting room</Link>
+              <NavLink to={`/work/${task.id}/?nr=true`} activeClassName="active">Meeting room</NavLink>
 
               {!task.is_developer_ready
                 ? <span className="hidden-xs hidden-sm">
@@ -741,38 +741,38 @@ export default class TaskWorkflow extends ComponentWithModal {
               {is_admin_or_owner && !task.parent
                 ? <ul className="integration-options pull-right">
                 <li id="github-btn">
-                  <Link
+                  <NavLink
                     to={`/work/${task.id}/integrations/${SOCIAL_PROVIDERS.github}`}
                     activeClassName="active"
                     title="GitHub">
                     <i className="fa fa-github" />
-                  </Link>
+                  </NavLink>
                 </li>
                 <li id="slack-btn">
-                  <Link
+                  <NavLink
                     to={`/work/${task.id}/integrations/${SOCIAL_PROVIDERS.slack}`}
                     activeClassName="active"
                     title="Slack">
                     <i className="fa fa-slack" />
-                  </Link>
+                  </NavLink>
                 </li>
                 <li id="trello-btn">
-                  <Link
+                  <NavLink
                     to={`/work/${task.id}/edit/${SOCIAL_PROVIDERS.trello}`}
                     activeClassName="active"
                     title="Trello">
                     <i className="fa fa-trello" />
-                  </Link>
+                  </NavLink>
                 </li>
                 <li id="google-drive-btn">
-                  <Link
+                  <NavLink
                     to={`/work/${task.id}/edit/${SOCIAL_PROVIDERS[
                         'google-drive'
                       ]}`}
                     activeClassName="active"
                     title="Google Drive">
                     <i className="tunga-icon-google-drive" />
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
                 : <span>&nbsp;</span>}

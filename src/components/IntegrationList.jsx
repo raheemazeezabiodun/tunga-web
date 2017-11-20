@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import Progress from './status/Progress';
 import FormStatus from './status/FormStatus';
 import ComponentWithModal from './ComponentWithModal';
@@ -195,20 +195,20 @@ export default class IntegrationList extends ComponentWithModal {
         {/*<div className="clearfix">
                     <ul className="integration-options">
                         <li>
-                            <Link to={`/work/${task.id}/integrations/${SOCIAL_PROVIDERS.github}`}
+                            <NavLink to={`/work/${task.id}/integrations/${SOCIAL_PROVIDERS.github}`}
                                   activeClassName="active"
                                   className="github-button"
                                   title="GitHub">
                                 <i className="fa fa-github"/>
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to={`/work/${task.id}/integrations/${SOCIAL_PROVIDERS.slack}`}
+                            <NavLink to={`/work/${task.id}/integrations/${SOCIAL_PROVIDERS.slack}`}
                                   activeClassName="active"
                                   className="slack-button"
                                   title="Slack">
                                 <i className="fa fa-slack"/>
-                            </Link>
+                            </NavLink>
                         </li>
                     </ul>
                 </div>*/}

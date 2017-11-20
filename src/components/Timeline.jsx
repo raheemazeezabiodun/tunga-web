@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import TimeAgo from 'react-timeago';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
 import {resizeOverviewBox} from './TaskWorkflow';

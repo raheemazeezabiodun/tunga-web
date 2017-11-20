@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import YouTube from 'react-youtube';
@@ -367,7 +367,7 @@ export class LandingPage extends ComponentWithModal {
     if (params && params.skill) {
       return params.skill;
     }
-
+    
     const param = new URLSearchParams(location.search);
     if (location.query && param.get('dlp_tag')) {
       return param.get('dlp_tag');
@@ -989,4 +989,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LandingPage));

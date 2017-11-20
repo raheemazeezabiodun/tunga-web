@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import moment from 'moment';
 import _ from 'lodash';
 
@@ -182,30 +182,30 @@ export default class PaymentList extends GenericListContainer {
 
         <ul className="nav nav-pills nav-top-filter">
           <li role="presentation">
-            <IndexLink to="/payments" activeClassName="active">
+            <NavLink to="/payments" activeClassName="active">
               All
-            </IndexLink>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/payments/filter/pending" activeClassName="active">
+            <NavLink to="/payments/filter/pending" activeClassName="active">
               Pending
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/payments/filter/processing" activeClassName="active">
+            <NavLink to="/payments/filter/processing" activeClassName="active">
               Processing
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/payments/filter/paid" activeClassName="active">
+            <NavLink to="/payments/filter/paid" activeClassName="active">
               Paid
-            </Link>
+            </NavLink>
           </li>
           {isAdmin()
             ? <li role="presentation">
-                <Link to="/payments/filter/distribute" activeClassName="active">
+                <NavLink to="/payments/filter/distribute" activeClassName="active">
                   Distribute
-                </Link>
+                </NavLink>
               </li>
             : null}
         </ul>

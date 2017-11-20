@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -47,24 +47,24 @@ class SearchPage extends React.Component {
           : null}
         <ul className="nav nav-pills nav-top-filter">
           <li role="presentation">
-            <Link to="/search/people" activeClassName="active">
+            <NavLink to="/search/people" activeClassName="active">
               {isAdmin() ? 'People' : 'Developers'}
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation">
-            <Link to="/search/tasks" activeClassName="active">
+            <NavLink to="/search/tasks" activeClassName="active">
               Tasks
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation" style={{marginLeft: '10px'}}>
-            <Link to="/search/messages" activeClassName="active">
+            <NavLink to="/search/messages" activeClassName="active">
               Messages
-            </Link>
+            </NavLink>
           </li>
           <li role="presentation" style={{marginLeft: '10px'}}>
-            <Link to="/search/support" activeClassName="active">
+            <NavLink to="/search/support" activeClassName="active">
               Support
-            </Link>
+            </NavLink>
           </li>
         </ul>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -61,12 +61,12 @@ class SideBar extends React.Component {
         <div className="wrapper" onClick={resizeSideBar()}>
           <ul className="nav nav-sidebar">
             <li id="sidebar-home">
-              <Link to="/home" activeClassName="active">
+              <NavLink to="/home" activeClassName="active">
                 <i className="menu-icon tunga-icon-home" /> <span>Home</span>
-              </Link>
+              </NavLink>
             </li>
             <li id="sidebar-work">
-              <Link
+              <NavLink
                 to="/work"
                 activeClassName={
                   /\/work\/new\/?/.test(this.props.location.pathname)
@@ -75,18 +75,18 @@ class SideBar extends React.Component {
                 }>
                 <i className="menu-icon tunga-icon-search" />{' '}
                 <span>Find work</span>
-              </Link>
+              </NavLink>
             </li>
             {isProjectOwner() || isProjectManager() || isAdmin()
               ? <li id="sidebar-post-work">
-                  <Link to="/work/new" activeClassName="active">
+                  <NavLink to="/work/new" activeClassName="active">
                     <i className="menu-icon tunga-icon-task" />{' '}
                     <span>Post work</span>
-                  </Link>
+                  </NavLink>
                 </li>
               : null}
             <li id="sidebar-messages">
-              <Link to="/conversation" activeClassName="active">
+              <NavLink to="/conversation" activeClassName="active">
                 <i className="menu-icon tunga-icon-message" />{' '}
                 <span>Messages</span>{' '}
                 {messages
@@ -94,30 +94,30 @@ class SideBar extends React.Component {
                       {messages}
                     </span>
                   : null}
-              </Link>
+              </NavLink>
             </li>
             <li id="sidebar-tribe">
-              <Link to="/people/filter/developers" activeClassName="active">
+              <NavLink to="/people/filter/developers" activeClassName="active">
                 <i className="menu-icon tunga-icon-tribe" /> <span>Tribe</span>{' '}
                 {requests
                   ? <span className="badge">
                       {requests}
                     </span>
                   : null}
-              </Link>
+              </NavLink>
             </li>
             <li id="sidebar-payments">
-              <Link to="/payments" activeClassName="active">
+              <NavLink to="/payments" activeClassName="active">
                 <i className="menu-icon tunga-icon-wallet" />{' '}
                 <span>Payments</span>
-              </Link>
+              </NavLink>
             </li>
             {isProjectManager() || isAdmin()
               ? <li id="sidebar-estimate">
-                  <Link to="/proposal" activeClassName="active">
+                  <NavLink to="/proposal" activeClassName="active">
                     <i className="menu-icon fa fa-pie-chart" />{' '}
                     <span>Proposals</span>
-                  </Link>
+                  </NavLink>
                 </li>
               : null}
 
@@ -144,11 +144,11 @@ class SideBar extends React.Component {
                     {Support.Section.list.sections.map(section => {
                       return (
                         <li key={section.id}>
-                          <Link
+                          <NavLink
                             to={`/support/${section.slug}`}
                             activeClassName="active">
                             {section.title}
-                          </Link>
+                          </NavLink>
                         </li>
                       );
                     })}

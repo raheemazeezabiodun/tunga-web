@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 import SearchBox from '../components/SearchBox';
 import Progress from '../components/status/Progress';
@@ -109,7 +109,7 @@ class MessagePage extends React.Component {
                         {Channel.list.ids.map(id => {
                           let channel = Channel.list.channels[id];
                           return (
-                            <Link
+                            <NavLink
                               key={id}
                               to={`${channel_type_filter ==
                               CHANNEL_TYPES.support
@@ -133,7 +133,7 @@ class MessagePage extends React.Component {
                               <div className="media-body channel-details">
                                 <ChannelInfo channel={channel} />
                               </div>
-                            </Link>
+                            </NavLink>
                           );
                         })}
                       </div>

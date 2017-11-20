@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {ProgressBar} from 'react-bootstrap';
 import moment from 'moment';
 import Linkify from './Linkify';

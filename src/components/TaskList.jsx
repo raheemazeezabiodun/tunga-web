@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, IndexLink} from 'react-router';
+import {Link, NavLink} from 'react-router-dom';
 
 import Progress from './status/Progress';
 import LoadMore from './status/LoadMore';
@@ -85,32 +85,32 @@ export default class TaskList extends GenericListContainer {
                 ? null
                 : <ul className="nav nav-pills nav-top-filter">
                     <li role="presentation">
-                      <IndexLink to="/work" activeClassName="active">
+                      <NavLink to="/work" activeClassName="active">
                         All
-                      </IndexLink>
+                      </NavLink>
                     </li>
                     {isProjectManager() || isAdmin()
                       ? [
                           <li role="presentation" key="new-projects">
-                            <Link
+                            <NavLink
                               to="/work/filter/new-projects"
                               activeClassName="active">
                               <i className="tunga-icon-project" /> New Projects
-                            </Link>
+                            </NavLink>
                           </li>,
                           <li role="presentation" key="proposals">
-                            <Link
+                            <NavLink
                               to="/work/filter/proposals"
                               activeClassName="active">
                               <i className="fa fa-pie-chart" /> Estimates
-                            </Link>
+                            </NavLink>
                           </li>,
                         ]
                       : null}
                     <li role="presentation">
-                      <Link to="/work/filter/running" activeClassName="active">
+                      <NavLink to="/work/filter/running" activeClassName="active">
                         <i className="tunga-icon-running-tasks" /> Running
-                      </Link>
+                      </NavLink>
                     </li>
                     {isDeveloper() || isAdmin()
                       ? [
@@ -118,28 +118,28 @@ export default class TaskList extends GenericListContainer {
                             role="presentation"
                             key="skills"
                             style={{marginLeft: '20px'}}>
-                            <Link
+                            <NavLink
                               to="/work/filter/skills"
                               activeClassName="active">
                               My Skills
-                            </Link>
+                            </NavLink>
                           </li>,
                           <li role="presentation" key="clients">
-                            <Link
+                            <NavLink
                               to="/work/filter/project-owners"
                               activeClassName="active">
                               My Clients
-                            </Link>
+                            </NavLink>
                           </li>,
                         ]
                       : null}
                     {skill
                       ? <li role="presentation" style={{marginLeft: '20px'}}>
-                          <Link
+                          <NavLink
                             to={`/work/skill/${skill}`}
                             activeClassName="active">
                             <i className="tunga-icon-tag" /> {skill}
-                          </Link>
+                          </NavLink>
                         </li>
                       : null}
                   </ul>}

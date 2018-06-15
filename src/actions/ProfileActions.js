@@ -48,6 +48,9 @@ export const UPDATE_EDUCATION_FAILED = 'UPDATE_EDUCATION_FAILED';
 export const GET_COUNTRIES_START = 'GET_COUNTRIES_START';
 export const GET_COUNTRIES_SUCCESS = 'GET_COUNTRIES_SUCCESS';
 export const GET_COUNTRIES_FAILED = 'GET_COUNTRIES_FAILED';
+export const UPDATE_COMPANY_START = 'UPDATE_COMPANY_START';
+export const UPDATE_COMPANY_SUCCESS = 'UPDATE_COMPANY_SUCCESS';
+export const UPDATE_COMPANY_FAILED = 'UPDATE_COMPANY_FAILED';
 
 export function updateAuthUser(user) {
     return dispatch => {
@@ -487,6 +490,69 @@ export function getCountriesSuccess(countries) {
 export function getCountriesFailed(error) {
     return {
         type: GET_COUNTRIES_FAILED,
+        error,
+    };
+}
+
+export function updateCompany(id, company) {
+    return dispatch => {
+        dispatch(updateCompanyStart(id));
+        let request_method = id ? 'patch' : 'post';
+
+        var headers = {},
+            data = company;
+        if (company && company.id_document) {
+            headers['Content-Type'] = 'multipart/form-data';
+
+            data = new FormData();
+            Object.keys(company).map(key => {
+                data.append(key, company[key]);
+            });
+        }
+
+        axios
+            .request({
+                url: ENDPOINT_COMPANY,
+                method: request_method,
+                data,
+                headers,
+            })
+            .then(function(response) {
+                dispatch(updateCompanySuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    updateCompanyFailed(
+                        error.response ? error.response.data : null,
+                    ),
+                );
+            });
+    };
+}
+
+export function updateCompanyStart(id) {
+    return {
+        type: UPDATE_COMPANY_START,
+        id,
+    };
+}
+
+export function updateCompanySuccess(company) {
+    sendGAEvent(
+        GA_EVENT_CATEGORIES.COMPANY,
+        GA_EVENT_ACTIONS.UPDATE,
+        getGAUserType(getUser()),
+    );
+
+    return {
+        type: UPDATE_COMPANY_SUCCESS,
+        company,
+    };
+}
+
+export function updateCompanyFailed(error) {
+    return {
+        type: UPDATE_COMPANY_FAILED,
         error,
     };
 }

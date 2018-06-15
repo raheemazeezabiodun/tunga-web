@@ -54,6 +54,7 @@ export const ENDPOINT_RESET_PASSWORD_CONFIRM = getEndpointUrl(
     'auth/password/reset/confirm/',
 );
 export const ENDPOINT_PROFILE = getEndpointUrl('me/profile/');
+export const ENDPOINT_COMPANY = getEndpointUrl('me/company/');
 export const ENDPOINT_NOTIFICATION = getEndpointUrl('me/notification/');
 export const ENDPOINT_ACCOUNT_INFO = getEndpointUrl('me/account/');
 export const ENDPOINT_ACCOUNT_SETTINGS = getEndpointUrl('me/settings/');

@@ -78,7 +78,8 @@ Find the Style & Component guide here: http://sandbox.tunga.io/guide.html
 
 It includes code samples and interactive examples of our core UI components.
 
-We use [Bootstrap 4](https://getbootstrap.com/) as our UI framework and [React.js](https://reactjs.org/) as our view library.
+We use [Bootstrap 4](https://getbootstrap.com/) as our UI framework, [React.js](https://reactjs.org/) as our view library, 
+[Redux](https://redux.js.org/) for state management and [React Router 4]() for routing.
 
 Our css is written as a Bootstrap 4 theme and leverages [Sass](https://sass-lang.com/guide). 
 
@@ -87,6 +88,8 @@ As such we expect you to leverage Sass features when making CSS contributions.
 If you're coming over from Boostrap 3 or earlier, be sure to read the migration guide at: https://getbootstrap.com/docs/4.0/migration/
 
 If you're coming over from React 15 or earlier, be sure to read the migration guide at: https://reactjs.org/blog/2017/09/26/react-v16.0.html
+
+If you're coming over from React Router 3 or earlier, be sure to read the migration guide at: https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/migrating.md
 
 ## Screen Designs
 The designs will be delivered to you via [Zeplin](https://zeplin.io/) or [Invision](https://www.invisionapp.com/). Please make sure you are familiar with and have access to both tools.

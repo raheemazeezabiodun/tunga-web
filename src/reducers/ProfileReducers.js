@@ -156,11 +156,6 @@ function isSaving(state = defaultStatuses, action) {
         case ProfileActions.UPDATE_EDUCATION_SUCCESS:
         case ProfileActions.UPDATE_EDUCATION_FAILED:
             return {...state, education: false};
-        case ProfileActions.UPDATE_COMPANY_START:
-            return {...state, profile: true};
-        case ProfileActions.UPDATE_COMPANY_SUCCESS:
-        case ProfileActions.UPDATE_COMPANY_FAILED:
-            return {...state, profile: false};
         default:
             return state;
     }
@@ -204,11 +199,6 @@ function isSaved(state = defaultStatuses, action) {
         case ProfileActions.UPDATE_EDUCATION_START:
         case ProfileActions.UPDATE_EDUCATION_FAILED:
             return {...state, education: false};
-        case ProfileActions.UPDATE_COMPANY_SUCCESS:
-            return {...state, company: true};
-        case ProfileActions.UPDATE_COMPANY_START:
-        case ProfileActions.UPDATE_COMPANY_FAILED:
-            return {...state, company: false};
         case ProfileActions.RETRIEVE_PROFILE_START:
         case PATH_CHANGE:
             return defaultStatuses;
@@ -256,11 +246,6 @@ function error(state = {}, action) {
         case ProfileActions.UPDATE_EDUCATION_START:
         case ProfileActions.UPDATE_EDUCATION_SUCCESS:
             return {...state, education: null};
-        case ProfileActions.UPDATE_COMPANY_FAILED:
-            return {...state, company: error};
-        case ProfileActions.UPDATE_COMPANY_START:
-        case ProfileActions.UPDATE_COMPANY_SUCCESS:
-            return {...state, company: null};
         default:
             return state;
     }

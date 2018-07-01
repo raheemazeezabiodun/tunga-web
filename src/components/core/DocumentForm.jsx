@@ -67,9 +67,7 @@ export default class DocumentForm extends React.Component {
             <form onSubmit={this.onSave}>
                 {this.props.documentType?null:(
                     <FormGroup>
-                        <Select options={Array.isArray(documentTypes) && documentTypes.length > 0?documentTypes:Object.keys(DOCUMENT_TYPES).map(key => {
-                            return [key, DOCUMENT_TYPES[key]];
-                        })} onChange={(type) => {this.onChange('type', type)}} required/>
+                        <Select options={Array.isArray(documentTypes) && documentTypes.length > 0?documentTypes:DOCUMENT_TYPES} onChange={(type) => {this.onChange('type', type)}} required/>
                     </FormGroup>
                 )}
                 <FormGroup>

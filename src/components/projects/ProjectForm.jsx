@@ -6,7 +6,6 @@ import ChoiceGroup from "../core/ChoiceGroup";
 import SkillSelector from "../core/SkillSelector";
 import TextArea from "../core/TextArea";
 import DateTimePicker from "../core/DateTimePicker";
-import Upload from "../core/Upload";
 import Input from "../core/Input";
 import Button from "../core/Button";
 import DocumentPicker from "../core/DocumentPicker";
@@ -134,7 +133,7 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectDocuments">
                                     Add documents
                                 </Label>
-                                <DocumentPicker documentTypes={Object.keys(DOCUMENT_TYPES_CLIENTS).map(key => { return [key, DOCUMENT_TYPES_CLIENTS[key]]; })}
+                                <DocumentPicker documentTypes={DOCUMENT_TYPES_CLIENTS}
                                            onChange={(docs) => { this.onChangeValue('documents', docs)}}/>
                             </FormGroup>
                         </Col>

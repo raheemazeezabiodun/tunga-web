@@ -9,7 +9,7 @@ import {openModal} from './utils/modals';
 import {addPropsToChildren} from './utils/children';
 import Button from "./Button";
 import Icon from "./Icon";
-import {DOCUMENT_TYPES} from "../../actions/utils/api";
+import {DOCUMENT_TYPES_MAP} from "../../actions/utils/api";
 
 const ModalWrapper = (props) => {
     return (
@@ -67,7 +67,7 @@ export default class DocumentPicker extends React.Component {
             <ModalWrapper>
                 <DocumentForm type={type} documentType={this.props.documentType} documentTypes={this.props.documentTypes}/>
             </ModalWrapper>,
-            `Add ${this.props.documentType?(DOCUMENT_TYPES[this.props.documentType] || `${this.props.documentType} document`):' document'}`,
+            `Add ${this.props.documentType?(DOCUMENT_TYPES_MAP[this.props.documentType] || `${this.props.documentType} document`):' document'}`,
             true, {className: 'modal-upload'}
         ).then((document) => {
             self.setState({documents: [...this.state.documents, document]});

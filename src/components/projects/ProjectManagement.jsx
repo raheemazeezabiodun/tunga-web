@@ -40,21 +40,23 @@ export default class ProjectManagement extends React.Component {
                             })}
                         </div>
 
-                        <Switch>
-                            <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
-                            {[
-                                ['activity', <Activity {...settingsProps}/>],
-                                ['docs', <Docs {...settingsProps}/>],
-                                ['team', <Team {...settingsProps}/>],
-                                ['plan', <Plan {...settingsProps}/>],
-                                ['pay', <Pay {...settingsProps}/>],
-                                ['settings', <Settings {...settingsProps}/>],
-                            ].map(path => {
-                                return (
-                                    <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>
-                                );
-                            })}
-                        </Switch>
+                        <div className="project-activity-wrapper">
+                            <Switch>
+                                <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
+                                {[
+                                    ['activity', <Activity {...settingsProps}/>],
+                                    ['docs', <Docs {...settingsProps}/>],
+                                    ['team', <Team {...settingsProps}/>],
+                                    ['plan', <Plan {...settingsProps}/>],
+                                    ['pay', <Pay {...settingsProps}/>],
+                                    ['settings', <Settings {...settingsProps}/>],
+                                ].map(path => {
+                                    return (
+                                        <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>
+                                    );
+                                })}
+                            </Switch>
+                        </div>
                     </div>
                     <div className="project-details float-right">
                         <h6>{project.title}</h6>

@@ -825,138 +825,145 @@ body {
     margin-left: px-to-rem(120);
     @include padding-x(px-to-rem(80));
     padding-top: px-to-rem(40);
+}
 
-    .onboard-card {
-        max-width: 660px;
-        min-height: 430px;
-        margin: 40px auto;
+// Cards
+.card-list, .row.card-list {
+    margin-right: 0;
+    margin-left: 0;
+
+    > .col,
+    > [class*="col-"] {
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 20px;
+    }
+
+}
+
+.onboard-card {
+    max-width: 660px;
+    min-height: 430px;
+    margin: 40px auto;
+    box-shadow: 0 2px 2px 0 rgba(204, 204, 204, 0.5);
+    border: solid 1px #ececec;
+
+    .onboard-title {
+        padding: 30px 40px;
         box-shadow: 0 2px 2px 0 rgba(204, 204, 204, 0.5);
-        border: solid 1px #ececec;
-
-        .onboard-title {
-            padding: 30px 40px;
-            box-shadow: 0 2px 2px 0 rgba(204, 204, 204, 0.5);
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .onboard-content {
-            padding: 40px;
-
-            .onboard-intro {
-                text-align: center;
-                margin-top: 90px;
-            }
-
-            .onboard-action {
-                background-color: #FAFAFA;
-                border: 0px;
-                cursor: pointer;
-            }
-
-            .onboard-finish-icon {
-                color: #40bb56;
-            }
-
-            .onboard-finish-button {
-                margin-top: 50px;
-            }
-
-        }
+        text-align: center;
+        font-weight: bold;
     }
 
-    .content-card {
-        background-color: get-color('white');
-        min-height: 560px;
+    .onboard-content {
         padding: 40px;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
-        border: solid 1px #ececec;
 
-        &.settings-card {
-            max-width: 760px;
+        .onboard-intro {
+            text-align: center;
+            margin-top: 90px;
         }
 
-        &.project-form-card {
-            max-width: 920px;
-            min-height: 540px;
-
-            .form-group {
-                padding-bottom: 20px;
-            }
-
-            label {
-                font-weight: $font-weight-medium;
-            }
+        .onboard-action {
+            background-color: #FAFAFA;
+            border: 0px;
+            cursor: pointer;
         }
+
+        .onboard-finish-icon {
+            color: #40bb56;
+        }
+
+        .onboard-finish-button {
+            margin-top: 50px;
+        }
+
+    }
+}
+
+.content-card {
+    background-color: get-color('white');
+    min-height: 560px;
+    padding: 40px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
+    border: solid 1px #ececec;
+
+    &.settings-card {
+        max-width: 760px;
     }
 
-    .user-card {
-        height: 400px;
-        background-color: get-color('white');
-        padding: 40px 40px 20px 40px;
-        border: solid 1px #ececec;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
-    }
+    &.project-form-card {
+        max-width: 920px;
+        min-height: 540px;
 
-    .project-card {
-        height: 400px;
-        background-color: get-color('white');
-        padding: 40px 40px 20px 40px;
-        border: solid 1px #ececec;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
-    }
-
-    .card-list, .row.card-list {
-        margin-right: 0;
-        margin-left: 0;
-
-        > .col,
-        > [class*="col-"] {
-            padding-right: 10px;
-            padding-left: 10px;
+        .form-group {
             padding-bottom: 20px;
         }
 
+        label {
+            font-weight: $font-weight-medium;
+        }
+    }
+}
+
+.user-card {
+    height: 400px;
+    background-color: get-color('white');
+    padding: 40px 40px 20px 40px;
+    border: solid 1px #ececec;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
+}
+
+.project-card {
+    height: 400px;
+    background-color: get-color('white');
+    padding: 40px 40px 20px 40px;
+    border: solid 1px #ececec;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
+}
+
+// Project Page
+.project-page {
+
+    .project-activity {
+        width: 65.52%;
+        max-width: 760px;
+        min-height: 560px;
+        background-color: get-color('white');
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
+
+        .project-activity-wrapper {
+            padding: 40px;
+        }
     }
 
-    .project-page {
+    .project-details {
+        width: 32.76%;
+        max-width: 380px;
+        min-height: 560px;
+        padding: 20px 40px;
+        background-color: get-color('white');
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
+    }
 
-        .project-activity {
-            width: 65.52%;
-            max-width: 760px;
-            height: 560px;
-            background-color: get-color('white');
-            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11)
-        }
+    .project-filters {
+        border-bottom: solid 1px #dbdbdb;
 
-        .project-details {
-            width: 32.76%;
-            max-width: 380px;
-            height: 560px;
-            padding: 20px 40px;
-            background-color: get-color('white');
-            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
-        }
+        a {
+            position: relative;
+            bottom: -3px;
+            display: inline-block;
+            color: get-color('black');
+            font-weight: $font-weight-normal;
+            text-align: center;
+            padding: px-to-rem(20);
+            min-width: px-to-rem(120);
 
-        .project-filters {
-            border-bottom: solid 1px #dbdbdb;
+            &.active {
+                border-bottom: 3px $brand-color solid;
+            }
 
-            a {
-                position: relative;
-                bottom: -3px;
-                display: inline-block;
-                font-weight: $font-weight-normal;
-                text-align: center;
-                padding: px-to-rem(20);
-                min-width: px-to-rem(120);
-
-                &.active {
-                    border-bottom: 3px $brand-color solid;
-                }
-
-                &:hover, &:focus {
-                    text-decoration: none;
-                }
+            &:hover, &:focus {
+                text-decoration: none;
             }
         }
     }

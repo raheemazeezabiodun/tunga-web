@@ -39,9 +39,10 @@ export default class Docs extends React.Component {
     }
 
     onChangeDocs(key, docs) {
+        const {project} = this.props;
         if (docs.length > this.state.documents[key].length) {
             let newDoc = docs[docs.length - 1];
-            this.props.ProjectActions.createDocument(newDoc);
+            this.props.ProjectActions.createDocument({...newDoc, project: {id: project.id}});
         }
 
         let newState = {};
@@ -57,34 +58,35 @@ export default class Docs extends React.Component {
         const {project: {documents}} = this.props;
 
         return (
-            <div>
+            <div className="project-docs">
                 {[
                     DOC_TYPE_ESTIMATE, DOC_TYPE_PROPOSAL,
                     DOC_TYPE_REQUIREMENTS, DOC_TYPE_OTHER
                 ].map(docType => {
                     return (
-                        <div>
+                        <div key={`doc-type-${docType}`}>
                             <div className="font-weight-medium">
                                 {(DOCUMENT_TYPES_MAP[docType] || _.upperFirst(docType)).replace(/\s?document/, '')} documents
                             </div>
                             <div className="file-list">
                                 {this.filterDocumentsByType(documents, docType).map(doc => {
                                     return (
-                                        <div className="file-item" key={doc.id}>
-                                            <a href={doc.download_url} target="_blank">
-                                                <i
-                                                    className={
-                                                        doc.file ? "tg-ic-download" : "tg-ic-link"
-                                                    }
-                                                />{" "}
-                                                {doc.file ? doc.title : doc.url}
-                                            </a>
-                                            <button
-                                                className="btn"
-                                                onClick={this.onRemoveDoc.bind(this, doc.id)}
-                                            >
-                                                <i className="tg-ic-close" />
-                                            </button>
+                                        <div>
+                                            <div className="file-item" key={doc.id}>
+                                                <a href={doc.download_url} target="_blank">
+                                                    <i
+                                                        className={
+                                                            doc.file ? "tg-ic-download" : "tg-ic-link"
+                                                        }
+                                                    />{" "}
+                                                    {doc.file ? doc.title : doc.url}
+                                                </a>
+                                                <button
+                                                    className="btn"
+                                                    onClick={this.onRemoveDoc.bind(this, doc.id)}>
+                                                    <i className="tg-ic-close" />
+                                                </button>
+                                            </div>
                                         </div>
                                     );
                                 })}

@@ -118,6 +118,34 @@ function projects(state = {}, action) {
                 return {...state, ...newState};
             }
             return state;
+        case ParticipationActions.DELETE_PARTICIPATION_SUCCESS:
+            let newState = {};
+            Object.keys(state).forEach(id => {
+                let project = state[id],
+                    newParticipation = [];
+
+                project.participation.forEach(participation => {
+                    if(participation.id !== action.id) {
+                        newParticipation.push(participation);
+                    }
+                });
+                newState[project.id] = {...project, participation: newParticipation};
+            });
+            return newState;
+        case DocumentActions.DELETE_DOCUMENT_SUCCESS:
+            newState = {};
+            Object.keys(state).forEach(id => {
+                let project = state[id],
+                    newDocs = [];
+
+                project.documents.forEach(doc => {
+                    if(doc.id !== action.id) {
+                        newDocs.push(doc);
+                    }
+                });
+                newState[project.id] = {...project, documents: newDocs};
+            });
+            return newState;
         default:
             return state;
     }

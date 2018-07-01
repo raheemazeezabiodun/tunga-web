@@ -933,6 +933,14 @@ body {
 
         .project-activity-wrapper {
             padding: 40px;
+
+            .project-docs {
+                .file-list {
+                    .file-item {
+                        display: inline-block;
+                    }
+                }
+            }
         }
     }
 

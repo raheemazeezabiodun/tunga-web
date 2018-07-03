@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+
 import * as UserActions from '../actions/UserActions';
 import {getIds} from './utils';
 

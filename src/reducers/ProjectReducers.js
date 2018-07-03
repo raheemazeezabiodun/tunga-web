@@ -1,4 +1,6 @@
 import {combineReducers} from 'redux';
+import {LOCATION_CHANGE} from "react-router-redux";
+
 import {getIds} from './utils';
 import * as ProjectActions from "../actions/ProjectActions";
 import * as ParticipationActions from "../actions/ParticipationActions";
@@ -184,6 +186,8 @@ function isSaved(state = {}, action) {
         case ProjectActions.UPDATE_PROJECT_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
+        case LOCATION_CHANGE:
+            return {};
         default:
             return state;
     }

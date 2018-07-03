@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import {LOCATION_CHANGE} from 'react-router-redux';
 import * as ProfileActions from '../actions/ProfileActions';
 
 function countries(state = [], action) {
@@ -31,7 +32,7 @@ const defaultStatuses = {
     security: false,
     company: false,
     work: false,
-    education: false,
+    education: false
 };
 
 function isSaving(state = defaultStatuses, action) {
@@ -125,7 +126,7 @@ function isSaved(state = defaultStatuses, action) {
         case ProfileActions.UPDATE_COMPANY_START:
         case ProfileActions.UPDATE_COMPANY_FAILED:
             return {...state, company: false};
-        case ProfileActions.RETRIEVE_PROFILE_START:
+        case LOCATION_CHANGE:
             return defaultStatuses;
         default:
             return state;

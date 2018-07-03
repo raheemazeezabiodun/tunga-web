@@ -6,6 +6,7 @@ import CustomInputGroup from '../core/CustomInputGroup';
 import Upload from '../core/Upload';
 import Icon from '../core/Icon';
 import CountrySelector from '../core/CountrySelector';
+import Avatar from '../core/Avatar';
 import FieldError from '../core/FieldError';
 import Success from '../core/Success';
 
@@ -68,7 +69,7 @@ export default class Profile extends React.Component {
     }
 
     render() {
-        const {errors} = this.props;
+        const {user, errors} = this.props;
         return (
             <div>
                 {this.props.isSaved.profile ? (
@@ -139,7 +140,7 @@ export default class Profile extends React.Component {
                                 <label className="control-label">Picture</label>
                                 <Upload
                                     type='image'
-                                    placeholder={<Icon name='avatar' size='xl' />}
+                                    placeholder={user.avatar_url?<Avatar image={user.avatar_url} size="lg"/>:<Icon name='avatar' size='xl' />}
                                     onChange={this.onChangeFile.bind(this, 'image')}
                                 />
                             </FormGroup>
@@ -240,7 +241,7 @@ export default class Profile extends React.Component {
                                 <label className="control-label">Upload ID (passport or national ID card)</label>
                                 <Upload
                                     type='image'
-                                    placeholder={<Icon name='id' size='xl' />}
+                                    placeholder={user.profile.id_document?<img src={user.profile.id_document} height="75px" title="ID document"/>:<Icon name='id' size='xl' />}
                                     onChange={this.onChangeFile.bind(this, 'id_document')}
                                 />
                             </FormGroup>

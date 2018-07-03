@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {bindActionCreators} from "redux";
-import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 import Select from './Select';
@@ -35,8 +34,7 @@ class CountrySelector extends React.Component {
         }
     }
 
-    onChange(e) {
-        let choice = e.target.value;
+    onChange(choice) {
         this.setState({selected: choice});
         if(this.props.onChange) {
             this.props.onChange(choice);
@@ -91,4 +89,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CountrySelector));
+export default connect(mapStateToProps, mapDispatchToProps)(CountrySelector);

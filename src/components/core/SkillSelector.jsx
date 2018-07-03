@@ -69,10 +69,21 @@ class SkillSelector extends React.Component {
         SkillActions.getSkills(filter, this.state.selectionKey, this.state.prevKey);
     }
 
+    onKeyPress(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            let skill = e.target.value;
+            this.onSelectSkill(skill, e);
+        }
+    }
+
     onChange(e) {
         let skill = e.target.value;
         this.getSkills({search: skill});
-        this.setState({search: skill, showSuggestions: !!skill});
+        this.setState({
+            search: skill,
+            showSuggestions: !!skill
+        });
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -121,7 +132,8 @@ class SkillSelector extends React.Component {
                             selected={this.state.selected}
                             value={this.state.search}
                             onFocus={() => {this.setState({showSuggestions: !!this.state.search})}}
-                            onChange={this.onChange.bind(this)}/>
+                            onChange={this.onChange.bind(this)}
+                            onKeyPress={this.onKeyPress.bind(this)}/>
                 {this.state.showSuggestions?(
                     <div className="list-group suggestions">
                         {(this.props.Skill.skills[this.state.selectionKey] || []).map(skill => {

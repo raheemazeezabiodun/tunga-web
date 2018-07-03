@@ -77,17 +77,21 @@ export default class Experience extends React.Component {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
 
-        let all_skills = [];
+        let allSkills = [];
         const skills_details = this.state.skills_details;
         if (skills_details) {
             Object.keys(skills_details).forEach(category => {
-                all_skills = all_skills.concat(skills_details[category]);
+                allSkills = allSkills.concat(cleanSkills(skills_details[category] || []).map(skill => {
+                    let finalSkill = {...skill};
+                    finalSkill.type = category;
+                    return finalSkill;
+                }));
             });
         }
 
         ProfileActions.updateProfile(user.profile.id, {
             bio: this.state.bio,
-            skills: cleanSkills(all_skills)
+            skills: allSkills
         });
         return;
     };

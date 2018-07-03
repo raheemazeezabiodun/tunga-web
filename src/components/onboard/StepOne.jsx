@@ -4,7 +4,7 @@ import {FormGroup} from 'reactstrap';
 
 import Input from '../core/InputGroup';
 import FieldError from '../core/FieldError';
-import Icon from '../core/Icon';
+import IconButton from "../core/IconButton";
 
 
 export default class StepOne extends React.Component {
@@ -18,10 +18,12 @@ export default class StepOne extends React.Component {
 
     constructor(props) {
         super(props);
+        const {user} = props;
+
         this.state = {
-            first_name: '',
-            last_name: '',
-            company: ''
+            first_name: user.first_name || '',
+            last_name: user.last_name || '',
+            company: user.company.name || ''
         }
     }
 
@@ -37,22 +39,17 @@ export default class StepOne extends React.Component {
         this.setState(newState);
     }
 
-    handleSubmit(e) {
+    onSave(e) {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
-        
-        const first_name = this.state.first_name;
-        const last_name = this.state.last_name;
-        const company = this.state.company;
-        
+
         ProfileActions.updateProfile(user.profile.id, {
-            first_name,
-            last_name
+            first_name: this.state.first_name,
+            last_name: this.state.last_name
         });
-        
-        const id = user.company ? user.company.id : null
-        ProfileActions.updateCompany(id, {
-            name: company
+
+        ProfileActions.updateCompany(user.company.id, {
+            name: this.state.company
         });
         return;
     }
@@ -61,7 +58,7 @@ export default class StepOne extends React.Component {
         const {errors} = this.props;
         return (
             <div>
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.onSave.bind(this)}>
                     <div className="col-sm-8">
                     {errors.profile &&
                         errors.profile.first_name ? (
@@ -71,7 +68,7 @@ export default class StepOne extends React.Component {
                         ) : null}
                         <FormGroup>
                             <label>First Name*</label>
-                            <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'first_name')} />
+                            <Input value={this.state.first_name} onChange={this.onChangeField.bind(this, 'first_name')} />
                         </FormGroup>
                     </div>
                     <div className="col-sm-8">
@@ -83,7 +80,7 @@ export default class StepOne extends React.Component {
                         ) : null}
                         <FormGroup>
                             <label>Last Name*</label>
-                            <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'last_name')} />
+                            <Input value={this.state.last_name} onChange={this.onChangeField.bind(this, 'last_name')} />
                         </FormGroup>
                     </div>
                     <div className="col-sm-8">
@@ -95,12 +92,12 @@ export default class StepOne extends React.Component {
                         ) : null}
                         <FormGroup>
                             <label>Your company name</label>
-                            <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'company')} />
+                            <Input value={this.state.company} onChange={this.onChangeField.bind(this, 'company')} />
                         </FormGroup>
                     </div>
-                    <button disabled={this.props.isSaving.profile} className="float-right onboard-action">
-                        <Icon name='arrow-right' size='md' />
-                    </button>
+                    <IconButton type="submit" name="arrow-right" size='md'
+                                className="float-right onboard-action"
+                                disabled={this.props.isSaving.profile}/>
                 </form>
             </div>
         );

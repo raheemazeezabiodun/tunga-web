@@ -222,7 +222,7 @@ export default class Profile extends React.Component {
                             <FormGroup>
                                 <label className="control-label">Country</label>
                                 <CountrySelector
-                                    onChange={(country) => {this.onChangeValue.bind(this, 'country', country)}}
+                                    onChange={(country) => {this.onChangeValue('country', country)}}
                                     selected={this.state.profile.country}
                                 />
                             </FormGroup>

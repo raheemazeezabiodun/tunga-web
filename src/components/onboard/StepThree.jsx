@@ -6,6 +6,7 @@ import Input from '../core/InputGroup';
 import FieldError from '../core/FieldError';
 import Icon from '../core/Icon';
 import Upload from '../core/Upload';
+import IconButton from "../core/IconButton";
 
 
 export default class StepThree extends React.Component {
@@ -19,11 +20,14 @@ export default class StepThree extends React.Component {
 
     constructor(props) {
         super(props);
+
+        const {user} = props;
+
         this.state = {
-            phone_number: '',
-            vat_no: '',
-            reg_no: '',
-            image: ''
+            phone_number: user.profile.phone_number || '',
+            vat_no: user.profile.vat_no || '',
+            reg_no: user.profile.reg_no || '',
+            //image: user.image || ''
         }
     }
 
@@ -33,31 +37,25 @@ export default class StepThree extends React.Component {
         }
     }
 
-    onChangeField(key, e) {
+    onChangeValue(key, value) {
         let newState = {};
-        newState[key] = e.target.value;
-        this.setState(newState);
+        newState[key] = value;
+        this.setState({profile: {...this.state.profile, ...newState}});
+    }
+
+    onChangeField(key, e) {
+        this.onChangeValue(key, e.target.value);
     }
 
     onChangeFile(files) {
-        this.setState({ image: files[0] });
+        this.onChangeValue('image', files[0]);
     }
 
-    handleSubmit(e) {
+    onSave(e) {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
-        
-        const phone_number = this.state.phone_number;
-        const vat_no = this.state.vat_no;
-        const reg_no = this.state.reg_no;
-        const image = this.state.image;
-        
-        ProfileActions.updateProfile(user.profile.id, {
-            phone_number,
-            vat_no,
-            reg_no,
-            image
-        });
+
+        ProfileActions.updateProfile(user.profile.id, this.state.profile);
         return;
     }
 
@@ -65,7 +63,7 @@ export default class StepThree extends React.Component {
         const {errors} = this.props;
         return (
             <div>
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.onSave.bind(this)}>
                     <div className="row">
                         <div className="col-sm-8">
                             <div>
@@ -78,7 +76,7 @@ export default class StepThree extends React.Component {
                                         ) : null}
                                     <FormGroup>
                                         <label>Phone Number</label>
-                                        <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'phone_number')}/>
+                                        <Input value={this.state.profile.phone_number} onChange={this.onChangeField.bind(this, 'phone_number')}/>
                                     </FormGroup>
                                 </div>
                                 <div className="col-sm-12">
@@ -90,7 +88,7 @@ export default class StepThree extends React.Component {
                                     ) : null}
                                     <FormGroup>
                                         <label>VAT No</label>
-                                        <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'vat_no')}/>
+                                        <Input value={this.state.profile.vat_no} onChange={this.onChangeField.bind(this, 'vat_no')}/>
                                     </FormGroup>
                                 </div>
                                 <div className="col-sm-12">
@@ -102,7 +100,7 @@ export default class StepThree extends React.Component {
                                     ) : null}
                                     <FormGroup>
                                         <label>Company registration number</label>
-                                        <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'reg_no')}/>
+                                        <Input value={this.state.profile.reg_no} onChange={this.onChangeField.bind(this, 'reg_no')}/>
                                     </FormGroup>
                                 </div>
                             </div>
@@ -117,19 +115,18 @@ export default class StepThree extends React.Component {
                             <FormGroup>
                                 <label className="control-label">Picture</label>
                                 <Upload
-                                    type='image' 
+                                    type='image'
                                     placeholder={<Icon name='avatar' size='xl' />}
                                     onChange={this.onChangeFile.bind(this)}
                                 />
                             </FormGroup>
                         </div>
                     </div>
-                    <button className="float-left onboard-action" onClick={() => this.props.history.push('/onboard/step-two')} >
-                        <Icon name='arrow-left' size='md'/>
-                    </button>
-                    <button type="submit" className="btn float-right onboard-action">
-                        <Icon name='check2' size='md' />
-                    </button>
+                    <IconButton name='arrow-left' size='md'
+                                className="float-left onboard-action"
+                                onClick={() => this.props.history.push('/onboard/step-two')} />
+                    <IconButton type="submit" name='check2' size='md'
+                                className="btn float-right onboard-action"/>
                 </form>
             </div>
         );

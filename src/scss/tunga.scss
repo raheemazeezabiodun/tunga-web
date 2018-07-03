@@ -865,8 +865,9 @@ body {
         }
 
         .onboard-action {
-            background-color: #FAFAFA;
-            border: 0px;
+            color: get-color('black');
+            background-color: get-color('lightest-grey');
+            border: 0;
             cursor: pointer;
         }
 

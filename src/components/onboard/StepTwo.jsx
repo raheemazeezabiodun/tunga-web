@@ -5,7 +5,7 @@ import {FormGroup} from 'reactstrap';
 import Input from '../core/InputGroup';
 import FieldError from '../core/FieldError';
 import CountrySelector from '../core/CountrySelector';
-import Icon from '../core/Icon';
+import IconButton from "../core/IconButton";
 
 
 export default class StepTwo extends React.Component {
@@ -19,12 +19,17 @@ export default class StepTwo extends React.Component {
 
     constructor(props) {
         super(props);
+
+        const {user} = props;
+
         this.state = {
-            street: '',
-            city: '',
-            country: '',
-            plot_number: '',
-            postal_code: ''
+            profile: {
+                street: user.profile.street || '',
+                city: user.profile.city || '',
+                country: user.profile.country || '',
+                plot_number: user.profile.plot_number || '',
+                postal_code: user.profile.postal_code || ''
+            }
         }
     }
 
@@ -37,26 +42,14 @@ export default class StepTwo extends React.Component {
     onChangeField(key, e) {
         let newState = {};
         newState[key] = e.target.value;
-        this.setState(newState);
+        this.setState({profile: {...this.state.profile, ...newState}});
     }
 
-    handleSubmit(e) {
+    onSave(e) {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
-        
-        const street = this.state.street;
-        const city = this.state.city;
-        const country = this.state.country;
-        const plot_number = this.state.plot_number;
-        const postal_code = this.state.postal_code;
-        
-        ProfileActions.updateProfile(user.profile.id, {
-            street,
-            city,
-            country,
-            plot_number,
-            postal_code
-        });
+
+        ProfileActions.updateProfile(user.profile.id, this.state.profile);
         return;
     }
 
@@ -65,7 +58,7 @@ export default class StepTwo extends React.Component {
         const {errors} = this.props;
         return (
             <div>
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.onSave.bind(this)}>
                     <div className="row">
                         <div className="col-sm-8">
                         {errors.profile &&
@@ -76,7 +69,8 @@ export default class StepTwo extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Street *</label>
-                                <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'street')}/>
+                                <Input value={this.state.profile.street}
+                                       onChange={this.onChangeField.bind(this, 'street')}/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-3">
@@ -88,7 +82,8 @@ export default class StepTwo extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Number/Plot *</label>
-                                <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'plot_number')}/>
+                                <Input value={this.state.profile.plot_number}
+                                       onChange={this.onChangeField.bind(this, 'plot_number')}/>
                             </FormGroup>
                         </div>
                     </div>
@@ -102,7 +97,8 @@ export default class StepTwo extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>City *</label>
-                                <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'city')}/>
+                                <Input value={this.state.profile.city}
+                                       onChange={this.onChangeField.bind(this, 'city')}/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-3">
@@ -114,31 +110,32 @@ export default class StepTwo extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Zip code *</label>
-                                <Input placeholder=' ' onChange={this.onChangeField.bind(this, 'postal_code')} />
+                                <Input value={this.state.profile.postal_code}
+                                       onChange={this.onChangeField.bind(this, 'postal_code')} />
                             </FormGroup>
                         </div>
                     </div>
-                    <div className="col-sm-8">
-                    {errors.profile &&
-                        errors.profile.country ? (
-                            <FieldError
-                                message={errors.profile.country}
-                            />
-                        ) : null}
-                        <FormGroup>
-                            <label>Country *</label>
-                            <CountrySelector
-                                onChange={this.onChangeField.bind(this, 'country')}
-                            />
-                        </FormGroup>
-                </div>
+                    <div className="row">
+                        <div className="col-sm-8">
+                            {errors.profile &&
+                            errors.profile.country ? (
+                                <FieldError
+                                    message={errors.profile.country}
+                                />
+                            ) : null}
+                            <FormGroup>
+                                <label>Country *</label>
+                                <CountrySelector value={this.state.profile.country}
+                                                 onChange={this.onChangeField.bind(this, 'country')}
+                                />
+                            </FormGroup>
+                        </div>
+                    </div>
                 <div>
-                    <button className="float-left onboard-action" onClick={() => this.props.history.push('/onboard/step-one')} >
-                        <Icon name='arrow-left' size='md'/>
-                    </button>
-                    <button type="submit" className="btn float-right onboard-action">
-                        <Icon name='arrow-right' size='md' />
-                    </button>
+                    <IconButton name="arrow-left" size="md"
+                                className="float-left onboard-action"
+                                onClick={() => this.props.history.push('/onboard/step-one')} />
+                    <IconButton type="submit" name="arrow-right" size="md" className="float-right onboard-action"/>
                 </div>
                 </form>
             </div>

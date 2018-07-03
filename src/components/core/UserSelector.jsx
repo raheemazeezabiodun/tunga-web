@@ -10,7 +10,7 @@ import Icon from './Icon';
 import Avatar from './Avatar';
 
 import { filterEventProps } from "./utils/events";
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 import * as UserActions  from "../../actions/UserActions";
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {filterEventProps} from "./utils/events";
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 export default class Select extends React.Component {
     static defaultProps = {

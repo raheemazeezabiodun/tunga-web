@@ -3,7 +3,7 @@ import React from 'react';
 
 import Input from './Input';
 import {filterEventProps} from "./utils/events";
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 export default class InputGroup extends React.Component {
     static defaultProps = {

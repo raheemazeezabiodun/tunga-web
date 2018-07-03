@@ -3,7 +3,7 @@ import React from 'react';
 
 import InputGroup from './InputGroup';
 import {filterEventProps} from "./utils/events";
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 const CUSTOM_INPUTS = {
     search: {

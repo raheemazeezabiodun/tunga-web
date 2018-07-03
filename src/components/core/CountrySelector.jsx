@@ -8,7 +8,7 @@ import Select from './Select';
 
 import { filterEventProps } from "./utils/events";
 import { getCountries } from "../../actions/ProfileActions";
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 class CountrySelector extends React.Component {
     static defaultProps = {

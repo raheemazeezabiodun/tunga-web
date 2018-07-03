@@ -5,6 +5,7 @@ import Button from './Button';
 import Icon from './Icon';
 
 import {addEventListeners, BUTTON_EVENTS} from './utils/events';
+import {filterButtonProps} from "./utils/forms";
 
 export default class IconButton extends React.Component {
     static defaultProps = {
@@ -24,6 +25,7 @@ export default class IconButton extends React.Component {
             <Button type={this.props.type || 'button'}
                     className={this.props.className || ''}
                     variant="icon"
+                    {...filterButtonProps(this.props)}
                     {...addEventListeners(BUTTON_EVENTS, this.props)}>
                 <Icon name={this.props.name} size={this.props.size}/>
             </Button>

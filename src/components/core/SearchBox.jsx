@@ -3,7 +3,7 @@ import React from 'react';
 
 import CustomInputGroup from './CustomInputGroup';
 import {filterEventProps} from "./utils/events";
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 export default class SearchBox extends React.Component {
     static defaultProps = {

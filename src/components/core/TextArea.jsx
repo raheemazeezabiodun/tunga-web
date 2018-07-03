@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {addEventListeners, INPUT_EVENTS} from './utils/events';
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 export default class TextArea extends React.Component {
     static defaultProps = {

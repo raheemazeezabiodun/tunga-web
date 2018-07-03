@@ -9,7 +9,7 @@ import InputGroup from './InputGroup';
 import Icon from './Icon';
 
 import { filterEventProps } from "./utils/events";
-import {filterInputProps} from "./utils/input";
+import {filterInputProps} from "./utils/forms";
 
 import * as SkillActions  from "../../actions/SkillActions";
 

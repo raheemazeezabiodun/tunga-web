@@ -6,6 +6,7 @@ import CustomInputGroup from '../core/CustomInputGroup';
 import CountrySelector from '../core/CountrySelector';
 import FieldError from '../core/FieldError';
 import Success from '../core/Success';
+import Button from "../core/Button";
 
 
 export default class CompanyDetails extends React.Component {
@@ -21,56 +22,40 @@ export default class CompanyDetails extends React.Component {
         super(props);
         const { company } = props.user;
         this.state = {
-            street: company ? company.street : null,
-            plot_number: company ? company.plot_number : null,
-            city: company ? company.city : null,
-            postal_code: company ? company.postal_code : null,
-            country: company ? company.country : null,
-            vat_number: company ? company.vat_number : null,
-            reg_no: company ? company.reg_no : null
+            company: {
+                street: company.street || '',
+                plot_number: company.plot_number || '',
+                city: company.city || '',
+                postal_code: company.postal_code || '',
+                country: company.country || '',
+                vat_number: company.vat_number || '',
+                reg_no: company.reg_no || ''
+            }
         }
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        const {user, ProfileActions} = this.props;
-        
-        const street = this.state.street;
-        const plot_number = this.state.plot_number;
-        const city = this.state.city;
-        const postal_code = this.state.postal_code;
-        const country = this.state.country;
-        const vat_number = this.state.vat_number;
-        const reg_no = this.state.reg_no;
-        
-        const id = user.company ? user.company.id : null
-        ProfileActions.updateCompany(id, {
-            street,
-            plot_number,
-            city,
-            postal_code,
-            country,
-            vat_number,
-            reg_no
-        });
-        return;
     }
 
     onChangeField(key, e) {
         let newState = {};
         newState[key] = e.target.value;
-        this.setState(newState);
+        this.setState({company: {...this.state.company, ...newState}});
+    }
+
+    onSave(e) {
+        e.preventDefault();
+        const {user, ProfileActions} = this.props;
+        ProfileActions.updateCompany(user.company.id, this.state.company);
+        return;
     }
 
     render() {
-        const { user, errors } = this.props
+        const { errors } = this.props;
         return (
             <div>
-                {this.props.isSaved.company ? ( 
-                    <Success message="Comapny Details saved successfully" /> 
-                    ): null 
+                {this.props.isSaved.company ? (
+                    <Success message="Company details saved successfully" />
+                    ): null
                 }
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.onSave.bind(this)}>
                     <div className="row">
                         <div className="col-sm-8">
                         {errors.company &&
@@ -83,9 +68,7 @@ export default class CompanyDetails extends React.Component {
                                 <label>Street</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'street')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.street}
+                                    value={this.state.company.street}
                                 />
                             </FormGroup>
                         </div>
@@ -100,9 +83,7 @@ export default class CompanyDetails extends React.Component {
                                 <label>Number/Plot</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'plot_number')}
-                                    variant=' ' 
-                                    placeholder=' '
-                                    defaultValue={this.state.plot_number}
+                                    value={this.state.company.plot_number}
                                 />
                             </FormGroup>
                         </div>
@@ -136,9 +117,7 @@ export default class CompanyDetails extends React.Component {
                                 <label>Zip Code</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'postal_code')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.postal_code}
+                                    value={this.state.company.postal_code}
                                 />
                             </FormGroup>
                         </div>
@@ -172,7 +151,7 @@ export default class CompanyDetails extends React.Component {
                                     onChange={this.onChangeField.bind(this, 'vat_number')}
                                     variant=' '
                                     placeholder=' '
-                                    defaultValue={this.state.vat_number}
+                                    value={this.state.company.vat_number}
                                 />
                             </FormGroup>
                         </div>
@@ -189,20 +168,17 @@ export default class CompanyDetails extends React.Component {
                                 <label>Company Registration Number (Optional)</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'reg_no')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.reg_no}
+                                    value={this.state.company.reg_no}
                                 />
                             </FormGroup>
                         </div>
                     </div>
-                    <button
+                    <Button
                         type="save"
-                        className="btn btn-primary float-right"
-                        disabled={this.props.isSaving.company}
-                    >
-                        save
-                    </button>
+                        className="float-right"
+                        disabled={this.props.isSaving.company}>
+                        Save
+                    </Button>
                 </form>
             </div>
         );

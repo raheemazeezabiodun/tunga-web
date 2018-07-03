@@ -22,30 +22,13 @@ export default class CompanyProfile extends React.Component {
         super(props);
         const { company } = props.user;
         this.state = {
-            name: company ? company.name : null,
-            website: company ? company.website : null,
-            bio: company ? company.bio : null,
-            skills: company ? company.skills : null
+            company: {
+                name: company.name || '',
+                website: company.website || '',
+                bio: company.bio || '',
+                skills: company.skills || ''
+            }
         }
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        const {user, ProfileActions} = this.props;
-        
-        const name = this.state.name;
-        const website = this.state.website;
-        const bio = this.state.bio;
-        const skills = this.state.skills ? this.state.skills.toString() : '';
-        
-        const id = user.company ? user.company.id : null
-        ProfileActions.updateCompany(id, {
-            name,
-            website,
-            bio,
-            skills
-        });
-        return;
     }
 
     onChangeField(key, e) {
@@ -58,15 +41,22 @@ export default class CompanyProfile extends React.Component {
         this.setState({ skills: skills });
     }
 
+    onSave(e) {
+        e.preventDefault();
+        const {user, ProfileActions} = this.props;
+        ProfileActions.updateCompany(id, this.state.company);
+        return;
+    }
+
     render() {
-        const { user, errors } = this.props
+        const { errors } = this.props;
         return (
             <div>
-                {this.props.isSaved.company ? ( 
-                    <Success message="Comapny Profile saved successfully" /> 
-                    ): null 
+                {this.props.isSaved.company ? (
+                    <Success message="Company profile saved successfully" />
+                    ): null
                 }
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.onSave.bind(this)}>
                     <div className="row">
                         <div className="col-sm-8">
                         {errors.company &&
@@ -79,9 +69,7 @@ export default class CompanyProfile extends React.Component {
                                 <label className="control-label">Your company Name</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'name')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.name}
+                                    value={this.state.company.name}
                                 />
                             </FormGroup>
                         </div>
@@ -98,9 +86,7 @@ export default class CompanyProfile extends React.Component {
                                 <label className="control-label">Company Website</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'website')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.website}
+                                    value={this.state.company.website}
                                 />
                             </FormGroup>
                         </div>
@@ -115,10 +101,8 @@ export default class CompanyProfile extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Company Bio</label>
-                                <TextArea
-                                    placeholder=''
-                                    onChange={this.onChangeField.bind(this, 'bio')}
-                                    defaultValue={this.state.bio}
+                                <TextArea onChange={this.onChangeField.bind(this, 'bio')}
+                                    value={this.state.company.bio}
                                 />
                             </FormGroup>
                         </div>
@@ -136,7 +120,7 @@ export default class CompanyProfile extends React.Component {
                                 <SkillSelector
                                     placeholder="Type here to add a technology, e.g Python, Android or Rails"
                                     onChange={this.onChangeSkills.bind(this)}
-                                    defaultValue={this.state.skills}
+                                    value={this.state.company.skills}
                                     selected={this.state.skills}
                                 />
                             </FormGroup>

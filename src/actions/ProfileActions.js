@@ -7,7 +7,7 @@ import {
     ENDPOINT_USER_EDUCATION,
     ENDPOINT_USER_WORK,
     ENDPOINT_COUNTRIES,
-    ENDPOINT_COMPANY,
+    ENDPOINT_COMPANY, composeFormData,
 } from './utils/api';
 
 export const UPDATE_AUTH_USER_START = 'UPDATE_AUTH_USER_START';
@@ -50,13 +50,9 @@ export function updateAuthUser(user) {
 
         var headers = {},
             data = user;
-        if (user.image || user.id_document) {
+        if (user.image) {
             headers['Content-Type'] = 'multipart/form-data';
-
-            data = new FormData();
-            Object.keys(user).map((key, idx) => {
-                data.append(key, user[key]);
-            });
+            data = composeFormData(user);
         }
 
         axios
@@ -180,13 +176,9 @@ export function updateProfile(id, profile) {
 
         var headers = {},
             data = profile;
-        if (profile && profile.id_document) {
+        if (profile && (profile.id_document || (profile.user && profile.user.image))) {
             headers['Content-Type'] = 'multipart/form-data';
-
-            data = new FormData();
-            Object.keys(profile).map(key => {
-                data.append(key, profile[key]);
-            });
+            data = composeFormData(profile);
         }
 
         axios
@@ -466,22 +458,12 @@ export function updateCompany(id, company) {
         dispatch(updateCompanyStart(id));
         let request_method = id ? 'patch' : 'post';
 
-        var headers = {},
-            data = company;
-        if (company && company.id_document) {
-            headers['Content-Type'] = 'multipart/form-data';
-
-            data = new FormData();
-            Object.keys(company).map(key => {
-                data.append(key, company[key]);
-            });
-        }
-
+        var headers = {};
         axios
             .request({
                 url: ENDPOINT_COMPANY,
                 method: request_method,
-                data,
+                company,
                 headers,
             })
             .then(function(response) {

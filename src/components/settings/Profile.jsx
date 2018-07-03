@@ -23,70 +23,59 @@ export default class Profile extends React.Component {
         super(props);
         const {user} = props;
         this.state = {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            phone_number: user.profile.phone_number,
-            profile_picture: user.profile.image,
-            street: user.profile.street,
-            plot_number: user.profile.plot_number,
-            city: user.profile.city,
-            zip: user.profile.postal_code,
-            country: user.country,
-            passport: user.id_document
+            profile: {
+                first_name: user.first_name,
+                last_name: user.last_name,
+                //image: user.image || '',
+                phone_number: user.profile.phone_number || '',
+                street: user.profile.street || '',
+                plot_number: user.profile.plot_number || '',
+                city: user.profile.city || '',
+                postal_code: user.profile.postal_code || '',
+                country: user.profile.country || '',
+                //id_document: user.profile.id_document || ''
+            }
         }
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        const {user, ProfileActions} = this.props;
-
-        const first_name = this.state.first_name;
-        const last_name = this.state.last_name;
-        const country = this.state.country;
-        const city = this.state.city;
-        const street = this.state.street;
-        const plot_number = this.state.plot_number;
-        const postal_code = this.state.zip;
-        const phone_number = this.state.phone_number;
-        const id_document = this.state.passport;
-        const image = this.state.profile_picture;
-
-        ProfileActions.updateProfile(user.profile.id, {
-            first_name,
-            last_name,
-            country,
-            city,
-            street,
-            plot_number,
-            postal_code,
-            phone_number,
-            id_document,
-            image
-        });
-        return;
+    onChangeValue(key, value) {
+        let newState = {};
+        newState[key] = value;
+        this.setState({profile: {...this.state.profile, ...newState}});
     }
 
     onChangeField(key, e) {
-        let newState = {};
-        newState[key] = e.target.value;
-        this.setState(newState);
+        this.onChangeValue(key, e.target.value);
     }
 
     onChangeFile(key, files) {
-        let newState = {};
-        newState[key] = files[0];
-        this.setState(newState);
+        this.onChangeValue(key, files[0]);
+    }
+
+    onSave(e) {
+        e.preventDefault();
+        const {user, ProfileActions} = this.props;
+
+        let profile = this.state.profile, nestedUser = {};
+
+        ['first_name', 'last_name', 'image'].forEach(key => {
+            nestedUser[key] = profile[key] || '';
+            delete profile[key];
+        });
+
+        ProfileActions.updateProfile(user.profile.id, {...profile, user: nestedUser});
+        return;
     }
 
     render() {
         const {errors} = this.props;
         return (
             <div>
-                {this.props.isSaved.profile ? ( 
-                    <Success message="Profile saved successfully" /> 
-                    ): null 
+                {this.props.isSaved.profile ? (
+                    <Success message="Profile saved successfully" />
+                    ): null
                 }
-                <form method="post" onSubmit={this.handleSubmit.bind(this)}>
+                <form method="post" onSubmit={this.onSave.bind(this)}>
                     <div className="row">
                         <div className="col-sm-8">
                         {errors.profile &&
@@ -99,9 +88,7 @@ export default class Profile extends React.Component {
                                 <label className="control-label">First Name</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'first_name')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.first_name}
+                                    defaultValue={this.state.profile.first_name}
                                 />
                             </FormGroup>
                         </div>
@@ -118,9 +105,7 @@ export default class Profile extends React.Component {
                                 <label className="control-label">Last Name</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'last_name')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.last_name}
+                                    defaultValue={this.state.profile.last_name}
                                 />
                             </FormGroup>
                         </div>
@@ -137,9 +122,7 @@ export default class Profile extends React.Component {
                                 <label className="control-label">Phone Number</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'phone_number')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.phone_number}
+                                    defaultValue={this.state.profile.phone_number}
                                 />
                             </FormGroup>
                         </div>
@@ -155,9 +138,9 @@ export default class Profile extends React.Component {
                             <FormGroup>
                                 <label className="control-label">Picture</label>
                                 <Upload
-                                    type='image' 
+                                    type='image'
                                     placeholder={<Icon name='avatar' size='xl' />}
-                                    onChange={this.onChangeFile.bind(this, 'profile_picture')}
+                                    onChange={this.onChangeFile.bind(this, 'image')}
                                 />
                             </FormGroup>
                         </div>
@@ -176,7 +159,7 @@ export default class Profile extends React.Component {
                                     variant=' '
                                     placeholder=' '
                                     onChange={this.onChangeField.bind(this, 'street')}
-                                    defaultValue={this.state.street}
+                                    defaultValue={this.state.profile.street}
                                 />
                             </FormGroup>
                         </div>
@@ -190,11 +173,8 @@ export default class Profile extends React.Component {
                             <FormGroup>
                                 <label className="control-label">Number/Plot</label>
                                 <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    required
                                     onChange={this.onChangeField.bind(this, 'plot_number')}
-                                    defaultValue={this.state.plot_number}
+                                    defaultValue={this.state.profile.plot_number}
                                 />
                             </FormGroup>
                         </div>
@@ -210,11 +190,8 @@ export default class Profile extends React.Component {
                             <FormGroup>
                                 <label className="control-label">City</label>
                                 <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    required
                                     onChange={this.onChangeField.bind(this, 'city')}
-                                    defaultValue={this.state.city}
+                                    defaultValue={this.state.profile.city}
                                 />
                             </FormGroup>
                         </div>
@@ -228,11 +205,8 @@ export default class Profile extends React.Component {
                             <FormGroup>
                                 <label className="control-label">Zip code</label>
                                 <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    required
-                                    onChange={this.onChangeField.bind(this, 'zip')}
-                                    defaultValue={this.state.postal_code}
+                                    onChange={this.onChangeField.bind(this, 'postal_code')}
+                                    defaultValue={this.state.profile.postal_code}
                                 />
                             </FormGroup>
                         </div>
@@ -248,8 +222,8 @@ export default class Profile extends React.Component {
                             <FormGroup>
                                 <label className="control-label">Country</label>
                                 <CountrySelector
-                                    onChange={this.onChangeField.bind(this, 'country')}
-                                    selected={this.state.country}
+                                    onChange={(country) => {this.onChangeValue.bind(this, 'country', country)}}
+                                    selected={this.state.profile.country}
                                 />
                             </FormGroup>
                         </div>
@@ -267,7 +241,7 @@ export default class Profile extends React.Component {
                                 <Upload
                                     type='image'
                                     placeholder={<Icon name='id' size='xl' />}
-                                    onChange={this.onChangeFile.bind(this, 'passport')}
+                                    onChange={this.onChangeFile.bind(this, 'id_document')}
                                 />
                             </FormGroup>
                         </div>

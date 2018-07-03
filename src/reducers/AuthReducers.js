@@ -9,15 +9,15 @@ function user(state = {profile: {}, company: {}}, action) {
         case ProfileActions.UPDATE_ACCOUNT_INFO_SUCCESS:
         case ProfileActions.UPDATE_AUTH_USER_SUCCESS:
         case ProfileActions.RETRIEVE_PROFILE_SUCCESS:
-            var user = action.user;
+            let user = action.user;
             return {...state, ...user, profile: user.profile || state.profile || {}, company: user.company || state.company || {}};
         case ProfileActions.UPDATE_PROFILE_SUCCESS:
-            let profile = {...action.profile, ...action.profile.details};
+            let profile = {...action.profile};
             user = profile.user;
             delete profile.user;
             return {...state, ...user, profile, company: state.company || {}};
         case ProfileActions.UPDATE_COMPANY_SUCCESS:
-            let company = {...action.company, ...action.company.details};
+            let company = {...action.company};
             return {...state, ...user, company, profile: state.profile};
         case ProfileActions.CREATE_WORK_SUCCESS:
         case ProfileActions.UPDATE_WORK_SUCCESS:

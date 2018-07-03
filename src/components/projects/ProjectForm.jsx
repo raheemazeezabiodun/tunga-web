@@ -9,6 +9,7 @@ import DateTimePicker from "../core/DateTimePicker";
 import Input from "../core/Input";
 import Button from "../core/Button";
 import DocumentPicker from "../core/DocumentPicker";
+import FieldError from '../core/FieldError';
 
 import {cleanSkills, DOCUMENT_TYPES_CLIENTS} from "../../actions/utils/api";
 
@@ -46,6 +47,8 @@ export default class ProjectForm extends React.Component {
     };
 
     render() {
+        const {errors} = this.props;
+
         return (
             <div className="content-card project-form-card">
                 <form onSubmit={this.onSave}>
@@ -55,6 +58,9 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectTitle">
                                     Project Title*
                                 </Label>
+                                {errors.title ? (
+                                    <FieldError message={errors.title} />
+                                ) : null}
                                 <Input placeholder="Project title" id="projectTitle"
                                        onChange={(e) => { this.onChangeValue('title', e.target.value)}}
                                        required/>
@@ -63,8 +69,11 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectType">
                                     Which type of project do you have?*
                                 </Label>
+                                {errors.type ? (
+                                    <FieldError message={errors.type} />
+                                ) : null}
                                 <div className="text text-sm font-weight-thin">
-                                    Please select one of the options below{" "}
+                                    Please select one of the options below
                                 </div>
                                 <ChoiceGroup
                                     id="projectType"
@@ -82,8 +91,11 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectExpectedDuration">
                                     What is the expected duration of the project?*
                                 </Label>
+                                {errors.duration ? (
+                                    <FieldError message={errors.duration} />
+                                ) : null}
                                 <div className="text text-sm font-weight-thin">
-                                    Please select one of the options below{" "}
+                                    Please select one of the options below
                                 </div>
                                 <ChoiceGroup
                                     id="projectExpectedDuration"
@@ -101,6 +113,9 @@ export default class ProjectForm extends React.Component {
                                     for="projectTechnology">
                                     Which technology do you want to use? (Optional)
                                 </Label>
+                                {errors.skills ? (
+                                    <FieldError message={errors.skills} />
+                                ) : null}
                                 <SkillSelector
                                     id="projectTechnology"
                                     onChange={(skills) => { this.onChangeValue('skills', cleanSkills(skills)) }}
@@ -113,6 +128,9 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectDescription">
                                     Short Description of the project*
                                 </Label>
+                                {errors.description ? (
+                                    <FieldError message={errors.description} />
+                                ) : null}
                                 <TextArea placeholder="Short Description"
                                           onChange={(e) => { this.onChangeValue('description', e.target.value)}}
                                           required
@@ -122,6 +140,9 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectDeadline">
                                     Add a preferred deadline (optional)
                                 </Label>
+                                {errors.deadline ? (
+                                    <FieldError message={errors.deadline} />
+                                ) : null}
                                 <DateTimePicker
                                     calendar={true}
                                     time={false}
@@ -133,6 +154,9 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectDocuments">
                                     Add documents
                                 </Label>
+                                {errors.documents ? (
+                                    <FieldError message={errors.documents} />
+                                ) : null}
                                 <DocumentPicker documentTypes={DOCUMENT_TYPES_CLIENTS}
                                            onChange={(docs) => { this.onChangeValue('documents', docs)}}/>
                             </FormGroup>

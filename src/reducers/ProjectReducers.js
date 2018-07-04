@@ -5,6 +5,7 @@ import {getIds} from './utils';
 import * as ProjectActions from "../actions/ProjectActions";
 import * as ParticipationActions from "../actions/ParticipationActions";
 import * as DocumentActions from "../actions/DocumentActions";
+import * as ProgressEventActions from "../actions/ProgressEventActions";
 
 function created(state = {}, action) {
     let targetKey = action.target || 'new';
@@ -120,6 +121,31 @@ function projects(state = {}, action) {
                 return {...state, ...newState};
             }
             return state;
+        case ProgressEventActions.CREATE_PROGRESS_EVENT_SUCCESS:
+        case ProgressEventActions.UPDATE_PROGRESS_EVENT_SUCCESS:
+            let progress_event = action.progress_event;
+
+            if(progress_event && progress_event.project && progress_event.project.id) {
+                let projectId = progress_event.project.id,
+                    progressEventProject = state[projectId] || {};
+                delete progress_event.project;
+
+                let currentProgressEvents = [...(progressEventProject.progress_events || [])];
+                let currentProgressEventIdx = currentProgressEvents.map(item => {
+                    return item.id;
+                }).indexOf(progress_event.id);
+
+                if(currentProgressEventIdx === -1) {
+                    currentProgressEvents.push(progress_event);
+                } else {
+                    currentProgressEvents[currentProgressEventIdx] = progress_event;
+                }
+
+                let newState = {};
+                newState[projectId] = {...progressEventProject, progress_events: currentProgressEvents};
+                return {...state, ...newState};
+            }
+            return state;
         case ParticipationActions.DELETE_PARTICIPATION_SUCCESS:
             let newState = {};
             Object.keys(state).forEach(id => {
@@ -146,6 +172,20 @@ function projects(state = {}, action) {
                     }
                 });
                 newState[project.id] = {...project, documents: newDocs};
+            });
+            return newState;
+        case ProgressEventActions.DELETE_PROGRESS_EVENT_SUCCESS:
+            newState = {};
+            Object.keys(state).forEach(id => {
+                let project = state[id],
+                    newProgressEvents = [];
+
+                project.progress_events.forEach(progressEvent => {
+                    if(progressEvent.id !== action.id) {
+                        newProgressEvents.push(progressEvent);
+                    }
+                });
+                newState[project.id] = {...project, progress_events: newProgressEvents};
             });
             return newState;
         default:

@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import * as ProjectActions from "../actions/ProjectActions";
 import * as ParticipationActions from "../actions/ParticipationActions";
 import * as DocumentActions from "../actions/DocumentActions";
+import * as ProgressEventActions from "../actions/ProgressEventActions";
 
 function mapStateToProps(state) {
     return {
@@ -18,6 +19,7 @@ function mapDispatchToProps(dispatch) {
             ...bindActionCreators(ProjectActions, dispatch),
             ...bindActionCreators(ParticipationActions, dispatch),
             ...bindActionCreators(DocumentActions, dispatch),
+            ...bindActionCreators(ProgressEventActions, dispatch),
         }
     };
 }

@@ -524,6 +524,8 @@ body {
     position: relative;
 
     .selected {
+        @include clearfix();
+
         .selected-item {
             float: left;
             display: inline-block;

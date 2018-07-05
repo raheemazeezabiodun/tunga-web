@@ -624,6 +624,7 @@ export default class Guide extends React.Component {
                                 <h2 id="idUsers">User Selector</h2>
                                 {[
                                     ['User Selector'],
+                                    ['User Selector (limit selections)', {max: 1}],
                                     ['User Selector (Developers)', {account_type: 'developer'}],
                                     ['User Selector (Project Managers)', {account_type: 'project_manager'}],
                                     ['User Selector (Clients)', {account_type: 'project_owner'}],

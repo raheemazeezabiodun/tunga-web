@@ -20,6 +20,7 @@ class UserSelector extends React.Component {
     static defaultProps = {
         placeholder: 'Type a name or username here',
         selectionKey: null,
+        max: null,
     };
 
     static propTypes = {
@@ -31,6 +32,7 @@ class UserSelector extends React.Component {
         placeholder: PropTypes.string,
         selectionKey: PropTypes.string,
         account_type: PropTypes.string,
+        max: PropTypes.number,
     };
 
     constructor(props) {
@@ -106,34 +108,40 @@ class UserSelector extends React.Component {
     }
 
     render() {
+        const {max} = this.props;
+
         return (
             <div className="tag-input">
                 {this.props.variant !== VARIANT_BOTTOM?this.renderSelection():null}
-                <CustomInputGroup className={this.props.className}
-                                  variant="personal" size={this.props.size}
-                                  placeholder={this.props.placeholder}
-                                  {...filterInputProps(this.props)}
-                                  {...filterEventProps(this.props)}
-                                  selected={this.state.selected}
-                                  value={this.state.search}
-                                  onFocus={() => {this.setState({showSuggestions: !!this.state.search})}}
-                                  onChange={this.onChange.bind(this)}/>
+                {!max || max > this.state.selected.length?(
+                    <div>
+                        <CustomInputGroup className={this.props.className}
+                                          variant="personal" size={this.props.size}
+                                          placeholder={this.props.placeholder}
+                                          {...filterInputProps(this.props)}
+                                          {...filterEventProps(this.props)}
+                                          selected={this.state.selected}
+                                          value={this.state.search}
+                                          onFocus={() => {this.setState({showSuggestions: !!this.state.search})}}
+                                          onChange={this.onChange.bind(this)}/>
 
-                {this.state.showSuggestions?(
-                    <div className="list-group suggestions">
-                        {(this.props.User.ids[this.state.selectionKey] || []).map(id => {
-                            let user = this.props.User.users[id] || {};
-                            if(this.state.selected.indexOf(id) > -1) {
-                                return null;
-                            }
-                            return (
-                                <a className="list-group-item"
-                                   key={`user-${user.id}`}
-                                   onClick={this.onSelectUser.bind(this, user)}>
-                                    {user.display_name}
-                                </a>
-                            );
-                        })}
+                        {this.state.showSuggestions?(
+                            <div className="list-group suggestions">
+                                {(this.props.User.ids[this.state.selectionKey] || []).map(id => {
+                                    let user = this.props.User.users[id] || {};
+                                    if(this.state.selected.indexOf(id) > -1) {
+                                        return null;
+                                    }
+                                    return (
+                                        <a className="list-group-item"
+                                           key={`user-${user.id}`}
+                                           onClick={this.onSelectUser.bind(this, user)}>
+                                            {user.display_name}
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        ):null}
                     </div>
                 ):null}
                 {this.props.variant === VARIANT_BOTTOM?this.renderSelection('dark-user-block'):null}

@@ -67,7 +67,7 @@ export const ENDPOINT_USER_EDUCATION = getEndpointUrl('me/education/');
 export const ENDPOINT_USER_WORK = getEndpointUrl('me/work/');
 
 export const ENDPOINT_PROJECTS = getEndpointUrl('projects/');
-export const ENDPOINT_USERS = getEndpointUrl('user/');
+export const ENDPOINT_USERS = getEndpointUrl('users/');
 export const ENDPOINT_DOCUMENTS = getEndpointUrl('documents/');
 export const ENDPOINT_PARTICIPATION = getEndpointUrl('participation/');
 export const ENDPOINT_PROGRESS_EVENTS = getEndpointUrl('progress-events/');

@@ -600,6 +600,7 @@ export default class Guide extends React.Component {
                                 <h2 id="idTags">Tag Input</h2>
                                 {[
                                     ['Skill Selector'],
+                                    ['Skill Selector (limit selections)', {max: 3}],
                                     ['Skill Selector (selected string)', {selected: 'React.js, Python'}],
                                     ['Skill Selector (selected array)', {selected: ['React.js', 'Python']}],
                                     ['Skill Selector (selected array of objects)', {selected: [{name: 'React.js'}, {name:'Python'}]}]

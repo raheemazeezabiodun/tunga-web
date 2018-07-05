@@ -17,6 +17,7 @@ class SkillSelector extends React.Component {
     static defaultProps = {
         placeholder: 'Add skills or products',
         selectionKey: null,
+        max: null,
     };
 
     static propTypes = {
@@ -25,7 +26,8 @@ class SkillSelector extends React.Component {
         onChange: PropTypes.func,
         size: PropTypes.string,
         placeholder: PropTypes.string,
-        selectionKey: PropTypes.string
+        selectionKey: PropTypes.string,
+        max: PropTypes.number,
     };
 
     constructor(props) {
@@ -106,6 +108,8 @@ class SkillSelector extends React.Component {
     }
 
     render() {
+        const {max} = this.props;
+
         return (
             <div className="tag-input">
                 {this.state.selected && this.state.selected.length?(
@@ -124,30 +128,34 @@ class SkillSelector extends React.Component {
                         })}
                     </div>
                 ):null}
-                <InputGroup className={this.props.className} prepend={<i className="tg-ic-tag" />}
-                            size={this.props.size}
-                            placeholder={this.props.placeholder}
-                            {...filterInputProps(this.props)}
-                            {...filterEventProps(this.props)}
-                            selected={this.state.selected}
-                            value={this.state.search}
-                            onFocus={() => {this.setState({showSuggestions: !!this.state.search})}}
-                            onChange={this.onChange}
-                            onKeyPress={this.onKeyPress}/>
-                {this.state.showSuggestions?(
-                    <div className="list-group suggestions">
-                        {(this.props.Skill.skills[this.state.selectionKey] || []).map(skill => {
-                            if(this.state.selected.indexOf(skill.name) > -1) {
-                                return null;
-                            }
-                            return (
-                                <a className="list-group-item"
-                                   key={skill.id}
-                                   onClick={this.onSelectSkill.bind(this, skill.name)}>
-                                    {skill.name}
-                                </a>
-                            );
-                        })}
+                {!max || max > this.state.selected.length?(
+                    <div>
+                        <InputGroup className={this.props.className} prepend={<i className="tg-ic-tag" />}
+                                    size={this.props.size}
+                                    placeholder={this.props.placeholder}
+                                    {...filterInputProps(this.props)}
+                                    {...filterEventProps(this.props)}
+                                    selected={this.state.selected}
+                                    value={this.state.search}
+                                    onFocus={() => {this.setState({showSuggestions: !!this.state.search})}}
+                                    onChange={this.onChange}
+                                    onKeyPress={this.onKeyPress}/>
+                        {this.state.showSuggestions?(
+                            <div className="list-group suggestions">
+                                {(this.props.Skill.skills[this.state.selectionKey] || []).map(skill => {
+                                    if(this.state.selected.indexOf(skill.name) > -1) {
+                                        return null;
+                                    }
+                                    return (
+                                        <a className="list-group-item"
+                                           key={skill.id}
+                                           onClick={this.onSelectSkill.bind(this, skill.name)}>
+                                            {skill.name}
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        ):null}
                     </div>
                 ):null}
             </div>

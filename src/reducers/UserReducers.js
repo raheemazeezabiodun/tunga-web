@@ -67,69 +67,91 @@ function usernameToId(state = {}, action) {
     }
 }
 
-function next(state = null, action) {
-    switch (action.type) {
-        case UserActions.LIST_USERS_SUCCESS:
-        case UserActions.LIST_MORE_USERS_SUCCESS:
-            return action.next;
-        default:
-            return state;
-    }
-}
-
-function previous(state = null, action) {
-    switch (action.type) {
-        case UserActions.LIST_USERS_SUCCESS:
-        case UserActions.LIST_MORE_USERS_SUCCESS:
-            return action.previous;
-        default:
-            return state;
-    }
-}
-
-function count(state = null, action) {
-    switch (action.type) {
-        case UserActions.LIST_USERS_SUCCESS:
-            return action.count;
-        case UserActions.LIST_USERS_START:
-        case UserActions.LIST_USERS_FAILED:
-            return 0;
-        default:
-            return state;
-    }
-}
-
-function isFetching(state = false, action) {
-    switch (action.type) {
-        case UserActions.LIST_USERS_START:
-            return true;
-        case UserActions.LIST_USERS_SUCCESS:
-        case UserActions.LIST_USERS_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isFetchingMore(state = false, action) {
-    switch (action.type) {
-        case UserActions.LIST_MORE_USERS_START:
-            return true;
-        case UserActions.LIST_MORE_USERS_SUCCESS:
-        case UserActions.LIST_MORE_USERS_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isRetrieving(state = false, action) {
+function isRetrieving(state = {}, action) {
+    let targetKey = action.id || 'default';
+    let newState = {};
     switch (action.type) {
         case UserActions.RETRIEVE_USER_START:
-            return true;
+            newState[targetKey] = true;
+            return {...state, ...newState};
         case UserActions.RETRIEVE_USER_SUCCESS:
         case UserActions.RETRIEVE_USER_FAILED:
-            return false;
+            newState[targetKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function isFetching(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case UserActions.LIST_USERS_START:
+            newState[selectionKey] = true;
+            return {...state, ...newState};
+        case UserActions.LIST_USERS_SUCCESS:
+        case UserActions.LIST_USERS_FAILED:
+            newState[selectionKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function isFetchingMore(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case UserActions.LIST_MORE_USERS_START:
+            newState[selectionKey] = true;
+            return {...state, ...newState};
+        case UserActions.LIST_MORE_USERS_SUCCESS:
+        case UserActions.LIST_MORE_USERS_FAILED:
+            newState[selectionKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function next(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case UserActions.LIST_USERS_SUCCESS:
+        case UserActions.LIST_MORE_USERS_SUCCESS:
+            newState[selectionKey] = action.next;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function previous(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case UserActions.LIST_USERS_SUCCESS:
+        case UserActions.LIST_MORE_USERS_SUCCESS:
+            newState[selectionKey] = action.previous;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function count(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case UserActions.LIST_USERS_SUCCESS:
+            newState[selectionKey] = action.count;
+            return {...state, ...newState};
+        case UserActions.LIST_USERS_START:
+        case UserActions.LIST_USERS_FAILED:
+            newState[selectionKey] = 0;
+            return {...state, ...newState};
         default:
             return state;
     }

@@ -39,20 +39,22 @@ export default class UserListContainer extends React.Component  {
     }
 
     renderChildren() {
-        const {User, UserActions} = this.props, self = this;
+        const {User, UserActions} = this.props,
+            self = this,
+            selectionKey = self.state.selectionKey;
 
         return React.Children.map(
             this.props.children,
             function(child) {
                 return React.cloneElement(child, {
-                    users: (User.ids[this.state.selectionKey] || []).map(id => {
+                    users: (User.ids[selectionKey] || []).map(id => {
                         return User.users[id];
                     }),
                     onLoadMore: () => {
-                        UserActions.listMoreUsers(User.next, self.state.selectionKey);
+                        UserActions.listMoreUsers(User.next[selectionKey], selectionKey);
                     },
-                    isLoadingMore: User.isFetchingMore,
-                    hasMore: !!User.next,
+                    isLoadingMore: User.isFetchingMore[selectionKey],
+                    hasMore: !!User.next[selectionKey],
                     UserActions
                 });
             }.bind(this),

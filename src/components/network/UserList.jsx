@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 import Button from '../core/Button';
 import UserCard from './UserCard';

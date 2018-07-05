@@ -171,7 +171,7 @@ export function retrieveProfileFailed(error) {
 
 export function updateProfile(id, profile) {
     return dispatch => {
-        dispatch(updateProfileStart(id));
+        dispatch(updateProfileStart(id, profile));
         let request_method = id ? 'patch' : 'post';
 
         var headers = {},
@@ -189,36 +189,40 @@ export function updateProfile(id, profile) {
                 headers,
             })
             .then(function(response) {
-                dispatch(updateProfileSuccess(response.data));
+                dispatch(updateProfileSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     updateProfileFailed(
-                        error.response ? error.response.data : null,
+                        error.response ? error.response.data : null, profile, id
                     ),
                 );
             });
     };
 }
 
-export function updateProfileStart(id) {
+export function updateProfileStart(id, profile) {
     return {
         type: UPDATE_PROFILE_START,
         id,
+        profile
     };
 }
 
-export function updateProfileSuccess(profile) {
+export function updateProfileSuccess(profile, id) {
     return {
         type: UPDATE_PROFILE_SUCCESS,
+        id,
         profile,
     };
 }
 
-export function updateProfileFailed(error) {
+export function updateProfileFailed(error, profile, id) {
     return {
         type: UPDATE_PROFILE_FAILED,
         error,
+        profile,
+        id,
     };
 }
 
@@ -463,7 +467,7 @@ export function updateCompany(id, company) {
             .request({
                 url: ENDPOINT_COMPANY,
                 method: request_method,
-                company,
+                data: company,
                 headers,
             })
             .then(function(response) {

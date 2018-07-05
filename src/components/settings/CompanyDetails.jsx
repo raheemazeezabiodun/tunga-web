@@ -34,10 +34,14 @@ export default class CompanyDetails extends React.Component {
         }
     }
 
-    onChangeField(key, e) {
+    onChangeValue(key, value) {
         let newState = {};
-        newState[key] = e.target.value;
+        newState[key] = value;
         this.setState({company: {...this.state.company, ...newState}});
+    }
+
+    onChangeField(key, e) {
+        this.onChangeValue(key, e.target.value);
     }
 
     onSave(e) {
@@ -100,9 +104,7 @@ export default class CompanyDetails extends React.Component {
                                 <label>City</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'city')}
-                                    variant=' '
-                                    placeholder=' '
-                                    defaultValue={this.state.city}
+                                    defaultValue={this.state.company.city}
                                 />
                             </FormGroup>
                         </div>
@@ -133,8 +135,8 @@ export default class CompanyDetails extends React.Component {
                             <FormGroup>
                                 <label>Country</label>
                                 <CountrySelector
-                                    onChange={this.onChangeField.bind(this, 'country')}
-                                    selected={this.state.country}
+                                    onChange={(country) => {this.onChangeValue('country', country)}}
+                                    selected={this.state.company.country}
                                 />
                             </FormGroup>
                         </div>
@@ -149,8 +151,6 @@ export default class CompanyDetails extends React.Component {
                                 <label>VAT number</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'vat_number')}
-                                    variant=' '
-                                    placeholder=' '
                                     value={this.state.company.vat_number}
                                 />
                             </FormGroup>

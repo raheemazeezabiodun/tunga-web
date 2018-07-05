@@ -24,11 +24,10 @@ export function createParticipation(participation, target) {
     return dispatch => {
         dispatch(createParticipationStart(participation, target));
 
-        let headers = {},
-            data = participation;
+        let headers = {};
 
         axios
-            .post(ENDPOINT_PARTICIPATION, data, {headers})
+            .post(ENDPOINT_PARTICIPATION, participation, {headers})
             .then(function(response) {
                 dispatch(createParticipationSuccess(response.data, target));
             })
@@ -157,11 +156,10 @@ export function updateParticipation(id, participation) {
     return dispatch => {
         dispatch(updateParticipationStart(id, participation, id));
 
-        let headers = {},
-            data = participation;
+        let headers = {};
 
         axios
-            .patch(ENDPOINT_PARTICIPATION + id + '/', data, {
+            .patch(ENDPOINT_PARTICIPATION + id + '/', participation, {
                 headers: {...headers},
             })
             .then(function(response) {

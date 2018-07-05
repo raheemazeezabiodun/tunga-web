@@ -71,7 +71,7 @@ export default class Docs extends React.Component {
                             <div className="file-list">
                                 {this.filterDocumentsByType(documents, docType).map(doc => {
                                     return (
-                                        <div>
+                                        <div key={`doc-${doc.id}`}>
                                             <div className="file-item" key={doc.id}>
                                                 <a href={doc.download_url} target="_blank">
                                                     <i

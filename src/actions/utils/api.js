@@ -71,13 +71,11 @@ export const ENDPOINT_USERS = getEndpointUrl('users/');
 export const ENDPOINT_DOCUMENTS = getEndpointUrl('documents/');
 export const ENDPOINT_PARTICIPATION = getEndpointUrl('participation/');
 export const ENDPOINT_PROGRESS_EVENTS = getEndpointUrl('progress-events/');
+export const ENDPOINT_SKILLS = getEndpointUrl('skill/');
 
 
 export const ENDPOINT_MY_APPS = getEndpointUrl('me/app/');
-export const ENDPOINT_PROJECT = getEndpointUrl('project/');
-export const ENDPOINT_TASK = getEndpointUrl('task/');
-export const ENDPOINT_USER = getEndpointUrl('user/');
-export const ENDPOINT_COMMENT = getEndpointUrl('comment/');
+
 export const ENDPOINT_CHANNEL = getEndpointUrl('channel/');
 export const ENDPOINT_DIRECT_CHANNEL = getEndpointUrl('channel/direct/');
 export const ENDPOINT_MESSAGE = getEndpointUrl('message/');
@@ -86,9 +84,7 @@ export const ENDPOINT_APPLICATION = getEndpointUrl('application/');
 export const ENDPOINT_ESTIMATE = getEndpointUrl('estimate/');
 export const ENDPOINT_QUOTE = getEndpointUrl('sprint/');
 export const ENDPOINT_SAVED_TASK = getEndpointUrl('saved-task/');
-export const ENDPOINT_MILESTONE = getEndpointUrl('progress-event/');
 export const ENDPOINT_PROGRESS_REPORT = getEndpointUrl('progress-report/');
-export const ENDPOINT_SKILL = getEndpointUrl('skill/');
 export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 export const ENDPOINT_CONTACT_REQUEST = getEndpointUrl('contact-request/');
 export const ENDPOINT_SUPPORT_SECTION = getEndpointUrl('support/section/');

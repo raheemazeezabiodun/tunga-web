@@ -8,7 +8,6 @@ import {
     ENDPOINT_RESET_PASSWORD,
     ENDPOINT_RESET_PASSWORD_CONFIRM,
     ENDPOINT_MY_APPS,
-    ENDPOINT_TASK,
     ENDPOINT_EMAIL_VISITOR,
     ENDPOINT_INVITE,
     SOCIAL_PROVIDERS,
@@ -450,49 +449,6 @@ export function authRedirect(path) {
     return {
         type: AUTH_REDIRECT,
         path,
-    };
-}
-
-export function listRunningTasks() {
-    return dispatch => {
-        var filter = {filter: 'running'};
-        dispatch(listRunningTasksStart(filter));
-        axios
-            .get(ENDPOINT_TASK, {params: filter})
-            .then(function(response) {
-                dispatch(listRunningTasksSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listRunningTasksFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function listRunningTasksStart(filter) {
-    return {
-        type: LIST_RUNNING_TASKS_START,
-        filter,
-    };
-}
-
-export function listRunningTasksSuccess(response) {
-    return {
-        type: LIST_RUNNING_TASKS_SUCCESS,
-        items: response.results,
-        previous: response.previous,
-        next: response.next,
-        count: response.count,
-    };
-}
-
-export function listRunningTasksFailed(error) {
-    return {
-        type: LIST_RUNNING_TASKS_FAILED,
-        error,
     };
 }
 

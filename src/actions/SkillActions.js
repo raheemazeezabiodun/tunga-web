@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ENDPOINT_SKILL} from './utils/api';
+import {ENDPOINT_SKILLS} from './utils/api';
 
 export const GET_SKILLS_START = 'GET_SKILLS_START';
 export const GET_SKILLS_SUCCESS = 'GET_SKILLS_SUCCESS';
@@ -10,7 +10,7 @@ export function getSkills(filter, selection, prev_selection) {
     return dispatch => {
         dispatch(getSkillsStart(filter, selection, prev_selection));
         axios
-            .get(ENDPOINT_SKILL, {params: filter})
+            .get(ENDPOINT_SKILLS, {params: filter})
             .then(function(response) {
                 dispatch(getSkillsSuccess(response.data, selection, prev_selection));
             })

@@ -10,12 +10,12 @@ import {
     ENDPOINT_COMPANY, composeFormData,
 } from './utils/api';
 
-export const UPDATE_AUTH_USER_START = 'UPDATE_AUTH_USER_START';
-export const UPDATE_AUTH_USER_SUCCESS = 'UPDATE_AUTH_USER_SUCCESS';
-export const UPDATE_AUTH_USER_FAILED = 'UPDATE_AUTH_USER_FAILED';
 export const UPDATE_ACCOUNT_INFO_START = 'UPDATE_ACCOUNT_INFO_START';
 export const UPDATE_ACCOUNT_INFO_SUCCESS = 'UPDATE_ACCOUNT_INFO_SUCCESS';
 export const UPDATE_ACCOUNT_INFO_FAILED = 'UPDATE_ACCOUNT_INFO_FAILED';
+export const UPDATE_AUTH_USER_START = 'UPDATE_AUTH_USER_START';
+export const UPDATE_AUTH_USER_SUCCESS = 'UPDATE_AUTH_USER_SUCCESS';
+export const UPDATE_AUTH_USER_FAILED = 'UPDATE_AUTH_USER_FAILED';
 export const RETRIEVE_PROFILE_START = 'RETRIEVE_PROFILE_START';
 export const RETRIEVE_PROFILE_SUCCESS = 'RETRIEVE_PROFILE_SUCCESS';
 export const RETRIEVE_PROFILE_FAILED = 'RETRIEVE_PROFILE_FAILED';
@@ -44,7 +44,47 @@ export const UPDATE_COMPANY_START = 'UPDATE_COMPANY_START';
 export const UPDATE_COMPANY_SUCCESS = 'UPDATE_COMPANY_SUCCESS';
 export const UPDATE_COMPANY_FAILED = 'UPDATE_COMPANY_FAILED';
 
+export function updateAccountInfo(user) {
+    // Requires password and limited to a few account fields
+    return dispatch => {
+        dispatch(updateAccountInfoStart());
+        axios
+            .patch(ENDPOINT_ACCOUNT_INFO, user)
+            .then(function(response) {
+                dispatch(updateAccountInfoSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    updateAccountInfoFailed(
+                        error.response ? error.response.data : null,
+                    ),
+                );
+            });
+    };
+}
+
+export function updateAccountInfoStart() {
+    return {
+        type: UPDATE_ACCOUNT_INFO_START,
+    };
+}
+
+export function updateAccountInfoSuccess(user) {
+    return {
+        type: UPDATE_ACCOUNT_INFO_SUCCESS,
+        user,
+    };
+}
+
+export function updateAccountInfoFailed(error) {
+    return {
+        type: UPDATE_ACCOUNT_INFO_FAILED,
+        error,
+    };
+}
+
 export function updateAuthUser(user) {
+    // No password required and can update all user fields
     return dispatch => {
         dispatch(updateAuthUserStart());
 
@@ -86,44 +126,6 @@ export function updateAuthUserSuccess(user) {
 export function updateAuthUserFailed(error) {
     return {
         type: UPDATE_AUTH_USER_FAILED,
-        error,
-    };
-}
-
-export function updateAccountInfo(user) {
-    return dispatch => {
-        dispatch(updateAccountInfoStart());
-        axios
-            .patch(ENDPOINT_ACCOUNT_INFO, user)
-            .then(function(response) {
-                dispatch(updateAccountInfoSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    updateAccountInfoFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function updateAccountInfoStart() {
-    return {
-        type: UPDATE_ACCOUNT_INFO_START,
-    };
-}
-
-export function updateAccountInfoSuccess(user) {
-    return {
-        type: UPDATE_ACCOUNT_INFO_SUCCESS,
-        user,
-    };
-}
-
-export function updateAccountInfoFailed(error) {
-    return {
-        type: UPDATE_ACCOUNT_INFO_FAILED,
         error,
     };
 }

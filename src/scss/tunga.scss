@@ -765,6 +765,20 @@ i {
         padding-top: 0;
         border-top-width: 0;
     }
+    .modal-button {
+        margin: 0px auto;
+        display: inline-block;
+        white-space: nowrap;
+        margin-top: 60px;
+        width: 90%;
+
+        .float-left {
+            float: left
+        }
+        .float-right {
+            float: right
+        }
+    }
 }
 
 // Navbar
@@ -1476,6 +1490,23 @@ textarea {
 
     .font-weight-normal {
         margin-bottom: 20px;
+    }
+}
+
+.project-plan {
+    margin-bottom: 15px;
+
+    .truncate {
+        width: 80%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        margin-bottom: -0.3125rem;
+    }
+
+    h6 {
+        padding-bottom: 8px;
     }
 }
 

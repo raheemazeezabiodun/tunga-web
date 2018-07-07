@@ -39,7 +39,7 @@ export default class ProjectManagement extends React.Component {
                             ].map(link => {
                                 let url = link[0];
                                 return (
-                                    <NavLink key={`project-filters-link--${link[0]}`} exact to={`${match.url}/${url}`} activeClassName="active">{link[1]}</NavLink>
+                                    <NavLink key={`project-filters-link--${url}`} exact to={`${match.url}/${url}`} activeClassName="active">{link[1]}</NavLink>
                                 )
                             })}
                         </div>

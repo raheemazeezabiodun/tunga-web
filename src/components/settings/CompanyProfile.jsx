@@ -7,6 +7,7 @@ import TextArea from '../core/TextArea';
 import FieldError from '../core/FieldError';
 import Success from '../core/Success';
 import SkillSelector from '../core/SkillSelector';
+import {cleanSkills} from "../../actions/utils/api";
 
 
 export default class CompanyProfile extends React.Component {
@@ -31,20 +32,24 @@ export default class CompanyProfile extends React.Component {
         }
     }
 
-    onChangeField(key, e) {
+    onChangeValue(key, value) {
         let newState = {};
-        newState[key] = e.target.value;
-        this.setState(newState);
+        newState[key] = value;
+        this.setState({company: {...this.state.profile, ...newState}});
+    }
+
+    onChangeField(key, e) {
+        this.onChangeValue(key, e.target.value);
     }
 
     onChangeSkills(skills) {
-        this.setState({ skills: skills });
+        this.onChangeValue('skills', cleanSkills(skills));
     }
 
     onSave(e) {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
-        ProfileActions.updateCompany(id, this.state.company);
+        ProfileActions.updateCompany(user.company.id, this.state.company);
         return;
     }
 

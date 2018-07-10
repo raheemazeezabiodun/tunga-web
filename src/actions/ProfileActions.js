@@ -461,7 +461,7 @@ export function getCountriesFailed(error) {
 
 export function updateCompany(id, company) {
     return dispatch => {
-        dispatch(updateCompanyStart(id));
+        dispatch(updateCompanyStart(id, company));
         let request_method = id ? 'patch' : 'post';
 
         var headers = {};
@@ -473,35 +473,39 @@ export function updateCompany(id, company) {
                 headers,
             })
             .then(function(response) {
-                dispatch(updateCompanySuccess(response.data));
+                dispatch(updateCompanySuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     updateCompanyFailed(
                         error.response ? error.response.data : null,
+                        id
                     ),
                 );
             });
     };
 }
 
-export function updateCompanyStart(id) {
+export function updateCompanyStart(id, company) {
     return {
         type: UPDATE_COMPANY_START,
         id,
+        company
     };
 }
 
-export function updateCompanySuccess(company) {
+export function updateCompanySuccess(company, id) {
     return {
         type: UPDATE_COMPANY_SUCCESS,
         company,
+        id
     };
 }
 
-export function updateCompanyFailed(error) {
+export function updateCompanyFailed(error, id) {
     return {
         type: UPDATE_COMPANY_FAILED,
         error,
+        id
     };
 }

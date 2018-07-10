@@ -68,7 +68,9 @@ export default class StepOne extends React.Component {
                         ) : null}
                         <FormGroup>
                             <label>First Name*</label>
-                            <Input value={this.state.first_name} onChange={this.onChangeField.bind(this, 'first_name')} />
+                            <Input value={this.state.first_name}
+                                   onChange={this.onChangeField.bind(this, 'first_name')}
+                                   required/>
                         </FormGroup>
                     </div>
                     <div className="col-sm-8">
@@ -80,7 +82,9 @@ export default class StepOne extends React.Component {
                         ) : null}
                         <FormGroup>
                             <label>Last Name*</label>
-                            <Input value={this.state.last_name} onChange={this.onChangeField.bind(this, 'last_name')} />
+                            <Input value={this.state.last_name}
+                                   onChange={this.onChangeField.bind(this, 'last_name')}
+                                   required/>
                         </FormGroup>
                     </div>
                     <div className="col-sm-8">
@@ -92,7 +96,8 @@ export default class StepOne extends React.Component {
                         ) : null}
                         <FormGroup>
                             <label>Your company name</label>
-                            <Input value={this.state.company} onChange={this.onChangeField.bind(this, 'company')} />
+                            <Input value={this.state.company}
+                                   onChange={this.onChangeField.bind(this, 'company')} />
                         </FormGroup>
                     </div>
                     <IconButton type="submit" name="arrow-right" size='md'

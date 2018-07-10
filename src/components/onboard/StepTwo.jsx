@@ -70,7 +70,8 @@ export default class StepTwo extends React.Component {
                             <FormGroup>
                                 <label>Street *</label>
                                 <Input value={this.state.profile.street}
-                                       onChange={this.onChangeField.bind(this, 'street')}/>
+                                       onChange={this.onChangeField.bind(this, 'street')}
+                                       required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-3">
@@ -83,7 +84,8 @@ export default class StepTwo extends React.Component {
                             <FormGroup>
                                 <label>Number/Plot *</label>
                                 <Input value={this.state.profile.plot_number}
-                                       onChange={this.onChangeField.bind(this, 'plot_number')}/>
+                                       onChange={this.onChangeField.bind(this, 'plot_number')}
+                                       required/>
                             </FormGroup>
                         </div>
                     </div>
@@ -98,7 +100,8 @@ export default class StepTwo extends React.Component {
                             <FormGroup>
                                 <label>City *</label>
                                 <Input value={this.state.profile.city}
-                                       onChange={this.onChangeField.bind(this, 'city')}/>
+                                       onChange={this.onChangeField.bind(this, 'city')}
+                                       required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-3">
@@ -111,7 +114,8 @@ export default class StepTwo extends React.Component {
                             <FormGroup>
                                 <label>Zip code *</label>
                                 <Input value={this.state.profile.postal_code}
-                                       onChange={this.onChangeField.bind(this, 'postal_code')} />
+                                       onChange={this.onChangeField.bind(this, 'postal_code')}
+                                       required/>
                             </FormGroup>
                         </div>
                     </div>
@@ -127,7 +131,7 @@ export default class StepTwo extends React.Component {
                                 <label>Country *</label>
                                 <CountrySelector value={this.state.profile.country}
                                                  onChange={this.onChangeField.bind(this, 'country')}
-                                />
+                                                 required/>
                             </FormGroup>
                         </div>
                     </div>

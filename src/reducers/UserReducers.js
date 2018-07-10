@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 
 import * as UserActions from '../actions/UserActions';
-import {getIds} from './utils';
+import {getIds, reduceUser} from './utils';
 
 function ids(state = {}, action) {
     let selection_key = action.selection || 'default';
@@ -35,13 +35,13 @@ function users(state = {}, action) {
         case UserActions.LIST_MORE_USERS_SUCCESS:
             let all_users = {};
             action.items.forEach(user => {
-                all_users[user.id] = user;
+                all_users[user.id] = reduceUser(null, user);
             });
             return {...state, ...all_users};
         case UserActions.RETRIEVE_USER_SUCCESS:
         case UserActions.UPDATE_USER_SUCCESS:
             let new_user = {};
-            new_user[action.user.id] = action.user;
+            new_user[action.user.id] = reduceUser(null, action.user);
             return {...state, ...new_user};
         default:
             return state;

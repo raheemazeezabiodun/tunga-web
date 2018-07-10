@@ -24,10 +24,12 @@ export default class StepThree extends React.Component {
         const {user} = props;
 
         this.state = {
-            phone_number: user.profile.phone_number || '',
-            vat_no: user.profile.vat_no || '',
-            reg_no: user.profile.reg_no || '',
-            //image: user.image || ''
+            profile: {
+                phone_number: user.profile.phone_number || '',
+                vat_no: user.profile.vat_no || '',
+                reg_no: user.profile.reg_no || '',
+                //image: user.image || ''
+            }
         }
     }
 

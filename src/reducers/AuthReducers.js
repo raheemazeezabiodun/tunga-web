@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import * as AuthActions from '../actions/AuthActions';
 import * as ProfileActions from '../actions/ProfileActions';
+import {reduceUser} from './utils';
 
 function user(state = {profile: {}, company: {}}, action) {
     switch (action.type) {
@@ -10,15 +11,14 @@ function user(state = {profile: {}, company: {}}, action) {
         case ProfileActions.UPDATE_AUTH_USER_SUCCESS:
         case ProfileActions.RETRIEVE_PROFILE_SUCCESS:
             let user = action.user;
-            return {...state, ...user, profile: user.profile || state.profile || {}, company: user.company || state.company || {}};
+            return reduceUser(state, user);
         case ProfileActions.UPDATE_PROFILE_SUCCESS:
-            let profile = {...action.profile};
+            let profile = action.profile;
             user = profile.user;
             delete profile.user;
-            return {...state, ...user, profile, company: state.company || {}};
+            return reduceUser(state, user, profile);
         case ProfileActions.UPDATE_COMPANY_SUCCESS:
-            let company = {...action.company};
-            return {...state, ...user, company, profile: state.profile};
+            return reduceUser(state, user, null, action.company);
         case ProfileActions.CREATE_WORK_SUCCESS:
         case ProfileActions.UPDATE_WORK_SUCCESS:
             let work = action.work;

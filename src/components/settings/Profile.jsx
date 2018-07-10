@@ -53,20 +53,22 @@ export default class Profile extends React.Component {
         this.onChangeValue(key, files[0]);
     }
 
-    onSave(e) {
+    onSave = (e) => {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
 
         let profile = this.state.profile, nestedUser = {};
 
         ['first_name', 'last_name', 'image'].forEach(key => {
-            nestedUser[key] = profile[key] || '';
+            if(profile[key]) {
+                nestedUser[key] = profile[key] || '';
+            }
             delete profile[key];
         });
 
         ProfileActions.updateProfile(user.profile.id, {...profile, user: nestedUser});
         return;
-    }
+    };
 
     render() {
         const {user, errors} = this.props;
@@ -76,7 +78,7 @@ export default class Profile extends React.Component {
                     <Success message="Profile saved successfully" />
                     ): null
                 }
-                <form method="post" onSubmit={this.onSave.bind(this)}>
+                <form method="post" onSubmit={this.onSave}>
                     <div className="row">
                         <div className="col-sm-8">
                         {errors.profile &&

@@ -143,7 +143,7 @@ export default class WorkForm extends React.Component {
                             </FormGroup>
                         </div>
                         <div className="col-sm-12">
-                            <strong>Timespan</strong>
+                            <label className="control-label">Timespan</label>
                         </div>
                         <div className="col-sm-6">
                             {errors.work &&
@@ -153,7 +153,7 @@ export default class WorkForm extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label className="control-label">From</label>
+                                <div>From</div>
                                 <DateTimePicker
                                     onChange={this.onDateChange.bind(this, true)}
                                     calendar={true}
@@ -170,7 +170,7 @@ export default class WorkForm extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label className="control-label">To</label>
+                                <div>To</div>
                                 <DateTimePicker
                                     onChange={this.onDateChange.bind(this, false)}
                                     calendar={true}

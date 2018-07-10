@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import * as AuthActions from '../actions/AuthActions';
 import * as ProfileActions from '../actions/ProfileActions';
+import * as SettingsActions from '../actions/SettingsActions';
 import {reduceUser} from './utils';
 
 function user(state = {profile: {}, company: {}}, action) {
@@ -47,6 +48,9 @@ function user(state = {profile: {}, company: {}}, action) {
                 currentEducation[currentEducationIdx] = education;
             }
             return {...state, education: currentEducation};
+        case SettingsActions.RETRIEVE_SETTINGS_SUCCESS:
+        case SettingsActions.UPDATE_SETTINGS_SUCCESS:
+            return {...state, settings: action.settings};
         case AuthActions.LOGOUT_SUCCESS:
             return {};
         default:

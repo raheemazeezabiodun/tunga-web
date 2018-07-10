@@ -3,6 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 import * as ProfileActions from "../actions/ProfileActions";
+import * as SettingsActions from "../actions/SettingsActions";
 
 function mapStateToProps(state) {
     return {
@@ -13,7 +14,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ProfileActions: bindActionCreators(ProfileActions, dispatch),
+        ProfileActions: {
+            ...bindActionCreators(ProfileActions, dispatch),
+            ...bindActionCreators(SettingsActions, dispatch)
+        },
     };
 }
 

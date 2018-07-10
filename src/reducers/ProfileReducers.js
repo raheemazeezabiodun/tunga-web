@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import {LOCATION_CHANGE} from 'react-router-redux';
 import * as ProfileActions from '../actions/ProfileActions';
+import * as SettingsActions from '../actions/SettingsActions';
 
 function countries(state = [], action) {
     switch (action.type) {
@@ -78,6 +79,11 @@ function isSaving(state = defaultStatuses, action) {
         case ProfileActions.UPDATE_COMPANY_SUCCESS:
         case ProfileActions.UPDATE_COMPANY_FAILED:
             return {...state, company: false};
+        case SettingsActions.UPDATE_SETTINGS_START:
+            return {...state, settings: true};
+        case SettingsActions.UPDATE_SETTINGS_SUCCESS:
+        case SettingsActions.UPDATE_SETTINGS_FAILED:
+            return {...state, settings: false};
         default:
             return state;
     }
@@ -126,6 +132,11 @@ function isSaved(state = defaultStatuses, action) {
         case ProfileActions.UPDATE_COMPANY_START:
         case ProfileActions.UPDATE_COMPANY_FAILED:
             return {...state, company: false};
+        case SettingsActions.UPDATE_SETTINGS_SUCCESS:
+            return {...state, settings: true};
+        case SettingsActions.UPDATE_SETTINGS_START:
+        case SettingsActions.UPDATE_SETTINGS_FAILED:
+            return {...state, settings: false};
         case LOCATION_CHANGE:
             return defaultStatuses;
         default:
@@ -177,6 +188,11 @@ function errors(state = {}, action) {
         case ProfileActions.UPDATE_COMPANY_START:
         case ProfileActions.UPDATE_COMPANY_SUCCESS:
             return {...state, company: null};
+        case SettingsActions.UPDATE_SETTINGS_FAILED:
+            return {...state, settings: error};
+        case SettingsActions.UPDATE_SETTINGS_START:
+        case SettingsActions.UPDATE_SETTINGS_SUCCESS:
+            return {...state, settings: null};
         default:
             return state;
     }

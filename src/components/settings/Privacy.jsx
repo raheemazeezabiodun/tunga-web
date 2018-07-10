@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default class Account extends React.Component {
+export default class Privacy extends React.Component {
     static propTypes = {
         user: PropTypes.object,
         isSaving: PropTypes.object,
@@ -9,6 +9,11 @@ export default class Account extends React.Component {
         errors: PropTypes.object,
         ProfileActions: PropTypes.object,
     };
+
+    componentDidMount() {
+        const {ProfileActions} = this.props;
+        ProfileActions.retrieveSettings();
+    }
 
     render() {
         return (

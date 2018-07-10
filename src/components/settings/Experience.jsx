@@ -27,8 +27,18 @@ export default class Experience extends React.Component {
         const { profile } = props.user;
         this.state = {
             bio: profile.bio,
-            skills_details: profile.skills_details || {}
+            skills: profile.skills || []
         }
+    }
+
+    filterSkills(category) {
+        let filteredSkills = [];
+        cleanSkills(this.state.skills).map(skill => {
+            if(skill.type === category) {
+                filteredSkills.push(skill);
+            }
+        });
+        return filteredSkills;
     }
 
     onChangeField(key, e) {
@@ -38,11 +48,22 @@ export default class Experience extends React.Component {
     }
 
     onSkillChange(category, skills) {
-        let new_state = {};
-        new_state[category] = skills;
-        this.setState({
-            skills_details: {...this.state.skills_details, ...new_state},
+        let newSkills = cleanSkills(skills).map(skill => {
+            return {...skill, type: category};
         });
+
+        let flattenedSkills = newSkills.map(skill => {
+            return skill.name;
+        });
+
+        let updatedCurrentSkills = [];
+        cleanSkills(this.state.skills).forEach(skill => {
+            if(flattenedSkills.indexOf(skill.name) === -1) {
+                updatedCurrentSkills.push(skill);
+            }
+        });
+
+        this.setState({skills: [...updatedCurrentSkills, ...newSkills]});
     }
 
     onAddWork(work = {}, e) {
@@ -77,21 +98,9 @@ export default class Experience extends React.Component {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
 
-        let allSkills = [];
-        const skills_details = this.state.skills_details;
-        if (skills_details) {
-            Object.keys(skills_details).forEach(category => {
-                allSkills = allSkills.concat(cleanSkills(skills_details[category] || []).map(skill => {
-                    let finalSkill = {...skill};
-                    finalSkill.type = category;
-                    return finalSkill;
-                }));
-            });
-        }
-
         ProfileActions.updateProfile(user.profile.id, {
             bio: this.state.bio,
-            skills: allSkills
+            skills: cleanSkills(this.state.skills)
         });
         return;
     };
@@ -129,20 +138,20 @@ export default class Experience extends React.Component {
                                 {id: 'library', name: 'Libraries'},
                                 {id: 'storage', name: 'Storage Engines'},
                                 {id: 'other', name: 'Miscellaneous'},
-                        ].map(skill => {
+                        ].map(category => {
                             return (
-                                <FormGroup key={skill.id}>
-                                    <label className="control-label">{skill.name} you master</label>
+                                <FormGroup key={category.id}>
+                                    <label className="control-label">{category.name} you master</label>
                                     <SkillSelector
                                             filter={{filter: null}}
                                             onChange={this.onSkillChange.bind(
                                                 this,
-                                                skill.id,
+                                                category.id,
                                             )}
                                             selected={
-                                                this.state.skills_details?(this.state.skills_details[skill.id] || []): []
+                                                this.filterSkills(category.id) || []
                                             }
-                                            placeholder={`Type here to add ${skill.name}`}
+                                            placeholder={`Type here to add ${category.name}`}
                                         />
                                 </FormGroup>
                             )

@@ -65,6 +65,7 @@ export const ENDPOINT_ACCOUNT_SETTINGS = getEndpointUrl('me/settings/');
 export const ENDPOINT_USER_INFO = getEndpointUrl('me/user/');
 export const ENDPOINT_USER_EDUCATION = getEndpointUrl('me/education/');
 export const ENDPOINT_USER_WORK = getEndpointUrl('me/work/');
+export const ENDPOINT_PAYONEER_SIGNUP = getEndpointUrl('payoneer/');
 
 export const ENDPOINT_PROJECTS = getEndpointUrl('projects/');
 export const ENDPOINT_USERS = getEndpointUrl('users/');
@@ -96,7 +97,6 @@ export const ENDPOINT_MULTI_TASK_PAYMENT = getEndpointUrl(
     'multi-task-payment/',
 );
 export const ENDPOINT_SKILL_PAGE = getEndpointUrl('skill-page/');
-export const ENDPOINT_PAYONEER_SIGNUP = getEndpointUrl('payoneer/');
 export const ENDPOINT_BLOG = getEndpointUrl('blog/');
 
 export function flattenJson(jsonData, key) {

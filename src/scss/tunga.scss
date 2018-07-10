@@ -21,6 +21,10 @@ body {
     background-color: get-color('lightest-grey');
 }
 
+i {
+    vertical-align: middle;
+}
+
 // Typography
 .font-weight-thin {
     font-weight: $font-weight-thin !important;
@@ -599,6 +603,18 @@ body {
         color: get-color('green');
         margin-bottom: 5px;
     }
+}
+
+.green {
+    color: get-color('green');
+}
+
+.orange {
+    color: get-color('orange');
+}
+
+.red {
+    color: get-color('red');
 }
 
 // Modals

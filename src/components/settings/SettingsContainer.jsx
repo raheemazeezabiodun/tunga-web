@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Switch, Route, Redirect } from 'react-router-dom';
+import queryString from 'query-string';
 
 import connect from '../../connectors/ProfileConnector';
 
@@ -20,6 +20,9 @@ const SettingsContainer = (props) => {
         errors: props.Profile.errors,
         ProfileActions: props.ProfileActions,
     };
+
+    const queryParams = queryString.parse(props.location.search);
+
     return (
         <div className="content-card settings-card">
             <Switch>
@@ -29,7 +32,7 @@ const SettingsContainer = (props) => {
                     ['company-profile', <CompanyProfile {...settingsProps}/>],
                     ['company-details', <CompanyDetails {...settingsProps}/>],
                     ['experience', <Experience {...settingsProps}/>],
-                    ['payment', <Payment {...settingsProps}/>],
+                    ['payment', <Payment user={props.Auth.user} status={queryParams.status} message={queryParams.message}/>],
                     ['account', <Account {...settingsProps}/>],
                     ['privacy', <Privacy {...settingsProps}/>],
                 ].map(path => {

@@ -44,8 +44,10 @@ export default class StepOne extends React.Component {
         const {user, ProfileActions} = this.props;
 
         ProfileActions.updateProfile(user.profile.id, {
-            first_name: this.state.first_name,
-            last_name: this.state.last_name
+            user: {
+                first_name: this.state.first_name,
+                last_name: this.state.last_name
+            }
         });
 
         ProfileActions.updateCompany(user.company.id, {

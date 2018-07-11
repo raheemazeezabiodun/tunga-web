@@ -36,6 +36,9 @@ export default class CookieSettings extends React.Component {
         e.preventDefault();
         setCookieConsent(this.state.cookieConsents);
         setCookieConsentCloseAt();
+        if(this.props.proceed) {
+            this.props.proceed();
+        }
         return;
     };
 

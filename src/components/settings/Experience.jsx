@@ -12,6 +12,7 @@ import EducationForm from './EducationForm';
 import Button from "../core/Button";
 
 import {cleanSkills} from "../../actions/utils/api";
+import Success from "../core/Success";
 
 export default class Experience extends React.Component {
     static propTypes = {
@@ -110,6 +111,11 @@ export default class Experience extends React.Component {
 
         return (
             <div>
+                {this.props.isSaved.profile ? (
+                    <Success message="Profile saved successfully" />
+                ): null
+                }
+
                 <form onSubmit={this.onSave}>
                     <div className="row">
                         <div className="col-sm-8">

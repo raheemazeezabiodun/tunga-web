@@ -44,7 +44,7 @@ class DashboardLayout extends React.Component {
                 <React.Fragment>
                     <NavBar user={user} onSignOut={logout}/>
                     <SideBar/>
-                    <TitleBar/>
+                    <TitleBar user={user}/>
                     <MainContent/>
                 </React.Fragment>
             ):(

@@ -148,102 +148,108 @@ export default class Profile extends React.Component {
                             </FormGroup>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-sm-8">
-                        {errors.profile &&
-                        errors.profile.street ? (
-                            <FieldError
-                                message={errors.profile.street}
-                            />
-                        ) : null}
-                            <FormGroup>
-                                <label className="control-label">Street</label>
-                                <CustomInputGroup variant="address"
-                                                  onChange={this.onChangeField.bind(this, 'street')}
-                                                  value={this.state.profile.street}
-                                />
-                            </FormGroup>
+
+                    {user.is_project_owner?null:(
+                        <div>
+                            {/* Clients don't get this section */}
+                            <div className="row">
+                                <div className="col-sm-8">
+                                    {errors.profile &&
+                                    errors.profile.street ? (
+                                        <FieldError
+                                            message={errors.profile.street}
+                                        />
+                                    ) : null}
+                                    <FormGroup>
+                                        <label className="control-label">Street</label>
+                                        <CustomInputGroup variant="address"
+                                                          onChange={this.onChangeField.bind(this, 'street')}
+                                                          value={this.state.profile.street}
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-sm-4">
+                                    {errors.profile &&
+                                    errors.profile.plot_number ? (
+                                        <FieldError
+                                            message={errors.profile.plot_number}
+                                        />
+                                    ) : null}
+                                    <FormGroup>
+                                        <label className="control-label">Number/Plot</label>
+                                        <CustomInputGroup onChange={this.onChangeField.bind(this, 'plot_number')}
+                                                          value={this.state.profile.plot_number}
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-8">
+                                    {errors.profile &&
+                                    errors.profile.city ? (
+                                        <FieldError
+                                            message={errors.profile.city}
+                                        />
+                                    ) : null}
+                                    <FormGroup>
+                                        <label className="control-label">City</label>
+                                        <CustomInputGroup variant="address"
+                                                          onChange={this.onChangeField.bind(this, 'city')}
+                                                          value={this.state.profile.city}
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="col-sm-4">
+                                    {errors.profile &&
+                                    errors.profile.postal_code ? (
+                                        <FieldError
+                                            message={errors.profile.postal_code}
+                                        />
+                                    ) : null}
+                                    <FormGroup>
+                                        <label className="control-label">Zip code</label>
+                                        <CustomInputGroup onChange={this.onChangeField.bind(this, 'postal_code')}
+                                                          value={this.state.profile.postal_code}/>
+                                    </FormGroup>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-8">
+                                    {errors.profile &&
+                                    errors.profile.country ? (
+                                        <FieldError
+                                            message={errors.profile.country}
+                                        />
+                                    ) : null}
+                                    <FormGroup>
+                                        <label className="control-label">Country</label>
+                                        <CountrySelector
+                                            onChange={(country) => {this.onChangeValue('country', country)}}
+                                            selected={this.state.profile.country}
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-8">
+                                    {errors.profile &&
+                                    errors.profile.id_document ? (
+                                        <FieldError
+                                            message={errors.profile.id_document}
+                                        />
+                                    ) : null}
+                                    <FormGroup>
+                                        <label className="control-label">Upload ID (passport or national ID card)</label>
+                                        <Upload
+                                            type='image'
+                                            placeholder={user.profile.id_document?<img src={user.profile.id_document} height="150px" title="ID document"/>:<Icon name='id' size='xl' />}
+                                            onChange={this.onChangeFile.bind(this, 'id_document')}
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </div>
                         </div>
-                        <div className="col-sm-4">
-                        {errors.profile &&
-                        errors.profile.plot_number ? (
-                            <FieldError
-                                message={errors.profile.plot_number}
-                            />
-                        ) : null}
-                            <FormGroup>
-                                <label className="control-label">Number/Plot</label>
-                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'plot_number')}
-                                                  value={this.state.profile.plot_number}
-                                />
-                            </FormGroup>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-8">
-                        {errors.profile &&
-                        errors.profile.city ? (
-                            <FieldError
-                                message={errors.profile.city}
-                            />
-                        ) : null}
-                            <FormGroup>
-                                <label className="control-label">City</label>
-                                <CustomInputGroup variant="address"
-                                                  onChange={this.onChangeField.bind(this, 'city')}
-                                                  value={this.state.profile.city}
-                                />
-                            </FormGroup>
-                        </div>
-                        <div className="col-sm-4">
-                        {errors.profile &&
-                        errors.profile.postal_code ? (
-                            <FieldError
-                                message={errors.profile.postal_code}
-                            />
-                        ) : null}
-                            <FormGroup>
-                                <label className="control-label">Zip code</label>
-                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'postal_code')}
-                                                  value={this.state.profile.postal_code}/>
-                            </FormGroup>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-8">
-                        {errors.profile &&
-                            errors.profile.country ? (
-                                <FieldError
-                                    message={errors.profile.country}
-                                />
-                            ) : null}
-                            <FormGroup>
-                                <label className="control-label">Country</label>
-                                <CountrySelector
-                                    onChange={(country) => {this.onChangeValue('country', country)}}
-                                    selected={this.state.profile.country}
-                                />
-                            </FormGroup>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-8">
-                        {errors.profile &&
-                        errors.profile.id_document ? (
-                            <FieldError
-                                message={errors.profile.id_document}
-                            />
-                        ) : null}
-                            <FormGroup>
-                                <label className="control-label">Upload ID (passport or national ID card)</label>
-                                <Upload
-                                    type='image'
-                                    placeholder={user.profile.id_document?<img src={user.profile.id_document} height="150px" title="ID document"/>:<Icon name='id' size='xl' />}
-                                    onChange={this.onChangeFile.bind(this, 'id_document')}
-                                />
-                            </FormGroup>
-                        </div>
-                    </div>
+                    )}
                     <button
                         type="submit"
                         className="btn btn-primary float-right"

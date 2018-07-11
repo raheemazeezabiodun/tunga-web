@@ -3,12 +3,13 @@ import {Switch, Route} from 'react-router-dom';
 import moment from 'moment';
 
 import TitleBarContent from './TitleBarContent';
-import MyAccountOutput from './dashboard/MyAccountOutput';
 import ProjectOutput from './dashboard/ProjectOutput';
 
 export default class TitleBar extends React.Component {
 
     render() {
+        const {user} = this.props;
+
         let networkSections = [
             ['/network', 'Developers'],
             ['/network/filter/relevant', 'Relevant for me']
@@ -19,10 +20,16 @@ export default class TitleBar extends React.Component {
             ['/payments/filter/paid-out', 'Paid payouts'], // dev, admin and PM
         ], settingsSections = [
             ['/settings/profile', 'Profile'], // All
-            ['/settings/company-profile', 'Company profile'], // PO and admin
-            ['/settings/company-details', 'Company details'], // PO and admin
-            ['/settings/experience', 'Experience'], // dev and PM
-            ['/settings/payment', 'Payment settings'], // dev and PM
+            ...(user.is_project_owner?[
+                // Clients only
+                ['/settings/company-profile', 'Company profile'],
+                ['/settings/company-details', 'Company details']
+            ]:[]),
+            ...(user.is_project_owner?[]:[
+                // Devs and PMs only
+                ['/settings/experience', 'Experience'],
+                ['/settings/payment', 'Payment settings'],
+            ]),
             ['/settings/account', 'Account'], // All
             ['/settings/privacy', 'Privacy settings'], // All
         ];
@@ -32,7 +39,7 @@ export default class TitleBar extends React.Component {
                 <Switch>
                     {[
                         ['/onboard', 'Welcome to Tunga!'],
-                        ['/dashboard', <div>Hi <MyAccountOutput field="display_name"/></div>, '/projects/new', null, {subTitle: moment().format('dddd, Do of MMMM')}],
+                        ['/dashboard', <div>Hi {user.display_name}</div>, '/projects/new', null, {subTitle: moment().format('dddd, Do of MMMM')}],
                         ['/projects/new', 'Projects', null, [['/projects/new', 'Create new project']]],
                         ['/projects/:projectId', 'Projects', '/projects/new', [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }]]],
                         ['/projects', 'Projects', '/projects/new'],

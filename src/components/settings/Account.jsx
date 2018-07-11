@@ -80,29 +80,31 @@ export default class Account extends React.Component {
     }
 
     render() {
-        const {errors} = this.props;
+        const {user, errors} = this.props;
         return (
             <div className="account-settings">
-                <form onSubmit={this.onSave.bind(this, 'invoice')}>
-                    <h6>Add admin email address for invoices</h6>
-                    {this.state.isSaved === 'invoice'?(
-                        <Success message="Admin email changed successfully"/>
-                    ):null}
-                    <Label>Email address</Label>
-                    <Row>
-                        <Col md="8">
-                            <FormGroup>
-                                <CustomInputGroup variant="email"
-                                                  value={this.state.invoice_email}
-                                                  onChange={this.onChangeValue.bind(this, 'invoice_email')}
-                                                  required/>
-                            </FormGroup>
-                        </Col>
-                        <Col className="text-right">
-                            <Button type="submit">Save</Button>
-                        </Col>
-                    </Row>
-                </form>
+                {user.is_project_owner?(
+                    <form onSubmit={this.onSave.bind(this, 'invoice')}>
+                        <h6>Add admin email address for invoices</h6>
+                        {this.state.isSaved === 'invoice'?(
+                            <Success message="Admin email changed successfully"/>
+                        ):null}
+                        <Label>Email address</Label>
+                        <Row>
+                            <Col md="8">
+                                <FormGroup>
+                                    <CustomInputGroup variant="email"
+                                                      value={this.state.invoice_email}
+                                                      onChange={this.onChangeValue.bind(this, 'invoice_email')}
+                                                      required/>
+                                </FormGroup>
+                            </Col>
+                            <Col className="text-right">
+                                <Button type="submit">Save</Button>
+                            </Col>
+                        </Row>
+                    </form>
+                ):null}
                 <form onSubmit={this.onSave.bind(this, 'password')} className="update-password-form">
                     <h6>Change your password</h6>
                     {this.state.isSaved === 'password'?(

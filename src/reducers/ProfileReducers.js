@@ -14,18 +14,6 @@ function countries(state = [], action) {
     }
 }
 
-function isRetrieving(state = false, action) {
-    switch (action.type) {
-        case ProfileActions.RETRIEVE_PROFILE_START:
-            return true;
-        case ProfileActions.RETRIEVE_PROFILE_SUCCESS:
-        case ProfileActions.RETRIEVE_PROFILE_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
 const defaultStatuses = {
     profile: false,
     user: false,
@@ -35,6 +23,23 @@ const defaultStatuses = {
     work: false,
     education: false
 };
+
+function isRetrieving(state = defaultStatuses, action) {
+    switch (action.type) {
+        case ProfileActions.RETRIEVE_PROFILE_START:
+            return {...state, profile: true};
+        case ProfileActions.RETRIEVE_PROFILE_SUCCESS:
+        case ProfileActions.RETRIEVE_PROFILE_FAILED:
+            return {...state, profile: false};
+        case SettingsActions.RETRIEVE_SETTINGS_START:
+            return {...state, settings: true};
+        case SettingsActions.RETRIEVE_SETTINGS_SUCCESS:
+        case SettingsActions.RETRIEVE_SETTINGS_FAILED:
+            return {...state, settings: false};
+        default:
+            return state;
+    }
+}
 
 function isSaving(state = defaultStatuses, action) {
     switch (action.type) {

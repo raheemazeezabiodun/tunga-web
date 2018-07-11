@@ -4,7 +4,7 @@ import * as ProfileActions from '../actions/ProfileActions';
 import * as SettingsActions from '../actions/SettingsActions';
 import {reduceUser} from './utils';
 
-function user(state = {profile: {}, company: {}}, action) {
+function user(state = {profile: {}, company: {}, settings: {visibility: {}, switches: {}}}, action) {
     switch (action.type) {
         case AuthActions.LOGIN_SUCCESS:
         case AuthActions.VERIFY_SUCCESS:

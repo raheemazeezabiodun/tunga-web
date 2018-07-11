@@ -15,6 +15,7 @@ import Privacy from './Privacy';
 const SettingsContainer = (props) => {
     let settingsProps = {
         user: props.Auth.user,
+        isRetrieving: props.Profile.isRetrieving,
         isSaving: props.Profile.isSaving,
         isSaved: props.Profile.isSaved,
         errors: props.Profile.errors,

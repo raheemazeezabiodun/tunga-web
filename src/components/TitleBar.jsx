@@ -24,7 +24,7 @@ export default class TitleBar extends React.Component {
             ['/settings/experience', 'Experience'], // dev and PM
             ['/settings/payment', 'Payment settings'], // dev and PM
             ['/settings/account', 'Account'], // All
-            ['/settings/privacy', 'Privacy'], // All
+            ['/settings/privacy', 'Privacy settings'], // All
         ];
 
         return (

@@ -941,6 +941,18 @@ i {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
 }
 
+// Settings section
+.settings {
+    .section {
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+}
+
 // Project Page
 .project-page {
 

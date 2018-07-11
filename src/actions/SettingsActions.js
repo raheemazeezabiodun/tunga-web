@@ -48,9 +48,9 @@ export function retrieveSettingsFailed(error) {
 
 export function updateSettings(settings) {
     return dispatch => {
-        dispatch(retrieveSettingsStart(settings));
+        dispatch(updateSettingsStart(settings));
         axios
-            .put(ENDPOINT_ACCOUNT_SETTINGS, settings)
+            .patch(ENDPOINT_ACCOUNT_SETTINGS, settings)
             .then(function(response) {
                 dispatch(updateSettingsSuccess(response.data));
             })

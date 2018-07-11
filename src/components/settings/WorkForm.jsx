@@ -8,6 +8,7 @@ import FieldError from '../core/FieldError';
 import Success from '../core/Success';
 import DateTimePicker from '../core/DateTimePicker';
 import Button from "../core/Button";
+import Input from "../core/Input";
 
 
 export default class WorkForm extends React.Component {
@@ -23,7 +24,7 @@ export default class WorkForm extends React.Component {
             end_month: props.work.end_month,
             work: props.work || {}
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
     componentDidMount() {
@@ -63,7 +64,7 @@ export default class WorkForm extends React.Component {
         }
     }
 
-    handleSubmit(e) {
+    onSave(e) {
         e.preventDefault();
         const company = this.state.company;
         const position = this.state.position;
@@ -89,6 +90,9 @@ export default class WorkForm extends React.Component {
         } else {
             ProfileActions.createWork(work_info);
         }
+        if(this.props.dismiss) {
+            this.props.dismiss();
+        }
         return;
     }
 
@@ -103,7 +107,7 @@ export default class WorkForm extends React.Component {
                 ) : null
                 }
                 <form
-                    onSubmit={this.handleSubmit}
+                    onSubmit={this.onSave}
                     name="work"
                     role="form"
                     ref="work_form">
@@ -117,12 +121,8 @@ export default class WorkForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Company name</label>
-                                <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    onChange={this.onInputChange.bind(this, 'company')}
-                                    defaultValue={this.state.work.company}
-                                />
+                                <Input onChange={this.onInputChange.bind(this, 'company')}
+                                       value={this.state.work.company} required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-12">
@@ -134,12 +134,8 @@ export default class WorkForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Job title</label>
-                                <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    onChange={this.onInputChange.bind(this, 'position')}
-                                    defaultValue={this.state.work.position}
-                                />
+                                <CustomInputGroup onChange={this.onInputChange.bind(this, 'position')}
+                                                  value={this.state.work.position} required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-12">
@@ -154,12 +150,10 @@ export default class WorkForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <div>From</div>
-                                <DateTimePicker
-                                    onChange={this.onDateChange.bind(this, true)}
-                                    calendar={true}
-                                    time={false}
-                                    defaultValue={this.state.work.start_year ? new Date(moment.utc(start_date).format()) : null}
-                                />
+                                <DateTimePicker onChange={this.onDateChange.bind(this, true)}
+                                                calendar={true} time={false}
+                                                value={this.state.work.start_year ? new Date(moment.utc(start_date).format()) : null}
+                                                required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-6">
@@ -171,22 +165,18 @@ export default class WorkForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <div>To</div>
-                                <DateTimePicker
-                                    onChange={this.onDateChange.bind(this, false)}
-                                    calendar={true}
-                                    time={false}
-                                    defaultValue={this.state.work.end_year ? new Date(moment.utc(end_date).format()) : null}
+                                <DateTimePicker onChange={this.onDateChange.bind(this, false)}
+                                                calendar={true} time={false}
+                                                value={this.state.work.end_year ? new Date(moment.utc(end_date).format()) : null}
                                 />
                             </FormGroup>
                         </div>
                         <div className="col-sm-12">
                             <FormGroup>
                                 <label className="control-label">Experience</label>
-                                <TextArea
-                                    placeholder=' '
-                                    onChange={this.onInputChange.bind(this, 'details')}
-                                    defaultValue={this.state.work.details}
-                                />
+                                <TextArea onChange={this.onInputChange.bind(this, 'details')}
+                                          value={this.state.work.details}
+                                          required/>
                             </FormGroup>
                         </div>
                     </div>

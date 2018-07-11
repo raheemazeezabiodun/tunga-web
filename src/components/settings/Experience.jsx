@@ -182,9 +182,9 @@ export default class Experience extends React.Component {
                                 return (
                                     <div className="card work-education-wrapper">
                                         <div className="card-body">
-                                            <p>Position: {work.position}</p>
-                                            <p>Company: {work.company}</p>
-                                            <p>Period: {work.start_month_display}/{work.start_year} - {work.end_month_display}/{work.end_year}</p>
+                                            <div>Position: {work.position}</div>
+                                            <div>Company: {work.company}</div>
+                                            <div>Period: {work.start_month_display}/{work.start_year} - {work.end_year?`${work.end_month_display}/${work.end_year}`:'Present'}</div>
                                             <br />
                                             <p>{work.details}</p>
                                             <Button
@@ -220,9 +220,9 @@ export default class Experience extends React.Component {
                                 return (
                                     <div className="card work-education-wrapper">
                                         <div className="card-body">
-                                            <p>Educational Institute: {education.institution}</p>
-                                            <p>Degree: {education.award}</p>
-                                            <p>Period: {education.start_month_display}/{education.start_year} - {education.end_month_display}/{education.end_year}</p>
+                                            <div>Educational Institute: {education.institution}</div>
+                                            <div>Degree: {education.award}</div>
+                                            <div>Period: {education.start_month_display}/{education.start_year} - {education.end_year?`${education.end_month_display}/${education.end_year}`:'Present'}</div>
                                             <br />
                                             <p>{education.details}</p>
                                             <Button

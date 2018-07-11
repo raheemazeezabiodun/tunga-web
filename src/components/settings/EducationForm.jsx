@@ -24,7 +24,7 @@ export default class EducationForm extends React.Component {
             end_month: props.education.end_month,
             education: props.education || {}
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
     componentDidMount() {
@@ -64,7 +64,7 @@ export default class EducationForm extends React.Component {
         }
     }
 
-    handleSubmit(e) {
+    onSave(e) {
         e.preventDefault();
         const institution = this.state.institution;
         const award = this.state.award;
@@ -90,6 +90,9 @@ export default class EducationForm extends React.Component {
         } else {
             ProfileActions.createEducation(education_info);
         }
+        if(this.props.dismiss) {
+            this.props.dismiss();
+        }
         return;
     }
 
@@ -104,7 +107,7 @@ export default class EducationForm extends React.Component {
                 ) : null
                 }
                 <form
-                    onSubmit={this.handleSubmit}
+                    onSubmit={this.onSave}
                     name="education"
                     role="form"
                     ref="education_form">
@@ -118,12 +121,8 @@ export default class EducationForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Educational Institute</label>
-                                <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    onChange={this.onInputChange.bind(this, 'institution')}
-                                    defaultValue={this.state.education.institution}
-                                />
+                                <CustomInputGroup onChange={this.onInputChange.bind(this, 'institution')}
+                                                  value={this.state.education.institution} required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-12">
@@ -135,12 +134,8 @@ export default class EducationForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Degree</label>
-                                <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    onChange={this.onInputChange.bind(this, 'award')}
-                                    defaultValue={this.state.education.award}
-                                />
+                                <CustomInputGroup onChange={this.onInputChange.bind(this, 'award')}
+                                                  value={this.state.education.award} required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-12">
@@ -155,12 +150,9 @@ export default class EducationForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <div>From</div>
-                                <DateTimePicker
-                                    onChange={this.onDateChange.bind(this, true)}
-                                    calendar={true}
-                                    time={false}
-                                    defaultValue={this.state.education.start_year ? new Date(moment.utc(start_date).format()) : null}
-                                />
+                                <DateTimePicker onChange={this.onDateChange.bind(this, true)}
+                                                calendar={true} time={false}
+                                                value={this.state.education.start_year ? new Date(moment.utc(start_date).format()) : null} required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-6">
@@ -172,22 +164,17 @@ export default class EducationForm extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <div>To</div>
-                                <DateTimePicker
-                                    onChange={this.onDateChange.bind(this, false)}
-                                    calendar={true}
-                                    time={false}
-                                    defaultValue={this.state.education.end_year ? new Date(moment.utc(end_date).format()) : null}
+                                <DateTimePicker onChange={this.onDateChange.bind(this, false)}
+                                                calendar={true} time={false}
+                                                value={this.state.education.end_year ? new Date(moment.utc(end_date).format()) : null}
                                 />
                             </FormGroup>
                         </div>
                         <div className="col-sm-12">
                             <FormGroup>
                                 <label className="control-label">Details (optional)</label>
-                                <TextArea
-                                    placeholder=' '
-                                    onChange={this.onInputChange.bind(this, 'details')}
-                                    defaultValue={this.state.education.details}
-                                />
+                                <TextArea onChange={this.onInputChange.bind(this, 'details')}
+                                          value={this.state.education.details} required/>
                             </FormGroup>
                         </div>
                     </div>

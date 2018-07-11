@@ -971,7 +971,7 @@ i {
 .settings-container {
     form {
         .col-sm-8, .col-md-8 {
-            max-width: 400px;
+            max-width: 430px;
         }
 
         .col-sm-4, .col-md-4 {
@@ -1005,6 +1005,17 @@ i {
 .account-settings {
     form {
         margin-bottom: 20px;
+    }
+}
+
+.work-education-wrapper {
+    background-color: #888888;
+    border: 1px solid #979797;
+    color: #ffffff;
+    margin-bottom: 20px;
+
+    .btn {
+        min-width: 0 !important;
     }
 }
 
@@ -1071,13 +1082,6 @@ label {
 
 textarea {
     min-height: 100px;
-}
-
-.work-education-wrapper {
-    background-color: #888888;
-    border: 1px solid #979797;
-    color: #ffffff;
-    margin-bottom: 20px;
 }
 
 .documents-row-bottom-margin{

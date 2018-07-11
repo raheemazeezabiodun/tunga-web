@@ -226,6 +226,26 @@ function isSaved(state = {}, action) {
         case ProjectActions.UPDATE_PROJECT_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
+        case ParticipationActions.CREATE_PARTICIPATION_SUCCESS:
+        case ParticipationActions.UPDATE_PARTICIPATION_SUCCESS:
+            newState['participation'] = true;
+            return {...state, ...newState};
+        case ParticipationActions.CREATE_PARTICIPATION_START:
+        case ParticipationActions.CREATE_PARTICIPATION_FAILED:
+        case ParticipationActions.UPDATE_PARTICIPATION_START:
+        case ParticipationActions.UPDATE_PARTICIPATION_FAILED:
+            newState['participation'] = false;
+            return {...state, ...newState};
+        case DocumentActions.CREATE_DOCUMENT_SUCCESS:
+        case DocumentActions.UPDATE_DOCUMENT_SUCCESS:
+            newState['docs'] = true;
+            return {...state, ...newState};
+        case DocumentActions.CREATE_DOCUMENT_START:
+        case DocumentActions.CREATE_DOCUMENT_FAILED:
+        case DocumentActions.UPDATE_DOCUMENT_START:
+        case DocumentActions.UPDATE_DOCUMENT_FAILED:
+            newState['docs'] = false;
+            return {...state, ...newState};
         case LOCATION_CHANGE:
             return {};
         default:

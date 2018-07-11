@@ -48,6 +48,8 @@ export default class ProjectDetailContainer extends React.Component  {
             function(child) {
                 return React.cloneElement(child, {
                     project: Project.projects[projectId],
+                    isSaving: Project.isSaving,
+                    isSaved: Project.isSaved,
                     ProjectActions
                 });
             }.bind(this),

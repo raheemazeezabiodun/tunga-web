@@ -12,13 +12,15 @@ import Settings from './Settings';
 export default class ProjectManagement extends React.Component {
     static propTypes = {
         project: PropTypes.object,
+        isSaving: PropTypes.object,
+        isSaved: PropTypes.object,
         ProjectActions: PropTypes.object,
         match: PropTypes.object
     };
 
     render() {
-        const {project, ProjectActions, match} = this.props;
-        const settingsProps = {project, ProjectActions};
+        const {project, isSaving, isSaved, ProjectActions, match} = this.props;
+        const settingsProps = {project, isSaving, isSaved, ProjectActions};
 
         return (
             project?(

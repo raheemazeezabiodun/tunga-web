@@ -43,17 +43,18 @@ export default class CookieSettings extends React.Component {
         return (
             <form onSubmit={this.onSave} className="cookie-settings">
                 {COOKIE_OPTIONS.map(category => {
-                    let categoryId = category[0];
+                    let categoryId = category[0], elementId = `consent-${categoryId}`;
                     return (
                         <FormGroup>
-                            <div className="checkbox">
-                                <label className="control-label">
-                                    <input
-                                        type="checkbox"
-                                        checked={(category[3] && category[4]) || this.state.cookieConsents.indexOf(categoryId) > -1}
-                                        disabled={category[4]}
-                                        onChange={this.onChangeConsentValue.bind(this, categoryId)}
-                                    />
+                            <div className="form-check">
+                                <input className="form-check-input"
+                                       id={elementId}
+                                    type="checkbox"
+                                    checked={(category[3] && category[4]) || this.state.cookieConsents.indexOf(categoryId) > -1}
+                                    disabled={category[4]}
+                                    onChange={this.onChangeConsentValue.bind(this, categoryId)}
+                                />
+                                <label className="form-check-label" for={elementId}>
                                     {category[1]}
                                 </label>
                             </div>

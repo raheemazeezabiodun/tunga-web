@@ -63,7 +63,7 @@ export default class Privacy extends React.Component {
         }
 
         return (
-            <div className="settings">
+            <div className="privacy-settings">
                 {isRetrieving.settings?null:(
                     <div>
                         <div className="section">

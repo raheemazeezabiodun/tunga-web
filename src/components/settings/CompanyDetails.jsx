@@ -70,10 +70,9 @@ export default class CompanyDetails extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Street</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'street')}
-                                    value={this.state.company.street}
-                                />
+                                <CustomInputGroup variant="address"
+                                                  onChange={this.onChangeField.bind(this, 'street')}
+                                                  value={this.state.company.street}/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-4">
@@ -85,9 +84,8 @@ export default class CompanyDetails extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Number/Plot</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'plot_number')}
-                                    value={this.state.company.plot_number}
+                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'plot_number')}
+                                                  value={this.state.company.plot_number}
                                 />
                             </FormGroup>
                         </div>
@@ -102,9 +100,9 @@ export default class CompanyDetails extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>City</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'city')}
-                                    defaultValue={this.state.company.city}
+                                <CustomInputGroup variant="address"
+                                                  onChange={this.onChangeField.bind(this, 'city')}
+                                                  value={this.state.company.city}
                                 />
                             </FormGroup>
                         </div>
@@ -117,10 +115,8 @@ export default class CompanyDetails extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Zip Code</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'postal_code')}
-                                    value={this.state.company.postal_code}
-                                />
+                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'postal_code')}
+                                                  value={this.state.company.postal_code}/>
                             </FormGroup>
                         </div>
                     </div>
@@ -149,10 +145,8 @@ export default class CompanyDetails extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>VAT number</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'vat_number')}
-                                    value={this.state.company.vat_number}
-                                />
+                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'vat_number')}
+                                                  value={this.state.company.vat_number}/>
                             </FormGroup>
                         </div>
                     </div>
@@ -166,10 +160,8 @@ export default class CompanyDetails extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Company Registration Number (Optional)</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'reg_no')}
-                                    value={this.state.company.reg_no}
-                                />
+                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'reg_no')}
+                                                  value={this.state.company.reg_no}/>
                             </FormGroup>
                         </div>
                     </div>

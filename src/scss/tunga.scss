@@ -126,6 +126,20 @@ i {
 }
 
 // Buttons
+.btn {
+    font-size: $font-size-sm;
+    height: px-to-rem(40);
+
+    &.btn-sm {
+        height: px-to-rem(30);
+    }
+
+    &.btn-lg {
+        font-size: $font-size-normal;
+        height: px-to-rem(50);
+    }
+}
+
 .btn-skill {
     @include button-variant($brand-color, $brand-color);
     @include button-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-sm, $line-height-sm, $btn-border-radius-sm);
@@ -206,6 +220,20 @@ i {
 }
 
 // Input
+.form-control {
+    font-size: $font-size-sm;
+    height: px-to-rem(40);
+
+    &.form-control-sm {
+        height: px-to-rem(30);
+    }
+
+    &.form-control-lg {
+        font-size: $font-size-normal;
+        height: px-to-rem(50);
+    }
+}
+
 .input-group {
     border-radius: $input-border-radius;
     box-shadow: $input-box-shadow;
@@ -264,6 +292,7 @@ i {
             @include padding-x(px-to-rem(6));
             @include border-right-radius(px-to-rem(15));
             box-shadow: none;
+            height: px-to-rem(30);
 
             &::placeholder {
                 color: #ccc;
@@ -824,6 +853,7 @@ i {
             display: inline-block;
             font-weight: $font-weight-normal;
             text-align: center;
+            color: get-color('black');
             padding-bottom: px-to-rem(8);
             min-width: px-to-rem(130);
 
@@ -918,10 +948,6 @@ i {
         .form-group {
             padding-bottom: 20px;
         }
-
-        label {
-            font-weight: $font-weight-medium;
-        }
     }
 }
 
@@ -942,7 +968,26 @@ i {
 }
 
 // Settings section
-.settings {
+.settings-container {
+    form {
+        .col-sm-8, .col-md-8 {
+            max-width: 400px;
+        }
+
+        .col-sm-4, .col-md-4 {
+            padding-left: 25px;
+            max-width: 170px;
+        }
+
+        &.update-password-form {
+            .col-input {
+                min-width: 270px;
+            }
+        }
+    }
+}
+
+.privacy-settings {
     .section {
         margin-bottom: 20px;
     }
@@ -950,6 +995,12 @@ i {
     ul {
         list-style-type: none;
         padding-left: 0;
+    }
+}
+
+.account-settings {
+    form {
+        margin-bottom: 20px;
     }
 }
 
@@ -1009,12 +1060,13 @@ i {
     }
 }
 
+
 label {
-    font-weight: $font-weight-medium;
+    font-weight: $font-weight-normal;
 }
 
 textarea {
-    min-height: 100px
+    min-height: 100px;
 }
 
 .work-education-wrapper {

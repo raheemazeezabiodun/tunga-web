@@ -89,9 +89,9 @@ export default class Profile extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">First Name</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'first_name')}
-                                    defaultValue={this.state.profile.first_name}
+                                <CustomInputGroup variant="personal"
+                                                  onChange={this.onChangeField.bind(this, 'first_name')}
+                                                  value={this.state.profile.first_name}
                                 />
                             </FormGroup>
                         </div>
@@ -106,9 +106,9 @@ export default class Profile extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Last Name</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'last_name')}
-                                    defaultValue={this.state.profile.last_name}
+                                <CustomInputGroup variant="personal"
+                                                  onChange={this.onChangeField.bind(this, 'last_name')}
+                                                  value={this.state.profile.last_name}
                                 />
                             </FormGroup>
                         </div>
@@ -123,9 +123,9 @@ export default class Profile extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Phone Number</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'phone_number')}
-                                    defaultValue={this.state.profile.phone_number}
+                                <CustomInputGroup variant="tel"
+                                                  onChange={this.onChangeField.bind(this, 'phone_number')}
+                                                  value={this.state.profile.phone_number}
                                 />
                             </FormGroup>
                         </div>
@@ -158,11 +158,9 @@ export default class Profile extends React.Component {
                         ) : null}
                             <FormGroup>
                                 <label className="control-label">Street</label>
-                                <CustomInputGroup
-                                    variant=' '
-                                    placeholder=' '
-                                    onChange={this.onChangeField.bind(this, 'street')}
-                                    defaultValue={this.state.profile.street}
+                                <CustomInputGroup variant="address"
+                                                  onChange={this.onChangeField.bind(this, 'street')}
+                                                  value={this.state.profile.street}
                                 />
                             </FormGroup>
                         </div>
@@ -175,9 +173,8 @@ export default class Profile extends React.Component {
                         ) : null}
                             <FormGroup>
                                 <label className="control-label">Number/Plot</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'plot_number')}
-                                    defaultValue={this.state.profile.plot_number}
+                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'plot_number')}
+                                                  value={this.state.profile.plot_number}
                                 />
                             </FormGroup>
                         </div>
@@ -192,9 +189,9 @@ export default class Profile extends React.Component {
                         ) : null}
                             <FormGroup>
                                 <label className="control-label">City</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'city')}
-                                    defaultValue={this.state.profile.city}
+                                <CustomInputGroup variant="address"
+                                                  onChange={this.onChangeField.bind(this, 'city')}
+                                                  value={this.state.profile.city}
                                 />
                             </FormGroup>
                         </div>
@@ -207,10 +204,8 @@ export default class Profile extends React.Component {
                         ) : null}
                             <FormGroup>
                                 <label className="control-label">Zip code</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'postal_code')}
-                                    defaultValue={this.state.profile.postal_code}
-                                />
+                                <CustomInputGroup onChange={this.onChangeField.bind(this, 'postal_code')}
+                                                  value={this.state.profile.postal_code}/>
                             </FormGroup>
                         </div>
                     </div>
@@ -243,7 +238,7 @@ export default class Profile extends React.Component {
                                 <label className="control-label">Upload ID (passport or national ID card)</label>
                                 <Upload
                                     type='image'
-                                    placeholder={user.profile.id_document?<img src={user.profile.id_document} height="75px" title="ID document"/>:<Icon name='id' size='xl' />}
+                                    placeholder={user.profile.id_document?<img src={user.profile.id_document} height="150px" title="ID document"/>:<Icon name='id' size='xl' />}
                                     onChange={this.onChangeFile.bind(this, 'id_document')}
                                 />
                             </FormGroup>

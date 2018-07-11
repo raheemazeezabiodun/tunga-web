@@ -42,6 +42,10 @@ const CUSTOM_INPUTS = {
         placeholder: 'Phone number',
         prepend: <i className="tg-ic-phone" />
     },
+    email: {
+        placeholder: 'Email address',
+        prepend: <i className="tg-ic-envelope" />
+    },
     password: {
         type: 'password',
         placeholder: 'Password',

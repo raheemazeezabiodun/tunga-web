@@ -89,9 +89,8 @@ export default class CompanyProfile extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label className="control-label">Company Website</label>
-                                <CustomInputGroup
-                                    onChange={this.onChangeField.bind(this, 'website')}
-                                    value={this.state.company.website}
+                                <CustomInputGroup variant="url" onChange={this.onChangeField.bind(this, 'website')}
+                                                  value={this.state.company.website}
                                 />
                             </FormGroup>
                         </div>

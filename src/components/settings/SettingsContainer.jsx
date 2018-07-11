@@ -25,7 +25,7 @@ const SettingsContainer = (props) => {
     const queryParams = queryString.parse(props.location.search);
 
     return (
-        <div className="content-card settings-card">
+        <div className="content-card settings-card settings-container">
             <Switch>
                 <Redirect exact from='/settings' to='/settings/profile'/>
                 {[

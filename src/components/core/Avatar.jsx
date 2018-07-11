@@ -16,14 +16,16 @@ export default class Avatar extends React.Component {
         link: PropTypes.string,
         badge: PropTypes.number,
         verified: PropTypes.bool,
+        remove: PropTypes.bool
     };
 
     static defaultProps = {
-        verified: false
+        verified: false,
+        remove: false
     };
 
     render() {
-        const {className, image, icon, size, title, link, badge, verified} = this.props,
+        const {className, image, icon, size, title, link, badge, verified, remove} = this.props,
             avatarId = `avatar${randomstring.generate()}`;
         let avatar = (
             <div
@@ -42,6 +44,9 @@ export default class Avatar extends React.Component {
                 ):null}
                 {verified?(
                     <Icon name="check" className="verified"/>
+                ):null}
+                {remove?(
+                    <Icon name="close" className="remove"/>
                 ):null}
                 {link || title?(
                     <Link to={link} title={title}>{avatar}</Link>

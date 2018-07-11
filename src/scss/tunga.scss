@@ -332,6 +332,13 @@ i {
         right: -2px;
         color: get-color('green');
     }
+
+    .remove {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        color: get-color('black');
+    }
 }
 
 .avatar {
@@ -1059,6 +1066,14 @@ i {
         padding: 20px 40px;
         background-color: get-color('white');
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
+
+        .project-title {
+            text-transform: capitalize;
+        }
+
+        h6 {
+            padding-bottom: 10px;
+        }
     }
 
     .project-filters {
@@ -1096,6 +1111,34 @@ textarea {
 
 .documents-row-bottom-margin{
     margin-bottom: 15px;
+}
+
+.project-team {
+    .add-button {
+        margin-top: 60px;
+    }
+}
+
+.project-team-member-icon-button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    margin-right: 10px;
+}
+
+.delete-project-member-modal {
+    margin-bottom: 40px;
+}
+
+.project-member {
+    padding: 20px;
+
+    h6 {
+        margin-bottom: 20px;
+    }
 }
 
 @import "breakpoints";

@@ -128,15 +128,33 @@ i {
 // Buttons
 .btn {
     font-size: $font-size-sm;
+    @include padding-y(0 !important);
+    line-height: px-to-rem(40);
     height: px-to-rem(40);
 
     &.btn-sm {
+        line-height: px-to-rem(30);
         height: px-to-rem(30);
     }
 
     &.btn-lg {
         font-size: $font-size-normal;
+        line-height: px-to-rem(50);
         height: px-to-rem(50);
+    }
+
+    &.btn-xl {
+        font-size: $font-size-lg;
+        line-height: px-to-rem(60);
+        height: px-to-rem(60);
+        border-radius: $border-radius-lg;
+    }
+
+    &.btn-xxl {
+        font-size: $font-size-xl;
+        line-height: px-to-rem(70);
+        height: px-to-rem(70);
+        border-radius: $border-radius-lg;
     }
 }
 
@@ -186,14 +204,6 @@ i {
 
 .btn-dotted-card {
     border-style: dashed;
-}
-
-.btn-xl {
-    @include button-size($input-btn-padding-y-xl, $input-btn-padding-x-xl, $font-size-xl, $line-height-xl, $border-radius-lg);
-}
-
-.btn-xxl {
-    @include button-size($input-btn-padding-y-xxl, $input-btn-padding-x-xxl, $font-size-xxl, $line-height-xxl, $border-radius-lg);
 }
 
 .btn-group {

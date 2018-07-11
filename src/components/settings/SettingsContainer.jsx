@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import queryString from 'query-string';
+import querystring from 'querystring';
 
 import connect from '../../connectors/ProfileConnector';
 
@@ -22,7 +22,7 @@ const SettingsContainer = (props) => {
         ProfileActions: props.ProfileActions,
     };
 
-    const queryParams = queryString.parse(props.location.search);
+    const queryParams = querystring.parse((props.location.search || '').replace('?', ''));
 
     return (
         <div className="content-card settings-card settings-container">

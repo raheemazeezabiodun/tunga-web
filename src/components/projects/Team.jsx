@@ -27,40 +27,37 @@ export default class Team extends React.Component {
         return (
             <div>
                 <div className="project-member">
-                    <h6>Project Owner</h6>
+                    <div className="font-weight-normal">Project Owner</div>
                     {project.owner ? (
-                        <button className="project-team-member-icon-button"
-                            onClick={this.deleteUser.bind(this, project.owner, 'owner')}
-                        >
-                            <Avatar image={project.owner.avatar_url} remove/>
-                        </button>
+                        <Avatar image={project.owner.avatar_url}
+                                title={project.owner.display_name}
+                                onRemove={this.deleteUser.bind(this, project.owner, 'owner')}
+                                remove/>
                     ) : null }
                     <IconButton name="add"
                         size="main"
                         onClick={this.renderModal.bind(this, 'project_owner', 'owner', 'Add project Owner', 1)} />
                 </div>
                 <div className="project-member">
-                    <h6>Project Manager</h6>
+                    <div className="font-weight-normal">Project Manager</div>
                     {project.pm ? (
-                        <button className="project-team-member-icon-button"
-                            onClick={this.deleteUser.bind(this, project.pm, 'pm')}
-                        >
-                            <Avatar image={project.pm.avatar_url} remove />
-                        </button>
+                        <Avatar image={project.pm.avatar_url}
+                                title={project.pm.display_name}
+                                onRemove={this.deleteUser.bind(this, project.pm, 'pm')}
+                                remove />
                     ) : null }
                     <IconButton name="add"
                         size="main"
                         onClick={this.renderModal.bind(this, 'project_manager', 'pm', 'Add project Manager', 1)} />
                 </div>
                 <div className="project-member">
-                    <h6>Team</h6>
+                    <div className="font-weight-normal">Team</div>
                     {project.participation.map(team => {
                         return (
-                            <button key={`Avatar ${team.id}`} className="project-team-member-icon-button"
-                                onClick={this.deleteUser.bind(this, team, 'team')}
-                            >
-                                <Avatar image={team.user.avatar_url} remove />
-                            </button>
+                            <Avatar image={team.user.avatar_url}
+                                    title={team.user.display_name}
+                                    onRemove={this.deleteUser.bind(this, team, 'team')}
+                                    remove />
                         )
                     })}
                     <IconButton name="add"

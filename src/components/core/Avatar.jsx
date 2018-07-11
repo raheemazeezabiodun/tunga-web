@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 
 import Icon from './Icon';
+import IconButton from "./IconButton";
 
 export default class Avatar extends React.Component {
     static propTypes = {
@@ -16,12 +17,20 @@ export default class Avatar extends React.Component {
         link: PropTypes.string,
         badge: PropTypes.number,
         verified: PropTypes.bool,
-        remove: PropTypes.bool
+        remove: PropTypes.bool,
+        onRemove: PropTypes.func
     };
 
     static defaultProps = {
         verified: false,
         remove: false
+    };
+
+    onRemove = () => {
+        const {onRemove} = this.props;
+        if(onRemove) {
+            onRemove();
+        }
     };
 
     render() {
@@ -46,7 +55,10 @@ export default class Avatar extends React.Component {
                     <Icon name="check" className="verified"/>
                 ):null}
                 {remove?(
-                    <Icon name="close" className="remove"/>
+                    <IconButton name="close"
+                                size="sm"
+                                className="remove"
+                                onClick={this.onRemove}/>
                 ):null}
                 {link || title?(
                     <Link to={link} title={title}>{avatar}</Link>

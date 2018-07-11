@@ -34,6 +34,7 @@ export default class DocumentPicker extends React.Component {
         documentType: PropTypes.string,
         documentTypes: PropTypes.array,
         showSelected: PropTypes.bool,
+        size: PropTypes.string,
     };
 
     constructor(props) {
@@ -95,9 +96,9 @@ export default class DocumentPicker extends React.Component {
                 ):null}
 
                 {this.props.variant === 'button'?(
-                    <Button onClick={this.onSelectType}><Icon name="upload"/> Add documents</Button>
+                    <Button onClick={this.onSelectType}><Icon name="upload" size={this.props.size}/> Add documents</Button>
                 ):(
-                    <IconButton name="add" onClick={this.onSelectType}/>
+                    <IconButton name="add" size={this.props.size} onClick={this.onSelectType}/>
                 )}
             </div>
         );

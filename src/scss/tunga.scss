@@ -335,9 +335,11 @@ i {
 
     .remove {
         position: absolute;
-        top: -1px;
-        right: -1px;
+        top: -6px;
+        right: -4px;
         color: get-color('black');
+        height: auto;
+        line-height: 1.5;
     }
 }
 
@@ -557,6 +559,8 @@ i {
             top: 5px;
             right: 5px;
             font-size: px-to-rem(9);
+            line-height: 1.5;
+            height: auto;
             background-color: transparent;
             padding: 0 2px;
             margin-left: 5px;
@@ -1120,7 +1124,7 @@ textarea {
 }
 
 .project-team-member-icon-button {
-    background-color: Transparent;
+    background-color: transparent;
     background-repeat:no-repeat;
     border: none;
     cursor:pointer;
@@ -1134,9 +1138,13 @@ textarea {
 }
 
 .project-member {
-    padding: 20px;
+    margin-bottom: 20px;
 
-    h6 {
+    .avatar-wrapper {
+        margin-right: 10px;
+    }
+
+    .font-weight-normal {
         margin-bottom: 20px;
     }
 }

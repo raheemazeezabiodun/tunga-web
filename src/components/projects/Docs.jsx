@@ -7,6 +7,7 @@ import {
     DOC_TYPE_ESTIMATE, DOC_TYPE_OTHER, DOC_TYPE_PROPOSAL, DOC_TYPE_REQUIREMENTS,
     DOCUMENT_TYPES_MAP
 } from "../../actions/utils/api";
+import Icon from "../core/Icon";
 
 export default class Docs extends React.Component {
     static propTypes = {
@@ -65,7 +66,7 @@ export default class Docs extends React.Component {
                 ].map(docType => {
                     return (
                         <div key={`doc-type-${docType}`}>
-                            <div className="font-weight-medium">
+                            <div className="font-weight-normal">
                                 {(DOCUMENT_TYPES_MAP[docType] || _.upperFirst(docType)).replace(/\s?document/, '')} documents
                             </div>
                             <div className="file-list">
@@ -74,17 +75,12 @@ export default class Docs extends React.Component {
                                         <div key={`doc-${doc.id}`}>
                                             <div className="file-item" key={doc.id}>
                                                 <a href={doc.download_url} target="_blank">
-                                                    <i
-                                                        className={
-                                                            doc.file ? "tg-ic-download" : "tg-ic-link"
-                                                        }
-                                                    />{" "}
-                                                    {doc.file ? doc.title : doc.url}
+                                                    <Icon name={doc.file?'download':'link'}/> {doc.download_url}
                                                 </a>
                                                 <button
                                                     className="btn"
                                                     onClick={this.onRemoveDoc.bind(this, doc.id)}>
-                                                    <i className="tg-ic-close" />
+                                                    <Icon name="close" />
                                                 </button>
                                             </div>
                                         </div>
@@ -92,13 +88,10 @@ export default class Docs extends React.Component {
                                 })}
                             </div>
 
-                            <DocumentPicker
-                                showSelected={false}
-                                documentType={docType}
-                                onChange={docs => {
-                                    this.onChangeDocs(docType, docs);
-                                }}
-                            />
+                            <DocumentPicker showSelected={false}
+                                            documentType={docType}
+                                            size="main"
+                                            onChange={docs => {this.onChangeDocs(docType, docs);}}/>
                         </div>
                     );
                 })}

@@ -41,7 +41,7 @@ export default class TitleBar extends React.Component {
                         ['/onboard', 'Welcome to Tunga!'],
                         ['/dashboard', <div>Hi {user.display_name}</div>, '/projects/new', null, {subTitle: moment().format('dddd, Do of MMMM')}],
                         ['/projects/new', 'Projects', null, [['/projects/new', 'Create new project']]],
-                        ['/projects/:projectId', 'Projects', '/projects/new', [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }]]],
+                        ['/projects/:projectId', 'Projects', '/projects/new', [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
                         ['/projects', 'Projects', '/projects/new'],
                         ['/network', 'Network', null, networkSections],
                         ['/payments', 'Payments', null, paymentSections],

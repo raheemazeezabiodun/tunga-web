@@ -22,19 +22,21 @@ export default class StepTwo extends React.Component {
 
         const {user} = props;
 
+        let dataSource = user.is_project_owner?user.company:user.profile;
+
         this.state = {
             profile: {
-                street: user.profile.street || '',
-                city: user.profile.city || '',
-                country: user.profile.country || '',
-                plot_number: user.profile.plot_number || '',
-                postal_code: user.profile.postal_code || ''
+                street: dataSource.street || '',
+                city: dataSource.city || '',
+                country: dataSource.country || '',
+                plot_number: dataSource.plot_number || '',
+                postal_code: dataSource.postal_code || ''
             }
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.isSaved.profile) {
+        if (nextProps.isSaved.profile || nextProps.isSaved.company) {
             this.props.history.push('/onboard/step-three');
         }
     }
@@ -49,22 +51,31 @@ export default class StepTwo extends React.Component {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
 
-        ProfileActions.updateProfile(user.profile.id, this.state.profile);
+        if(user.is_project_owner) {
+            // Clients get a company object
+            ProfileActions.updateCompany(user.company.id, this.state.profile);
+        } else {
+            // Other users get a profile
+            ProfileActions.updateProfile(user.profile.id, this.state.profile);
+        }
         return;
     }
 
 
     render() {
         const {errors} = this.props;
+
+        let errorSource = user.is_project_owner?errors.company:errors.profile;
+
         return (
             <div>
                 <form onSubmit={this.onSave.bind(this)} className="clearfix">
                     <Row>
                         <Col className="col-main">
-                            {errors.profile &&
-                            errors.profile.street ? (
+                            {errorSource &&
+                            errorSource.street ? (
                                 <FieldError
-                                    message={errors.profile.street}
+                                    message={errorSource.street}
                                 />
                             ) : null}
                             <FormGroup>
@@ -75,10 +86,10 @@ export default class StepTwo extends React.Component {
                             </FormGroup>
                         </Col>
                         <Col className="col-side">
-                            {errors.profile &&
-                            errors.profile.plot_number ? (
+                            {errorSource &&
+                            errorSource.plot_number ? (
                                 <FieldError
-                                    message={errors.profile.plot_number}
+                                    message={errorSource.plot_number}
                                 />
                             ) : null}
                             <FormGroup>
@@ -92,10 +103,10 @@ export default class StepTwo extends React.Component {
 
                     <Row>
                         <Col className="col-main">
-                            {errors.profile &&
-                            errors.profile.city ? (
+                            {errorSource &&
+                            errorSource.city ? (
                                 <FieldError
-                                    message={errors.profile.city}
+                                    message={errorSource.city}
                                 />
                             ) : null}
                             <FormGroup>
@@ -106,10 +117,10 @@ export default class StepTwo extends React.Component {
                             </FormGroup>
                         </Col>
                         <Col className="col-side">
-                            {errors.profile &&
-                            errors.profile.postal_code ? (
+                            {errorSource &&
+                            errorSource.postal_code ? (
                                 <FieldError
-                                    message={errors.profile.postal_code}
+                                    message={errorSource.postal_code}
                                 />
                             ) : null}
                             <FormGroup>
@@ -123,10 +134,10 @@ export default class StepTwo extends React.Component {
 
                     <Row>
                         <Col className="col-main">
-                            {errors.profile &&
-                            errors.profile.country ? (
+                            {errorSource &&
+                            errorSource.country ? (
                                 <FieldError
-                                    message={errors.profile.country}
+                                    message={errorSource.country}
                                 />
                             ) : null}
                             <FormGroup>

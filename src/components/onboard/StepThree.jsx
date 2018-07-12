@@ -24,18 +24,17 @@ export default class StepThree extends React.Component {
 
         const {user} = props;
 
+        let dataSource = user.is_project_owner?user.company:user.profile;
+
         this.state = {
-            profile: {
-                phone_number: user.profile.phone_number || '',
-                vat_no: user.profile.vat_no || '',
-                reg_no: user.profile.reg_no || '',
-                //image: user.image || ''
-            }
+            phone_number: dataSource[user.is_project_owner?'tel_number':'phone_number'] || '',
+            vat_number: dataSource.vat_number || '',
+            reg_no: dataSource[user.is_project_owner?'reg_no':'company_reg_no'] || '',
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.isSaved.profile) {
+        if (nextProps.isSaved.profile || nextProps.isSaved.company) {
             this.props.history.push('/onboard/finish');
         }
     }
@@ -58,56 +57,82 @@ export default class StepThree extends React.Component {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
 
-        ProfileActions.updateProfile(user.profile.id, this.state.profile);
+        if(user.is_project_owner) {
+            // Clients get a company object
+            ProfileActions.updateCompany(user.company.id, {
+                tel_number: this.state.phone_number,
+                vat_number: this.state.vat_number,
+                reg_no: this.state.reg_no
+            });
+
+            if(this.state.image) {
+                ProfileActions.updateProfile(user.profile.id, {image: this.state.image});
+            }
+        } else {
+            // Other users get a profile
+            let profileData = {
+                phone_number: this.state.phone_number,
+                vat_number: this.state.vat_number,
+                company_reg_no: this.state.reg_no
+            };
+            if(this.state.image) {
+                profileData.image = this.state.image;
+            }
+            ProfileActions.updateProfile(user.profile.id, profileData);
+        }
         return;
     }
 
     render() {
         const {user, errors} = this.props;
 
+        let errorSource = user.is_project_owner?errors.company:errors.profile,
+            telField = user.is_project_owner?'tel_number':'phone_number',
+            regNoField = user.is_project_owner?'reg_no':'company_reg_no';
+
         return (
             <div>
                 <form onSubmit={this.onSave.bind(this)} className="clearfix">
                     <Row>
                         <Col className="col-main">
-                            {errors.profile &&
-                            errors.profile.phone_number ? (
+                            {errorSource &&
+                            errorSource[telField] ? (
                                 <FieldError
-                                    message={errors.profile.phone_number}
+                                    message={errorSource[telField]}
                                 />
                             ) : null}
                             <FormGroup>
                                 <label>Phone Number</label>
-                                <Input value={this.state.profile.phone_number} onChange={this.onChangeField.bind(this, 'phone_number')}/>
+                                <Input value={this.state.phone_number} onChange={this.onChangeField.bind(this, 'phone_number')}/>
                             </FormGroup>
 
-                            {errors.profile &&
-                            errors.profile.vat_no ? (
+                            {errorSource &&
+                            errorSource.vat_number ? (
                                 <FieldError
-                                    message={errors.profile.vat_no}
+                                    message={errorSource.vat_number}
                                 />
                             ) : null}
                             <FormGroup>
                                 <label>VAT No</label>
-                                <Input value={this.state.profile.vat_no} onChange={this.onChangeField.bind(this, 'vat_no')}/>
+                                <Input value={this.state.vat_number} onChange={this.onChangeField.bind(this, 'vat_number')}/>
                             </FormGroup>
 
-                            {errors.profile &&
-                            errors.profile.reg_no ? (
+                            {errorSource &&
+                            errorSource[regNoField] ? (
                                 <FieldError
-                                    message={errors.profile.reg_no}
+                                    message={errorSource[regNoField]}
                                 />
                             ) : null}
                             <FormGroup>
                                 <label>Company registration number</label>
-                                <Input value={this.state.profile.reg_no} onChange={this.onChangeField.bind(this, 'reg_no')}/>
+                                <Input value={this.state.reg_no} onChange={this.onChangeField.bind(this, 'reg_no')}/>
                             </FormGroup>
                         </Col>
                         <Col className="col-avatar">
-                            {errors.profile &&
-                            errors.profile.image ? (
+                            {errorSource &&
+                            errorSource.image ? (
                                 <FieldError
-                                    message={errors.profile.image}
+                                    message={errorSource.image}
                                 />
                             ) : null}
                             <FormGroup>

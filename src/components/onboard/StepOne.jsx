@@ -23,12 +23,12 @@ export default class StepOne extends React.Component {
         this.state = {
             first_name: user.first_name || '',
             last_name: user.last_name || '',
-            company: user.company.name || ''
+            company: user.is_project_owner?user.company.name:user.profile.company || ''
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.isSaved.profile) {
+        if (nextProps.isSaved.profile || nextProps.isSaved.company) {
             this.props.history.push('/onboard/step-two');
         }
     }
@@ -42,31 +42,40 @@ export default class StepOne extends React.Component {
     onSave(e) {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
-
-        ProfileActions.updateProfile(user.profile.id, {
+        let reqData = {
             user: {
                 first_name: this.state.first_name,
                 last_name: this.state.last_name
             }
-        });
+        };
 
-        ProfileActions.updateCompany(user.company.id, {
-            name: this.state.company
-        });
+        if(user.is_project_owner) {
+            // Clients get a company object
+            reqData.name = this.state.company;
+            ProfileActions.updateCompany(user.company.id, reqData);
+        } else {
+            // Other users get only a company name
+            reqData.company = this.state.company;
+            ProfileActions.updateProfile(user.profile.id, reqData);
+        }
         return;
     }
 
     render() {
         const {errors} = this.props;
+
+        let errorSource = user.is_project_owner?errors.company:errors.profile,
+            companyField = user.is_project_owner?'name':'company';
+
         return (
             <div>
                 <form onSubmit={this.onSave.bind(this)} className="clearfix">
                     <Row>
                         <Col className="col-main">
-                            {errors.profile &&
-                            errors.profile.first_name ? (
+                            {errorSource &&
+                            errorSource.first_name ? (
                                 <FieldError
-                                    message={errors.profile.first_name}
+                                    message={errorSource.first_name}
                                 />
                             ) : null}
                             <FormGroup>
@@ -79,10 +88,10 @@ export default class StepOne extends React.Component {
                     </Row>
                     <Row>
                         <Col className="col-main">
-                            {errors.profile &&
-                            errors.profile.last_name ? (
+                            {errorSource &&
+                            errorSource.last_name ? (
                                 <FieldError
-                                    message={errors.profile.last_name}
+                                    message={errorSource.last_name}
                                 />
                             ) : null}
                             <FormGroup>
@@ -95,15 +104,15 @@ export default class StepOne extends React.Component {
                     </Row>
                     <Row>
                         <Col className="col-main">
-                            {errors.company &&
-                            errors.company.name ? (
+                            {errorSource &&
+                            errorSource[companyField] ? (
                                 <FieldError
-                                    message={errors.company.name}
+                                    message={errorSource[companyField]}
                                 />
                             ) : null}
                             <FormGroup>
                                 <label>Your company name</label>
-                                <Input value={this.state.company}
+                                <Input value={errorSource[companyField]}
                                        onChange={this.onChangeField.bind(this, 'company')} />
                             </FormGroup>
                         </Col>

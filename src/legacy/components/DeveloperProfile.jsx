@@ -142,10 +142,7 @@ export default class DeveloperProfile extends React.Component {
                                         ):null}
                                     </div>
                                 </div>
-                                <div className="col developer-card map" id="map">
-                                    <div>
-                                    </div>
-                                </div>
+                                <div className="col developer-card map" id="map"/>
                             </div>
 
                             <div className="col-container">

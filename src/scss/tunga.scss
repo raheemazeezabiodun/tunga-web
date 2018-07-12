@@ -1005,6 +1005,26 @@ i {
     padding: 40px 40px 20px 40px;
     border: solid 1px #ececec;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
+
+    .basic-profile {
+        text-align: center;
+        margin-bottom: 10px;
+        height: 130px;
+
+        .avatar-wrapper {
+            margin-bottom: 10px;
+        }
+    }
+
+    .bio {
+        height: 72px;
+        margin-bottom: 20px;
+    }
+
+    .skills {
+        height: 65px;
+        margin-bottom: 20px;
+    }
 }
 
 .project-card {

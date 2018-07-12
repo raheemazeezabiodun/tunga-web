@@ -63,21 +63,38 @@ export default class ProjectManagement extends React.Component {
                         </div>
                     </div>
                     <div className="project-details float-right">
-                        <h6 className="project-title">{project.title}</h6>
+                        <div className="section font-weight-normal">{project.title}</div>
 
-                        <h6>Description</h6>
-                        <p>{project.description || 'No description'}</p>
+                        <div className="section">
+                            <div className="font-weight-normal">Description</div>
+                            <div>{project.description || 'No description'}</div>
+                        </div>
 
-                        <h6>Deadline</h6>
-                        <p>{project.deadline ? moment(project.deadline).format('Do of MMMM YYYY'): 'Deadline not set'}</p>
+                        {project.deadline?(
+                            <div className="section">
+                                <div className="font-weight-normal">Deadline</div>
+                                <div>{project.deadline ? moment(project.deadline).format('Do of MMMM YYYY'): 'Deadline not set'}</div>
+                            </div>
+                        ):null}
 
-                        <h6>Team</h6>
-                        <p>Project Owner</p>
-                        <div>{project.owner ? <Avatar image={project.owner.avatar_url} /> : null}</div>
-                        <p>Team</p>
-                        <div>{project.participation.map(team => {
-                                return <Avatar key={`Team ${team.user.id}`} image={team.user.avatar_url} />
+                        <div className="font-weight-normal">Team</div>
+
+                        <div className="section">
+                            <div>Project Owner</div>
+                            <div>{project.owner ? <Avatar image={project.owner.avatar_url} verified/> : null}</div>
+                        </div>
+
+                        <div className="section">
+                            <div>Project Manager</div>
+                            <div>{project.pm ? <Avatar image={project.pm.avatar_url} verified/> : null}</div>
+                        </div>
+
+                        <div className="section">
+                            <div>Team</div>
+                            <div>{project.participation.map(participation => {
+                                return <Avatar key={`Team ${participation.user.id}`} image={participation.user.avatar_url} verified={participation.status === 'accepted'}/>
                             })}
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -138,26 +138,29 @@ export default class Experience extends React.Component {
                     <div className="row">
                         <div className="col-sm-8">
                         {[
-                                {id: 'language', name: 'Languages'},
-                                {id: 'framework', name: 'Frameworks'},
-                                {id: 'platform', name: 'Platforms'},
-                                {id: 'library', name: 'Libraries'},
-                                {id: 'storage', name: 'Storage Engines'},
-                                {id: 'other', name: 'Miscellaneous'},
-                        ].map(category => {
+                            ['language', 'Languages'],
+                            ['framework', 'Frameworks'],
+                            ['platform', 'Platforms'],
+                            ['library', 'Libraries'],
+                            ['storage', 'Storage Engines'],
+                            ['other', 'Miscellaneous']
+                        ].map(item => {
+                            let categoryId = item[0],
+                                categoryName = item[1];
+
                             return (
-                                <FormGroup key={category.id}>
-                                    <label className="control-label">{category.name} you master</label>
+                                <FormGroup key={categoryId}>
+                                    <label className="control-label">{categoryName} you master</label>
                                     <SkillSelector
                                             filter={{filter: null}}
                                             onChange={this.onSkillChange.bind(
                                                 this,
-                                                category.id,
+                                                categoryId,
                                             )}
                                             selected={
-                                                this.filterSkills(category.id) || []
+                                                this.filterSkills(categoryId) || []
                                             }
-                                            placeholder={`Type here to add ${category.name}`}
+                                            placeholder={`Type here to add ${categoryName}`}
                                         />
                                 </FormGroup>
                             )

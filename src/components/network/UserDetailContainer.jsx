@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
-import _ from 'lodash';
+
+import {addPropsToChildren} from "../core/utils/children";
 
 export default class UserDetailContainer extends React.Component  {
 
@@ -35,31 +36,29 @@ export default class UserDetailContainer extends React.Component  {
 
     getUser() {
         const {username, UserActions, User} = this.props;
-        if(username && !User.users[username] && User.users[User.usernameToId[username]]) {
+        if(username && !User.usernameToId[username] && !User.users[User.usernameToId[username]]) {
             UserActions.retrieveUser(username);
         }
     }
 
     renderChildren() {
-        const {username, User, UserActions} = this.props;
+        const {username, User, UserActions, children} = this.props;
 
-
-        return React.Children.map(
-            this.props.children,
-            function(child) {
-                return React.cloneElement(child, {
-                    user: User.users[User.usernameToId[username]],
-                    UserActions
-                });
-            }.bind(this),
-        );
+        return addPropsToChildren(children, {
+            user: User.users[User.usernameToId[username]],
+            UserActions
+        });
     }
 
     render() {
-        return (
+        const {username, User} = this.props;
+
+        let user = User.users[User.usernameToId[username]];
+
+        return user?(
             <React.Fragment>
                 {this.renderChildren()}
             </React.Fragment>
-        );
+        ):null;
     }
 }

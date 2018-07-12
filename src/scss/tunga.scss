@@ -19,6 +19,7 @@ body {
     width: 100%;
     min-height: 100%;
     background-color: get-color('lightest-grey');
+    word-break: break-all;
 }
 
 i {
@@ -165,8 +166,12 @@ i {
 
 .btn-skill {
     @include button-variant($brand-color, $brand-color);
-    @include button-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-sm, $line-height-sm, $btn-border-radius-sm);
+    @include button-size(0, $input-btn-padding-x-sm, $font-size-sm, px-to-rem(30), $btn-border-radius-sm);
     min-width: 77px;
+    height: 30px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    box-shadow: 2px 2px 2px 0 rgba(68, 68, 68, 0.44);
 }
 
 .btn-icon {
@@ -1071,7 +1076,7 @@ i {
     }
 }
 
-// Project Page
+// Project Page1
 .project-page {
 
     .project-activity {
@@ -1140,6 +1145,71 @@ i {
                 text-decoration: none;
             }
         }
+    }
+}
+
+// Network
+.user-profile {
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto;
+
+    .back-link {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .basic-profile {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-card {
+        padding: 30px;
+        background-color: get-color('white');
+        min-height: 370px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px 0 rgba(86, 86, 86, 0.31);
+
+        &.map-side {
+            min-height: 272px;
+        }
+
+        .section-title {
+
+            margin-bottom: 16px;
+        }
+
+        .info-block {
+            margin-bottom: 10px;
+        }
+
+        .info-header {
+            color: get-color('pink');
+            font-weight: $font-weight-normal;
+        }
+
+        .info-title {
+            font-weight: $font-weight-normal;
+        }
+
+        .period {
+            color: get-color('dark-grey');
+        }
+    }
+
+    .map {
+        width: 100%;
+        min-width: 620px;
+        min-height: 272px;
+        background-color: get-color('white');
+        padding: 0;
+        box-shadow: 0 2px 4px 0 rgba(86, 86, 86, 0.31);
+    }
+
+    .btn-skill {
+        box-shadow: none;
     }
 }
 

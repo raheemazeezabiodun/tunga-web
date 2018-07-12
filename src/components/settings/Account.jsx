@@ -85,7 +85,7 @@ export default class Account extends React.Component {
             <div className="account-settings">
                 {user.is_project_owner?(
                     <form onSubmit={this.onSave.bind(this, 'invoice')}>
-                        <h6>Add admin email address for invoices</h6>
+                        <div className="section-title">Add admin email address for invoices</div>
                         {this.state.isSaved === 'invoice'?(
                             <Success message="Admin email changed successfully"/>
                         ):null}
@@ -106,7 +106,7 @@ export default class Account extends React.Component {
                     </form>
                 ):null}
                 <form onSubmit={this.onSave.bind(this, 'password')} className="update-password-form">
-                    <h6>Change your password</h6>
+                    <div className="section-title">Change your password</div>
                     {this.state.isSaved === 'password'?(
                         <Success message="Password updated successfully"/>
                     ):null}
@@ -173,7 +173,7 @@ export default class Account extends React.Component {
                     </Row>
                 </form>
                 <form onSubmit={this.onSave.bind(this, 'email')}>
-                    <h6>Change email address for your account</h6>
+                    <div className="section-title">Change email address for your account</div>
                     {this.state.isSaved === 'email'?(
                         <Success message="Email changed successfully"/>
                     ):null}
@@ -204,7 +204,7 @@ export default class Account extends React.Component {
                     </Row>
                 </form>
                 <form onSubmit={this.onSave.bind(this, 'deactivate')}>
-                    <h6>Deactivate account</h6>
+                    <div className="section-title">Deactivate account</div>
                     <div>
                         <Button type="submit" disabled>Deactivate my account</Button>
                     </div>

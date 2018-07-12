@@ -73,7 +73,7 @@ export default class ProjectManagement extends React.Component {
                         {project.deadline?(
                             <div className="section">
                                 <div className="font-weight-normal">Deadline</div>
-                                <div>{project.deadline ? moment(project.deadline).format('Do of MMMM YYYY'): 'Deadline not set'}</div>
+                                <div>{project.deadline ? moment.utc(project.deadline).format('Do of MMMM YYYY'): 'Deadline not set'}</div>
                             </div>
                         ):null}
 

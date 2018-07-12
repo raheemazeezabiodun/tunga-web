@@ -22,7 +22,6 @@ const TitleBarContent = ({match, title, subTitle, actionLink, sectionLinks}) => 
                         let url = link[0],
                             urlText = link[1],
                             urlProps = link[2] || {};
-                        console.log('urlProps: ', urlProps);
                         return (
                             <NavLink key={`title-filters-link--${link[0]}`} exact
                                      to={typeof url === 'function'?url(match):url}

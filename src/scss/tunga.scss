@@ -994,6 +994,8 @@ i {
 }
 
 .user-card {
+    @include card-link(get-color('black'));
+
     height: 400px;
     background-color: get-color('white');
     padding: 40px 40px 20px 40px;
@@ -1002,11 +1004,19 @@ i {
 }
 
 .project-card {
-    height: 400px;
+    @include card-link(get-color('black'));
+    position: relative;
+    height: 140px;
     background-color: get-color('white');
     padding: 40px 40px 20px 40px;
     border: solid 1px #ececec;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
+    box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
+
+    .status-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 }
 
 // Settings section

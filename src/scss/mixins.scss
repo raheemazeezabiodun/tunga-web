@@ -12,3 +12,13 @@
     @include padding-x($value);
     @include padding-y($value);
 }
+
+@mixin card-link($color) {
+    display: block;
+    color: $color;
+
+    &:hover, &:focus, &:active {
+        color: $color;
+        text-decoration: none;
+    }
+}

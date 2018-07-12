@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {FormGroup} from 'reactstrap';
+import {FormGroup, Row, Col} from 'reactstrap';
 
 import Input from '../core/InputGroup';
 import FieldError from '../core/FieldError';
@@ -60,51 +60,60 @@ export default class StepOne extends React.Component {
         const {errors} = this.props;
         return (
             <div>
-                <form onSubmit={this.onSave.bind(this)}>
-                    <div className="col-sm-8">
-                    {errors.profile &&
-                        errors.profile.first_name ? (
-                            <FieldError
-                                message={errors.profile.first_name}
-                            />
-                        ) : null}
-                        <FormGroup>
-                            <label>First Name*</label>
-                            <Input value={this.state.first_name}
-                                   onChange={this.onChangeField.bind(this, 'first_name')}
-                                   required/>
-                        </FormGroup>
+                <form onSubmit={this.onSave.bind(this)} className="clearfix">
+                    <Row>
+                        <Col className="col-main">
+                            {errors.profile &&
+                            errors.profile.first_name ? (
+                                <FieldError
+                                    message={errors.profile.first_name}
+                                />
+                            ) : null}
+                            <FormGroup>
+                                <label>First Name*</label>
+                                <Input value={this.state.first_name}
+                                       onChange={this.onChangeField.bind(this, 'first_name')}
+                                       required/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="col-main">
+                            {errors.profile &&
+                            errors.profile.last_name ? (
+                                <FieldError
+                                    message={errors.profile.last_name}
+                                />
+                            ) : null}
+                            <FormGroup>
+                                <label>Last Name*</label>
+                                <Input value={this.state.last_name}
+                                       onChange={this.onChangeField.bind(this, 'last_name')}
+                                       required/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="col-main">
+                            {errors.company &&
+                            errors.company.name ? (
+                                <FieldError
+                                    message={errors.company.name}
+                                />
+                            ) : null}
+                            <FormGroup>
+                                <label>Your company name</label>
+                                <Input value={this.state.company}
+                                       onChange={this.onChangeField.bind(this, 'company')} />
+                            </FormGroup>
+                        </Col>
+                    </Row>
+
+                    <div>
+                        <IconButton type="submit" name="arrow-right" size='md'
+                                    className="float-right onboard-action"
+                                    disabled={this.props.isSaving.profile}/>
                     </div>
-                    <div className="col-sm-8">
-                    {errors.profile &&
-                        errors.profile.last_name ? (
-                            <FieldError
-                                message={errors.profile.last_name}
-                            />
-                        ) : null}
-                        <FormGroup>
-                            <label>Last Name*</label>
-                            <Input value={this.state.last_name}
-                                   onChange={this.onChangeField.bind(this, 'last_name')}
-                                   required/>
-                        </FormGroup>
-                    </div>
-                    <div className="col-sm-8">
-                    {errors.company &&
-                        errors.company.name ? (
-                            <FieldError
-                                message={errors.company.name}
-                            />
-                        ) : null}
-                        <FormGroup>
-                            <label>Your company name</label>
-                            <Input value={this.state.company}
-                                   onChange={this.onChangeField.bind(this, 'company')} />
-                        </FormGroup>
-                    </div>
-                    <IconButton type="submit" name="arrow-right" size='md'
-                                className="float-right onboard-action"
-                                disabled={this.props.isSaving.profile}/>
                 </form>
             </div>
         );

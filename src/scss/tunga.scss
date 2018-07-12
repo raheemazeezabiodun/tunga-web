@@ -948,6 +948,22 @@ i {
             margin-top: 50px;
         }
 
+        .col-main {
+            max-width: 370px;
+        }
+
+        .col-side {
+            max-width: 154px;
+        }
+
+        .col-avatar {
+            max-width: 230px;
+
+            .dropzone {
+                min-height: 200px;
+                border-radius: 6px;
+            }
+        }
     }
 }
 

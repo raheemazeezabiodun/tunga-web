@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {FormGroup} from 'reactstrap';
+import {FormGroup, Row, Col} from 'reactstrap';
 
 import Input from '../core/InputGroup';
 import FieldError from '../core/FieldError';
@@ -58,10 +58,10 @@ export default class StepTwo extends React.Component {
         const {errors} = this.props;
         return (
             <div>
-                <form onSubmit={this.onSave.bind(this)}>
-                    <div className="row">
-                        <div className="col-sm-8">
-                        {errors.profile &&
+                <form onSubmit={this.onSave.bind(this)} className="clearfix">
+                    <Row>
+                        <Col className="col-main">
+                            {errors.profile &&
                             errors.profile.street ? (
                                 <FieldError
                                     message={errors.profile.street}
@@ -73,9 +73,9 @@ export default class StepTwo extends React.Component {
                                        onChange={this.onChangeField.bind(this, 'street')}
                                        required/>
                             </FormGroup>
-                        </div>
-                        <div className="col-sm-3">
-                        {errors.profile &&
+                        </Col>
+                        <Col className="col-side">
+                            {errors.profile &&
                             errors.profile.plot_number ? (
                                 <FieldError
                                     message={errors.profile.plot_number}
@@ -87,11 +87,12 @@ export default class StepTwo extends React.Component {
                                        onChange={this.onChangeField.bind(this, 'plot_number')}
                                        required/>
                             </FormGroup>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-8">
-                        {errors.profile &&
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col className="col-main">
+                            {errors.profile &&
                             errors.profile.city ? (
                                 <FieldError
                                     message={errors.profile.city}
@@ -103,9 +104,9 @@ export default class StepTwo extends React.Component {
                                        onChange={this.onChangeField.bind(this, 'city')}
                                        required/>
                             </FormGroup>
-                        </div>
-                        <div className="col-sm-3">
-                        {errors.profile &&
+                        </Col>
+                        <Col className="col-side">
+                            {errors.profile &&
                             errors.profile.postal_code ? (
                                 <FieldError
                                     message={errors.profile.postal_code}
@@ -117,10 +118,11 @@ export default class StepTwo extends React.Component {
                                        onChange={this.onChangeField.bind(this, 'postal_code')}
                                        required/>
                             </FormGroup>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-8">
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col className="col-main">
                             {errors.profile &&
                             errors.profile.country ? (
                                 <FieldError
@@ -133,14 +135,14 @@ export default class StepTwo extends React.Component {
                                                  onChange={this.onChangeField.bind(this, 'country')}
                                                  required/>
                             </FormGroup>
-                        </div>
+                        </Col>
+                    </Row>
+                    <div>
+                        <IconButton name="arrow-left" size="md"
+                                    className="float-left onboard-action"
+                                    onClick={() => this.props.history.push('/onboard/step-one')} />
+                        <IconButton type="submit" name="arrow-right" size="md" className="float-right onboard-action"/>
                     </div>
-                <div>
-                    <IconButton name="arrow-left" size="md"
-                                className="float-left onboard-action"
-                                onClick={() => this.props.history.push('/onboard/step-one')} />
-                    <IconButton type="submit" name="arrow-right" size="md" className="float-right onboard-action"/>
-                </div>
                 </form>
             </div>
         );

@@ -20,7 +20,12 @@ const OnboardContainer = (props) => {
     };
     return (
         <div className="onboard-card">
-            <div className="onboard-title">Let's set up your account</div>
+            <div className="onboard-title">
+                <Switch>
+                    <Route path="/onboard/finish" render={props => { return 'Thank you for filling in your profile' }}/>
+                    <Route path="/onboard/*" render={props => { return "Let's set up your account" }}/>
+                </Switch>
+            </div>
             <div className="onboard-content">
                 <Switch>
                     <Redirect exact from='/onboard' to='/onboard/intro'/>

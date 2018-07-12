@@ -918,7 +918,6 @@ i {
         padding-left: 10px;
         padding-bottom: 20px;
     }
-
 }
 
 .onboard-card {
@@ -1177,7 +1176,6 @@ i {
         }
 
         .section-title {
-
             margin-bottom: 16px;
         }
 
@@ -1210,6 +1208,14 @@ i {
 
     .btn-skill {
         box-shadow: none;
+    }
+
+    .profile-details {
+        > .col,
+        > [class*="col-"] {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
     }
 }
 

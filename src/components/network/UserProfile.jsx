@@ -70,7 +70,7 @@ export default class UserProfile extends React.Component {
                     <div className="basic-profile">
                         <Avatar image={user.avatar_url} size="xl"/>
                         <div className="font-weight-medium">{user.display_name}</div>
-                        <div className="">{user.profile.location}</div>
+                        <div className="text text-sm">{user.profile.location}</div>
                     </div>
 
                     <Row>
@@ -85,7 +85,7 @@ export default class UserProfile extends React.Component {
                                     <div>
                                         {profile.skills.slice(0, 6).map(skill => {
                                             return (
-                                                <Button variant="skill">{skill.name}</Button>
+                                                <Button key={skill.id} variant="skill">{skill.name}</Button>
                                             );
                                         })}
                                     </div>
@@ -100,13 +100,13 @@ export default class UserProfile extends React.Component {
                         </Col>
                     </Row>
 
-                    <Row>
+                    <Row className="profile-details">
                         <Col>
                             <div className="profile-card">
                                 <div className="section-title">Experience</div>
                                 {(user.work || []).map(work => {
                                     return (
-                                        <div className="info-block">
+                                        <div key={work.id} className="info-block">
                                             <div className="info-header">{work.company}</div>
                                             <div className="info-title">{work.position}</div>
                                             <div className="period">{work.start_month_display}/{work.start_year} - {work.end_year?`${work.end_month_display}/${work.end_year}`:'Present'}</div>
@@ -130,7 +130,7 @@ export default class UserProfile extends React.Component {
                                     let categoryId = item[0],
                                         categoryName = item[1];
                                     return (
-                                        <div className="info-block">
+                                        <div key={categoryId} className="info-block">
                                             <div className="info-header">{categoryName}</div>
                                             <div>{profile.skills_details && (profile.skills_details[categoryId] || []).map(skill => { return skill.name }).join(', ')}</div>
                                         </div>
@@ -143,7 +143,7 @@ export default class UserProfile extends React.Component {
                                 <div className="section-title">Education</div>
                                 {(user.education || []).map(education => {
                                     return (
-                                        <div className="info-block">
+                                        <div key={education.id} className="info-block">
                                             <div className="info-header">{education.institution}</div>
                                             <div className="info-title">{education.award}</div>
                                             <div className="period">{education.start_month_display}/{education.start_year} - {education.end_year?`${education.end_month_display}/${education.end_year}`:'Present'}</div>

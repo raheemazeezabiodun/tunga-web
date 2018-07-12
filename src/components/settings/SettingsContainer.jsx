@@ -25,7 +25,7 @@ const SettingsContainer = (props) => {
     const queryParams = querystring.parse((props.location.search || '').replace('?', ''));
 
     return (
-        <div className="content-card settings-card settings-container">
+        <div className="content-card settings-card settings-container clearfix">
             <Switch>
                 <Redirect exact from='/settings' to='/settings/profile'/>
                 {[

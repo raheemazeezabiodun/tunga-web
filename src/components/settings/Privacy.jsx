@@ -67,7 +67,7 @@ export default class Privacy extends React.Component {
                 {isRetrieving.settings?null:(
                     <div>
                         <div className="section">
-                            <h5>Cookie Settings</h5>
+                            <div className="font-weight-bold">Cookie Settings</div>
 
                             <div className="row">
                                 <div className="col-md-8">
@@ -88,7 +88,7 @@ export default class Privacy extends React.Component {
                         </div>
 
                         <div className="section">
-                            <h5>Promotional Email Settings</h5>
+                            <div className="font-weight-bold">Promotional Email Settings</div>
                             {UserSettings.SWITCH_SETTINGS.map(setting => {
                                 if (promotional_email_switches.indexOf(setting.name) === -1) {
                                     return null;
@@ -114,7 +114,7 @@ export default class Privacy extends React.Component {
                         </div>
 
                         <div className="section">
-                            <h5>Transactional Email Settings</h5>
+                            <div className="font-weight-bold">Transactional Email Settings</div>
                             {UserSettings.SWITCH_SETTINGS.map(setting => {
                                 if (transactional_switches.indexOf(setting.name) === -1) {
                                     return null;
@@ -140,7 +140,7 @@ export default class Privacy extends React.Component {
                         </div>
 
                         <div className="section agreements">
-                            <h5>Agreements and Policies</h5>
+                            <div className="font-weight-bold">Agreements and Policies</div>
                             <ul>
                                 {[
                                     ['/privacy', 'Privacy Policy'],

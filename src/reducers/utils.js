@@ -33,5 +33,5 @@ export function reduceUser(state, user, profile, company) {
             profileField = item[1];
         company[companyField] = company[companyField] || profile[profileField];
     });
-    return {...state, ...user, profile, company, avatar_url: '/images/c13c940141b6d6f187c96c5a19a068fc.jpg?v=1531332890084'};
+    return {...state, ...user, profile, company};
 }

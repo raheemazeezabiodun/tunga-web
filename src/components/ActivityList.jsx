@@ -24,9 +24,9 @@ import {
     isAuthenticated,
     getUser,
     isAdmin,
-    isProjectOwner,
-    isDeveloper,
-    isProjectManager,
+    isClient,
+    isDev,
+    isPM,
 } from './utils/auth';
 import Button from "./core/Button";
 
@@ -155,7 +155,7 @@ export default class ActivityList extends React.Component {
                 break;
             case 'progress_event':
                 if (
-                    isDeveloper() &&
+                    isDev() &&
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
@@ -165,7 +165,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectManager() &&
+                    isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
                         PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
@@ -174,7 +174,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectOwner() &&
+                    isClient() &&
                     !isAdmin() &&
                     activity.type === PROGRESS_EVENT_TYPE_PM
                 ) {
@@ -236,7 +236,7 @@ export default class ActivityList extends React.Component {
                 break;
             case 'progress_report':
                 if (
-                    isDeveloper() &&
+                    isDev() &&
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
@@ -246,7 +246,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectManager() &&
+                    isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
                         PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
@@ -255,7 +255,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectOwner() &&
+                    isClient() &&
                     !isAdmin() &&
                     activity.event.type === PROGRESS_EVENT_TYPE_PM
                 ) {
@@ -322,7 +322,7 @@ export default class ActivityList extends React.Component {
                 break;
             case 'legacy_progress_event':
                 if (
-                    isDeveloper() &&
+                    isDev() &&
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
@@ -332,7 +332,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectManager() &&
+                    isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
                         PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
@@ -341,7 +341,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectOwner() &&
+                    isClient() &&
                     !isAdmin() &&
                     activity.type === PROGRESS_EVENT_TYPE_PM
                 ) {
@@ -403,7 +403,7 @@ export default class ActivityList extends React.Component {
                 break;
             case 'legacy_progress_report':
                 if (
-                    isDeveloper() &&
+                    isDev() &&
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
@@ -413,7 +413,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectManager() &&
+                    isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
                         PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
@@ -422,7 +422,7 @@ export default class ActivityList extends React.Component {
                     break;
                 }
                 if (
-                    isProjectOwner() &&
+                    isClient() &&
                     !isAdmin() &&
                     activity.details.event.type === PROGRESS_EVENT_TYPE_PM
                 ) {

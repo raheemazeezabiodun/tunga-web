@@ -21,22 +21,26 @@ export function isAdmin() {
     return user.is_admin;
 }
 
-export function isDeveloper() {
+export function isDev() {
     return getUser().is_developer;
 }
 
-export function isProjectOwner() {
+export function isClient() {
     return getUser().is_project_owner;
 }
 
-export function isProjectManager() {
+export function isPM() {
     return getUser().is_project_manager;
 }
 
-export function isAdminOrProjectOwner() {
-    return isAdmin() || isProjectOwner();
+export function isAdminOrClient() {
+    return isAdmin() || isClient();
 }
 
-export function isAdminOrProjectManager() {
-    return isAdmin() || isProjectManager();
+export function isAdminOrPM() {
+    return isAdmin() || isPM();
+}
+
+export function isAdminOrPMOrClient() {
+    return isAdmin() || isClient();
 }

@@ -3,11 +3,13 @@ import React from "react";
 import _ from "lodash";
 
 import DocumentPicker from "../core/DocumentPicker";
+import Icon from "../core/Icon";
 import {
     DOC_TYPE_ESTIMATE, DOC_TYPE_OTHER, DOC_TYPE_PROPOSAL, DOC_TYPE_REQUIREMENTS,
     DOCUMENT_TYPES_MAP
 } from "../../actions/utils/api";
-import Icon from "../core/Icon";
+
+import {isAdminOrPMOrClient} from '../utils/auth';
 
 export default class Docs extends React.Component {
     static propTypes = {
@@ -65,11 +67,11 @@ export default class Docs extends React.Component {
                     DOC_TYPE_REQUIREMENTS, DOC_TYPE_OTHER
                 ].map(docType => {
                     return (
-                        <div key={`doc-type-${docType}`}>
+                        <div key={`doc-type-${docType}`} className="section">
                             <div className="font-weight-normal">
                                 {(DOCUMENT_TYPES_MAP[docType] || _.upperFirst(docType)).replace(/\s?document/, '')} documents
                             </div>
-                            <div className="file-list">
+                            <div className={`file-list ${isAdminOrPMOrClient()?'':'readonly'}`}>
                                 {this.filterDocumentsByType(documents, docType).map(doc => {
                                     return (
                                         <div key={`doc-${doc.id}`}>
@@ -77,21 +79,25 @@ export default class Docs extends React.Component {
                                                 <a href={doc.download_url} target="_blank">
                                                     <Icon name={doc.file?'download':'link'}/> {doc.download_url}
                                                 </a>
-                                                <button
-                                                    className="btn"
-                                                    onClick={this.onRemoveDoc.bind(this, doc.id)}>
-                                                    <Icon name="close" />
-                                                </button>
+                                                {isAdminOrPMOrClient()?(
+                                                    <button
+                                                        className="btn"
+                                                        onClick={this.onRemoveDoc.bind(this, doc.id)}>
+                                                        <Icon name="close" />
+                                                    </button>
+                                                ):null}
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
 
-                            <DocumentPicker showSelected={false}
-                                            documentType={docType}
-                                            size="main"
-                                            onChange={docs => {this.onChangeDocs(docType, docs);}}/>
+                            {isAdminOrPMOrClient()?(
+                                <DocumentPicker showSelected={false}
+                                                documentType={docType}
+                                                size="main"
+                                                onChange={docs => {this.onChangeDocs(docType, docs);}}/>
+                            ):null}
                         </div>
                     );
                 })}

@@ -582,6 +582,17 @@ i {
             }
         }
     }
+
+    &.readonly {
+        .file-item {
+            background-color: transparent;
+            padding: 0;
+
+            .btn {
+                display: none;
+            }
+        }
+    }
 }
 
 // Tags
@@ -1178,6 +1189,10 @@ i {
         .col-add-docs {
             max-width: 50px;
             padding-right: 10px;
+        }
+
+        .section {
+            margin-bottom: 20px;
         }
     }
 

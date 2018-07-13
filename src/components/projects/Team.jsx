@@ -7,6 +7,7 @@ import ProjectMemberForm from './modals/ProjectMemberForm';
 import DeleteUser from './modals/DeleteProjectMemberForm';
 import Avatar from '../core/Avatar';
 
+import {isAdminOrClient, isAdminOrPM, isAdminOrPMOrClient} from '../utils/auth';
 
 export default class Team extends React.Component {
     static propTypes = {
@@ -32,11 +33,13 @@ export default class Team extends React.Component {
                         <Avatar image={project.owner.avatar_url}
                                 title={project.owner.display_name}
                                 onRemove={this.deleteUser.bind(this, project.owner, 'owner')}
-                                remove/>
+                                remove={isAdminOrPM()}/>
                     ) : null }
-                    <IconButton name="add"
-                        size="main"
-                        onClick={this.renderModal.bind(this, 'project_owner', 'owner', 'Add project Owner', 1)} />
+                    {isAdminOrPM()?(
+                        <IconButton name="add"
+                                    size="main"
+                                    onClick={this.renderModal.bind(this, 'project_owner', 'owner', 'Add project Owner', 1)} />
+                    ):null}
                 </div>
                 <div className="project-member">
                     <div className="font-weight-normal">Project Manager</div>
@@ -44,11 +47,13 @@ export default class Team extends React.Component {
                         <Avatar image={project.pm.avatar_url}
                                 title={project.pm.display_name}
                                 onRemove={this.deleteUser.bind(this, project.pm, 'pm')}
-                                remove />
+                                remove={isAdminOrClient()} />
                     ) : null }
-                    <IconButton name="add"
-                        size="main"
-                        onClick={this.renderModal.bind(this, 'project_manager', 'pm', 'Add project Manager', 1)} />
+                    {isAdminOrClient()?(
+                        <IconButton name="add"
+                                    size="main"
+                                    onClick={this.renderModal.bind(this, 'project_manager', 'pm', 'Add project Manager', 1)} />
+                    ):null}
                 </div>
                 <div className="project-member">
                     <div className="font-weight-normal">Team</div>
@@ -57,12 +62,14 @@ export default class Team extends React.Component {
                             <Avatar image={team.user.avatar_url}
                                     title={team.user.display_name}
                                     onRemove={this.deleteUser.bind(this, team, 'team')}
-                                    remove />
+                                    remove={isAdminOrPMOrClient()} />
                         )
                     })}
-                    <IconButton name="add"
-                        size="main"
-                        onClick={this.renderModal.bind(this, 'developer', 'participation', 'Add team members', 10)} />
+                    {isAdminOrPMOrClient()?(
+                        <IconButton name="add"
+                                    size="main"
+                                    onClick={this.renderModal.bind(this, 'developer', 'participation', 'Add team members', 10)} />
+                    ):null}
                 </div>
             </div>
         );

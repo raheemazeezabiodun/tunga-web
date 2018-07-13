@@ -21,7 +21,7 @@ const UserContainer = ({User, UserActions}) => {
                     '/network',
                 ].map(path => {
                     return (
-                        <Route key={`user-container-path--${path}`} path={path} render={props => <UserListContainer {...props} User={User} UserActions={UserActions} filters={{type: USER_TYPE_DEVELOPER}}><UserList/></UserListContainer>}/>
+                        <Route key={`user-container-path--${path}`} path={path} render={props => <UserListContainer {...props} User={User} UserActions={UserActions} filters={{type: USER_TYPE_DEVELOPER, filter: props.match.params.filter || null}}><UserList/></UserListContainer>}/>
                     );
                 })}
             </Switch>

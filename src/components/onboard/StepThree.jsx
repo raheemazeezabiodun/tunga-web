@@ -86,7 +86,7 @@ export default class StepThree extends React.Component {
     render() {
         const {user, errors} = this.props;
 
-        let errorSource = user.is_project_owner?errors.company:errors.profile,
+        let errorSource = (user.is_project_owner?errors.company:errors.profile) || {},
             telField = user.is_project_owner?'tel_number':'phone_number',
             regNoField = user.is_project_owner?'reg_no':'company_reg_no';
 

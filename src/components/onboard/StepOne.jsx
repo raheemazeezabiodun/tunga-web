@@ -62,9 +62,9 @@ export default class StepOne extends React.Component {
     }
 
     render() {
-        const {errors} = this.props;
+        const {errors, user} = this.props;
 
-        let errorSource = user.is_project_owner?errors.company:errors.profile,
+        let errorSource = (user.is_project_owner?errors.company:errors.profile) || {},
             companyField = user.is_project_owner?'name':'company';
 
         return (

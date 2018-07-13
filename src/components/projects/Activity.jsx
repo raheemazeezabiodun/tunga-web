@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {Row, Col} from 'reactstrap';
 import randomstring from "randomstring";
 
 import connect from "../../connectors/ActivityConnector";
 
 import ActivityList from "../ActivityList";
 import IconButton from "../core/IconButton";
+import CustomInputGroup from "../core/CustomInputGroup";
+import Upload from "../core/Upload";
 
 class Activity extends React.Component {
     static propTypes = {
@@ -50,6 +53,14 @@ class Activity extends React.Component {
         this.setState(newState);
     }
 
+    onSendMessage = (e) => {
+        // TODO: Send Message
+    };
+
+    onUpload = (files) => {
+        // TODO: Upload file
+    };
+
     render() {
         const {Activity, ActivityActions} = this.props,
             selectionKey = this.state.selectionKey;
@@ -76,7 +87,7 @@ class Activity extends React.Component {
                                     filterName = filter[1];
 
                                 return (
-                                    <div className="switch">
+                                    <div key={filterKey} className="switch">
                                         <IconButton name={`toggle-${this.state[filterKey]?'on':'off'}`}
                                                     size="sm" className={`${this.state[filterKey]?'on':'off'}`}
                                                     onClick={this.onToggleFilter.bind(this, filterKey)}/>
@@ -99,6 +110,15 @@ class Activity extends React.Component {
                               showNotifications={this.state.notifications}
                               showProgressReports={this.state.progress_reports}
                               showFiles={this.state.files}/>
+
+                <Row>
+                    <Col className="col-add-docs">
+                        <Upload variant="icon" size="md" showSelected={false} onChange={this.onUpload}/>
+                    </Col>
+                    <Col>
+                        <CustomInputGroup variant="message" onChange={this.onSendMessage}/>
+                    </Col>
+                </Row>
             </div>
         );
     }

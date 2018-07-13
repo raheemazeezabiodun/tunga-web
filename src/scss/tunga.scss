@@ -1163,6 +1163,7 @@ i {
 
             .activity-list {
                 margin-top: 10px;
+                margin-bottom: 10px;
             }
 
             .project-docs {
@@ -1172,6 +1173,11 @@ i {
                     }
                 }
             }
+        }
+
+        .col-add-docs {
+            max-width: 50px;
+            padding-right: 10px;
         }
     }
 

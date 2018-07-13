@@ -29,7 +29,7 @@ export default class UserList extends React.Component {
 
                 {users.length && hasMore && !isLoadingMore?(
                     <div className="text-center">
-                        <Button onClick={onLoadMore}>Load More</Button>
+                        <Button size="sm" onClick={onLoadMore}>Load More</Button>
                     </div>
                 ):null}
             </div>

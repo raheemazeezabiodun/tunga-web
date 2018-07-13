@@ -707,11 +707,11 @@ export default class ActivityList extends React.Component {
                     <div>
                         {activities.length && hasMore && !isLoadingMore?(
                             <div className="text-center">
-                                <Button onClick={onLoadMore}>{loadMoreText || 'Show older activity'}</Button>
+                                <Button size="sm" onClick={onLoadMore}>{loadMoreText || 'Show older activity'}</Button>
                             </div>
                         ):null}
 
-                        {activities.length &&
+                        {activities &&
                         activities.map((item, idx, all_msgs) => {
                             let activity = this.cleanActivity(item);
                             let msgs = [];
@@ -745,4 +745,3 @@ export default class ActivityList extends React.Component {
         );
     }
 }
-

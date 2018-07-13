@@ -104,6 +104,7 @@ class Activity extends React.Component {
                               onLoadMore={() => {
                                   ActivityActions.listMoreActivities(Activity.next[selectionKey], selectionKey);
                               }}
+                              isLoading={Activity.isFetching[selectionKey]}
                               isLoadingMore={Activity.isFetchingMore[selectionKey]}
                               hasMore={!!Activity.next[selectionKey]}
                               showMessages={this.state.messages}

@@ -1,38 +1,41 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {Row, Col} from 'reactstrap';
 
-import Button from '../core/Button';
 import ProjectCard from './ProjectCard';
+import Progress from "../core/Progress";
+import LoadMore from "../core/LoadMore";
 
 export default class ProjectList extends React.Component {
     static propTypes = {
         projects: PropTypes.array,
         onLoadMore: PropTypes.func,
+        isLoading: PropTypes.bool,
         isLoadingMore: PropTypes.bool,
         hasMore: PropTypes.bool,
     };
 
     render() {
-        const {projects, onLoadMore, hasMore, isLoadingMore} = this.props;
+        const {projects, onLoadMore, hasMore, isLoading, isLoadingMore} = this.props;
 
-        return (
-            <div>
-                <div className="row card-list">
-                    {projects.map(project => {
-                        return (
-                            <div key={`project-card--${project.id}`} className="col-sm-4">
-                                <ProjectCard project={project}/>
-                            </div>
-                        );
-                    })}
+        return isLoading?(
+            <Progress/>
+        ):(
+            projects.length?(
+                <div>
+                    <Row className="card-list">
+                        {projects.map(project => {
+                            return (
+                                <Col key={`project-card--${project.id}`} sm="4">
+                                    <ProjectCard project={project}/>
+                                </Col>
+                            );
+                        })}
+                    </Row>
+
+                    <LoadMore hasMore={hasMore} isLoadingMore={isLoadingMore} onLoadMore={onLoadMore}/>
                 </div>
-
-                {projects.length && hasMore && !isLoadingMore?(
-                    <div className="text-center">
-                        <Button size="sm" onClick={onLoadMore}>Load More</Button>
-                    </div>
-                ):null}
-            </div>
+            ):null
         );
     }
 }

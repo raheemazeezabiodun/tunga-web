@@ -29,6 +29,8 @@ import {
     isPM,
 } from './utils/auth';
 import Button from "./core/Button";
+import Progress from "./core/Progress";
+import LoadMore from "./core/LoadMore";
 
 export function scrollList(listId) {
     let activity_list = $(`#list${listId}.activity-list`);
@@ -695,51 +697,50 @@ export default class ActivityList extends React.Component {
             isLoading,
             isLoadingMore,
             hasMore,
-            onLoadMore,
-            loadMoreText
+            onLoadMore
         } = this.props;
         let last_sender = null;
         let thread = {};
 
-        return isLoading?null:(
+        return (
             <div id={`list${this.state.listId}`} className="activity-list">
                 <div className="activity-wrapper">
-                    <div>
-                        {activities.length && hasMore && !isLoadingMore?(
-                            <div className="text-center">
-                                <Button size="sm" onClick={onLoadMore}>{loadMoreText || 'Show older activity'}</Button>
-                            </div>
-                        ):null}
+                    {isLoading?(
+                        <Progress/>
+                    ):activities && activities.length?(
+                        <div>
+                            <LoadMore hasMore={hasMore} isLoadingMore={isLoadingMore} onLoadMore={onLoadMore}>Show older activity</LoadMore>
 
-                        {activities &&
-                        activities.map((item, idx, all_msgs) => {
-                            let activity = this.cleanActivity(item);
-                            let msgs = [];
-                            if (activity) {
-                                if (
-                                    activity.user.id != null &&
-                                    activity.user.id === last_sender
-                                ) {
-                                    thread.others = [
-                                        ...thread.others,
-                                        activity,
-                                    ];
-                                } else {
-                                    msgs = [...msgs, this.renderThread(thread)];
-                                    thread.first = activity;
-                                    thread.others = [];
+                            {activities &&
+                            activities.map((item, idx, all_msgs) => {
+                                let activity = this.cleanActivity(item);
+                                let msgs = [];
+                                if (activity) {
+                                    if (
+                                        activity.user.id != null &&
+                                        activity.user.id === last_sender
+                                    ) {
+                                        thread.others = [
+                                            ...thread.others,
+                                            activity,
+                                        ];
+                                    } else {
+                                        msgs = [...msgs, this.renderThread(thread)];
+                                        thread.first = activity;
+                                        thread.others = [];
+                                    }
+
+                                    last_sender = activity.user.id;
                                 }
 
-                                last_sender = activity.user.id;
-                            }
+                                if (idx + 1 === all_msgs.length) {
+                                    msgs = [...msgs, this.renderThread(thread)];
+                                }
 
-                            if (idx + 1 === all_msgs.length) {
-                                msgs = [...msgs, this.renderThread(thread)];
-                            }
-
-                            return msgs;
-                        })}
-                    </div>
+                                return msgs;
+                            })}
+                        </div>
+                    ):null}
                 </div>
             </div>
         );

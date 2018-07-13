@@ -50,6 +50,7 @@ export default class ProjectListContainer extends React.Component  {
             onLoadMore: () => {
                 ProjectActions.listMoreProjects(Project.next[selectionKey], selectionKey);
             },
+            isLoading: Project.isFetching[selectionKey],
             isLoadingMore: Project.isFetchingMore[selectionKey],
             hasMore: !!Project.next[selectionKey],
             ProjectActions

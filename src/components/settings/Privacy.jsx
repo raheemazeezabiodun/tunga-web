@@ -5,6 +5,7 @@ import ChoiceGroup from "../core/ChoiceGroup";
 import * as UserSettings from "../../legacy/utils/UserSettings";
 import {openCookieConsentPopUp} from "../utils/consent";
 import Button from "../core/Button";
+import Progress from "../core/Progress";
 
 export default class Privacy extends React.Component {
     static propTypes = {
@@ -64,7 +65,9 @@ export default class Privacy extends React.Component {
 
         return (
             <div className="privacy-settings">
-                {isRetrieving.settings?null:(
+                {isRetrieving.settings?(
+                    <Progress/>
+                ):(
                     <div>
                         <div className="section">
                             <div className="section-title">Cookie Settings</div>

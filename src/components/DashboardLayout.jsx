@@ -9,18 +9,34 @@ import NavBar from './NavBar';
 import SideBar from './SideBar';
 import TitleBar from './TitleBar';
 import MainContent from './MainContent';
+import Progress from "./core/Progress";
+import BootLogo from "./core/BootLogo";
 
 class DashboardLayout extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state= {hasVerified: false};
+
+        const {Auth: {user}} = this.props;
+
+        this.state= {
+            hasVerified: user && user.id,
+            showProgress: !user || !user.id // Used to prevent flickering
+        };
     }
 
     componentDidMount() {
         const {Auth} = this.props;
-        if (!Auth.isAuthenticated && !this.props.Auth.isVerifying && !this.state.hasVerified) {
+        if (!this.state.hasVerified && !Auth.isAuthenticated && !this.props.Auth.isVerifying) {
             this.props.AuthActions.verify();
+        }
+
+        if(this.state.showProgress) {
+            // Wait one second to prevent flickering
+            let self = this;
+            setTimeout(() => {
+                self.setState({showProgress: false});
+            }, 1000);
         }
     }
 
@@ -40,7 +56,7 @@ class DashboardLayout extends React.Component {
         const {Auth: {user}, AuthActions: {logout}} = this.props;
 
         return (
-            user && user.id?(
+            user && user.id && !this.state.showProgress?(
                 <React.Fragment>
                     <NavBar user={user} onSignOut={logout}/>
                     <SideBar/>
@@ -48,7 +64,7 @@ class DashboardLayout extends React.Component {
                     <MainContent/>
                 </React.Fragment>
             ):(
-                <div>Loading ...</div>
+                <BootLogo/>
             )
         )
     }

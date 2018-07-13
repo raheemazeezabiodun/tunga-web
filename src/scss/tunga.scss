@@ -26,6 +26,30 @@ i {
     vertical-align: middle;
 }
 
+// Progress
+
+.loading {
+    text-align: center;
+
+    > img {
+        height: 20px !important;
+        margin: 20px auto;
+    }
+}
+
+.boot-logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    background-color: get-color('light-grey');
+
+    img {
+        height: 50px;
+    }
+}
+
 // Typography
 .font-weight-thin {
     font-weight: $font-weight-thin !important;

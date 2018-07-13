@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 import _ from 'lodash';
+import {addPropsToChildren} from "../core/utils/children";
 
 export default class ProjectListContainer extends React.Component  {
 
@@ -39,25 +40,20 @@ export default class ProjectListContainer extends React.Component  {
     }
 
     renderChildren() {
-        const {Project, ProjectActions} = this.props, self = this;
+        const {Project, ProjectActions, children} = this.props, self = this;
         const selectionKey = this.state.selectionKey;
 
-        return React.Children.map(
-            this.props.children,
-            function(child) {
-                return React.cloneElement(child, {
-                    projects: (Project.ids[selectionKey] || []).map(id => {
-                        return Project.projects[id];
-                    }),
-                    onLoadMore: () => {
-                        ProjectActions.listMoreProjects(Project.next[selectionKey], selectionKey);
-                    },
-                    isLoadingMore: Project.isFetchingMore[selectionKey],
-                    hasMore: !!Project.next[selectionKey],
-                    ProjectActions
-                });
-            }.bind(this),
-        );
+        return addPropsToChildren(children, {
+            projects: (Project.ids[selectionKey] || []).map(id => {
+                return Project.projects[id];
+            }),
+            onLoadMore: () => {
+                ProjectActions.listMoreProjects(Project.next[selectionKey], selectionKey);
+            },
+            isLoadingMore: Project.isFetchingMore[selectionKey],
+            hasMore: !!Project.next[selectionKey],
+            ProjectActions
+        });
     }
 
     render() {

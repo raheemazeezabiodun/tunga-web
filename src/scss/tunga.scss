@@ -329,6 +329,7 @@ i {
 .avatar-wrapper {
     position: relative;
     display: inline-block;
+    margin-right: 5px;
 
     .badge {
         position: absolute;
@@ -1106,7 +1107,63 @@ i {
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
 
         .project-activity-wrapper {
+            position: relative;
             padding: 40px;
+
+            .activity-filter {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+
+                .btn-filter {
+                    color: get-color('black');
+                    height: auto;
+                    line-height: 1.5;
+                    margin: 0 30px 0 0;
+                }
+
+                .switches {
+                    display: none;
+                    float: left;
+
+                    > * {
+                        margin-right: 15px;
+                        float: left;
+                    }
+
+                    .switch {
+                        margin-right: 5px;
+
+                        .btn {
+                            height: auto;
+                            line-height: 1.5;
+
+                            &.on {
+                                color: $brand-color;
+                            }
+
+                            &.off {
+                                color: get-color('black');
+                            }
+                        }
+                    }
+                }
+
+                &.open {
+                    .btn-filter {
+                        color: $brand-color;
+                        outline-width: 0;
+                    }
+
+                    .switches {
+                        display: block;
+                    }
+                }
+            }
+
+            .activity-list {
+                margin-top: 10px;
+            }
 
             .project-docs {
                 .file-list {
@@ -1237,6 +1294,96 @@ i {
             padding-right: 10px;
             padding-left: 10px;
         }
+    }
+}
+
+
+// Messages
+.activity-list {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 350px;
+
+    .activity-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        width: 100%;
+        min-height: 100%;
+    }
+}
+
+.message {
+    margin: 5px 0;
+    width: 75%;
+    min-width: 300px;
+
+    &.new {
+        font-weight: 400;
+    }
+
+    .media-left,
+    .media-right {
+        min-width: 50px;
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+        }
+
+        .avatar.avatar-icon {
+            font-size: 40px;
+        }
+    }
+
+    .media-right {
+        text-align: right;
+
+        .avatar-wrapper {
+            margin-right: 0;
+        }
+    }
+
+    .media-body {
+        background-color: get-color('light-grey');
+        border-radius: 5px;
+    }
+
+    .username {
+        color: $brand-color;
+    }
+
+    time,
+    .time {
+        color: get-color('dark-grey');
+    }
+
+    .sub-message,
+    .body {
+        padding: 5px 15px;
+    }
+
+    .sub-thread {
+        padding: 5px 15px;
+        border-width: 5px 0;
+        border-color: #fff;
+        border-style: solid;
+    }
+
+    .sub-thread + .sub-thread {
+        border-top-width: 0;
+    }
+
+    .sub-thread:last-child {
+        border-bottom-width: 0;
+    }
+
+    .progress {
+        margin: 5px auto;
+    }
+
+    p {
+        margin-bottom: 5px;
     }
 }
 

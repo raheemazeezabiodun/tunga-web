@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {composeFormData, ENDPOINT_ACTIVITIES} from './utils/api';
+import {ENDPOINT_ACTIVITIES} from './utils/api';
 
 export const LIST_ACTIVITIES_START = 'LIST_ACTIVITIES_START';
 export const LIST_ACTIVITIES_SUCCESS = 'LIST_ACTIVITIES_SUCCESS';

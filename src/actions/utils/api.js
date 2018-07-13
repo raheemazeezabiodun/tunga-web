@@ -73,6 +73,7 @@ export const ENDPOINT_DOCUMENTS = getEndpointUrl('documents/');
 export const ENDPOINT_PARTICIPATION = getEndpointUrl('participation/');
 export const ENDPOINT_PROGRESS_EVENTS = getEndpointUrl('progress-events/');
 export const ENDPOINT_SKILLS = getEndpointUrl('skill/');
+export const ENDPOINT_ACTIVITIES = getEndpointUrl('activity/');
 
 
 export const ENDPOINT_MY_APPS = getEndpointUrl('me/app/');

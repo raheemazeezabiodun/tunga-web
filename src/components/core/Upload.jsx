@@ -18,7 +18,8 @@ export default class Upload extends React.Component {
         variant: 'dropzone',
         type: 'file',
         multiple: false,
-        max: 0
+        max: 0,
+        showSelected: true
     };
 
     static propTypes = {
@@ -32,6 +33,7 @@ export default class Upload extends React.Component {
         size: PropTypes.string,
         max: PropTypes.number,
         icon: PropTypes.string,
+        showSelected: PropTypes.bool,
     };
 
     constructor(props) {
@@ -73,7 +75,7 @@ export default class Upload extends React.Component {
     render() {
         return (
             <div className={`upload-input ${this.props.className || ''}`}>
-                {this.state.files.length && (this.props.variant !== 'dropzone' || this.props.multiple)?(
+                {this.props.showSelected && this.state.files.length && (this.props.variant !== 'dropzone' || this.props.multiple)?(
                     <div className="file-list">
                         {this.state.files.map((file, index) => {
                             return (

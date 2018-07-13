@@ -37,9 +37,8 @@ export default class Avatar extends React.Component {
         const {className, image, icon, size, title, link, badge, verified, remove} = this.props,
             avatarId = `avatar${randomstring.generate()}`;
         let avatar = (
-            <div
-                className={`avatar ${size?`avatar-${size}`:''} ${image?'':'avatar-icon'}`}
-                style={image?{backgroundImage: `url(${image})`}:{}}>
+            <div className={`avatar ${size?`avatar-${size}`:''} ${image?'':'avatar-icon'}`}
+                 style={image?{backgroundImage: `url(${image})`}:{}} title={title || ''}>
                 {image ? null : (
                     icon || <Icon name="avatar"/>
                 )}
@@ -60,8 +59,8 @@ export default class Avatar extends React.Component {
                                 className="remove"
                                 onClick={this.onRemove}/>
                 ):null}
-                {link || title?(
-                    <Link to={link} title={title}>{avatar}</Link>
+                {link?(
+                    <Link to={link} title={title || ''}>{avatar}</Link>
                 ):avatar}
             </div>
         );

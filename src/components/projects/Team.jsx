@@ -57,11 +57,12 @@ export default class Team extends React.Component {
                 </div>
                 <div className="project-member">
                     <div className="font-weight-normal">Team</div>
-                    {project.participation.map(team => {
+                    {project.participation.map(participation => {
                         return (
-                            <Avatar image={team.user.avatar_url}
-                                    title={team.user.display_name}
-                                    onRemove={this.deleteUser.bind(this, team, 'team')}
+                            <Avatar key={participation.id}
+                                    image={participation.user.avatar_url}
+                                    title={participation.user.display_name}
+                                    onRemove={this.deleteUser.bind(this, participation, 'team')}
                                     remove={isAdminOrPMOrClient()} />
                         )
                     })}

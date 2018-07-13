@@ -5,6 +5,7 @@ import Profile from './ProfileReducers';
 import Project from './ProjectReducers';
 import User from './UserReducers';
 import Skill from './SkillReducers';
+import Activity from './ActivityReducers';
 
 const TungaApp = combineReducers({
     Auth,
@@ -12,6 +13,7 @@ const TungaApp = combineReducers({
     Project,
     User,
     Skill,
+    Activity,
     routing: routerReducer,
 });
 

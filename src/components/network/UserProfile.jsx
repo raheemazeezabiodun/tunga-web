@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col} from 'reactstrap';
-import Linkify from 'react-linkify';
+import Linkify from '../Linkify';
 
 import Avatar from "../core/Avatar";
 import Button from "../core/Button";

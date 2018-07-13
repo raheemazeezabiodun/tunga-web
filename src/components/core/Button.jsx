@@ -19,8 +19,8 @@ export default class Button extends React.Component {
 
     render() {
         return (
-            <button type={this.props.type || 'button'}
-                    className={`btn btn-${this.props.variant || 'primary'} ${this.props.className || ''} ${this.props.size ?`btn-${this.props.size}`:''}`}
+            <button type={this.props.type}
+                    className={`btn ${this.props.variant?`btn-${this.props.variant}`:''} ${this.props.className || ''} ${this.props.size ?`btn-${this.props.size}`:''}`}
                     {...filterButtonProps(this.props)}
                     {...addEventListeners(BUTTON_EVENTS, this.props)}>
                 {this.props.children}

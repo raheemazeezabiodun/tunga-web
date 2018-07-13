@@ -38,7 +38,8 @@ nav#side-nav {
             @include sub-section;
         }
 
-        .form-control, .input-group:not(.input-search), .rw-widget, .tag-input {
+        .form-control, .input-group:not(.input-search),
+        .rw-widget, .tag-input, .message-widget {
             max-width: 600px;
         }
     }

@@ -9,6 +9,7 @@ import ActivityList from "../ActivityList";
 import IconButton from "../core/IconButton";
 import CustomInputGroup from "../core/CustomInputGroup";
 import Upload from "../core/Upload";
+import MessageWidget from "../core/MessageWidget";
 
 class Activity extends React.Component {
     static propTypes = {
@@ -53,12 +54,12 @@ class Activity extends React.Component {
         this.setState(newState);
     }
 
-    onSendMessage = (e) => {
-        // TODO: Send Message
+    onSendMessage = (message) => {
+        // TODO: Send Messages
     };
 
     onUpload = (files) => {
-        // TODO: Upload file
+        // TODO: Upload Files
     };
 
     render() {
@@ -112,14 +113,7 @@ class Activity extends React.Component {
                               showProgressReports={this.state.progress_reports}
                               showFiles={this.state.files}/>
 
-                <Row>
-                    <Col className="col-add-docs">
-                        <Upload variant="icon" size="md" showSelected={false} onChange={this.onUpload}/>
-                    </Col>
-                    <Col>
-                        <CustomInputGroup variant="message" onChange={this.onSendMessage}/>
-                    </Col>
-                </Row>
+                <MessageWidget onSendMessage={this.onSendMessage} onUpload={this.onUpload}/>
             </div>
         );
     }

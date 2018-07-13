@@ -30,6 +30,7 @@ import Calendar from '../../components/core/Calendar';
 import DocumentPicker from '../../components/core/DocumentPicker';
 
 import SampleProfileForm from './samples/SampleProfileForm';
+import MessageWidget from "../../components/core/MessageWidget";
 
 let avatarUrl = require('../images/deadpool.jpg');
 
@@ -417,7 +418,6 @@ export default class Guide extends React.Component {
                                     ['tel', 'Phone Number'],
                                     ['address', 'Address'],
                                     ['url', 'URL Input'],
-                                    ['message', 'Message'],
                                 ].map(input => {
                                     let inputProps = {};
 
@@ -437,6 +437,27 @@ export default class Guide extends React.Component {
                                             {this.renderAndDocument(
                                                 <CustomInputGroup {...inputProps}/>,
                                                 false, 'CustomInputGroup'
+                                            )}
+                                        </div>
+                                    );
+                                })}
+
+                                {[
+                                    ['Message Widget', ],
+                                    ['Message Widget (No upload)', {canUpload: false}],
+                                ].map(input => {
+                                    let inputProps = {};
+
+                                    if(input[1]) {
+                                        inputProps = {...inputProps, ...input[1]};
+                                    }
+
+                                    return (
+                                        <div key={`input-group-${input[0]}`}>
+                                            <h4>{input[0]}</h4>
+                                            {this.renderAndDocument(
+                                                <MessageWidget {...inputProps}/>,
+                                                false, 'MessageWidget'
                                             )}
                                         </div>
                                     );

@@ -17,7 +17,7 @@ export default class Input extends React.Component {
 
     render() {
         return (
-            <input type={this.props.type || 'text'}
+            <input type={this.props.type}
                    className={`form-control ${this.props.className || ''} ${this.props.size?`form-control-${this.props.size}`:''}`}
                    placeholder={this.props.placeholder}
                    {...filterInputProps(this.props)}

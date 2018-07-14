@@ -11,7 +11,20 @@ function ids(state = {}, action) {
     let newState = {};
     switch (action.type) {
         case ActivityActions.LIST_ACTIVITIES_SUCCESS:
-            newState[selectionKey] = getIds(action.items);
+            let newIds = getIds(action.items);
+            if(action.filter.since) {
+                let cleanedIds = [];
+                if(state[selectionKey]) {
+                    state[selectionKey].forEach(id => {
+                        if(typeof id === 'number') {
+                            cleanedIds.push(id);
+                        }
+                    });
+                }
+                newState[selectionKey] = [...newIds, ...cleanedIds];
+            } else {
+                newState[selectionKey] = newIds;
+            }
             return {...state, ...newState};
         case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
             newState[selectionKey] = [
@@ -96,7 +109,7 @@ function isFetching(state = {}, action) {
     let newState = {};
     switch (action.type) {
         case ActivityActions.LIST_ACTIVITIES_START:
-            newState[selectionKey] = true;
+            newState[selectionKey] = !action.filter.since;
             return {...state, ...newState};
         case ActivityActions.LIST_ACTIVITIES_SUCCESS:
         case ActivityActions.LIST_ACTIVITIES_FAILED:

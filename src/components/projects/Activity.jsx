@@ -16,6 +16,8 @@ class Activity extends React.Component {
         ActivityActions: PropTypes.object,
     };
 
+    updateTimer = null;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -31,6 +33,8 @@ class Activity extends React.Component {
 
     componentDidMount() {
         this.getList();
+
+        this.updateTimer = setInterval(this.getNewActivity.bind(this), 5000);
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
@@ -39,12 +43,40 @@ class Activity extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        clearInterval(this.updateTimer);
+    }
+
     getList(filters={}) {
         const {project, ActivityActions} = this.props;
         ActivityActions.listActivities(
             {...(this.props.filters || {}), ...(filters || {}), project: project.id},
             this.state.selectionKey, this.state.prevKey
         );
+    }
+
+    getNewActivity() {
+        const {Activity} = this.props,
+            selectionKey = this.state.selectionKey;
+
+        if (!Activity.isFetching[selectionKey]) {
+            let since = 0,
+                activityIds = [];
+
+            (Activity.ids[selectionKey] || []).forEach(id => {
+                if(typeof id === 'number') {
+                    activityIds.push(id);
+                }
+            });
+
+            if (activityIds.length) {
+                since = activityIds[0];
+            }
+
+            if(since) {
+                this.getList({since});
+            }
+        }
     }
 
     onToggleFilter(key, e) {

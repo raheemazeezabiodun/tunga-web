@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {ENDPOINT_PAYONEER_SIGNUP} from "../../legacy/constants/Api";
+import {ENDPOINT_PAYONEER_SIGNUP} from "../../actions/utils/api";
 import Icon from "../core/Icon";
 
 export default class Payment extends React.Component {

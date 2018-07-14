@@ -75,6 +75,9 @@ export const ENDPOINT_PROGRESS_EVENTS = getEndpointUrl('progress-events/');
 export const ENDPOINT_SKILLS = getEndpointUrl('skill/');
 export const ENDPOINT_ACTIVITIES = getEndpointUrl('activity/');
 export const ENDPOINT_COMMENTS = getEndpointUrl('comments/');
+export const ENDPOINT_UPLOADS = getEndpointUrl('uploads/');
+
+export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 
 
 export const ENDPOINT_MY_APPS = getEndpointUrl('me/app/');
@@ -88,7 +91,6 @@ export const ENDPOINT_ESTIMATE = getEndpointUrl('estimate/');
 export const ENDPOINT_QUOTE = getEndpointUrl('sprint/');
 export const ENDPOINT_SAVED_TASK = getEndpointUrl('saved-task/');
 export const ENDPOINT_PROGRESS_REPORT = getEndpointUrl('progress-report/');
-export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 export const ENDPOINT_CONTACT_REQUEST = getEndpointUrl('contact-request/');
 export const ENDPOINT_SUPPORT_SECTION = getEndpointUrl('support/section/');
 export const ENDPOINT_SUPPORT_PAGE = getEndpointUrl('support/page/');

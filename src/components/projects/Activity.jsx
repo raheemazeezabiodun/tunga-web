@@ -39,9 +39,12 @@ class Activity extends React.Component {
         }
     }
 
-    getList() {
+    getList(filters={}) {
         const {project, ActivityActions} = this.props;
-        ActivityActions.listActivities({project: project.id, ...(this.props.filters || {})}, this.state.selectionKey, this.state.prevKey);
+        ActivityActions.listActivities(
+            {...(this.props.filters || {}), ...(filters || {}), project: project.id},
+            this.state.selectionKey, this.state.prevKey
+        );
     }
 
     onToggleFilter(key, e) {
@@ -62,8 +65,15 @@ class Activity extends React.Component {
         ActivityActions.createComment(comment, this.state.selectionKey);
     };
 
-    onUpload = (files) => {
-        // TODO: Upload Files
+    onUpload = (file) => {
+        const {project, ActivityActions} = this.props;
+        let upload = {
+            content_type: project.content_type,
+            object_id: project.id,
+            file: file
+        };
+
+        ActivityActions.createUpload(upload, this.state.selectionKey);
     };
 
     render() {

@@ -133,6 +133,7 @@ export default class ActivityList extends React.Component {
                 }
                 break;
             case 'upload':
+            case 'legacy_upload':
                 if (showFiles) {
                     creator = activity.user;
                     createdAt = activity.created_at;

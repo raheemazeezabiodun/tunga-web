@@ -2,10 +2,12 @@ import {combineReducers} from 'redux';
 
 import * as ActivityActions from '../actions/ActivityActions';
 import * as CommentActions from '../actions/CommentActions';
+import * as UploadActions from '../actions/UploadActions';
 import {getIds} from './utils';
 
 function ids(state = {}, action) {
     let selectionKey = action.selection || 'default';
+    let targetKey = action.target || action.id || 'default';
     let newState = {};
     switch (action.type) {
         case ActivityActions.LIST_ACTIVITIES_SUCCESS:
@@ -26,9 +28,14 @@ function ids(state = {}, action) {
         case ActivityActions.LIST_ACTIVITIES_FAILED:
             return state;
         case CommentActions.CREATE_COMMENT_SUCCESS:
-            let targetKey = action.target || action.id || 'default';
             newState[targetKey] = [
                 `comment_${action.comment.id}`,
+                ...state[targetKey],
+            ];
+            return {...state, ...newState};
+        case UploadActions.CREATE_UPLOAD_SUCCESS:
+            newState[targetKey] = [
+                `upload_${action.upload.id}`,
                 ...state[targetKey],
             ];
             return {...state, ...newState};
@@ -38,6 +45,7 @@ function ids(state = {}, action) {
 }
 
 function activities(state = {}, action) {
+    let newActivity = {};
     switch (action.type) {
         case ActivityActions.LIST_ACTIVITIES_SUCCESS:
         case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
@@ -51,9 +59,15 @@ function activities(state = {}, action) {
             new_activity[action.activity.id] = action.activity;
             return {...state, ...new_activity};
         case CommentActions.CREATE_COMMENT_SUCCESS:
-            let newActivity = {}, activityId = `comment_${action.comment.id}`;
+            let activityId = `comment_${action.comment.id}`;
             newActivity[activityId] = {
                 id: activityId, action: 'create', activity_type: 'comment', activity: action.comment
+            };
+            return {...state, ...newActivity};
+        case UploadActions.CREATE_UPLOAD_SUCCESS:
+            activityId = `upload_${action.upload.id}`;
+            newActivity[activityId] = {
+                id: activityId, action: 'upload', activity_type: 'upload', activity: action.upload
             };
             return {...state, ...newActivity};
         default:

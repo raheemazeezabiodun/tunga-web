@@ -44,7 +44,7 @@ export default class MessageWidget extends React.Component {
 
     onUpload = (files) => {
         if (files && files.length && this.props.onUpload) {
-            this.props.onUpload(files);
+            this.props.onUpload(files[0]);
         }
     };
 

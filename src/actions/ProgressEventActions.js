@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {composeFormData, ENDPOINT_PROGRESS_EVENTS} from './utils/api';
+import {ENDPOINT_PROGRESS_EVENTS} from './utils/api';
 
 export const CREATE_PROGRESS_EVENT_START = 'CREATE_PROGRESS_EVENT_START';
 export const CREATE_PROGRESS_EVENT_SUCCESS = 'CREATE_PROGRESS_EVENT_SUCCESS';

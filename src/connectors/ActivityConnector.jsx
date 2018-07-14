@@ -3,6 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 import * as ActivityActions from "../actions/ActivityActions";
+import * as CommentActions from "../actions/CommentActions";
 
 function mapStateToProps(state) {
     return {
@@ -12,7 +13,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ActivityActions: bindActionCreators(ActivityActions, dispatch),
+        ActivityActions: {
+            ...bindActionCreators(ActivityActions, dispatch),
+            ...bindActionCreators(CommentActions, dispatch),
+        }
     };
 }
 

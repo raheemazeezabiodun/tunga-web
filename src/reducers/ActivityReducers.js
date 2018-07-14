@@ -1,29 +1,37 @@
 import {combineReducers} from 'redux';
 
 import * as ActivityActions from '../actions/ActivityActions';
+import * as CommentActions from '../actions/CommentActions';
 import {getIds} from './utils';
 
 function ids(state = {}, action) {
-    let selection_key = action.selection || 'default';
-    let new_state = {};
+    let selectionKey = action.selection || 'default';
+    let newState = {};
     switch (action.type) {
         case ActivityActions.LIST_ACTIVITIES_SUCCESS:
-            new_state[selection_key] = getIds(action.items);
-            return {...state, ...new_state};
+            newState[selectionKey] = getIds(action.items);
+            return {...state, ...newState};
         case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
-            new_state[selection_key] = [
-                ...state[selection_key],
+            newState[selectionKey] = [
+                ...state[selectionKey],
                 ...getIds(action.items),
             ];
-            return {...state, ...new_state};
+            return {...state, ...newState};
         case ActivityActions.LIST_ACTIVITIES_START:
             if (action.prev_selection && state[action.prev_selection]) {
-                new_state[selection_key] = state[action.prev_selection];
-                return {...state, ...new_state};
+                newState[selectionKey] = state[action.prev_selection];
+                return {...state, ...newState};
             }
             return state;
         case ActivityActions.LIST_ACTIVITIES_FAILED:
             return state;
+        case CommentActions.CREATE_COMMENT_SUCCESS:
+            let targetKey = action.target || action.id || 'default';
+            newState[targetKey] = [
+                `comment_${action.comment.id}`,
+                ...state[targetKey],
+            ];
+            return {...state, ...newState};
         default:
             return state;
     }
@@ -42,6 +50,12 @@ function activities(state = {}, action) {
             let new_activity = {};
             new_activity[action.activity.id] = action.activity;
             return {...state, ...new_activity};
+        case CommentActions.CREATE_COMMENT_SUCCESS:
+            let newActivity = {}, activityId = `comment_${action.comment.id}`;
+            newActivity[activityId] = {
+                id: activityId, action: 'create', activity_type: 'comment', activity: action.comment
+            };
+            return {...state, ...newActivity};
         default:
             return state;
     }

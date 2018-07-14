@@ -25,18 +25,21 @@ export default class MessageWidget extends React.Component {
         this.state = {message: ''};
     }
 
-    onChangeMessage = (e) => {
+    onKeyUp = (e) => {
         if (e.keyCode === 13 && !e.shiftKey) {
             this.onSendMessage(e);
-        } else {
-            this.setState({message: e.target.value});
         }
+    };
+
+    onChangeMessage = (e) => {
+        this.setState({message: e.target.value});
     };
 
     onSendMessage = (e) => {
         if (this.props.onSendMessage) {
             this.props.onSendMessage(this.state.message);
         }
+        this.setState({message: ''});
     };
 
     onUpload = (files) => {
@@ -62,7 +65,10 @@ export default class MessageWidget extends React.Component {
                                     }
                                     placeholder={this.props.placeholder}
                                     {...filterInputProps(this.props)}
-                                    {...filterEventProps(this.props)} onKeyUp={this.onChangeMessage}/>
+                                    {...filterEventProps(this.props)}
+                                    onChange={this.onChangeMessage}
+                                    onKeyUp={this.onKeyUp}
+                                    value={this.state.message}/>
                     </Col>
                 </Row>
             </div>

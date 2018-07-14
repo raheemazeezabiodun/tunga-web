@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Row, Col} from 'reactstrap';
 import randomstring from "randomstring";
 
 import connect from "../../connectors/ActivityConnector";
 
 import ActivityList from "../ActivityList";
 import IconButton from "../core/IconButton";
-import CustomInputGroup from "../core/CustomInputGroup";
-import Upload from "../core/Upload";
 import MessageWidget from "../core/MessageWidget";
 
 class Activity extends React.Component {
@@ -55,7 +52,14 @@ class Activity extends React.Component {
     }
 
     onSendMessage = (message) => {
-        // TODO: Send Messages
+        const {project, ActivityActions} = this.props;
+        let comment = {
+            content_type: project.content_type,
+            object_id: project.id,
+            body: message
+        };
+
+        ActivityActions.createComment(comment, this.state.selectionKey);
     };
 
     onUpload = (files) => {

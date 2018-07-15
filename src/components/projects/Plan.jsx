@@ -5,9 +5,11 @@ import { Row, Col } from 'reactstrap';
 
 import IconButton from '../core/IconButton';
 import Icon from '../core/Icon';
-import ProjectPlanningForm from './modals/ProjectPlanningForm';
 import { openModal } from '../core/utils/modals';
 import {isAdminOrPMOrClient, isDevOrClient} from '../utils/auth';
+import MilestoneForm from "./modals/MilestoneForm";
+import PlanningForm from "./modals/PlanningForm";
+import ProjectDateForm from "./modals/ProjectDateForm";
 
 
 export default class Plan extends React.Component {
@@ -16,14 +18,6 @@ export default class Plan extends React.Component {
         ProjectActions: PropTypes.object,
         isSaving: PropTypes.object,
         isSaved: PropTypes.object,
-    };
-
-    renderModal = (type, title) => {
-        openModal(<ProjectPlanningForm {...this.props} type={type} />, title);
-    };
-
-    editModal = (type, fieldObject, title) => {
-        openModal(<ProjectPlanningForm {...this.props} type={type} edit fieldObject={fieldObject} />, title);
     };
 
     getLatestPlanningDoc() {
@@ -42,26 +36,127 @@ export default class Plan extends React.Component {
         return (project.progress_events || []).filter(event => event.type === 'milestone');
     }
 
-    renderSection(value, display_value, createModalArgs, editModalArgs) {
-        return value?(
-            <Row>
-                <Col sm="11">
-                    {display_value}
-                </Col>
-                <Col sm="1">
-                    {isAdminOrPMOrClient()?(
-                        <IconButton name="pencil"
-                                    size="main"
-                                    onClick={() => this.editModal(...editModalArgs)}/>
-                    ):null}
-                </Col>
-            </Row>
-        ):isAdminOrPMOrClient()?(
-            <div>
-                <IconButton name="add" size="main"
-                            onClick={() => this.renderModal(...createModalArgs)} />
-            </div>
-        ):null;
+    parseChangeLog(fields, reason, update, original) {
+        let changes = [];
+        fields.forEach(field => {
+            if(update[field] && original && update[field] !== original[field]) {
+                changes.push({
+                    field: field,
+                    reason: reason,
+                    previous_value: original?original[field]:null,
+                    new_value: update[field]
+                });
+            }
+        });
+        return changes;
+    }
+
+    onManageDate(dateField, title) {
+        const {project, ProjectActions} = this.props;
+
+        let cleanedDateData = {};
+        if(project) {
+            cleanedDateData.id = project.id || null;
+            cleanedDateData.date = project[dateField] || null;
+        }
+
+        openModal(<ProjectDateForm project={cleanedDateData}/>, title).then(data => {
+            if(data) {
+                if(data.reason) {
+                    data[dateField] = data.date;
+                    delete data['date'];
+
+                    let changes = this.parseChangeLog([dateField], data.reason, data, project);
+                    delete data['reason'];
+
+                    if(changes.length) {
+                        data.change_log = changes;
+                    }
+                }
+
+                if(project) {
+                    ProjectActions.updateProject(project.id, data);
+                } else {
+                    ProjectActions.createProject(data);
+                }
+            }
+        }, error => {
+            console.log('error: ', error);
+        });
+    }
+
+    onManageMilestone(milestone) {
+        let cleanedMilestone = {}, editFields = ['title', 'due_at'];
+        if(milestone) {
+            ['id', ...editFields].forEach(key => {
+                if(milestone[key]) {
+                    cleanedMilestone[key] = milestone[key];
+                }
+            });
+        }
+
+        openModal(<MilestoneForm milestone={cleanedMilestone}/>, milestone?'Add a milestone':'Change milestone').then(data => {
+            if(data) {
+                if(data.reason) {
+                    let changes = this.parseChangeLog(editFields, data.reason, data, milestone);
+                    delete data['reason'];
+                    if(changes.length) {
+                        data.change_log = changes;
+                    }
+                }
+                const {project, ProjectActions} = this.props;
+
+                data.type = 'milestone';
+                data.project = {id: project.id};
+
+                if(milestone) {
+                    ProjectActions.updateProgressEvent(milestone.id, data);
+                } else {
+                    ProjectActions.createProgressEvent(data);
+                }
+            }
+        }, error => {
+            console.log('error: ', error);
+        });
+    }
+
+    onManagePlan(plan) {
+        let cleanedPlan = {}, editFields = ['title', 'url'];
+        if(plan) {
+            ['id', ...editFields].forEach(key => {
+                if(plan[key]) {
+                    cleanedPlan[key] = plan[key];
+                }
+            });
+        }
+
+        if(!cleanedPlan.url && cleanedPlan.download_url) {
+            cleanedPlan.url = cleanedPlan.download_url;
+        }
+
+        openModal(<PlanningForm plan={cleanedPlan}/>, 'Add a detailed planning').then(data => {
+            if(data) {
+                if(data.reason) {
+                    let changes = this.parseChangeLog(editFields, data.reason, data, plan);
+                    delete data['reason'];
+                    if(changes.length) {
+                        data.change_log = changes;
+                    }
+                }
+                const {project, ProjectActions} = this.props;
+
+                data.type = 'planning';
+                data.project = {id: project.id};
+
+                if(plan) {
+                    ProjectActions.updateDocument(plan.id, data);
+                } else {
+                    ProjectActions.createDocument(data);
+                }
+            }
+        }, error => {
+            console.log('error: ', error);
+        });
     }
 
     render() {
@@ -69,68 +164,110 @@ export default class Plan extends React.Component {
             planningDoc = this.getLatestPlanningDoc(),
             milestones = this.getMilestones() || [];
         return (
-            <div>
+            <div className="project-planning">
                 {!project.start_date && !project.deadline && milestones.length === 0 && isDevOrClient()?(
                     <div className="font-weight-normal">No planning available yet.</div>
                 ):(
                     <div>
                         <div className="section">
                             <div className="font-weight-normal">Start Date</div>
-                            {this.renderSection(
-                                project.start_date, moment(project.start_date).format('DD/MM/YYYY'),
-                                ['start_date', 'Start Date'],
-                                ['start_date', {previous_value: project.start_date, field: 'start_date'}, 'New Start Date']
-                            )}
+                            {project.start_date?(
+                                <Row>
+                                    <Col sm="11">
+                                        {moment(project.start_date).format('DD/MM/YYYY')}
+                                    </Col>
+                                    <Col sm="1">
+                                        {isAdminOrPMOrClient()?(
+                                            <IconButton name="pencil"
+                                                        size="main"
+                                                        onClick={this.onManageDate.bind(this, 'start_date', 'New Start Date')}/>
+                                        ):null}
+                                    </Col>
+                                </Row>
+                            ):isAdminOrPMOrClient()?(
+                                <div>
+                                    <IconButton name="add" size="main"
+                                                onClick={this.onManageDate.bind(this, 'start_date', 'Start Date')} />
+                                </div>
+                            ):null}
                         </div>
 
-                        <div className="section">
+                        <div className="section milestones">
                             <div className="font-weight-normal">Milestones</div>
-                            {[...this.getMilestones(), null].map(milestone => {
-                                return this.renderSection(
-                                    milestone, (milestone?(
-                                        <Row>
-                                            <Col sm="3">
-                                                <p>{milestone.title}</p>
+                            {this.getMilestones().map(milestone => {
+                                return (
+                                    <Row key={milestone.id}>
+                                        <Col sm="3">
+                                            {milestone.title}
+                                        </Col>
+                                        <Col sm="2">
+                                            {moment(milestone.due_at).format('DD/MM/YYYY')}
+                                        </Col>
+                                        {isAdminOrPMOrClient()?(
+                                            <Col sm="1">
+                                                <IconButton name="pencil"
+                                                            size="main"
+                                                            onClick={this.onManageMilestone.bind(this, milestone)}/>
                                             </Col>
-                                            <Col sm="2">
-                                                <p>{moment(milestone.due_at).format('DD/MM/YYYY')}</p>
-                                            </Col>
-                                        </Row>
-                                    ):null),
-                                    ['mile_stones', 'Add a milestone'],
-                                    ['mile_stones', milestone?[
-                                        {
-                                            previous_value: milestone.title,
-                                            field: 'title'
-                                        },
-                                        {
-                                            previous_value: milestone.due_at,
-                                            field: 'due_at'
-                                        }
-                                    ]:[], 'Change milestone']
+                                        ):null}
+                                    </Row>
                                 );
                             })}
+
+                            {isAdminOrPMOrClient()?(
+                                <div>
+                                    <IconButton name="add" size="main"
+                                                onClick={this.onManageMilestone.bind(this, null)} />
+                                </div>
+                            ):null}
                         </div>
 
                         <div className="section">
                             <div className="font-weight-normal">Deadline</div>
-                            {this.renderSection(
-                                project.deadline, moment(project.deadline).format('DD/MM/YYYY'),
-                                ['deadline', 'Deadline'],
-                                ['deadline', {previous_value: project.start_date, field: 'start_date'}, 'New Deadline']
-                            )}
+                            {project.deadline?(
+                                <Row>
+                                    <Col sm="11">
+                                        {moment.utc(project.deadline).local().format('DD/MM/YYYY')}
+                                    </Col>
+                                    <Col sm="1">
+                                        {isAdminOrPMOrClient()?(
+                                            <IconButton name="pencil"
+                                                        size="main"
+                                                        onClick={this.onManageDate.bind(this, 'deadline', 'New Deadline')}/>
+                                        ):null}
+                                    </Col>
+                                </Row>
+                            ):isAdminOrPMOrClient()?(
+                                <div>
+                                    <IconButton name="add" size="main"
+                                                onClick={this.onManageDate.bind(this, 'deadline', 'Deadline')} />
+                                </div>
+                            ):null}
                         </div>
 
                         <div className="section">
                             <div className="font-weight-normal">Detailed Planning</div>
-                            {this.renderSection(
-                                planningDoc, (planningDoc?(
-                                    <a href={planningDoc.download_url} className="truncate"
-                                       target="_blank" title={planningDoc.title || ''}><Icon name="link" size="main" /> {planningDoc.download_url}</a>
-                                ):null),
-                                ['detailed_planning', 'Add a detailed planning'],
-                                ['detailed_planning', planningDoc?[{previous_value: planningDoc.download_url, field: 'url'}, {previous_value: planningDoc.title, field: 'title'}]:[], 'Add a detailed planning']
-                            )}
+
+                            {planningDoc?(
+                                <Row>
+                                    <Col sm="11">
+                                        <a href={planningDoc.download_url} className="truncate"
+                                           target="_blank" title={planningDoc.title || ''}><Icon name="link" size="main" /> {planningDoc.download_url}</a>
+                                    </Col>
+                                    <Col sm="1">
+                                        {isAdminOrPMOrClient()?(
+                                            <IconButton name="pencil"
+                                                        size="main"
+                                                        onClick={this.onManagePlan.bind(this, planningDoc)}/>
+                                        ):null}
+                                    </Col>
+                                </Row>
+                            ):isAdminOrPMOrClient()?(
+                                <div>
+                                    <IconButton name="add" size="main"
+                                                onClick={this.onManagePlan.bind(this, null)} />
+                                </div>
+                            ):null}
                         </div>
                     </div>
                 )}

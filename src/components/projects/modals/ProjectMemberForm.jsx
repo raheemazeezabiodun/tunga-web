@@ -12,14 +12,13 @@ export default class ProjectMemberForm extends React.Component {
         ProjectActions: PropTypes.object,
         user: PropTypes.string,
         dismiss: PropTypes.func
-    }
+    };
 
     constructor(props) {
         super(props);
         this.state = {
             user: []
-        }
-        this.handleSubmit = this.handleSubmit.bind(this);
+        };
     }
 
     componentDidMount() {
@@ -34,9 +33,9 @@ export default class ProjectMemberForm extends React.Component {
         } else {
             this.setState({ user: selected[0].id })
         }
-    }
+    };
 
-    handleSubmit(e) {
+    onSave = (e) => {
         e.preventDefault();
         const {ProjectActions, project, user} = this.props;
         const user_type = {};
@@ -58,7 +57,7 @@ export default class ProjectMemberForm extends React.Component {
     render() {
         return (
             <div className="project-team">
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.onSave}>
                     <FormGroup>
                         <UserSelector account_type={this.props.type}
                             onChange={this.onSelectUser.bind(this)}
@@ -67,7 +66,7 @@ export default class ProjectMemberForm extends React.Component {
                         />
                     </FormGroup>
                     <div className="float-right add-button">
-                        <Button onClick={this.handleSubmit} disabled={this.props.isSaving[this.props.project.id]}>save</Button>
+                        <Button onClick={this.onSave} disabled={this.props.isSaving[this.props.project.id]}>Save</Button>
                     </div>
                 </form>
             </div>

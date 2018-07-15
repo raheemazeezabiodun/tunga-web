@@ -6,18 +6,18 @@ import Button from '../../../components/core/Button';
 import PropTypes from "prop-types";
 
 export default class SampleProfileForm extends React.Component {
+    static propTypes = {
+        proceed: PropTypes.func,
+        cancel: PropTypes.func,
+        dismiss: PropTypes.func,
+    };
+
     constructor(props) {
         super(props);
         this.state = {
             name: null, address: null, tel: null
         }
     }
-
-    propTypes = {
-        proceed: PropTypes.func,
-        cancel: PropTypes.func,
-        dismiss: PropTypes.func,
-    };
 
     onChangeField(key, e) {
         let newState = {};

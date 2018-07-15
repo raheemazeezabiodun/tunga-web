@@ -11,7 +11,18 @@ $color-palette: (
     'green': #40bb56,
     'orange': #ff7904,
     'red': #e93232,
-    'blue': #009eff
+    'blue': #009eff,
+    'facebook': #3d5b99,
+    'google': #e25714,
+    'linkedin': #0077b5,
+    'github': #333,
+    'slack': #2c3239,
+    'twitter': #1da1f2,
+    'trello': #026aa7,
+    'skype': #00aff0,
+    'whatsapp': #25d366,
+    'harvest': #f66a23,
+    'coinbase': #0168bb,
 );
 
 @function get-color($key) {

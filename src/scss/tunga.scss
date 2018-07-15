@@ -1263,6 +1263,53 @@ i {
             }
         }
     }
+
+    .project-settings {
+        .developers-list {
+            .developer {
+                margin-bottom: 10px;
+            }
+
+            .avatar-wrapper {
+                margin-right: 18px;
+            }
+
+            .choice-group {
+                margin-left: 80px;
+            }
+        }
+    }
+}
+
+.integration-options {
+    display: block;
+    list-style: none;
+    padding: 0;
+    line-height: 1;
+
+    li {
+        float: left;
+        margin: 2px;
+
+        a {
+            display: block;
+            color: get-color('black');
+            background-color: get-color('light-grey');
+            border: 1px solid get-color('light-grey');
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: px-to-rem(28);
+        }
+
+        a:hover,
+        a:focus,
+        a.active {
+            color: $brand-color !important;
+            border-color: $brand-color;
+            background-color: get-color('white');
+        }
+    }
 }
 
 // Network

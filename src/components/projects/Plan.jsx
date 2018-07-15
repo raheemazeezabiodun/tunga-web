@@ -9,8 +9,6 @@ import ProjectPlanningForm from './modals/ProjectPlanningForm';
 import { openModal } from '../core/utils/modals';
 import {isAdminOrPMOrClient, isDevOrClient} from '../utils/auth';
 
-const isDevClient = isDevOrClient();
-
 
 export default class Plan extends React.Component {
     static propTypes = {
@@ -21,11 +19,11 @@ export default class Plan extends React.Component {
     };
 
     renderModal = (type, title) => {
-        openModal(<ProjectPlanningForm {...this.props} type={type} title={title} />, title);
+        openModal(<ProjectPlanningForm {...this.props} type={type} />, title);
     };
 
     editModal = (type, fieldObject, title) => {
-        openModal(<ProjectPlanningForm {...this.props} type={type} edit fieldObject={fieldObject} title={title} />, title);
+        openModal(<ProjectPlanningForm {...this.props} type={type} edit fieldObject={fieldObject} />, title);
     };
 
     getLatestPlanningDoc() {
@@ -67,10 +65,12 @@ export default class Plan extends React.Component {
     }
 
     render() {
-        const {project} = this.props, planningDoc = this.getLatestPlanningDoc();
+        const {project} = this.props,
+            planningDoc = this.getLatestPlanningDoc(),
+            milestones = this.getMilestones() || [];
         return (
             <div>
-                {!project.start_date && !project.deadline && isDevOrClient()?(
+                {!project.start_date && !project.deadline && milestones.length === 0 && isDevOrClient()?(
                     <div className="font-weight-normal">No planning available yet.</div>
                 ):(
                     <div>
@@ -128,8 +128,8 @@ export default class Plan extends React.Component {
                                     <a href={planningDoc.download_url} className="truncate"
                                        target="_blank" title={planningDoc.title || ''}><Icon name="link" size="main" /> {planningDoc.download_url}</a>
                                 ):null),
-                                ['detailed_planning', 'Add a Detailed Planning'],
-                                ['detailed_planning', planningDoc?[{previous_value: planningDoc.download_url, field: 'url'}, {previous_value: planningDoc.title, field: 'title'}]:[], 'Detailed Planning']
+                                ['detailed_planning', 'Add a detailed planning'],
+                                ['detailed_planning', planningDoc?[{previous_value: planningDoc.download_url, field: 'url'}, {previous_value: planningDoc.title, field: 'title'}]:[], 'Add a detailed planning']
                             )}
                         </div>
                     </div>

@@ -40,7 +40,7 @@ export function isAdminOrClient() {
 export function isAdminOrPM() {
     return isAdmin() || isPM();
 }
-// TODO: check this
+
 export function isAdminOrPMOrClient() {
     return isAdmin() || isClient();
 }

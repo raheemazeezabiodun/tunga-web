@@ -2,23 +2,23 @@ import React from 'react';
 import { FormGroup, Row, Col } from 'reactstrap';
 import moment from 'moment';
 
-import DateTimePicker from '../core/DateTimePicker';
-import Button from '../core/Button';
-import CustomInputGroup from '../core/CustomInputGroup';
-import Input from '../core/Input';
-import TextArea from '../core/TextArea';
+import DateTimePicker from '../../core/DateTimePicker';
+import Button from '../../core/Button';
+import CustomInputGroup from '../../core/CustomInputGroup';
+import Input from '../../core/Input';
+import TextArea from '../../core/TextArea';
 
 
 export default class ProjectPlanningForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {};
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     onDateChange(key, date) {
-        let newState = {}
-        newState[key] = moment.utc(date).format()
+        let newState = {};
+        newState[key] = moment.utc(date).format();
         this.setState(newState);
     }
 
@@ -80,7 +80,7 @@ export default class ProjectPlanningForm extends React.Component {
             )
         }
         return content;
-    }
+    };
 
     handleSubmit(e) {
         e.preventDefault();
@@ -93,10 +93,9 @@ export default class ProjectPlanningForm extends React.Component {
                     reason: this.state.reason,
                     previous_value: field.previous_value,
                     new_value: this.state[field.field] || field.previous_value  // use the default value
-                }
+                };
                 change_log.push(fields);
             })
-            // TODO: update actions, use change_log
         } else {
             if (['start_date', 'deadline'].includes(this.props.type)) {
                 let post_data = {};

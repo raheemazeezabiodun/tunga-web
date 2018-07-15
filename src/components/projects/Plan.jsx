@@ -5,9 +5,9 @@ import { Row, Col } from 'reactstrap';
 
 import IconButton from '../core/IconButton';
 import Icon from '../core/Icon';
-import ProjectPlanningForm from './ProjectPlanningForm';
+import ProjectPlanningForm from './modals/ProjectPlanningForm';
 import { openModal } from '../core/utils/modals';
-import { isDevOrClient } from '../utils/auth';
+import {isAdminOrPMOrClient, isDevOrClient} from '../utils/auth';
 
 const isDevClient = isDevOrClient();
 
@@ -21,245 +21,120 @@ export default class Plan extends React.Component {
     };
 
     renderModal = (type, title) => {
-        openModal(<ProjectPlanningForm {...this.props} type={type} title={title} />, '');
-    }
+        openModal(<ProjectPlanningForm {...this.props} type={type} title={title} />, title);
+    };
 
     editModal = (type, fieldObject, title) => {
-        openModal(<ProjectPlanningForm {...this.props} type={type} edit fieldObject={fieldObject} title={title} />, '');
-    }
+        openModal(<ProjectPlanningForm {...this.props} type={type} edit fieldObject={fieldObject} title={title} />, title);
+    };
 
-    renderStartDate = () => {
-        let content = null;
-        const startDate = this.props.project.start_date;
-        if (startDate) {
-            const editObject = [
-                {
-                    previous_value: startDate,
-                    field: 'start_date'
-                }
-            ];
-            content = (
-                <Row className="project-plan">
-                    <Col sm="11">
-                        <h6>Start Date</h6>
-                        <p>{moment(startDate).format('DD/MM/YYYY')}</p>
-                    </Col>
-                    {!isDevClient ? (
-                        <Col sm="1">
-                            <IconButton name="pencil"
-                                size="main"
-                                onClick={() => this.editModal('start_date', editObject, 'New Start Date')}
-                            />
-                        </Col>
-                    ) : null}
-                </Row>
-            );
-        } else {
-            if (!isDevClient) {
-                content = (
-                    <Row className="project-plan">
-                        <div>
-                            <h6>Start Date</h6>
-                            <IconButton name="add" onClick={() => this.renderModal('start_date', 'Start Date')} />
-                        </div>
-                    </Row>
-                );
-            } else {
-                content = null;
+    getLatestPlanningDoc() {
+        const {project} = this.props;
+        let planningDoc = null;
+        (project.documents || []).forEach(doc => {
+            if(doc.type === 'planning' && (!planningDoc || moment.utc(planningDoc.created_at) < moment.utc(doc.created_at))) {
+                planningDoc = doc;
             }
-        }
-        return content;
+        });
+        return planningDoc;
     }
 
-    renderMileStone = () => {
-        const { progress_events } = this.props.project;
-        let content = null;
-        if (progress_events.length) {
-            content = (
-                <div className="project-plan">
-                    <Col sm="12">
-                        <h6 style={{ marginLeft: '-18px'  }}>Milestones</h6>
-                    </Col>
-                    {progress_events.map((events) => {
-                        let editObject = [
-                            {
-                                previous_value: events.title,
-                                field: 'title'
-                            },
-                            {
-                                previous_value: events.due_at,
-                                field: 'due_at'
-                            }
-                        ]
-                        return (
-                            <Row key={events.id}>
-                                <Col sm="3">
-                                    <p>{events.title}</p>
-                                </Col>
-                                <Col sm="2">
-                                    <p>{moment(events.due_at).format('DD/MM/YYYY')}</p>
-                                </Col>
-                                {!isDevClient ? (
-                                    <Col sm="1">
-                                        <IconButton name="pencil"
-                                            size="main"
-                                            onClick={() => this.editModal('mile_stones', editObject, 'Change milestone')}
-                                        />
-                                </Col>
-                                ) : null}
-                            </Row>
-                        )
-                    })}
-                    {!isDevClient ? (
-                        <div>
-                            <IconButton name="add"
-                                onClick={() => this.renderModal('mile_stones', 'Add a milestone')}
-                            />
-                        </div>
-                    ) : null}
-                </div>
-            );
-        } else {
-            if (!isDevClient) {
-                content = (
-                    <Row className="project-plan">
-                        <div>
-                            <h6>Milestones</h6>
-                            <IconButton name="add" onClick={() => this.renderModal('mile_stones', 'Add a milestone')} />
-                        </div>
-                    </Row>
-                )
-            } else {
-                content = null;
-            }
-        }
-        return content;
+    getMilestones() {
+        const {project} = this.props;
+        return (project.progress_events || []).filter(event => event.type === 'milestone');
     }
 
-    renderEndDate = () => {
-        let content = null;
-        const deadline = this.props.project.deadline;
-        if (deadline) {
-            const editObject = [
-                {
-                    previous_value: deadline,
-                    field: 'deadline'
-                }
-            ]
-            content = (
-                <Row className="project-plan">
-                    <Col sm="11">
-                        <h6>Deadline</h6>
-                        <p>{moment(deadline).format('DD/MM/YYYY')}</p>
-                    </Col>
-                    {!isDevClient ? (
-                        <Col sm="1">
-                            <IconButton name="pencil"
-                                size="main"
-                                onClick={() => this.editModal('deadline', editObject, 'New Deadline')}
-                            />
-                    </Col>
-                    ) : null}
-                </Row>
-            )
-        } else {
-            if (!isDevClient) {
-                content = (
-                    <Row className="project-plan">
-                        <div>
-                            <h6>Deadline</h6>
-                            <IconButton name="add" onClick={() => this.renderModal('deadline', 'Deadline')} />
-                        </div>
-                    </Row>
-                )
-            } else {
-                content = null;
-            }
-        }
-        return content;
-    }
-
-    renderDetailedPlanning = () => {
-        let content = null;
-        const planning = this.props.project.documents.filter((doc) => doc.type === 'planning');
-        if (planning.length) {
-            content = (
-                <div className="project-plan">
-                    {planning.map((doc) => {
-                        let fieldObject = [
-                            {
-                                previous_value: doc.download_url,
-                                field: 'url'
-                            },
-                            {
-                                previous_value: doc.title,
-                                field: 'title'
-                            }
-                        ]
-                        return (
-                            <Row key={`planning-doc-${doc.id}`}>
-                                <Col sm="11">
-                                    <h6>Detailed Planning</h6>
-                                        <Icon name="link" size="main" />
-                                        <a href={doc.download_url}
-                                            className="truncate"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            title={doc.title}
-                                        >
-                                            {doc.download_url}
-                                        </a>
-                                </Col>
-                                {!isDevClient ? (
-                                <Col sm="1">
-                                    <IconButton name="pencil"
-                                        size="main"
-                                        onClick={() => this.editModal('detailed_planning', fieldObject, 'Detailed Planning')}
-                                    />
-                                </Col>
-                                ) : null}
-                            </Row>
-                        )
-                    })}
-                </div>
-            )
-        } else {
-            if (!isDevClient) {
-                content = (
-                    <Row className="project-plan">
-                        <div>
-                            <h6>Detailed Planning</h6>
-                            <IconButton name="add"
-                                onClick={() => this.renderModal('detailed_planning', 'Add a Detailed Planning')}
-                            />
-                        </div>
-                    </Row>
-                )
-            } else {
-                content = null;
-            }
-        }
-        return content;
-    }
-
-    renderPlanning = () => {
-        let content = null;
-        if (!this.renderStartDate() && !this.renderMileStone() && !this.renderEndDate() && !this.renderDetailedPlanning()) {
-            content = <h6>No planning available yet.</h6>
-        } else {
-            content = (
-                <div>
-                    {this.renderStartDate()}
-                    {this.renderMileStone()}
-                    {this.renderEndDate()}
-                    {this.renderDetailedPlanning()}
-                </div>
-            );
-        }
-        return content;
+    renderSection(value, display_value, createModalArgs, editModalArgs) {
+        return value?(
+            <Row>
+                <Col sm="11">
+                    {display_value}
+                </Col>
+                <Col sm="1">
+                    {isAdminOrPMOrClient()?(
+                        <IconButton name="pencil"
+                                    size="main"
+                                    onClick={() => this.editModal(...editModalArgs)}/>
+                    ):null}
+                </Col>
+            </Row>
+        ):isAdminOrPMOrClient()?(
+            <div>
+                <IconButton name="add" size="main"
+                            onClick={() => this.renderModal(...createModalArgs)} />
+            </div>
+        ):null;
     }
 
     render() {
-        return this.renderPlanning();
+        const {project} = this.props, planningDoc = this.getLatestPlanningDoc();
+        return (
+            <div>
+                {!project.start_date && !project.deadline && isDevOrClient()?(
+                    <div className="font-weight-normal">No planning available yet.</div>
+                ):(
+                    <div>
+                        <div className="section">
+                            <div className="font-weight-normal">Start Date</div>
+                            {this.renderSection(
+                                project.start_date, moment(project.start_date).format('DD/MM/YYYY'),
+                                ['start_date', 'Start Date'],
+                                ['start_date', {previous_value: project.start_date, field: 'start_date'}, 'New Start Date']
+                            )}
+                        </div>
+
+                        <div className="section">
+                            <div className="font-weight-normal">Milestones</div>
+                            {[...this.getMilestones(), null].map(milestone => {
+                                return this.renderSection(
+                                    milestone, (milestone?(
+                                        <Row>
+                                            <Col sm="3">
+                                                <p>{milestone.title}</p>
+                                            </Col>
+                                            <Col sm="2">
+                                                <p>{moment(milestone.due_at).format('DD/MM/YYYY')}</p>
+                                            </Col>
+                                        </Row>
+                                    ):null),
+                                    ['mile_stones', 'Add a milestone'],
+                                    ['mile_stones', milestone?[
+                                        {
+                                            previous_value: milestone.title,
+                                            field: 'title'
+                                        },
+                                        {
+                                            previous_value: milestone.due_at,
+                                            field: 'due_at'
+                                        }
+                                    ]:[], 'Change milestone']
+                                );
+                            })}
+                        </div>
+
+                        <div className="section">
+                            <div className="font-weight-normal">Deadline</div>
+                            {this.renderSection(
+                                project.deadline, moment(project.deadline).format('DD/MM/YYYY'),
+                                ['deadline', 'Deadline'],
+                                ['deadline', {previous_value: project.start_date, field: 'start_date'}, 'New Deadline']
+                            )}
+                        </div>
+
+                        <div className="section">
+                            <div className="font-weight-normal">Detailed Planning</div>
+                            {this.renderSection(
+                                planningDoc, (planningDoc?(
+                                    <a href={planningDoc.download_url} className="truncate"
+                                       target="_blank" title={planningDoc.title || ''}><Icon name="link" size="main" /> {planningDoc.download_url}</a>
+                                ):null),
+                                ['detailed_planning', 'Add a Detailed Planning'],
+                                ['detailed_planning', planningDoc?[{previous_value: planningDoc.download_url, field: 'url'}, {previous_value: planningDoc.title, field: 'title'}]:[], 'Detailed Planning']
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
     }
 }

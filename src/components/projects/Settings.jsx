@@ -249,32 +249,36 @@ export default class Settings extends React.Component {
                     ):null}
                 </div>
 
-                <div className="section">
-                    <div className="font-weight-normal">Progress reports</div>
-                    <div className="text text-sm font-weight-thin">Turn progress reports on and off for specific developers</div>
-                </div>
+                {isAdminOrPMOrClient()?(
+                    <div>
+                        <div className="section">
+                            <div className="font-weight-normal">Progress reports</div>
+                            <div className="text text-sm font-weight-thin">Turn progress reports on and off for specific developers</div>
+                        </div>
+                        
+                        <div className="section developers-list">
+                            {project.participation.map(participation => {
+                                return (
+                                    <div key={participation.id} className="clearfix developer">
+                                        <div className="float-left">
+                                            <Avatar key={participation.id}
+                                                    image={participation.user.avatar_url}
+                                                    title={participation.user.display_name}/>
 
-                <div className="section developers-list">
-                    {project.participation.map(participation => {
-                        return (
-                            <div key={participation.id} className="clearfix developer">
-                                <div className="float-left">
-                                    <Avatar key={participation.id}
-                                            image={participation.user.avatar_url}
-                                            title={participation.user.display_name}/>
+                                        </div>
+                                        <div className="float-left">
+                                            <div className="font-weight-normal">{participation.user.display_name}</div>
+                                            <div className="text text-sm font-weight-light">@{participation.user.username}</div>
+                                        </div>
 
-                                </div>
-                                <div className="float-left">
-                                    <div className="font-weight-normal">{participation.user.display_name}</div>
-                                    <div className="text text-sm font-weight-light">@{participation.user.username}</div>
-                                </div>
-
-                                <ChoiceGroup choices={[[true, 'on'], [false, 'off']]} selected={participation.updates_enabled}
-                                             onChange={this.onToggleUpdates.bind(this, participation)} disabled={!isAdminOrPMOrClient()}/>
-                            </div>
-                        )
-                    })}
-                </div>
+                                        <ChoiceGroup choices={[[true, 'on'], [false, 'off']]} selected={participation.updates_enabled}
+                                                     onChange={this.onToggleUpdates.bind(this, participation)} disabled={!isAdminOrPMOrClient()}/>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                ):null}
             </div>
         );
     }

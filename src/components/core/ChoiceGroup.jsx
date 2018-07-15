@@ -9,7 +9,8 @@ import {filterEventProps} from "./utils/events";
 export default class ChoiceGroup extends React.Component {
     static defaultProps = {
         variant: 'choice',
-        choices: []
+        choices: [],
+        disabled: false
     };
 
     static propTypes = {
@@ -20,6 +21,7 @@ export default class ChoiceGroup extends React.Component {
         type: PropTypes.string,
         variant: PropTypes.string,
         size: PropTypes.string,
+        disabled: PropTypes.bool,
     };
 
     constructor(props) {
@@ -28,9 +30,11 @@ export default class ChoiceGroup extends React.Component {
     }
 
     onChange(choice) {
-        this.setState({selected: choice});
-        if(this.props.onChange) {
-            this.props.onChange(choice);
+        if(!this.props.disabled) {
+            this.setState({selected: choice});
+            if(this.props.onChange) {
+                this.props.onChange(choice);
+            }
         }
     }
 

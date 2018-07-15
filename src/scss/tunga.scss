@@ -1265,6 +1265,10 @@ i {
     }
 
     .project-settings {
+        .form-group {
+            max-width: 400px;
+        }
+
         .developers-list {
             .developer {
                 margin-bottom: 10px;

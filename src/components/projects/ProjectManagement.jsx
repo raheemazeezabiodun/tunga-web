@@ -22,7 +22,7 @@ export default class ProjectManagement extends React.Component {
 
     render() {
         const {project, isSaving, isSaved, ProjectActions, match} = this.props;
-        const settingsProps = {project, isSaving, isSaved, ProjectActions};
+        const projectProps = {project, isSaving, isSaved, ProjectActions};
 
         return (
             project?(
@@ -35,11 +35,11 @@ export default class ProjectManagement extends React.Component {
                                 ['team', 'Team'],
                                 ['plan', 'Planning'],
                                 ['pay', 'Payments'],
-                                ['settings', 'Settings']
+                                ['settings', 'Settings', {exact: false}]
                             ].map(link => {
                                 let url = link[0];
                                 return (
-                                    <NavLink key={`project-filters-link--${link[0]}`} exact to={`${match.url}/${url}`} activeClassName="active">{link[1]}</NavLink>
+                                    <NavLink key={`project-filters-link--${link[0]}`} exact to={`${match.url}/${url}`} activeClassName="active" {...link[2]}>{link[1]}</NavLink>
                                 )
                             })}
                         </div>
@@ -48,17 +48,19 @@ export default class ProjectManagement extends React.Component {
                             <Switch>
                                 <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
                                 {[
-                                    ['activity', <Activity {...settingsProps}/>],
-                                    ['docs', <Docs {...settingsProps}/>],
-                                    ['team', <Team {...settingsProps}/>],
-                                    ['plan', <Plan {...settingsProps}/>],
-                                    ['pay', <Pay {...settingsProps}/>],
-                                    ['settings', <Settings {...settingsProps}/>],
+                                    ['activity', <Activity {...projectProps}/>],
+                                    ['docs', <Docs {...projectProps}/>],
+                                    ['team', <Team {...projectProps}/>],
+                                    ['plan', <Plan {...projectProps}/>],
+                                    ['pay', <Pay {...projectProps}/>],
                                 ].map(path => {
                                     return (
                                         <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>
                                     );
                                 })}
+                                <Route key={`project-management-path--settings`}
+                                       path={`${match.url}/settings/:section?`}
+                                       render={props => <Settings {...projectProps} section={props.match.params.section} message={'Hello'}/>}/>
                             </Switch>
                         </div>
                     </div>

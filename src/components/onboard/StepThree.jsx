@@ -146,10 +146,10 @@ export default class StepThree extends React.Component {
                         </Col>
                     </Row>
                     <div>
-                        <IconButton name='arrow-left' size='md'
+                        <IconButton name='arrow-left' size='main'
                                     className="float-left onboard-action"
                                     onClick={() => this.props.history.push('/onboard/step-two')} />
-                        <IconButton type="submit" name='check2' size='md'
+                        <IconButton type="submit" name='check2' size='main'
                                     className="btn float-right onboard-action"/>
                     </div>
                 </form>

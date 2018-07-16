@@ -158,6 +158,7 @@ i {
 // Buttons
 .btn {
     font-size: $font-size-sm;
+    font-weight: $font-weight-light;
     @include padding-y(0 !important);
     line-height: px-to-rem(40);
     height: px-to-rem(40);
@@ -967,6 +968,7 @@ i {
     margin: 40px auto;
     box-shadow: 0 2px 2px 0 rgba(204, 204, 204, 0.5);
     border: solid 1px #ececec;
+    background-color: get-color('white');
 
     .onboard-title {
         padding: 30px 40px;

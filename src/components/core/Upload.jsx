@@ -117,7 +117,7 @@ export default class Upload extends React.Component {
                 </Dropzone>
 
                 {['button', 'icon'].indexOf(this.props.variant) > -1?(
-                    <Button variant={this.props.variant === 'icon'?'icon':null}
+                    <Button variant={this.props.variant === 'icon'?'icon':'primary'}
                             size={this.props.variant === 'button'?(this.props.size || 'md'):null}
                             onClick={this.onUpload.bind(this)}>
                         <Icon name={this.props.icon || (this.props.variant === 'icon'?'add':'upload')}

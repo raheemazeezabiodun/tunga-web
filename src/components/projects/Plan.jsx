@@ -180,6 +180,7 @@ export default class Plan extends React.Component {
                                         {isAdminOrPMOrClient()?(
                                             <IconButton name="pencil"
                                                         size="main"
+                                                        className="btn-edit"
                                                         onClick={this.onManageDate.bind(this, 'start_date', 'New Start Date')}/>
                                         ):null}
                                     </Col>
@@ -207,6 +208,7 @@ export default class Plan extends React.Component {
                                             <Col sm="1">
                                                 <IconButton name="pencil"
                                                             size="main"
+                                                            className="btn-edit"
                                                             onClick={this.onManageMilestone.bind(this, milestone)}/>
                                             </Col>
                                         ):null}
@@ -233,6 +235,7 @@ export default class Plan extends React.Component {
                                         {isAdminOrPMOrClient()?(
                                             <IconButton name="pencil"
                                                         size="main"
+                                                        className="btn-edit"
                                                         onClick={this.onManageDate.bind(this, 'deadline', 'New Deadline')}/>
                                         ):null}
                                     </Col>
@@ -258,6 +261,7 @@ export default class Plan extends React.Component {
                                         {isAdminOrPMOrClient()?(
                                             <IconButton name="pencil"
                                                         size="main"
+                                                        className="btn-edit"
                                                         onClick={this.onManagePlan.bind(this, planningDoc)}/>
                                         ):null}
                                     </Col>

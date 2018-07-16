@@ -720,6 +720,10 @@ i {
     min-height: 100vh;
     margin: 0 auto;
 
+    &.modal-sm {
+        max-width: 360px !important;
+    }
+
     &.modal-alert,
     &.modal-confirm,
     &.modal-prompt {
@@ -764,20 +768,7 @@ i {
     .modal-footer {
         padding-top: 0;
         border-top-width: 0;
-    }
-    .modal-button {
-        margin: 0px auto;
-        display: inline-block;
-        white-space: nowrap;
-        margin-top: 60px;
-        width: 90%;
-
-        .float-left {
-            float: left
-        }
-        .float-right {
-            float: right
-        }
+        justify-content: space-between !important;
     }
 }
 

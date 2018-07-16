@@ -8,51 +8,36 @@ import Button from '../../core/Button';
 
 export default class ProjectMemberForm extends React.Component {
     static propTypes = {
-        project: PropTypes.object,
-        ProjectActions: PropTypes.object,
-        user: PropTypes.string,
-        dismiss: PropTypes.func
+        type: PropTypes.string,
+        max: PropTypes.number,
+        proceed: PropTypes.func,
+        cancel: PropTypes.func,
+        dismiss: PropTypes.func,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            user: []
+            selected: []
         };
     }
 
-    componentDidMount() {
-        if (this.props.isSaved[this.props.project.id]) {
-            this.props.dismiss(); // close the modal
-        }
-    }
-
     onSelectUser = (selected) => {
-        if (this.props.user === 'participation') {
-            this.setState({ user: selected });
-        } else {
-            this.setState({ user: selected[0].id })
+        const {max} = this.props;
+        if (max === 0) {
+            this.setState({selected});
+        } else if(max > 0) {
+            this.setState({selected: selected.slice(0, max)});
         }
     };
 
     onSave = (e) => {
         e.preventDefault();
-        const {ProjectActions, project, user} = this.props;
-        const user_type = {};
-        if (user === 'participation') {
-            let users = [];
-            this.state.user.map((data) => {
-                let user = {id: data.id}
-                users.push({user});
-            });
-            user_type[user] = users;
-        } else {
-            user_type[user] = {id: this.state.user}
+
+        if(this.props.proceed) {
+            this.props.proceed(this.state.selected);
         }
-        ProjectActions.updateProject(project.id, {
-            ...user_type
-        });
-    }
+    };
 
     render() {
         return (
@@ -66,7 +51,7 @@ export default class ProjectMemberForm extends React.Component {
                         />
                     </FormGroup>
                     <div className="float-right add-button">
-                        <Button onClick={this.onSave} disabled={this.props.isSaving[this.props.project.id]}>Save</Button>
+                        <Button onClick={this.onSave}>Save</Button>
                     </div>
                 </form>
             </div>

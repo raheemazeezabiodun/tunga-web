@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import IconButton from '../core/IconButton'
-import { openModal } from '../core/utils/modals';
+import {openConfirm, openModal} from '../core/utils/modals';
 import ProjectMemberForm from './modals/ProjectMemberForm';
-import DeleteUser from './modals/DeleteProjectMemberForm';
 import Avatar from '../core/Avatar';
 
 import {isAdminOrClient, isAdminOrPM, isAdminOrPMOrClient} from '../utils/auth';
@@ -15,12 +14,52 @@ export default class Team extends React.Component {
         ProjectActions: PropTypes.object,
     };
 
-    renderModal(type, user, title, max) {
-        openModal(<ProjectMemberForm type={type} user={user} {...this.props} max={max} />, title);
+    onAddUsers(type, title, max) {
+        const typeMap = {
+            'pm': 'project_manager',
+            'owner': 'project_owner',
+            'dev': 'developer'
+        };
+
+        openModal(
+            <ProjectMemberForm type={typeMap[type]} max={max} />, title, true, {size: 'sm'}
+        ).then(users => {
+            console.log('users: ', users);
+            if(users && users.length) {
+                const {project, ProjectActions} = this.props,
+                    reqData = {};
+
+                if (type === 'dev') {
+                    reqData.participation = users.map(user => {
+                        return {user: {id: user.id}};
+                    });
+                } else {
+                    reqData[type] = {id: users[0].id};
+                }
+
+                ProjectActions.updateProject(project.id, reqData);
+            }
+        }, error => {
+            console.log('error: ', error);
+        });
     }
 
-    deleteUser(user, type){
-        openModal(<DeleteUser {...this.props} {...user} type={type} />, '');
+    onDeleteUser(user, type, participation){
+        openConfirm(
+            <div className="font-weight-medium">Are you sure you want to delete<br/>{user.display_name} from the project?</div>,
+            '', false, {ok: 'Delete user'}
+        ).then(response => {
+            const {project, ProjectActions} = this.props;
+            if (['pm', 'owner'].includes(type)) {
+                let reqData = {};
+                reqData[type] = null;
+                ProjectActions.updateProject(project.id, reqData);
+            } else if(participation) {
+                ProjectActions.deleteParticipation(participation.id);
+            }
+        }, error => {
+
+        });
     }
 
     render() {
@@ -32,13 +71,13 @@ export default class Team extends React.Component {
                     {project.owner ? (
                         <Avatar image={project.owner.avatar_url}
                                 title={project.owner.display_name}
-                                onRemove={this.deleteUser.bind(this, project.owner, 'owner')}
+                                onRemove={this.onDeleteUser.bind(this, project.owner, 'owner')}
                                 remove={isAdminOrPM()}/>
                     ) : null }
                     {isAdminOrPM()?(
                         <IconButton name="add"
                                     size="main"
-                                    onClick={this.renderModal.bind(this, 'project_owner', 'owner', 'Add project Owner', 1)} />
+                                    onClick={this.onAddUsers.bind(this, 'owner', 'Add project Owner', 1)} />
                     ):null}
                 </div>
                 <div className="project-member">
@@ -46,13 +85,13 @@ export default class Team extends React.Component {
                     {project.pm ? (
                         <Avatar image={project.pm.avatar_url}
                                 title={project.pm.display_name}
-                                onRemove={this.deleteUser.bind(this, project.pm, 'pm')}
+                                onRemove={this.onDeleteUser.bind(this, project.pm, 'pm')}
                                 remove={isAdminOrClient()} />
                     ) : null }
                     {isAdminOrClient()?(
                         <IconButton name="add"
                                     size="main"
-                                    onClick={this.renderModal.bind(this, 'project_manager', 'pm', 'Add project Manager', 1)} />
+                                    onClick={this.onAddUsers.bind(this, 'pm', 'Add project Manager', 1)} />
                     ):null}
                 </div>
                 <div className="project-member">
@@ -62,14 +101,14 @@ export default class Team extends React.Component {
                             <Avatar key={participation.id}
                                     image={participation.user.avatar_url}
                                     title={participation.user.display_name}
-                                    onRemove={this.deleteUser.bind(this, participation, 'team')}
+                                    onRemove={this.onDeleteUser.bind(this, participation.user, 'dev', participation)}
                                     remove={isAdminOrPMOrClient()} />
                         )
                     })}
                     {isAdminOrPMOrClient()?(
                         <IconButton name="add"
                                     size="main"
-                                    onClick={this.renderModal.bind(this, 'developer', 'participation', 'Add team members', 10)} />
+                                    onClick={this.onAddUsers.bind(this, 'dev', 'Add team members', 0)} />
                     ):null}
                 </div>
             </div>

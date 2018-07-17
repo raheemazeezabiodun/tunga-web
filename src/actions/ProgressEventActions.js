@@ -119,12 +119,12 @@ export function retrieveProgressEvent(id) {
         axios
             .get(ENDPOINT_PROGRESS_EVENTS + id + '/')
             .then(function(response) {
-                dispatch(retrieveProgressEventSuccess(response.data));
+                dispatch(retrieveProgressEventSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     retrieveProgressEventFailed(
-                        error.response ? error.response.data : null,
+                        error.response ? error.response.data : null, id
                     ),
                 );
             });
@@ -138,17 +138,19 @@ export function retrieveProgressEventStart(id) {
     };
 }
 
-export function retrieveProgressEventSuccess(progress_event) {
+export function retrieveProgressEventSuccess(progress_event, id) {
     return {
         type: RETRIEVE_PROGRESS_EVENT_SUCCESS,
         progress_event,
+        id
     };
 }
 
-export function retrieveProgressEventFailed(error) {
+export function retrieveProgressEventFailed(error, id) {
     return {
         type: RETRIEVE_PROGRESS_EVENT_FAILED,
         error,
+        id
     };
 }
 

@@ -125,12 +125,12 @@ export function retrieveDocument(id) {
         axios
             .get(ENDPOINT_DOCUMENTS + id + '/')
             .then(function(response) {
-                dispatch(retrieveDocumentSuccess(response.data));
+                dispatch(retrieveDocumentSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     retrieveDocumentFailed(
-                        error.response ? error.response.data : null,
+                        error.response ? error.response.data : null, id
                     ),
                 );
             });
@@ -144,17 +144,19 @@ export function retrieveDocumentStart(id) {
     };
 }
 
-export function retrieveDocumentSuccess(document) {
+export function retrieveDocumentSuccess(document, id) {
     return {
         type: RETRIEVE_DOCUMENT_SUCCESS,
         document,
+        id
     };
 }
 
-export function retrieveDocumentFailed(error) {
+export function retrieveDocumentFailed(error, id) {
     return {
         type: RETRIEVE_DOCUMENT_FAILED,
         error,
+        id
     };
 }
 

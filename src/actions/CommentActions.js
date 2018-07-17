@@ -125,7 +125,7 @@ export function retrieveComment(id) {
         axios
             .get(ENDPOINT_COMMENTS + id + '/')
             .then(function(response) {
-                dispatch(retrieveCommentSuccess(response.data));
+                dispatch(retrieveCommentSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
@@ -144,17 +144,19 @@ export function retrieveCommentStart(id) {
     };
 }
 
-export function retrieveCommentSuccess(comment) {
+export function retrieveCommentSuccess(comment, id) {
     return {
         type: RETRIEVE_COMMENT_SUCCESS,
         comment,
+        id
     };
 }
 
-export function retrieveCommentFailed(error) {
+export function retrieveCommentFailed(error, id) {
     return {
         type: RETRIEVE_COMMENT_FAILED,
         error,
+        id
     };
 }
 

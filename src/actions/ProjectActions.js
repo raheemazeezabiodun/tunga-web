@@ -125,12 +125,12 @@ export function retrieveProject(id) {
         axios
             .get(ENDPOINT_PROJECTS + id + '/')
             .then(function(response) {
-                dispatch(retrieveProjectSuccess(response.data));
+                dispatch(retrieveProjectSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     retrieveProjectFailed(
-                        error.response ? error.response.data : null,
+                        error.response ? error.response.data : null, id
                     ),
                 );
             });
@@ -144,17 +144,19 @@ export function retrieveProjectStart(id) {
     };
 }
 
-export function retrieveProjectSuccess(project) {
+export function retrieveProjectSuccess(project, id) {
     return {
         type: RETRIEVE_PROJECT_SUCCESS,
         project,
+        id
     };
 }
 
-export function retrieveProjectFailed(error) {
+export function retrieveProjectFailed(error, id) {
     return {
         type: RETRIEVE_PROJECT_FAILED,
         error,
+        id
     };
 }
 

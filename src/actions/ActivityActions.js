@@ -64,7 +64,7 @@ export function retrieveActivity(id) {
         axios
             .get(ENDPOINT_ACTIVITIES + id + '/')
             .then(function(response) {
-                dispatch(retrieveActivitySuccess(response.data));
+                dispatch(retrieveActivitySuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
@@ -83,17 +83,19 @@ export function retrieveActivityStart(id) {
     };
 }
 
-export function retrieveActivitySuccess(activity) {
+export function retrieveActivitySuccess(activity, id) {
     return {
         type: RETRIEVE_ACTIVITY_SUCCESS,
         activity,
+        id
     };
 }
 
-export function retrieveActivityFailed(error) {
+export function retrieveActivityFailed(error, id) {
     return {
         type: RETRIEVE_ACTIVITY_FAILED,
         error,
+        id
     };
 }
 

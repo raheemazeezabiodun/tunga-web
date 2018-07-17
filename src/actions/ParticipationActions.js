@@ -119,12 +119,12 @@ export function retrieveParticipation(id) {
         axios
             .get(ENDPOINT_PARTICIPATION + id + '/')
             .then(function(response) {
-                dispatch(retrieveParticipationSuccess(response.data));
+                dispatch(retrieveParticipationSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     retrieveParticipationFailed(
-                        error.response ? error.response.data : null,
+                        error.response ? error.response.data : null, id
                     ),
                 );
             });
@@ -138,17 +138,19 @@ export function retrieveParticipationStart(id) {
     };
 }
 
-export function retrieveParticipationSuccess(participation) {
+export function retrieveParticipationSuccess(participation, id) {
     return {
         type: RETRIEVE_PARTICIPATION_SUCCESS,
         participation,
+        id
     };
 }
 
-export function retrieveParticipationFailed(error) {
+export function retrieveParticipationFailed(error, id) {
     return {
         type: RETRIEVE_PARTICIPATION_FAILED,
         error,
+        id
     };
 }
 

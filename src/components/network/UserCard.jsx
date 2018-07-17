@@ -23,7 +23,7 @@ export default class UserCard extends React.Component {
                         <div className="text text-sm">{user.profile.location}</div>
                     </div>
                     <div className="bio">
-                        <Linkify properties={{target: '_blank'}}>
+                        <Linkify>
                             {profile.bio}
                         </Linkify>
                     </div>

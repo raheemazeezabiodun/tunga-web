@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import TitleBarContent from './TitleBarContent';
 import ProjectOutput from './dashboard/ProjectOutput';
+import {isAdminOrPMOrClient} from "./utils/auth";
 
 export default class TitleBar extends React.Component {
 
@@ -39,10 +40,10 @@ export default class TitleBar extends React.Component {
                 <Switch>
                     {[
                         ['/onboard', 'Welcome to Tunga!'],
-                        ['/dashboard', <div>Hi {user.display_name}</div>, '/projects/new', null, {subTitle: moment().format('dddd, Do of MMMM')}],
+                        ['/dashboard', <div>Hi {user.display_name}</div>, isAdminOrPMOrClient()?'/projects/new':null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
                         ['/projects/new', 'Projects', null, [['/projects/new', 'Create new project']]],
-                        ['/projects/:projectId', 'Projects', '/projects/new', [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
-                        ['/projects', 'Projects', '/projects/new'],
+                        ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?'/projects/new':null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
+                        ['/projects', 'Projects', isAdminOrPMOrClient()?'/projects/new':null],
                         ['/network', 'Network', null, networkSections],
                         ['/payments', 'Payments', null, paymentSections],
                         ['/settings', 'Settings', null, settingsSections],

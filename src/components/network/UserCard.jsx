@@ -19,7 +19,7 @@ export default class UserCard extends React.Component {
                 <Link to={`/network/${user.username}`} className="user-card">
                     <div className="basic-profile">
                         <Avatar image={user.avatar_url} size="lg"/>
-                        <div className="font-weight-medium">{user.display_name}</div>
+                        <div className="font-weight-normal">{user.display_name}</div>
                         <div className="text text-sm">{user.profile.location}</div>
                     </div>
                     <div className="bio">
@@ -38,7 +38,7 @@ export default class UserCard extends React.Component {
                             </div>
                         ):null}
                     </div>
-                    <div className="text-center font-weight-medium">
+                    <div className="text-center font-weight-normal">
                         View full profile
                     </div>
                 </Link>

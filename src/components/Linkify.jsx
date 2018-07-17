@@ -1,25 +1,24 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Linkify from 'react-linkify';
-
-import {nl_to_br, br_to_nl} from '../legacy/utils/html';
+import striptags from 'striptags';
 
 export default class LinkifyHTML extends React.Component {
-    getLinkifiedHTML() {
-        return (
-            <Linkify properties={{target: '_blank'}}>
-                {br_to_nl(this.props.children)}
-            </Linkify>
-        );
-    }
 
     render() {
-        return (
-            <div
-                dangerouslySetInnerHTML={{
-                    __html: nl_to_br(ReactDOMServer.renderToStaticMarkup((this.getLinkifiedHTML()))),
-                }}
-            />
+        return React.Children.map(
+            this.props.children,
+            function(child) {
+                if(typeof child === 'string') {
+                    let linked = ReactDOMServer.renderToStaticMarkup(
+                        <Linkify properties={{target: '_blank'}}>
+                            {striptags(child.replace(/<br\s*\/>/gi, '\n').replace(/<\/\s*(p|div)>/, '</$1>\n'))}
+                        </Linkify>
+                    ).replace('\n', '<br/>');
+                    return <div dangerouslySetInnerHTML={{__html: linked}}/>;
+                }
+                return child;
+            }.bind(this),
         );
     }
 }

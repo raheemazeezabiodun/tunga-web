@@ -40,9 +40,9 @@ import {
     suggestTaskTypeSkills,
     TASK_TYPE_OTHER,
     TASK_SCOPE_TASK,
-    PROGRESS_EVENT_TYPE_MILESTONE,
-    PROGRESS_EVENT_TYPE_SUBMIT,
-    PROGRESS_EVENT_TYPE_COMPLETE,
+    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
 } from '../constants/Api';
 
 import {getTaskTypeUrl, getScopeUrl, sendGAPageView} from '../utils/tracking';
@@ -1933,9 +1933,9 @@ export default class TaskForm extends ComponentWithModal {
                                         (milestone, idx) => {
                                             if (
                                                 [
-                                                    PROGRESS_EVENT_TYPE_MILESTONE,
-                                                    PROGRESS_EVENT_TYPE_SUBMIT,
-                                                    PROGRESS_EVENT_TYPE_COMPLETE,
+                                                    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+                                                    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+                                                    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
                                                 ].indexOf(milestone.type) == -1
                                             ) {
                                                 return;

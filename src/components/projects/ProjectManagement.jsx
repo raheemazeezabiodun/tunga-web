@@ -3,15 +3,17 @@ import React from 'react';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import moment from 'moment';
 
+import Avatar from '../core/Avatar';
 import Activity from './Activity';
 import Docs from './Docs';
 import Team from './Team';
 import Plan from './Plan';
 import Pay from './Pay';
 import Settings from './Settings';
-import Avatar from '../core/Avatar';
+import ProgressEventsContainer from './ProgressEventsContainer';
 
 export default class ProjectManagement extends React.Component {
+
     static propTypes = {
         project: PropTypes.object,
         isSaving: PropTypes.object,
@@ -35,7 +37,7 @@ export default class ProjectManagement extends React.Component {
                                 ['team', 'Team'],
                                 ['plan', 'Planning'],
                                 ['pay', 'Payments'],
-                                ['settings', 'Settings', {exact: false}]
+                                ['settings', 'Settings']
                             ].map(link => {
                                 let url = link[0];
                                 return (
@@ -60,7 +62,10 @@ export default class ProjectManagement extends React.Component {
                                 })}
                                 <Route key={`project-management-path--settings`}
                                        path={`${match.url}/settings/:section?`}
-                                       render={props => <Settings {...projectProps} section={props.match.params.section} message={'Hello'}/>}/>
+                                       render={props => <Settings {...projectProps} section={props.match.params.section}/>}/>
+                                <Route key={`project-management-path--event`}
+                                       path={`${match.url}/events`}
+                                       render={props => <ProgressEventsContainer project={project} {...props}/>}/>
                             </Switch>
                         </div>
                     </div>

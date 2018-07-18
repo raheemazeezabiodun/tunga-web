@@ -72,6 +72,7 @@ export const ENDPOINT_USERS = getEndpointUrl('users/');
 export const ENDPOINT_DOCUMENTS = getEndpointUrl('documents/');
 export const ENDPOINT_PARTICIPATION = getEndpointUrl('participation/');
 export const ENDPOINT_PROGRESS_EVENTS = getEndpointUrl('progress-events/');
+export const ENDPOINT_PROGRESS_REPORTS = getEndpointUrl('progress-reports/');
 export const ENDPOINT_SKILLS = getEndpointUrl('skill/');
 export const ENDPOINT_ACTIVITIES = getEndpointUrl('activity/');
 export const ENDPOINT_COMMENTS = getEndpointUrl('comments/');
@@ -189,3 +190,38 @@ export const DOCUMENT_TYPES_CLIENTS = [
 ].map(docType => {
     return [docType, DOCUMENT_TYPES_MAP[docType]];
 });
+
+export const REPORT_STATUS_ON_SCHEDULE = 'on_schedule';
+export const REPORT_STATUS_BEHIND = 'behind';
+export const REPORT_STATUS_STUCK = 'stuck';
+export const REPORT_STATUS_BEHIND_BUT_PROGRESSING = 'behind_progressing';
+export const REPORT_STATUS_BEHIND_AND_STUCK = 'behind_stuck';
+
+export const REPORT_STATUSES = [
+    [REPORT_STATUS_ON_SCHEDULE,'On schedule'],
+    [REPORT_STATUS_BEHIND_AND_STUCK, 'Behind and Stuck'],
+    [REPORT_STATUS_BEHIND_BUT_PROGRESSING, 'Behind but Progressing'],
+];
+
+export const REPORT_STUCK_RESOLVING_ERROR = 'resolving_error';
+export const REPORT_STUCK_POOR_DOC = 'poor_doc';
+export const REPORT_STUCK_HARDWARE_PROBLEM = 'hardware_problem';
+export const REPORT_STUCK_UNCLEAR_SPEC = 'unclear_spec';
+export const REPORT_STUCK_PERSONAL_ISSUE = 'personal_issue';
+export const REPORT_STUCK_OTHER = 'other';
+
+export const REPORT_STUCK_REASONS = [
+    [REPORT_STUCK_RESOLVING_ERROR, 'Resolving an error'],
+    [REPORT_STUCK_POOR_DOC, 'Poor documentation'],
+    [REPORT_STUCK_HARDWARE_PROBLEM, 'Hardware problem'],
+    [REPORT_STUCK_UNCLEAR_SPEC, 'Unclear specification'],
+    [REPORT_STUCK_PERSONAL_ISSUE, 'Personal circumstances'],
+    [REPORT_STUCK_OTHER, 'Other']
+];
+
+export const PROGRESS_EVENT_TYPE_MILESTONE = 'milestone';
+export const PROGRESS_EVENT_TYPE_DEVELOPER = 'developer';
+export const PROGRESS_EVENT_TYPE_PM = 'pm';
+export const PROGRESS_EVENT_TYPE_CLIENT = 'client';
+export const PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL = 'internal';
+export const PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT = 9;

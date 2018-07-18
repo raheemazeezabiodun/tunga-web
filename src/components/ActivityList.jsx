@@ -13,12 +13,12 @@ import Attachments from './Attachments';
 import Icon from "./core/Icon";
 
 import {
-    PROGRESS_EVENT_TYPE_MILESTONE,
-    PROGRESS_EVENT_TYPE_SUBMIT,
-    PROGRESS_EVENT_TYPE_COMPLETE,
-    PROGRESS_EVENT_TYPE_PM,
-    PROGRESS_EVENT_TYPE_CLIENT,
-    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
+    LEGACY_PROGRESS_EVENT_TYPE_PM,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
 } from '../legacy/constants/Api';
 import {
     isAuthenticated,
@@ -28,9 +28,9 @@ import {
     isDev,
     isPM,
 } from './utils/auth';
-import Button from "./core/Button";
 import Progress from "./core/Progress";
 import LoadMore from "./core/LoadMore";
+import {PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_MILESTONE, PROGRESS_EVENT_TYPE_PM} from "../actions/utils/api";
 
 export function scrollList(listId) {
     let activity_list = $(`#list${listId}.activity-list`);
@@ -70,7 +70,7 @@ export default class ActivityList extends React.Component {
         scrollList(this.state.listId);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState, snapShot) {
         if (
             this.props.activities &&
             (!prevProps.activities ||
@@ -162,8 +162,8 @@ export default class ActivityList extends React.Component {
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                    ].indexOf(activity.type) > -1
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                    ].includes(activity.type)
                 ) {
                     break;
                 }
@@ -171,8 +171,8 @@ export default class ActivityList extends React.Component {
                     isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                    ].indexOf(activity.type) > -1
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                    ].includes(activity.type)
                 ) {
                     break;
                 }
@@ -197,14 +197,14 @@ export default class ActivityList extends React.Component {
                         <div>
                             {[
                                 PROGRESS_EVENT_TYPE_MILESTONE,
-                                PROGRESS_EVENT_TYPE_SUBMIT,
-                                PROGRESS_EVENT_TYPE_COMPLETE,
-                            ].indexOf(activity.type) > -1 ? (
+                                LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+                                LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
+                            ].includes(activity.type) ? (
                                 <div>
                                     <Icon
                                         name={
                                             'flag' +
-                                            (activity.type === PROGRESS_EVENT_TYPE_SUBMIT
+                                            (activity.type === LEGACY_PROGRESS_EVENT_TYPE_SUBMIT
                                                 ? '-checkered'
                                                 : '-o')
                                         }
@@ -213,14 +213,14 @@ export default class ActivityList extends React.Component {
                                 </div>
                             ) : null}
                             <Link
-                                to={`/projects/${activity.project.id}/event/${activity.id}/`}>
+                                to={`/projects/${activity.project.id}/events/${activity.id}/`}>
                                 {activity.title || (
                                     <span>
                                         <Icon name="flag-o" /> Scheduled{' '}
                                         {[
                                             PROGRESS_EVENT_TYPE_CLIENT,
-                                            PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                                        ].indexOf(activity.type) > -1
+                                            LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                        ].includes(activity.type)
                                             ? 'a weekly survey'
                                             : 'an update'}
                                     </span>
@@ -243,8 +243,8 @@ export default class ActivityList extends React.Component {
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                    ].indexOf(activity.event.type) > -1
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                    ].includes(activity.event.type)
                 ) {
                     break;
                 }
@@ -252,8 +252,8 @@ export default class ActivityList extends React.Component {
                     isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                    ].indexOf(activity.event.type) > -1
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                    ].includes(activity.event.type)
                 ) {
                     break;
                 }
@@ -269,7 +269,7 @@ export default class ActivityList extends React.Component {
                     createdAt = activity.created_at;
                     uploads = activity.uploads;
                     more = {
-                        link: `/projects/${activity.event.project.id}/event/${
+                        link: `/projects/${activity.event.project.id}/events/${
                             activity.event.id
                         }/`,
                         text: 'View full report',
@@ -281,8 +281,8 @@ export default class ActivityList extends React.Component {
                                 <Icon name="newspaper-o" />{' '}
                                 {[
                                     PROGRESS_EVENT_TYPE_CLIENT,
-                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                                ].indexOf(activity.details.event.type) > -1
+                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                ].includes(activity.details.event.type)
                                     ? 'Weekly survey'
                                     : 'Progress report'}:{' '}
                             </p>
@@ -292,7 +292,7 @@ export default class ActivityList extends React.Component {
                                 }/`}>
                                 {[
                                     PROGRESS_EVENT_TYPE_CLIENT,
-                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                                 ].indexOf(activity.details.event.type) > -1
                                     ? 'Weekly survey'
                                     : activity.details.event.title ||
@@ -300,8 +300,8 @@ export default class ActivityList extends React.Component {
                             </Link>
                             {[
                                 PROGRESS_EVENT_TYPE_CLIENT,
-                                PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                            ].indexOf(activity.details.event.type) > -1 ? null : (
+                                LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                            ].includes(activity.details.event.type) ? null : (
                                 <div>
                                     <div>Status: {activity.status_display}</div>
                                     <div>
@@ -327,9 +327,9 @@ export default class ActivityList extends React.Component {
                 if (
                     isDev() &&
                     [
-                        PROGRESS_EVENT_TYPE_PM,
-                        PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                        LEGACY_PROGRESS_EVENT_TYPE_PM,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].indexOf(activity.type) > -1
                 ) {
                     break;
@@ -337,8 +337,8 @@ export default class ActivityList extends React.Component {
                 if (
                     isPM() &&
                     [
-                        PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].indexOf(activity.type) > -1
                 ) {
                     break;
@@ -346,7 +346,7 @@ export default class ActivityList extends React.Component {
                 if (
                     isClient() &&
                     !isAdmin() &&
-                    activity.type === PROGRESS_EVENT_TYPE_PM
+                    activity.type === LEGACY_PROGRESS_EVENT_TYPE_PM
                 ) {
                     break;
                 }
@@ -363,15 +363,15 @@ export default class ActivityList extends React.Component {
                     body = (
                         <div>
                             {[
-                                PROGRESS_EVENT_TYPE_MILESTONE,
-                                PROGRESS_EVENT_TYPE_SUBMIT,
-                                PROGRESS_EVENT_TYPE_COMPLETE,
+                                LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+                                LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+                                LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
                             ].indexOf(activity.type) > -1 ? (
                                 <div>
                                     <Icon
                                         name={
                                             'flag' +
-                                            (activity.type === PROGRESS_EVENT_TYPE_SUBMIT
+                                            (activity.type === LEGACY_PROGRESS_EVENT_TYPE_SUBMIT
                                                 ? '-checkered'
                                                 : '-o')
                                         }
@@ -385,8 +385,8 @@ export default class ActivityList extends React.Component {
                                     <span>
                                         <Icon name="flag-o" /> Scheduled{' '}
                                         {[
-                                            PROGRESS_EVENT_TYPE_CLIENT,
-                                            PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                            LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                                            LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                                         ].indexOf(activity.type) > -1
                                             ? 'a weekly survey'
                                             : 'an update'}
@@ -408,9 +408,9 @@ export default class ActivityList extends React.Component {
                 if (
                     isDev() &&
                     [
-                        PROGRESS_EVENT_TYPE_PM,
-                        PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                        LEGACY_PROGRESS_EVENT_TYPE_PM,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].indexOf(activity.details.event.type) > -1
                 ) {
                     break;
@@ -418,8 +418,8 @@ export default class ActivityList extends React.Component {
                 if (
                     isPM() &&
                     [
-                        PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].indexOf(activity.details.event.type) > -1
                 ) {
                     break;
@@ -427,7 +427,7 @@ export default class ActivityList extends React.Component {
                 if (
                     isClient() &&
                     !isAdmin() &&
-                    activity.details.event.type === PROGRESS_EVENT_TYPE_PM
+                    activity.details.event.type === LEGACY_PROGRESS_EVENT_TYPE_PM
                 ) {
                     break;
                 }
@@ -447,8 +447,8 @@ export default class ActivityList extends React.Component {
                             <p>
                                 <Icon name="newspaper-o" />{' '}
                                 {[
-                                    PROGRESS_EVENT_TYPE_CLIENT,
-                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                                 ].indexOf(activity.details.event.type) > -1
                                     ? 'Weekly survey'
                                     : 'Progress report'}:{' '}
@@ -458,16 +458,16 @@ export default class ActivityList extends React.Component {
                                     activity.event
                                     }/`}>
                                 {[
-                                    PROGRESS_EVENT_TYPE_CLIENT,
-                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                                 ].indexOf(activity.details.event.type) > -1
                                     ? 'Weekly survey'
                                     : activity.details.event.title ||
                                     'Scheduled Update'}
                             </Link>
                             {[
-                                PROGRESS_EVENT_TYPE_CLIENT,
-                                PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+                                LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                             ].indexOf(activity.details.event.type) > -1 ? null : (
                                 <div>
                                     <div>Status: {activity.status_display}</div>

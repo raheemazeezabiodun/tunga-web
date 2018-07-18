@@ -7,9 +7,9 @@ import {resizeOverviewBox} from './TaskWorkflow';
 import Milestone from './Milestone';
 
 import {
-    PROGRESS_EVENT_TYPE_MILESTONE,
-    PROGRESS_EVENT_TYPE_SUBMIT,
-    PROGRESS_EVENT_TYPE_COMPLETE,
+    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
 } from '../constants/Api';
 
 export default class Timeline extends React.Component {
@@ -145,9 +145,9 @@ export default class Timeline extends React.Component {
                         {this.state.next_event.type
                             ? 'Next ' +
                               ([
-                                  PROGRESS_EVENT_TYPE_MILESTONE,
-                                  PROGRESS_EVENT_TYPE_SUBMIT,
-                                  PROGRESS_EVENT_TYPE_COMPLETE,
+                                  LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+                                  LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+                                  LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
                               ].indexOf(event.type) > -1
                                   ? 'Milestone'
                                   : 'Update')
@@ -185,9 +185,9 @@ export default class Timeline extends React.Component {
                             <div>
                                 <strong>
                                     {[
-                                        PROGRESS_EVENT_TYPE_MILESTONE,
-                                        PROGRESS_EVENT_TYPE_SUBMIT,
-                                        PROGRESS_EVENT_TYPE_COMPLETE,
+                                        LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+                                        LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+                                        LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
                                     ].indexOf(event.type) > -1
                                         ? 'Milestone'
                                         : 'Update'}{' '}

@@ -11,11 +11,11 @@ import FormComponent from './FormComponent';
 import confirm from '../utils/confirm';
 
 import {
-    PROGRESS_REPORT_STATUS_CHOICES,
-    PROGRESS_REPORT_STATUS_BEHIND_AND_STUCK,
-    PROGRESS_EVENT_TYPE_CLIENT,
-    PROGRESS_EVENT_TYPE_PM,
-    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+    LEGACY_PROGRESS_REPORT_STATUS_CHOICES,
+    LEGACY_PROGRESS_REPORT_STATUS_BEHIND_AND_STUCK,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+    LEGACY_PROGRESS_EVENT_TYPE_PM,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
 } from '../constants/Api';
 import {getUser} from '../utils/auth';
 
@@ -95,7 +95,7 @@ export default class ProgressReportForm extends FormComponent {
         const {milestone} = this.props;
         return (
             milestone &&
-            [PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_PM].indexOf(
+            [LEGACY_PROGRESS_EVENT_TYPE_CLIENT, LEGACY_PROGRESS_EVENT_TYPE_PM].indexOf(
                 milestone.type,
             ) == -1
         );
@@ -103,18 +103,18 @@ export default class ProgressReportForm extends FormComponent {
 
     isPMReport() {
         const {milestone} = this.props;
-        return milestone && milestone.type == PROGRESS_EVENT_TYPE_PM;
+        return milestone && milestone.type == LEGACY_PROGRESS_EVENT_TYPE_PM;
     }
 
     isClientReport() {
         const {milestone} = this.props;
-        return milestone && milestone.type == PROGRESS_EVENT_TYPE_CLIENT;
+        return milestone && milestone.type == LEGACY_PROGRESS_EVENT_TYPE_CLIENT;
     }
 
     isClientMidSprintReport() {
         const {milestone} = this.props;
         return (
-            milestone && milestone.type == PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT
+            milestone && milestone.type == LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT
         );
     }
 
@@ -333,7 +333,7 @@ export default class ProgressReportForm extends FormComponent {
                                         className="btn-group btn-choices select"
                                         role="group"
                                         aria-label="task ststus">
-                                        {PROGRESS_REPORT_STATUS_CHOICES.map(
+                                        {LEGACY_PROGRESS_REPORT_STATUS_CHOICES.map(
                                             status => {
                                                 return (
                                                     <button
@@ -364,7 +364,7 @@ export default class ProgressReportForm extends FormComponent {
 
                     {(this.isDevReport() || this.isPMReport()) &&
                     this.state.status ==
-                        PROGRESS_REPORT_STATUS_BEHIND_AND_STUCK ? (
+                        LEGACY_PROGRESS_REPORT_STATUS_BEHIND_AND_STUCK ? (
                         <div>
                             {/* check status if stuck and is developer for this */}
 

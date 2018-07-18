@@ -10,10 +10,10 @@ import ProgressReportForm from './ProgressReportForm';
 import BreadCrumb from '../containers/BreadCrumb';
 
 import {
-    PROGRESS_EVENT_TYPE_MILESTONE,
-    PROGRESS_EVENT_TYPE_SUBMIT,
-    PROGRESS_EVENT_TYPE_COMPLETE,
-    PROGRESS_EVENT_TYPE_CLIENT,
+    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
 } from '../constants/Api';
 import {
     isDeveloper,
@@ -130,7 +130,7 @@ export default class Milestone extends React.Component {
                         <div>
                             <h4>
                                 <i className="fa fa-newspaper-o" />{' '}
-                                {milestone.type == PROGRESS_EVENT_TYPE_CLIENT
+                                {milestone.type == LEGACY_PROGRESS_EVENT_TYPE_CLIENT
                                     ? 'Weekly Survey'
                                     : 'Progress Reports'}
                             </h4>
@@ -559,9 +559,9 @@ export default class Milestone extends React.Component {
                         <div>
                             <strong>
                                 {[
-                                    PROGRESS_EVENT_TYPE_MILESTONE,
-                                    PROGRESS_EVENT_TYPE_SUBMIT,
-                                    PROGRESS_EVENT_TYPE_COMPLETE,
+                                    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+                                    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+                                    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
                                 ].indexOf(milestone.type) > -1
                                     ? 'Milestone'
                                     : 'Update'}{' '}

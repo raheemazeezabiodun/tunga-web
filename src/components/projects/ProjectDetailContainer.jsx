@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
+import {addPropsToChildren} from "../core/utils/children";
 
 export default class ProjectDetailContainer extends React.Component  {
 
@@ -40,20 +41,14 @@ export default class ProjectDetailContainer extends React.Component  {
     }
 
     renderChildren() {
-        const {projectId, Project, ProjectActions} = this.props;
+        const {projectId, Project, ProjectActions, children} = this.props;
 
-
-        return React.Children.map(
-            this.props.children,
-            function(child) {
-                return React.cloneElement(child, {
-                    project: Project.projects[projectId],
-                    isSaving: Project.isSaving,
-                    isSaved: Project.isSaved,
-                    ProjectActions
-                });
-            }.bind(this),
-        );
+        return addPropsToChildren(children, {
+            project: Project.projects[projectId],
+            isSaving: Project.isSaving,
+            isSaved: Project.isSaved,
+            ProjectActions
+        });
     }
 
     render() {

@@ -6,6 +6,7 @@ import Project from './ProjectReducers';
 import User from './UserReducers';
 import Skill from './SkillReducers';
 import Activity from './ActivityReducers';
+import ProgressEvent from './ProgressEventReducers';
 
 const TungaApp = combineReducers({
     Auth,
@@ -14,6 +15,7 @@ const TungaApp = combineReducers({
     User,
     Skill,
     Activity,
+    ProgressEvent,
     routing: routerReducer,
 });
 

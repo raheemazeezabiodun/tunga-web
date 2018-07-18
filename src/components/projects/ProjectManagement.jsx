@@ -37,7 +37,7 @@ export default class ProjectManagement extends React.Component {
                                 ['team', 'Team'],
                                 ['plan', 'Planning'],
                                 ['pay', 'Payments'],
-                                ['settings', 'Settings']
+                                ['settings', 'Settings', {exact: false}]
                             ].map(link => {
                                 let url = link[0];
                                 return (

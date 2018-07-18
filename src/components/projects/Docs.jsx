@@ -77,7 +77,7 @@ export default class Docs extends React.Component {
                                         <div key={`doc-${doc.id}`}>
                                             <div className="file-item" key={doc.id}>
                                                 <a href={doc.download_url} target="_blank">
-                                                    <Icon name={doc.file?'download':'link'}/> {doc.download_url}
+                                                    <Icon name={doc.file?'download':'link'}/> {doc.title?`${doc.title} | `:''} {doc.download_url}
                                                 </a>
                                                 {isAdminOrPMOrClient()?(
                                                     <button

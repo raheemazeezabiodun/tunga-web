@@ -255,7 +255,7 @@ export default class Plan extends React.Component {
                                 <Row>
                                     <Col sm="11">
                                         <a href={planningDoc.download_url} className="truncate"
-                                           target="_blank" title={planningDoc.title || ''}><Icon name="link" size="main" /> {planningDoc.download_url}</a>
+                                           target="_blank" title={planningDoc.title || ''}><Icon name="link" /> {planningDoc.title?`${planningDoc.title} | `:''} {planningDoc.download_url}</a>
                                     </Col>
                                     <Col sm="1">
                                         {isAdminOrPMOrClient()?(

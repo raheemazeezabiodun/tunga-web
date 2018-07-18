@@ -6,12 +6,13 @@ import Avatar from "../core/Avatar";
 import ChoiceGroup from "../core/ChoiceGroup";
 import Icon from "../core/Icon";
 
-import {SOCIAL_PROVIDERS} from "../../legacy/constants/Api";
+import {SOCIAL_LOGIN_URLS, SOCIAL_PROVIDERS} from "../../legacy/constants/Api";
 import CustomInputGroup from "../core/CustomInputGroup";
 import Button from "../core/Button";
 import Success from "../core/Success";
 import {isAdminOrPMOrClient} from "../utils/auth";
 import Info from "../core/Info";
+import Select from "../core/Select";
 
 export default class Settings extends React.Component {
     static defaultProps = {
@@ -42,9 +43,32 @@ export default class Settings extends React.Component {
         return metaMap;
     }
 
-    onChangeValue(key, e) {
+    parseJSON(value) {
+        try {
+            return JSON.parse(value);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    onChangeValue(key, value) {
         let newState = {};
-        newState[key] = e.target.value;
+        newState[key] = value;
+        this.setState(newState);
+    }
+
+    onChangeInput(key, e) {
+        this.onChangeValue(key, e.target.value);
+    }
+
+    onChangeChannel(channelId) {
+        let newState = {};
+        newState['slack_channel_id'] = channelId;
+        (this.parseJSON(this.state.slack_channels) || []).forEach(channel => {
+            if(channel.id === channelId) {
+                newState['slack_channel_name'] = channel.name;
+            }
+        });
         this.setState(newState);
     }
 
@@ -54,14 +78,18 @@ export default class Settings extends React.Component {
         const targetKeysMap = {
             'google-drive': ['google_drive_url'],
             'trello': ['trello_board_url'],
-            'github': ['github_repo_url', 'github_issue_url']
+            'github': ['github_repo_url', 'github_issue_url'],
+            'slack': [
+                'slack_channel_id', 'slack_channel_name',
+                'slack_share_tunga_comments', 'slack_share_tunga_docs', 'slack_share_tunga_reports'
+            ]
         };
 
         if(targetKeysMap[section]) {
             let metaData = {};
             targetKeysMap[section].forEach(key => {
-                if(this.state[key]) {
-                    metaData[key] = this.state[key];
+                if(typeof this.state[key] === 'boolean' || this.state[key]) {
+                    metaData[key] = this.state[key].toString();
                 }
             });
 
@@ -142,10 +170,73 @@ export default class Settings extends React.Component {
 
                 <div className="section">
                     {section === 'slack'?(
-                        <div>
+                        <div className="section">
                             <div className="font-weight-normal">Slack</div>
 
-                            <div>// TODO: Re-enable Slack integration</div>
+                            <p>Connect your project to your Slack team to send task activity to Slack.</p>
+
+                            <div>
+                                <form onSubmit={this.onSaveMeta} className="slack-form">
+                                    {isSaved[project.id]?(
+                                        <Success message="Changes saved successfully!"/>
+                                    ):null}
+                                    {this.state.slack_channels?(
+                                        <div>
+                                            <FormGroup>
+                                                Team: <strong>{this.state.slack_team_name}</strong>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <div>Channel: </div>
+                                                <Select placeholder="-- Select channel --"
+                                                        options={(this.parseJSON(this.state.slack_channels) || []).map(channel => {
+                                                            return [channel.id, channel.name];
+                                                        })}
+                                                        selected={this.state.slack_channel_id}
+                                                        onChange={value => this.onChangeChannel(value)}/>
+                                            </FormGroup>
+
+                                            <FormGroup>
+                                                <div>
+                                                    Select items to share with Slack.
+                                                </div>
+
+                                                {[
+                                                    ['slack_share_tunga_comments', 'Comments'],
+                                                    ['slack_share_tunga_docs', 'Documents and uploads'],
+                                                    ['slack_share_tunga_reports', 'Progress reports']
+                                                ].map(event => {
+                                                    let eventId = event[0], elementId = `slack-event-${eventId}`;
+                                                    return (
+                                                        <div key={eventId} className="form-check">
+                                                            <input className="form-check-input"
+                                                                   id={elementId}
+                                                                   type="checkbox"
+                                                                   checked={typeof this.state[eventId] === 'boolean'?this.state[eventId]:['True', 'true'].includes(this.state[eventId])}
+                                                                   onChange={e => this.onChangeValue(eventId, e.target.checked)}
+                                                            />
+                                                            <label className="form-check-label" htmlFor={elementId}>
+                                                                {event[1]}
+                                                            </label>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </FormGroup>
+                                        </div>
+                                    ):null}
+
+                                    <div>
+                                        {this.state.slack_channels?(
+                                            <Button type="submit">Save</Button>
+                                        ):null}
+
+                                        <a href={`${SOCIAL_LOGIN_URLS.slack}?action=connect&project=${project.id}&next=${window.location.protocol}//${window.location.host}/projects/${project.id}/settings/slack`}
+                                           className="btn btn-primary"
+                                           title="Connect with Slack">
+                                            <Icon name="slack" size="main"/> {this.state.slack_token?'Reconnect':'Connect'} with Slack
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     ):null}
 
@@ -162,7 +253,7 @@ export default class Settings extends React.Component {
                                             <FormGroup>
                                                 <CustomInputGroup variant="url"
                                                                   placeholder={`${section === 'trello'?'Trello Board':'Google Drive'} URL`}
-                                                                  onChange={this.onChangeValue.bind(this, section === 'trello'?'trello_board_url':'google_drive_url')}
+                                                                  onChange={this.onChangeInput.bind(this, section === 'trello'?'trello_board_url':'google_drive_url')}
                                                                   value={this.state[section === 'trello'?'trello_board_url':'google_drive_url']}
                                                                   required/>
                                             </FormGroup>
@@ -205,7 +296,7 @@ export default class Settings extends React.Component {
                                         <Col sm="5">
                                             <FormGroup>
                                                 <CustomInputGroup variant="url" placeholder="GitHub Repo URL"
-                                                                  onChange={this.onChangeValue.bind(this, 'github_repo_url')}
+                                                                  onChange={this.onChangeInput.bind(this, 'github_repo_url')}
                                                                   value={this.state.github_repo_url}
                                                                   required/>
                                             </FormGroup>
@@ -213,7 +304,7 @@ export default class Settings extends React.Component {
                                         <Col sm="5">
                                             <FormGroup>
                                                 <CustomInputGroup variant="url" placeholder="GitHub Issue URL"
-                                                                  onChange={this.onChangeValue.bind(this, 'github_issue_url')}
+                                                                  onChange={this.onChangeInput.bind(this, 'github_issue_url')}
                                                                   value={this.state.github_issue_url}/>
                                             </FormGroup>
                                         </Col>
@@ -255,7 +346,7 @@ export default class Settings extends React.Component {
                             <div className="font-weight-normal">Progress reports</div>
                             <div className="text text-sm font-weight-thin">Turn progress reports on and off for specific developers</div>
                         </div>
-                        
+
                         <div className="section developers-list">
                             {project.participation.map(participation => {
                                 return (

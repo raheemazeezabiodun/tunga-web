@@ -225,3 +225,13 @@ export const PROGRESS_EVENT_TYPE_PM = 'pm';
 export const PROGRESS_EVENT_TYPE_CLIENT = 'client';
 export const PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL = 'internal';
 export const PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT = 9;
+
+export const SLACK_SHARE_COMMENTS = 'slack_share_tunga_comments';
+export const SLACK_SHARE_DOCS = 'slack_share_tunga_docs';
+export const SLACK_SHARE_REPORTS = 'slack_share_tunga_reports';
+
+export const SLACK_SHARE_EVENTS = [
+    [SLACK_SHARE_COMMENTS, 'Comments'],
+    [SLACK_SHARE_DOCS, 'Documents and uploads'],
+    [SLACK_SHARE_REPORTS, 'Progress reports']
+];

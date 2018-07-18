@@ -13,6 +13,7 @@ import Success from "../core/Success";
 import {isAdminOrPMOrClient} from "../utils/auth";
 import Info from "../core/Info";
 import Select from "../core/Select";
+import {SLACK_SHARE_COMMENTS, SLACK_SHARE_DOCS, SLACK_SHARE_EVENTS, SLACK_SHARE_REPORTS} from "../../actions/utils/api";
 
 export default class Settings extends React.Component {
     static defaultProps = {
@@ -81,7 +82,7 @@ export default class Settings extends React.Component {
             'github': ['github_repo_url', 'github_issue_url'],
             'slack': [
                 'slack_channel_id', 'slack_channel_name',
-                'slack_share_tunga_comments', 'slack_share_tunga_docs', 'slack_share_tunga_reports'
+                SLACK_SHARE_COMMENTS, SLACK_SHARE_DOCS, SLACK_SHARE_REPORTS
             ]
         };
 
@@ -173,70 +174,91 @@ export default class Settings extends React.Component {
                         <div className="section">
                             <div className="font-weight-normal">Slack</div>
 
-                            <p>Connect your project to your Slack team to send task activity to Slack.</p>
+                            {isAdminOrPMOrClient()?(
+                                <div>
+                                    <p>Connect your project to your Slack team to send task activity to Slack.</p>
 
-                            <div>
-                                <form onSubmit={this.onSaveMeta} className="slack-form">
-                                    {isSaved[project.id]?(
-                                        <Success message="Changes saved successfully!"/>
-                                    ):null}
-                                    {this.state.slack_channels?(
-                                        <div>
-                                            <FormGroup>
-                                                Team: <strong>{this.state.slack_team_name}</strong>
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <div>Channel: </div>
-                                                <Select placeholder="-- Select channel --"
-                                                        options={(this.parseJSON(this.state.slack_channels) || []).map(channel => {
-                                                            return [channel.id, channel.name];
-                                                        })}
-                                                        selected={this.state.slack_channel_id}
-                                                        onChange={value => this.onChangeChannel(value)}/>
-                                            </FormGroup>
-
-                                            <FormGroup>
-                                                <div>
-                                                    Select items to share with Slack.
-                                                </div>
-
-                                                {[
-                                                    ['slack_share_tunga_comments', 'Comments'],
-                                                    ['slack_share_tunga_docs', 'Documents and uploads'],
-                                                    ['slack_share_tunga_reports', 'Progress reports']
-                                                ].map(event => {
-                                                    let eventId = event[0], elementId = `slack-event-${eventId}`;
-                                                    return (
-                                                        <div key={eventId} className="form-check">
-                                                            <input className="form-check-input"
-                                                                   id={elementId}
-                                                                   type="checkbox"
-                                                                   checked={typeof this.state[eventId] === 'boolean'?this.state[eventId]:['True', 'true'].includes(this.state[eventId])}
-                                                                   onChange={e => this.onChangeValue(eventId, e.target.checked)}
-                                                            />
-                                                            <label className="form-check-label" htmlFor={elementId}>
-                                                                {event[1]}
-                                                            </label>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </FormGroup>
-                                        </div>
-                                    ):null}
-
-                                    <div>
+                                    <form onSubmit={this.onSaveMeta} className="slack-form">
+                                        {isSaved[project.id]?(
+                                            <Success message="Changes saved successfully!"/>
+                                        ):null}
                                         {this.state.slack_channels?(
-                                            <Button type="submit">Save</Button>
+                                            <div>
+                                                <FormGroup>
+                                                    Team: <strong>{this.state.slack_team_name}</strong>
+                                                </FormGroup>
+                                                <FormGroup>
+                                                    <div>Channel: </div>
+                                                    <Select placeholder="-- Select channel --"
+                                                            options={(this.parseJSON(this.state.slack_channels) || []).map(channel => {
+                                                                return [channel.id, channel.name];
+                                                            })}
+                                                            selected={this.state.slack_channel_id}
+                                                            onChange={value => this.onChangeChannel(value)}/>
+                                                </FormGroup>
+
+                                                <FormGroup>
+                                                    <div>
+                                                        Select items to share with Slack.
+                                                    </div>
+
+                                                    {SLACK_SHARE_EVENTS.map(event => {
+                                                        let eventId = event[0], elementId = `slack-event-${eventId}`;
+                                                        return (
+                                                            <div key={eventId} className="form-check">
+                                                                <input className="form-check-input"
+                                                                       id={elementId}
+                                                                       type="checkbox"
+                                                                       checked={typeof this.state[eventId] === 'boolean'?this.state[eventId]:['True', 'true'].includes(this.state[eventId])}
+                                                                       onChange={e => this.onChangeValue(eventId, e.target.checked)}
+                                                                />
+                                                                <label className="form-check-label" htmlFor={elementId}>
+                                                                    {event[1]}
+                                                                </label>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </FormGroup>
+                                            </div>
                                         ):null}
 
-                                        <a href={`${SOCIAL_LOGIN_URLS.slack}?action=connect&project=${project.id}&next=${window.location.protocol}//${window.location.host}/projects/${project.id}/settings/slack`}
-                                           className="btn btn-primary"
-                                           title="Connect with Slack">
-                                            <Icon name="slack" size="main"/> {this.state.slack_token?'Reconnect':'Connect'} with Slack
-                                        </a>
+                                        <div>
+                                            {this.state.slack_channels?(
+                                                <Button type="submit">Save</Button>
+                                            ):null}
+
+                                            <a href={`${SOCIAL_LOGIN_URLS.slack}?action=connect&project=${project.id}&next=${window.location.protocol}//${window.location.host}/projects/${project.id}/settings/slack`}
+                                               className="btn btn-primary"
+                                               title="Connect with Slack">
+                                                <Icon name="slack" size="main"/> {this.state.slack_token?'Reconnect':'Connect'} with Slack
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            ):this.state.slack_team_name && this.state.slack_channel_name?(
+                                <div>
+                                    <div>
+                                        Team: <strong>{this.state.slack_team_name}</strong>
                                     </div>
-                                </form>
-                            </div>
+                                    <div>
+                                        Channel: <strong>{this.state.slack_channel_name}</strong>
+                                    </div>
+                                    <div>
+                                        <div>Shared items:</div>
+                                        {SLACK_SHARE_EVENTS.map(event => {
+                                            let eventId = event[0];
+                                            if(eventId && this.state[eventId] && !['False', 'false'].includes(this.state[eventId])) {
+                                                return (
+                                                    <div><Icon name="check"/> <strong>{event[1]}</strong></div>
+                                                )
+                                            }
+                                            return null;
+                                        })}
+                                    </div>
+                                </div>
+                            ):(
+                                <Info message="Integration is not yet configured"/>
+                            )}
                         </div>
                     ):null}
 
@@ -269,7 +291,9 @@ export default class Settings extends React.Component {
                                         <div>
                                             <a href={this.state.github_repo_url} target="_blank"><Icon name="link"/> {this.state[section === 'trello'?'trello_board_url':'google_drive_url']}</a>
                                         </div>
-                                    ):null}
+                                    ):(
+                                        <Info message="Integration is not yet configured"/>
+                                    )}
                                 </div>
                             )}
                         </div>

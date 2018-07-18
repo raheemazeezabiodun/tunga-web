@@ -30,7 +30,10 @@ import {
 } from './utils/auth';
 import Progress from "./core/Progress";
 import LoadMore from "./core/LoadMore";
-import {PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_MILESTONE, PROGRESS_EVENT_TYPE_PM} from "../actions/utils/api";
+import {
+    PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT, PROGRESS_EVENT_TYPE_MILESTONE,
+    PROGRESS_EVENT_TYPE_PM
+} from "../actions/utils/api";
 
 export function scrollList(listId) {
     let activity_list = $(`#list${listId}.activity-list`);
@@ -243,7 +246,7 @@ export default class ActivityList extends React.Component {
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.event.type)
                 ) {
                     break;
@@ -252,7 +255,7 @@ export default class ActivityList extends React.Component {
                     isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.event.type)
                 ) {
                     break;
@@ -264,7 +267,7 @@ export default class ActivityList extends React.Component {
                 ) {
                     break;
                 }
-                if (showProgressReports && item.action === 'report') {
+                if (showProgressReports && item.action === 'create') {
                     creator = activity.user;
                     createdAt = activity.created_at;
                     uploads = activity.uploads;
@@ -281,27 +284,27 @@ export default class ActivityList extends React.Component {
                                 <Icon name="newspaper-o" />{' '}
                                 {[
                                     PROGRESS_EVENT_TYPE_CLIENT,
-                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                                ].includes(activity.details.event.type)
+                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                ].includes(activity.event.type)
                                     ? 'Weekly survey'
                                     : 'Progress report'}:{' '}
                             </p>
                             <Link
-                                to={`/work/${activity.details.event.task}/event/${
-                                    activity.event
+                                to={`/projects/${activity.event.project.id}/events/${
+                                    activity.event.id
                                 }/`}>
                                 {[
                                     PROGRESS_EVENT_TYPE_CLIENT,
-                                    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                                ].indexOf(activity.details.event.type) > -1
+                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                ].indexOf(activity.event.type) > -1
                                     ? 'Weekly survey'
-                                    : activity.details.event.title ||
+                                    : activity.event.title ||
                                       'Scheduled Update'}
                             </Link>
                             {[
                                 PROGRESS_EVENT_TYPE_CLIENT,
-                                LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-                            ].includes(activity.details.event.type) ? null : (
+                                PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                            ].includes(activity.event.type) ? null : (
                                 <div>
                                     <div>Status: {activity.status_display}</div>
                                     <div>

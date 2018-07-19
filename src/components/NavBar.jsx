@@ -45,36 +45,6 @@ export default class NavBar extends React.Component {
                             <li>
                                 <SearchBox variant="search"/>
                             </li>
-                            {user.is_admin ? (
-                                <li className="nav-item dropdown">
-                                    <a
-                                        href="#"
-                                        className="dropdown-toggle"
-                                        data-toggle="dropdown"
-                                        role="button"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                        <Icon name="service-workflow" size="navbar"/> Manage <span className="caret"/>
-                                    </a>
-                                    <ul className="dropdown-menu">
-                                        <li>
-                                            <Link to="/help">
-                                                <Icon name="question" size="navbar"/> Help
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/people/invite">
-                                                <Icon name="add" size="navbar"/> Invite Users
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/dashboard/updates">
-                                                <Icon name="bell"  size="navbar"/> Updates dashboard
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </li>
-                            ) : null}
                             <li className="nav-item dropdown">
                                 <a
                                     href="#"

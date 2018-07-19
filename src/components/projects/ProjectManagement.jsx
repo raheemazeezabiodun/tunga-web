@@ -11,6 +11,9 @@ import Plan from './Plan';
 import Pay from './Pay';
 import Settings from './Settings';
 import ProgressEventsContainer from './ProgressEventsContainer';
+import {openConfirm} from "../core/utils/modals";
+import {getMyParticipation, hasProjectAccess, isPendingProjectParticipant} from "../utils/auth";
+import Warning from "../core/Warning";
 
 export default class ProjectManagement extends React.Component {
 
@@ -21,6 +24,32 @@ export default class ProjectManagement extends React.Component {
         ProjectActions: PropTypes.object,
         match: PropTypes.object
     };
+
+    componentDidMount() {
+        const {project} = this.props, self = this;
+        if(isPendingProjectParticipant(project)) {
+            openConfirm(
+                <div>
+                    Accepting this project means you agree to our Code of Conduct.
+                    Please read it carefully <a href="https://tunga.io/code-of-conduct" target="_blank">here</a>.
+                </div>,
+                'Accept Invite?', false,
+                {ok: 'Accept', cancel: 'Reject'}
+            ).then(response => {
+                self.updateParticipationStatus('accepted');
+            }, error => {
+                self.updateParticipationStatus('rejected');
+            });
+        }
+    }
+
+    updateParticipationStatus(status) {
+        const {project, ProjectActions} = this.props;
+        const myParticipation = getMyParticipation(project);
+        if(myParticipation && myParticipation.id) {
+            ProjectActions.updateParticipation(myParticipation.id, {status});
+        }
+    }
 
     render() {
         const {project, isSaving, isSaved, ProjectActions, match} = this.props;
@@ -47,26 +76,30 @@ export default class ProjectManagement extends React.Component {
                         </div>
 
                         <div className="project-activity-wrapper">
-                            <Switch>
-                                <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
-                                {[
-                                    ['activity', <Activity {...projectProps}/>],
-                                    ['docs', <Docs {...projectProps}/>],
-                                    ['team', <Team {...projectProps}/>],
-                                    ['plan', <Plan {...projectProps}/>],
-                                    ['pay', <Pay {...projectProps}/>],
-                                ].map(path => {
-                                    return (
-                                        <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>
-                                    );
-                                })}
-                                <Route key={`project-management-path--settings`}
-                                       path={`${match.url}/settings/:section?`}
-                                       render={props => <Settings {...projectProps} section={props.match.params.section}/>}/>
-                                <Route key={`project-management-path--event`}
-                                       path={`${match.url}/events`}
-                                       render={props => <ProgressEventsContainer project={project} {...props}/>}/>
-                            </Switch>
+                            {hasProjectAccess(project)?(
+                                <Switch>
+                                    <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
+                                    {[
+                                        ['activity', <Activity {...projectProps}/>],
+                                        ['docs', <Docs {...projectProps}/>],
+                                        ['team', <Team {...projectProps}/>],
+                                        ['plan', <Plan {...projectProps}/>],
+                                        ['pay', <Pay {...projectProps}/>],
+                                    ].map(path => {
+                                        return (
+                                            <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>
+                                        );
+                                    })}
+                                    <Route key={`project-management-path--settings`}
+                                           path={`${match.url}/settings/:section?`}
+                                           render={props => <Settings {...projectProps} section={props.match.params.section}/>}/>
+                                    <Route key={`project-management-path--event`}
+                                           path={`${match.url}/events`}
+                                           render={props => <ProgressEventsContainer project={project} {...props}/>}/>
+                                </Switch>
+                            ):(
+                                <Warning message="You don't have permission to access this project's resources"/>
+                            )}
                         </div>
                     </div>
                     <div className="project-details float-right">
@@ -88,18 +121,20 @@ export default class ProjectManagement extends React.Component {
 
                         <div className="section">
                             <div>Project Owner</div>
-                            <div>{project.owner ? <Avatar image={project.owner.avatar_url} verified/> : null}</div>
+                            <div>{project.owner ? <Avatar image={project.owner.avatar_url} title={project.owner.display_name} verified/> : null}</div>
                         </div>
 
                         <div className="section">
                             <div>Project Manager</div>
-                            <div>{project.pm ? <Avatar image={project.pm.avatar_url} verified/> : null}</div>
+                            <div>{project.pm ? <Avatar image={project.pm.avatar_url} title={project.pm.display_name} verified/> : null}</div>
                         </div>
 
                         <div className="section">
                             <div>Team</div>
                             <div>{project.participation.map(participation => {
-                                return <Avatar key={`Team ${participation.user.id}`} image={participation.user.avatar_url} verified={participation.status === 'accepted'}/>
+                                return <Avatar key={`Team ${participation.user.id}`}
+                                               image={participation.user.avatar_url} title={participation.user.display_name}
+                                               verified={participation.status === 'accepted'}/>
                             })}
                             </div>
                         </div>

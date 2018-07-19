@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 import {addPropsToChildren} from "../core/utils/children";
+import Progress from "../core/Progress";
 
 export default class ProjectDetailContainer extends React.Component  {
 
@@ -45,6 +46,7 @@ export default class ProjectDetailContainer extends React.Component  {
 
         return addPropsToChildren(children, {
             project: Project.projects[projectId],
+            isRetrieving: Project.isRetrieving[projectId],
             isSaving: Project.isSaving,
             isSaved: Project.isSaved,
             ProjectActions
@@ -52,9 +54,16 @@ export default class ProjectDetailContainer extends React.Component  {
     }
 
     render() {
+        const {projectId, Project} = this.props;
+        const project = Project.projects[projectId];
+
         return (
             <React.Fragment>
-                {this.renderChildren()}
+                {Project.isRetrieving[projectId]?(
+                    <Progress/>
+                ):project?(
+                    this.renderChildren()
+                ):null}
             </React.Fragment>
         );
     }

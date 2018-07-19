@@ -48,3 +48,43 @@ export function isAdminOrPMOrClient() {
 export function isDevOrClient() {
     return isDev() || isClient();
 }
+
+export function getMyParticipation(project) {
+    let myParticipation = null;
+    if(project.participation) {
+        (project.participation || []).forEach(item => {
+            if(item.user.id === getUser().id) {
+                myParticipation = item;
+            }
+        });
+    }
+    return myParticipation;
+}
+
+export function isPendingProjectParticipant(project) {
+    let isPending = false;
+    if(isDev()) {
+        let myParticipation = getMyParticipation(project);
+        if(myParticipation) {
+            return myParticipation.status === 'initial'
+        }
+    }
+    return isPending;
+}
+
+export function hasProjectAccess(project) {
+    let allowedUserIds = [];
+    ['user', 'owner', 'pm'].forEach(key => {
+        if(project[key]) {
+            allowedUserIds.push(project[key].id);
+        }
+    });
+    if(project.participation) {
+        project.participation.forEach(item => {
+            if(item.status === 'accepted' && item.user) {
+                allowedUserIds.push(item.user.id);
+            }
+        });
+    }
+    return isAdmin() || allowedUserIds.includes(getUser().id);
+}

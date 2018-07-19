@@ -35,6 +35,12 @@ export default class TitleBar extends React.Component {
             ['/settings/privacy', 'Privacy settings'], // All
         ];
 
+        let projectLists = [
+            'Projects',
+            isAdminOrPMOrClient()?'/projects/new':null,
+            [['/projects', 'Active Projects'], ['/projects/filter/archived', 'Archived Projects']]
+        ];
+
         return (
             <div className='titlebar'>
                 <Switch>
@@ -42,8 +48,9 @@ export default class TitleBar extends React.Component {
                         ['/onboard', 'Welcome to Tunga!'],
                         ['/dashboard', <div>Hi {user.display_name}</div>, isAdminOrPMOrClient()?'/projects/new':null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
                         ['/projects/new', 'Projects', null, [['/projects/new', 'Create new project']]],
+                        ['/projects/filter/:filter', ...projectLists],
                         ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?'/projects/new':null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
-                        ['/projects', 'Projects', isAdminOrPMOrClient()?'/projects/new':null],
+                        ['/projects', ...projectLists],
                         ['/network', 'Network', null, networkSections],
                         ['/payments', 'Payments', null, paymentSections],
                         ['/settings', 'Settings', null, settingsSections],

@@ -30,32 +30,37 @@ class ProjectsContainer extends React.Component {
             <React.Fragment>
                 <Switch>
                     <Route exact path="/projects/new"
-                           render={props => <ProjectForm {...props} project={Project.created[targetKey] || null}
+                           render={props => <ProjectForm {...props}
+                                                         project={Project.created[targetKey] || null}
                                                          isSaving={Project.isSaving[targetKey] || false}
                                                          isSaved={Project.isSaved[targetKey] || false}
                                                          errors={Project.errors.create || {}}
                                                          onCreate={this.onCreateProject.bind(this)}/>}
                     />
-                    <Route path="/projects/:projectId"
-                           render={props => <ProjectDetailContainer {...props} projectId={props.match.params.projectId}
-                                                                    Project={Project} ProjectActions={ProjectActions}>
-                               <ProjectManagement {...props}/>
-                           </ProjectDetailContainer>}
-                    />
                     {[
-                        '/project/filter/:filter',
+                        '/projects/filter/:filter',
                         '/projects',
                     ].map(path => {
                         return (
                             <Route key={`project-container-path--${path}`}
                                    path={path}
-                                   render={props => <ProjectListContainer {...props} Project={Project}
+                                   exact={true}
+                                   render={props => <ProjectListContainer {...props}
+                                                                          Project={Project}
+                                                                          filters={{archived: props.match.params.filter === 'archived'?'True':'False'}}
                                                                           ProjectActions={ProjectActions}>
                                        <ProjectList/>
                                    </ProjectListContainer>}
                             />
                         );
                     })}
+                    <Route path="/projects/:projectId"
+                           render={props => <ProjectDetailContainer {...props}
+                                                                    projectId={props.match.params.projectId}
+                                                                    Project={Project} ProjectActions={ProjectActions}>
+                               <ProjectManagement {...props}/>
+                           </ProjectDetailContainer>}
+                    />
                 </Switch>
             </React.Fragment>
         );

@@ -4,14 +4,18 @@ import moment from 'moment';
 
 import TitleBarContent from './TitleBarContent';
 import ProjectOutput from './dashboard/ProjectOutput';
-import {isAdminOrPMOrClient} from "./utils/auth";
+import {isAdminOrPM, isAdminOrPMOrClient} from "./utils/auth";
 
 export default class TitleBar extends React.Component {
 
     render() {
         const {user} = this.props;
 
-        let networkSections = [
+        let projectsSections = [
+                ['/projects', 'Active Projects'],
+                ['/projects/filter/archived', 'Archived Projects']
+            ],
+            networkSections = [
             ['/network', 'Developers'],
             ['/network/filter/relevant', 'Relevant for me']
         ], paymentSections = [
@@ -38,7 +42,7 @@ export default class TitleBar extends React.Component {
         let projectLists = [
             'Projects',
             isAdminOrPMOrClient()?'/projects/new':null,
-            [['/projects', 'Active Projects'], ['/projects/filter/archived', 'Archived Projects']]
+            projectsSections
         ];
 
         return (
@@ -47,11 +51,12 @@ export default class TitleBar extends React.Component {
                     {[
                         ['/onboard', 'Welcome to Tunga!'],
                         ['/dashboard', <div>Hi {user.display_name}</div>, isAdminOrPMOrClient()?'/projects/new':null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
-                        ['/projects/new', 'Projects', null, [['/projects/new', 'Create new project']]],
+                        ['/projects/new', 'Projects', null, [...projectsSections, ['/projects/new', 'Create new project']]],
                         ['/projects/filter/:filter', ...projectLists],
                         ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?'/projects/new':null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
                         ['/projects', ...projectLists],
-                        ['/network', 'Network', null, networkSections],
+                        ['/network/invite', 'Network', null, [...networkSections, ['/network/invite', 'Invite User']]],
+                        ['/network', 'Network', isAdminOrPM()?'/network/invite':null, networkSections],
                         ['/payments', 'Payments', null, paymentSections],
                         ['/settings', 'Settings', null, settingsSections],
                     ].map(path => {

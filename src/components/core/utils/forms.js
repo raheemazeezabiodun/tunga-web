@@ -9,7 +9,7 @@ export function filterValidProps(allowedPropKeys, props) {
 }
 
 export function filterInputProps(props) {
-    return filterValidProps(['value', 'defaultValue', 'required', 'disabled'], props);
+    return filterValidProps(['name', 'value', 'defaultValue', 'required', 'disabled'], props);
 }
 
 export function filterButtonProps(props) {

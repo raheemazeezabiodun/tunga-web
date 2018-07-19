@@ -177,7 +177,7 @@ export default class Plan extends React.Component {
                                         {moment(project.start_date).format('DD/MM/YYYY')}
                                     </Col>
                                     <Col sm="1">
-                                        {isAdminOrPMOrClient()?(
+                                        {isAdminOrPMOrClient() && !project.archived?(
                                             <IconButton name="pencil"
                                                         size="main"
                                                         className="btn-edit"
@@ -185,7 +185,7 @@ export default class Plan extends React.Component {
                                         ):null}
                                     </Col>
                                 </Row>
-                            ):isAdminOrPMOrClient()?(
+                            ):isAdminOrPMOrClient() && !project.archived?(
                                 <div>
                                     <IconButton name="add" size="main"
                                                 onClick={this.onManageDate.bind(this, 'start_date', 'Start Date')} />
@@ -204,7 +204,7 @@ export default class Plan extends React.Component {
                                         <Col sm="2">
                                             {moment(milestone.due_at).format('DD/MM/YYYY')}
                                         </Col>
-                                        {isAdminOrPMOrClient()?(
+                                        {isAdminOrPMOrClient() && !project.archived?(
                                             <Col sm="1">
                                                 <IconButton name="pencil"
                                                             size="main"
@@ -216,7 +216,7 @@ export default class Plan extends React.Component {
                                 );
                             })}
 
-                            {isAdminOrPMOrClient()?(
+                            {isAdminOrPMOrClient() && !project.archived?(
                                 <div>
                                     <IconButton name="add" size="main"
                                                 onClick={this.onManageMilestone.bind(this, null)} />
@@ -232,7 +232,7 @@ export default class Plan extends React.Component {
                                         {moment.utc(project.deadline).local().format('DD/MM/YYYY')}
                                     </Col>
                                     <Col sm="1">
-                                        {isAdminOrPMOrClient()?(
+                                        {isAdminOrPMOrClient() && !project.archived?(
                                             <IconButton name="pencil"
                                                         size="main"
                                                         className="btn-edit"
@@ -240,7 +240,7 @@ export default class Plan extends React.Component {
                                         ):null}
                                     </Col>
                                 </Row>
-                            ):isAdminOrPMOrClient()?(
+                            ):isAdminOrPMOrClient() && !project.archived?(
                                 <div>
                                     <IconButton name="add" size="main"
                                                 onClick={this.onManageDate.bind(this, 'deadline', 'Deadline')} />
@@ -258,7 +258,7 @@ export default class Plan extends React.Component {
                                            target="_blank" title={planningDoc.title || ''}><Icon name="link" /> {planningDoc.title?`${planningDoc.title} | `:''} {planningDoc.download_url}</a>
                                     </Col>
                                     <Col sm="1">
-                                        {isAdminOrPMOrClient()?(
+                                        {isAdminOrPMOrClient() && !project.archived?(
                                             <IconButton name="pencil"
                                                         size="main"
                                                         className="btn-edit"
@@ -266,7 +266,7 @@ export default class Plan extends React.Component {
                                         ):null}
                                     </Col>
                                 </Row>
-                            ):isAdminOrPMOrClient()?(
+                            ):isAdminOrPMOrClient() && !project.archived?(
                                 <div>
                                     <IconButton name="add" size="main"
                                                 onClick={this.onManagePlan.bind(this, null)} />

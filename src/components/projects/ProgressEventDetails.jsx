@@ -92,7 +92,7 @@ export default class ProgressEventDetails extends React.Component {
                     />
                     <Route path={`${match.url}`} exact render={props => (
                         <div>
-                            {isMissed || myReport?null:(
+                            {isMissed || myReport || project.archived?null:(
                                 <div className="section">
                                     <Link to={`/projects/${progress_event.project.id}/events/${progress_event.id}/report`}
                                           className="btn btn-primary">

@@ -14,6 +14,7 @@ import {isAdminOrPMOrClient} from "../utils/auth";
 import Info from "../core/Info";
 import Select from "../core/Select";
 import {SLACK_SHARE_COMMENTS, SLACK_SHARE_DOCS, SLACK_SHARE_EVENTS, SLACK_SHARE_REPORTS} from "../../actions/utils/api";
+import {openConfirm} from "../core/utils/modals";
 
 export default class Settings extends React.Component {
     static defaultProps = {
@@ -111,6 +112,17 @@ export default class Settings extends React.Component {
 
     };
 
+    onToggleArchiveProject = () => {
+        const {project, ProjectActions} = this.props;
+        openConfirm(`Are you sure you want to ${project.archived?'un-archive':'archive'} this project?`,
+            null, false, {ok: 'Yes', cancel: 'No'}
+        ).then(response => {
+            ProjectActions.updateProject(project.id, {archived: !project.archived});
+        }, error => {
+            // do nothing
+        });
+    };
+
     render() {
         const { project, section, isSaved } = this.props;
 
@@ -174,7 +186,7 @@ export default class Settings extends React.Component {
                         <div className="section">
                             <div className="font-weight-normal">Slack</div>
 
-                            {isAdminOrPMOrClient()?(
+                            {isAdminOrPMOrClient() && !project.archived?(
                                 <div>
                                     <p>Connect your project to your Slack team to send task activity to Slack.</p>
 
@@ -265,7 +277,7 @@ export default class Settings extends React.Component {
                     {['trello', 'google-drive'].indexOf(section) > -1?(
                         <div className="clearfix">
                             <div className="font-weight-normal">{section === 'trello'?'Trello':'Google Drive'}</div>
-                            {isAdminOrPMOrClient()?(
+                            {isAdminOrPMOrClient() && !project.archived?(
                                 <form onSubmit={this.onSaveMeta}>
                                     {isSaved[project.id]?(
                                         <Success message="Changes saved successfully!"/>
@@ -302,7 +314,7 @@ export default class Settings extends React.Component {
                     {section === 'github'?(
                         <div>
                             <div className="font-weight-normal">GitHub</div>
-                            {isAdminOrPMOrClient()?(
+                            {isAdminOrPMOrClient() && !project.archived?(
                                 <form onSubmit={this.onSaveMeta}>
                                     {isSaved[project.id]?(
                                         <Success message="Changes saved successfully!"/>
@@ -381,16 +393,31 @@ export default class Settings extends React.Component {
                                                     title={participation.user.display_name}/>
 
                                         </div>
-                                        <div className="float-left">
+                                        <div className="float-left dev-name">
                                             <div className="font-weight-normal">{participation.user.display_name}</div>
                                             <div className="text text-sm font-weight-light">@{participation.user.username}</div>
                                         </div>
 
                                         <ChoiceGroup choices={[[true, 'on'], [false, 'off']]} selected={participation.updates_enabled}
-                                                     onChange={this.onToggleUpdates.bind(this, participation)} disabled={!isAdminOrPMOrClient()}/>
+                                                     onChange={this.onToggleUpdates.bind(this, participation)} disabled={!isAdminOrPMOrClient() || project.archived}/>
                                     </div>
                                 )
                             })}
+                        </div>
+
+                        <div className="section">
+                            <div className="font-weight-normal">{project.archived?'Un-archive':'Archive'} project</div>
+                            {project.archived?(
+                                <div>
+                                    Un-archive this project to re-enable project activity.
+                                </div>
+                            ):(
+                                <div>
+                                    Mark this project as archived and readonly.<br/>
+                                    This will also remove this project from your project list and send it to the archived list.
+                                </div>
+                            )}
+                            <Button onClick={this.onToggleArchiveProject}>{project.archived?'Un-archive':'Archive'} project</Button>
                         </div>
                     </div>
                 ):null}

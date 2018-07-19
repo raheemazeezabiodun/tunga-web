@@ -72,9 +72,9 @@ export default class Team extends React.Component {
                         <Avatar image={project.owner.avatar_url}
                                 title={project.owner.display_name}
                                 onRemove={this.onDeleteUser.bind(this, project.owner, 'owner')}
-                                remove={isAdminOrPM()}/>
+                                remove={isAdminOrPM() && !project.archived}/>
                     ) : null }
-                    {isAdminOrPM()?(
+                    {isAdminOrPM() && !project.archived?(
                         <IconButton name="add"
                                     size="main"
                                     onClick={this.onAddUsers.bind(this, 'owner', 'Add project Owner', 1)} />
@@ -86,9 +86,9 @@ export default class Team extends React.Component {
                         <Avatar image={project.pm.avatar_url}
                                 title={project.pm.display_name}
                                 onRemove={this.onDeleteUser.bind(this, project.pm, 'pm')}
-                                remove={isAdminOrClient()} />
+                                remove={isAdminOrClient() && !project.archived} />
                     ) : null }
-                    {isAdminOrClient()?(
+                    {isAdminOrClient() && !project.archived?(
                         <IconButton name="add"
                                     size="main"
                                     onClick={this.onAddUsers.bind(this, 'pm', 'Add project Manager', 1)} />
@@ -102,10 +102,10 @@ export default class Team extends React.Component {
                                     image={participation.user.avatar_url}
                                     title={participation.user.display_name}
                                     onRemove={this.onDeleteUser.bind(this, participation.user, 'dev', participation)}
-                                    remove={isAdminOrPMOrClient()} />
+                                    remove={isAdminOrPMOrClient() && !project.archived} />
                         )
                     })}
-                    {isAdminOrPMOrClient()?(
+                    {isAdminOrPMOrClient() && !project.archived?(
                         <IconButton name="add"
                                     size="main"
                                     onClick={this.onAddUsers.bind(this, 'dev', 'Add team members', 0)} />

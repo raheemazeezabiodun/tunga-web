@@ -12,8 +12,8 @@ import Icon from "../core/Icon";
 export default class ProgressReport extends React.Component {
 
     canEdit() {
-        const {progress_report} = this.props;
-        return progress_report.user.id === getUser().id;
+        const {progress_report, progress_event} = this.props;
+        return progress_report.user.id === getUser().id && !progress_event.project.archived;
     }
 
     render() {

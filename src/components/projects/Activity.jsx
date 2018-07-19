@@ -109,7 +109,7 @@ class Activity extends React.Component {
     };
 
     render() {
-        const {Activity, ActivityActions} = this.props,
+        const {project, Activity, ActivityActions} = this.props,
             selectionKey = this.state.selectionKey;
         let activities = (Activity.ids[selectionKey] || []).map(id => {
             return Activity.activities[id];
@@ -159,7 +159,9 @@ class Activity extends React.Component {
                               showProgressReports={this.state.progress_reports}
                               showFiles={this.state.files}/>
 
-                <MessageWidget onSendMessage={this.onSendMessage} onUpload={this.onUpload}/>
+                {project.archived?null:(
+                    <MessageWidget onSendMessage={this.onSendMessage} onUpload={this.onUpload}/>
+                )}
             </div>
         );
     }

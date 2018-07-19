@@ -1302,14 +1302,12 @@ a {
         .developers-list {
             .developer {
                 margin-bottom: 10px;
-            }
 
-            .avatar-wrapper {
-                margin-right: 18px;
-            }
-
-            .choice-group {
-                margin-left: 80px;
+                .dev-name {
+                    width: 150px;
+                    margin-left: 20px;
+                    margin-right: 30px;
+                }
             }
         }
     }

@@ -58,7 +58,8 @@ export default class Docs extends React.Component {
     }
 
     render() {
-        const {project: {documents}} = this.props;
+        const {project} = this.props;
+        const {documents} = project;
 
         return (
             <div className="project-docs">
@@ -71,7 +72,7 @@ export default class Docs extends React.Component {
                             <div className="font-weight-normal">
                                 {(DOCUMENT_TYPES_MAP[docType] || _.upperFirst(docType)).replace(/\s?document/, '')} documents
                             </div>
-                            <div className={`file-list ${isAdminOrPMOrClient()?'':'readonly'}`}>
+                            <div className={`file-list ${isAdminOrPMOrClient() && !project.archived?'':'readonly'}`}>
                                 {this.filterDocumentsByType(documents, docType).map(doc => {
                                     return (
                                         <div key={`doc-${doc.id}`}>
@@ -79,7 +80,7 @@ export default class Docs extends React.Component {
                                                 <a href={doc.download_url} target="_blank">
                                                     <Icon name={doc.file?'download':'link'}/> {doc.title?`${doc.title} | `:''} {doc.download_url}
                                                 </a>
-                                                {isAdminOrPMOrClient()?(
+                                                {isAdminOrPMOrClient() && !project.archived?(
                                                     <button
                                                         className="btn"
                                                         onClick={this.onRemoveDoc.bind(this, doc.id)}>
@@ -92,7 +93,7 @@ export default class Docs extends React.Component {
                                 })}
                             </div>
 
-                            {isAdminOrPMOrClient()?(
+                            {isAdminOrPMOrClient() && !project.archived?(
                                 <DocumentPicker showSelected={false}
                                                 documentType={docType}
                                                 size="main"

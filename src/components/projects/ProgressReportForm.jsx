@@ -748,7 +748,7 @@ export default class ProgressReportForm extends React.Component {
                                             </TextArea>
                                         </div>
 
-                                        {this.state.report.obstacles && !'no|none|non|nope|n/a|nah|false|.'.split('|').includes(this.state.report.obstacles)? (
+                                        {this.state.report.obstacles && !'no|none|non|nope|n/a|nah|false|.|..|...'.split('|').includes((this.state.report.obstacles || '').toLowerCase())? (
                                             <div className="form-group">
                                                 <label className="control-label">
                                                     What could have been done to

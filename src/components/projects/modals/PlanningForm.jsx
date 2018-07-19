@@ -72,7 +72,7 @@ export default class PlanningForm extends React.Component {
                 </FormGroup>
                 {this.state.plan.id?(
                     <FormGroup>
-                        <label>Reason for changing date</label>
+                        <label>Reason for changing document</label>
                         <TextArea value={this.state.plan.reason}
                                   onChange={this.onChangeField.bind(this, 'reason')}
                                   required/>

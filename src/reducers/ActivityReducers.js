@@ -12,7 +12,7 @@ function ids(state = {}, action) {
     switch (action.type) {
         case ActivityActions.LIST_ACTIVITIES_SUCCESS:
             let newIds = getIds(action.items);
-            if(action.filter.since) {
+            if(action.filter && action.filter.since) {
                 let cleanedIds = [];
                 if(state[selectionKey]) {
                     state[selectionKey].forEach(id => {
@@ -141,6 +141,11 @@ function next(state = {}, action) {
     let newState = {};
     switch (action.type) {
         case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+            if(action.filter && action.filter.since) {
+                return state;
+            }
+            newState[selectionKey] = action.next;
+            return {...state, ...newState};
         case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
             newState[selectionKey] = action.next;
             return {...state, ...newState};

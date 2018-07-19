@@ -37,7 +37,8 @@ import {
 
 export function scrollList(listId) {
     let activity_list = $(`#list${listId}.activity-list`);
-    activity_list.scrollTop(activity_list.find('.item-wrapper').height());
+    activity_list.scrollTop(activity_list.find('.activity-wrapper').height());
+    console.log('activity_list: ', activity_list.find('.activity-wrapper').height());
 }
 
 export default class ActivityList extends React.Component {
@@ -79,7 +80,11 @@ export default class ActivityList extends React.Component {
             (!prevProps.activities ||
                 this.props.activities.length !== prevProps.activities.length)
         ) {
-            scrollList(this.state.listId);
+            if(!this.props.isLoadingMore && prevProps.isLoadingMore) {
+                // no reason to scroll
+            } else {
+                scrollList(this.state.listId);
+            }
         }
     }
 

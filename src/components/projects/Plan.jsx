@@ -6,7 +6,7 @@ import { Row, Col } from 'reactstrap';
 import IconButton from '../core/IconButton';
 import Icon from '../core/Icon';
 import { openModal } from '../core/utils/modals';
-import {isAdminOrPMOrClient, isDevOrClient} from '../utils/auth';
+import {isAdmin, isAdminOrPMOrClient, isDevOrClient} from '../utils/auth';
 import MilestoneForm from "./modals/MilestoneForm";
 import PlanningForm from "./modals/PlanningForm";
 import ProjectDateForm from "./modals/ProjectDateForm";
@@ -165,7 +165,7 @@ export default class Plan extends React.Component {
             milestones = this.getMilestones() || [];
         return (
             <div className="project-planning">
-                {!project.start_date && !project.deadline && milestones.length === 0 && isDevOrClient()?(
+                {!project.start_date && !project.deadline && milestones.length === 0 && isDevOrClient() && !isAdmin()?(
                     <div className="font-weight-normal">No planning available yet.</div>
                 ):(
                     <div>

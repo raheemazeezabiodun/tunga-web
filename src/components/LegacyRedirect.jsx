@@ -1,4 +1,5 @@
 import React from 'react';
+import BootLogo from "./core/BootLogo";
 
 export default class LegacyRedirect extends React.Component {
 
@@ -8,9 +9,7 @@ export default class LegacyRedirect extends React.Component {
 
     render() {
         return (
-            <div>
-                Redirecting ...
-            </div>
+            <BootLogo/>
         );
     }
 }

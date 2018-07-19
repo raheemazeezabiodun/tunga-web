@@ -95,6 +95,7 @@ class SearchBox extends React.Component {
                                       className={this.props.className}
                                       placeholder={this.props.placeholder}
                                       value={this.state.search}
+                                      autoComplete="off"
                                       {...filterInputProps(this.props)}
                                       {...filterEventProps(this.props)}
                                       onChange={this.onChangeValue}/>
@@ -111,7 +112,7 @@ class SearchBox extends React.Component {
                                         <Progress/>
                                     ):(
                                         <div>
-                                            <strong>{User.count[this.searchKey()] + Project.count[this.searchKey()]}</strong> results for: <strong>{this.state.search}</strong>
+                                            <strong>{(User.count[this.searchKey()] + Project.count[this.searchKey()]) || 'No'}</strong> results for: <strong>{this.state.search}</strong>
                                         </div>
                                     )}
                                 </div>

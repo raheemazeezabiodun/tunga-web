@@ -349,6 +349,7 @@ const Auth = combineReducers({
     isResetting,
     isReset,
     error,
+    errors: error,
     next,
 });
 

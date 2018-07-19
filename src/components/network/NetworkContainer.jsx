@@ -9,9 +9,7 @@ import UserDetailContainer from './UserDetailContainer';
 import UserProfile from "./UserProfile";
 
 
-import {USER_TYPE_DEVELOPER} from "../../legacy/constants/Api";
-
-const UserContainer = ({User, UserActions}) => {
+const NetworkContainer = ({User, UserActions}) => {
     return (
         <React.Fragment>
             <Switch>
@@ -21,7 +19,7 @@ const UserContainer = ({User, UserActions}) => {
                     '/network',
                 ].map(path => {
                     return (
-                        <Route key={`user-container-path--${path}`} path={path} render={props => <UserListContainer {...props} User={User} UserActions={UserActions} filters={{type: USER_TYPE_DEVELOPER, filter: props.match.params.filter || null}}><UserList/></UserListContainer>}/>
+                        <Route key={`user-container-path--${path}`} path={path} render={props => <UserListContainer {...props} User={User} UserActions={UserActions} filters={{account_type: 'developer', filter: props.match.params.filter || null}}><UserList/></UserListContainer>}/>
                     );
                 })}
             </Switch>
@@ -29,4 +27,4 @@ const UserContainer = ({User, UserActions}) => {
     );
 };
 
-export default connect(UserContainer);
+export default connect(NetworkContainer);

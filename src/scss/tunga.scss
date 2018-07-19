@@ -1091,6 +1091,15 @@ a {
             padding-bottom: 20px;
         }
     }
+
+    &.invite-user-card {
+        max-width: 760px;
+
+        .form-control, .input-group:not(.input-search),
+        .rw-widget, .tag-input, .message-widget {
+            max-width: 420px;
+        }
+    }
 }
 
 .user-card {

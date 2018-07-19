@@ -4,6 +4,7 @@ import randomstring from 'randomstring';
 import _ from 'lodash';
 
 import {addPropsToChildren} from "../core/utils/children";
+import Progress from "../core/Progress";
 
 export default class UserListContainer extends React.Component  {
 
@@ -42,8 +43,7 @@ export default class UserListContainer extends React.Component  {
 
     renderChildren() {
         const {User, UserActions, children} = this.props,
-            self = this,
-            selectionKey = self.state.selectionKey;
+            selectionKey = this.state.selectionKey;
 
         return addPropsToChildren(children, {
             users: (User.ids[selectionKey] || []).map(id => {
@@ -60,9 +60,15 @@ export default class UserListContainer extends React.Component  {
     }
 
     render() {
+        const {User} = this.props,
+            selectionKey = this.state.selectionKey;
         return (
             <React.Fragment>
-                {this.renderChildren()}
+                {User.isFetching[selectionKey]?(
+                    <Progress/>
+                ):(
+                    this.renderChildren()
+                )}
             </React.Fragment>
         );
     }

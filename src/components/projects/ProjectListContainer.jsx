@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 import _ from 'lodash';
 import {addPropsToChildren} from "../core/utils/children";
+import Progress from "../core/Progress";
 
 export default class ProjectListContainer extends React.Component  {
 
@@ -40,8 +41,8 @@ export default class ProjectListContainer extends React.Component  {
     }
 
     renderChildren() {
-        const {Project, ProjectActions, children} = this.props, self = this;
-        const selectionKey = this.state.selectionKey;
+        const {Project, ProjectActions, children} = this.props,
+            selectionKey = this.state.selectionKey;
 
         return addPropsToChildren(children, {
             projects: (Project.ids[selectionKey] || []).map(id => {
@@ -58,9 +59,16 @@ export default class ProjectListContainer extends React.Component  {
     }
 
     render() {
+        const {Project} = this.props,
+            selectionKey = this.state.selectionKey;
+
         return (
             <React.Fragment>
-                {this.renderChildren()}
+                {Project.isFetching[selectionKey]?(
+                    <Progress/>
+                ):(
+                    this.renderChildren()
+                )}
             </React.Fragment>
         );
     }

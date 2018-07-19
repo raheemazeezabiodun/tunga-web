@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import React from 'react';
 import {FormGroup} from 'reactstrap';
+import moment from "moment";
 
 import Button from '../../../components/core/Button';
 import Input from "../../core/Input";
 import DateTimePicker from "../../core/DateTimePicker";
 import TextArea from "../../core/TextArea";
-import moment from "moment/moment";
 
 export default class MilestoneForm extends React.Component {
     static propTypes = {

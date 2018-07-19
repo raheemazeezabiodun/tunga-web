@@ -80,9 +80,6 @@ export const ENDPOINT_UPLOADS = getEndpointUrl('uploads/');
 
 export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 
-
-export const ENDPOINT_MY_APPS = getEndpointUrl('me/app/');
-
 export const ENDPOINT_CHANNEL = getEndpointUrl('channel/');
 export const ENDPOINT_DIRECT_CHANNEL = getEndpointUrl('channel/direct/');
 export const ENDPOINT_MESSAGE = getEndpointUrl('message/');

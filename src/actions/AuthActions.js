@@ -7,12 +7,9 @@ import {
     ENDPOINT_APPLY,
     ENDPOINT_RESET_PASSWORD,
     ENDPOINT_RESET_PASSWORD_CONFIRM,
-    ENDPOINT_MY_APPS,
     ENDPOINT_EMAIL_VISITOR,
     ENDPOINT_INVITE,
-    SOCIAL_PROVIDERS,
 } from './utils/api';
-import {updateAccountInfo, updateAuthUser} from './ProfileActions';
 
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -449,179 +446,6 @@ export function authRedirect(path) {
     };
 }
 
-export function listRepos(provider, task = null) {
-    return dispatch => {
-        dispatch(listReposStart(provider));
-        axios
-            .get(ENDPOINT_MY_APPS + provider + '/repos/', {params: {task}})
-            .then(function(response) {
-                dispatch(listReposSuccess(response.data, provider));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listReposFailed(
-                        error.response ? error.response.data : null,
-                        error.response ? error.response.status : null,
-                        provider,
-                    ),
-                );
-            });
-    };
-}
-
-export function listReposStart(provider) {
-    return {
-        type: LIST_REPOS_START,
-        provider,
-    };
-}
-
-export function listReposSuccess(repos, status_code, provider) {
-    return {
-        type: LIST_REPOS_SUCCESS,
-        repos,
-        provider,
-    };
-}
-
-export function listReposFailed(error, status_code, provider) {
-    return {
-        type: LIST_REPOS_FAILED,
-        error,
-        status_code,
-        provider,
-    };
-}
-
-export function listIssues(provider, task = null) {
-    return dispatch => {
-        dispatch(listIssuesStart(provider));
-        axios
-            .get(ENDPOINT_MY_APPS + provider + '/issues/', {params: {task}})
-            .then(function(response) {
-                dispatch(listIssuesSuccess(response.data, provider));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listIssuesFailed(
-                        error.response ? error.response.data : null,
-                        error.response ? error.response.status : null,
-                        provider,
-                    ),
-                );
-            });
-    };
-}
-
-export function listIssuesStart(provider) {
-    return {
-        type: LIST_ISSUES_START,
-        provider,
-    };
-}
-
-export function listIssuesSuccess(issues, provider) {
-    return {
-        type: LIST_ISSUES_SUCCESS,
-        issues,
-        provider,
-    };
-}
-
-export function listIssuesFailed(error, status_code, provider) {
-    return {
-        type: LIST_ISSUES_FAILED,
-        error,
-        status_code,
-        provider,
-    };
-}
-
-export function getSlackApp(task = null) {
-    return dispatch => {
-        dispatch(getSlackAppStart());
-        axios
-            .get(ENDPOINT_MY_APPS + `${SOCIAL_PROVIDERS.slack}/`, {
-                params: {task},
-            })
-            .then(function(response) {
-                dispatch(getSlackAppSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    getSlackAppFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function getSlackAppStart() {
-    return {
-        type: GET_SLACK_APP_START,
-    };
-}
-
-export function getSlackAppSuccess(details) {
-    return {
-        type: GET_SLACK_APP_SUCCESS,
-        details,
-    };
-}
-
-export function getSlackAppFailed(error) {
-    return {
-        type: GET_SLACK_APP_FAILED,
-        error,
-    };
-}
-
-export function listSlackChannels(task = null) {
-    return dispatch => {
-        dispatch(listSlackChannelsStart());
-        axios
-            .get(
-                ENDPOINT_MY_APPS + `${SOCIAL_PROVIDERS.slack}` + '/channels/',
-                {
-                    params: {task},
-                },
-            )
-            .then(function(response) {
-                dispatch(listSlackChannelsSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listSlackChannelsFailed(
-                        error.response ? error.response.data : null,
-                        error.response ? error.response.status : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function listSlackChannelsStart() {
-    return {
-        type: LIST_SLACK_CHANNELS_START,
-    };
-}
-
-export function listSlackChannelsSuccess(channels) {
-    return {
-        type: LIST_SLACK_CHANNELS_SUCCESS,
-        channels,
-    };
-}
-
-export function listSlackChannelsFailed(error, status_code) {
-    return {
-        type: LIST_SLACK_CHANNELS_FAILED,
-        error,
-        status_code,
-    };
-}
-
 export function invite(details) {
     return dispatch => {
         dispatch(inviteStart(details));
@@ -697,5 +521,3 @@ export function retrieveInviteFailed(error) {
         error,
     };
 }
-
-export {updateAccountInfo, updateAuthUser};

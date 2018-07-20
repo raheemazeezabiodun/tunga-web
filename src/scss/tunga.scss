@@ -1181,6 +1181,19 @@ a {
     margin-bottom: 20px;
 }
 
+.invoice-form {
+    .tag-input {
+        .selected {
+            .selected-item {
+                display: block;
+                width: 100%;
+                height: 40px;
+                margin-top: 0;
+            }
+        }
+    }
+}
+
 // Settings section
 .settings-container {
     form {

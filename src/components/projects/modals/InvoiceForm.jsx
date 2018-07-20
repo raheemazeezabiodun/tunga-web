@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from 'react';
 import {FormGroup, Row, Col} from 'reactstrap';
 import moment from "moment";
+import _ from 'lodash';
 
 import Button from '../../../components/core/Button';
 import Input from "../../core/Input";
@@ -28,7 +29,8 @@ export default class InvoiceForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            invoice: props.invoice || {}
+            invoice: props.invoice || {},
+            payouts: {0: {}},
         }
     }
 
@@ -46,7 +48,11 @@ export default class InvoiceForm extends React.Component {
         e.preventDefault();
 
         if(this.props.proceed) {
-            this.props.proceed(this.state.invoice);
+            if(this.props.invoice.type === INVOICE_TYPE_SALE) {
+                this.props.proceed(this.state.invoice);
+            } else {
+                this.props.proceed({invoice: this.state.invoice, payouts: this.state.payouts});
+            }
         }
     };
 
@@ -58,19 +64,40 @@ export default class InvoiceForm extends React.Component {
         }
     };
 
-    renderPayOut(user, amount) {
+    onAddPayout = () => {
+        let idx = Object.keys(this.state.payouts).length,
+            newState = {};
+        newState[idx] = {};
+        this.setState({payouts: {...this.state.payouts, ...newState}});
+    };
+
+    onPayoutUpdate(idx, key, value) {
+        let newPayout = {}, newState = {};
+        newPayout[key] = value;
+        newState[idx] = {...(this.state.payouts[idx] || {}), ...newPayout};
+        this.setState({payouts: {...this.state.payouts, ...newState}});
+    }
+
+    renderPayOut(idx) {
+        let payout = this.state.payouts[idx] || {};
         return (
-            <Row>
+            <Row key={idx}>
                 <Col sm="8">
-                    <label>Developer</label>
-                    <UserSelector max={1} selected={user?[user]:[]}/>
+                    {idx === 0?(
+                        <label>Developer</label>
+                    ):null}
+                    <UserSelector max={1}
+                                  selected={payout.user?[payout.user]:[]}
+                                  onChange={users => this.onPayoutUpdate(idx, 'user', users[0])}/>
                 </Col>
                 <Col sm="4">
                     <FormGroup>
-                        <label>Amount in EUR</label>
+                        {idx === 0?(
+                            <label>Amount in EUR</label>
+                        ):null}
                         <Input type="number"
-                               value={amount}
-                               onChange={this.onChangeField.bind(this, 'amount')}
+                               value={payout.amount || null}
+                               onChange={e => this.onPayoutUpdate(idx, 'amount', e.target.value)}
                                required/>
                     </FormGroup>
                 </Col>
@@ -80,7 +107,7 @@ export default class InvoiceForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.onSave.bind(this)}>
+            <form onSubmit={this.onSave.bind(this)} className="invoice-form">
                 <FormGroup>
                     <label>Payment title</label>
                     <Input value={this.state.invoice.title}
@@ -104,9 +131,13 @@ export default class InvoiceForm extends React.Component {
                     </FormGroup>
                 ):(
                     <div>
-                        {this.renderPayOut(null, '')}
+                        {Object.keys(this.state.payouts).map(idx => {
+                            return (
+                                this.renderPayOut(idx)
+                            );
+                        })}
                         <div className="text-right">
-                            <IconButton name="add" size="main"/> add payout for developer
+                            <IconButton name="add" size="main" onClick={this.onAddPayout}/> add payout for developer
                         </div>
                     </div>
                 )}

@@ -38,12 +38,29 @@ export default class Pay extends React.Component {
 
     onCreateInvoice(type) {
         const { project, InvoiceActions } = this.props;
-        openModal(<InvoiceForm invoice={{type}}/>, `Add ${type === INVOICE_TYPE_SALE?'Payment':'Payout'}`).then(invoice => {
-            if(invoice.type === INVOICE_TYPE_SALE) {
+        openModal(<InvoiceForm invoice={{type}}/>, `Add ${type === INVOICE_TYPE_SALE?'Payment':'Payout'}`).then(data => {
+            console.log('data: ', data);
+            if(data.type === INVOICE_TYPE_SALE) {
                 InvoiceActions.createInvoice(
-                    {...invoice, user: {id: project.owner?project.owner.id:project.user.id}, project: {id: project.id}},
+                    {...data, user: {id: project.owner?project.owner.id:project.user.id}, project: {id: project.id}},
                     this.props.selectionKey
                 );
+            } else {
+                let cleanData = [], invoice = data.invoice, payouts = data.payouts;
+                if(payouts && invoice) {
+                    Object.keys(payouts).forEach(idx => {
+                        let payout = payouts[idx];
+                        if(payout.user && payout.amount) {
+                            cleanData.push({...invoice, amount: payout.amount, user: {id: payout.user.id}, project: {id: project.id}});
+                        }
+                    });
+                }
+                if(cleanData.length) {
+                    InvoiceActions.createInvoiceBatch(
+                        cleanData,
+                        this.props.selectionKey
+                    );
+                }
             }
         }, error => {
 

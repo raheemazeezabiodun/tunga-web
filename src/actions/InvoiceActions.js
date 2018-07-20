@@ -4,6 +4,9 @@ import {ENDPOINT_INVOICES} from './utils/api';
 export const CREATE_INVOICE_START = 'CREATE_INVOICE_START';
 export const CREATE_INVOICE_SUCCESS = 'CREATE_INVOICE_SUCCESS';
 export const CREATE_INVOICE_FAILED = 'CREATE_INVOICE_FAILED';
+export const CREATE_INVOICE_BATCH_START = 'CREATE_INVOICE_BATCH_START';
+export const CREATE_INVOICE_BATCH_SUCCESS = 'CREATE_INVOICE_BATCH_SUCCESS';
+export const CREATE_INVOICE_BATCH_FAILED = 'CREATE_INVOICE_BATCH_FAILED';
 export const LIST_INVOICES_START = 'LIST_INVOICES_START';
 export const LIST_INVOICES_SUCCESS = 'LIST_INVOICES_SUCCESS';
 export const LIST_INVOICES_FAILED = 'LIST_INVOICES_FAILED';
@@ -62,6 +65,52 @@ export function createInvoiceFailed(error, invoice, target) {
         type: CREATE_INVOICE_FAILED,
         error,
         invoice,
+        target
+    };
+}
+
+export function createInvoiceBatch(invoices, target) {
+    return dispatch => {
+        dispatch(createInvoiceBatchStart(invoices, target));
+
+        let headers = {};
+
+        axios
+            .post(`${ENDPOINT_INVOICES}bulk/` , invoices, {headers})
+            .then(function(response) {
+                dispatch(createInvoiceBatchSuccess(response.data, target));
+            })
+            .catch(function(error) {
+                dispatch(
+                    createInvoiceBatchFailed(
+                        (error.response ? error.response.data : null), invoices, target
+                    ),
+                );
+            });
+    };
+}
+
+export function createInvoiceBatchStart(invoices, target) {
+    return {
+        type: CREATE_INVOICE_BATCH_START,
+        invoices,
+        target
+    };
+}
+
+export function createInvoiceBatchSuccess(invoices, target) {
+    return {
+        type: CREATE_INVOICE_BATCH_SUCCESS,
+        invoices,
+        target
+    };
+}
+
+export function createInvoiceBatchFailed(error, invoices, target) {
+    return {
+        type: CREATE_INVOICE_BATCH_FAILED,
+        error,
+        invoices,
         target
     };
 }

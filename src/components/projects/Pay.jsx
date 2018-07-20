@@ -6,7 +6,7 @@ import moment from 'moment';
 import Button from "../core/Button";
 import InvoiceForm from "./modals/InvoiceForm";
 
-import {isAdmin, isDevOrClient} from "../utils/auth";
+import {isAdmin, isAdminOrPM, isClient, isDev, isDevOrClient} from "../utils/auth";
 import {openConfirm, openModal} from "../core/utils/modals";
 import {INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../actions/utils/api";
 import IconButton from "../core/IconButton";
@@ -110,69 +110,81 @@ export default class Pay extends React.Component {
                     <div className="font-weight-normal">No payment planning yet.</div>
                 ):(
                     <div>
-                        <div className="section">
-                            <div className="clearfix">
-                                <div className="float-right">
-                                    <Button onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_SALE)}>Add payment</Button>
+                        {isDev()?null:(
+                            <div className="section">
+                                <div className="clearfix">
+                                    {isAdminOrPM()?(
+                                        <div className="float-right">
+                                            <Button onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_SALE)}>Add payment</Button>
+                                        </div>
+                                    ):null}
+                                    <div className="float-left">
+                                        <div className="font-weight-normal">Payments</div>
+                                    </div>
                                 </div>
-                                <div className="float-left">
-                                    <div className="font-weight-normal">Payments</div>
-                                </div>
-                            </div>
 
-                            <div className="payment-list">
-                                {payments.map(invoice => {
-                                    return (
-                                        <Row>
-                                            <Col sm="6">{invoice.title}</Col>
-                                            <Col sm="3">{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</Col>
-                                            <Col sm="3">
-                                                EUR {invoice.amount}
-                                                <div className="actions float-right">
-                                                    <IconButton name="colon" size={null} onClick={this.onToggleActions.bind(this, invoice.id)}/>
-                                                    {this.state.open === invoice.id?(
-                                                        <div className="dropper">
-                                                            <Button size="sm"
-                                                                    onClick={this.onUpdateInvoice.bind(this, invoice)}>
-                                                                Edit payment
-                                                            </Button>
-                                                            <Button size="sm"
-                                                                    onClick={this.onDeleteInvoice.bind(this, invoice.id)}>
-                                                                Delete payment
-                                                            </Button>
-                                                            {invoice.paid?null:(
-                                                                <Button size="sm"
-                                                                        onClick={this.onMarkPaid.bind(this, invoice.id)}>
-                                                                    Mark as paid
-                                                                </Button>
-                                                            )}
-                                                        </div>
+                                <div className="payment-list">
+                                    {payments.map(invoice => {
+                                        return (
+                                            <Row>
+                                                <Col sm="6">{invoice.title}</Col>
+                                                <Col sm="3">{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</Col>
+                                                <Col sm="3">
+                                                    EUR {invoice.amount}
+                                                    {isAdminOrPM()?(
+                                                        <React.Fragment>
+                                                            <div className="actions float-right">
+                                                                <IconButton name="colon" size={null} onClick={this.onToggleActions.bind(this, invoice.id)}/>
+                                                                {this.state.open === invoice.id?(
+                                                                    <div className="dropper">
+                                                                        <Button size="sm"
+                                                                                onClick={this.onUpdateInvoice.bind(this, invoice)}>
+                                                                            Edit payment
+                                                                        </Button>
+                                                                        <Button size="sm"
+                                                                                onClick={this.onDeleteInvoice.bind(this, invoice.id)}>
+                                                                            Delete payment
+                                                                        </Button>
+                                                                        {isAdmin() && !invoice.paid?(
+                                                                            <Button size="sm"
+                                                                                    onClick={this.onMarkPaid.bind(this, invoice.id)}>
+                                                                                Mark as paid
+                                                                            </Button>
+                                                                        ):null}
+                                                                    </div>
+                                                                ):null}
+                                                            </div>
+                                                        </React.Fragment>
                                                     ):null}
-                                                </div>
-                                            </Col>
+                                                </Col>
+                                            </Row>
+                                        )
+                                    })}
+                                    {payments.length?(
+                                        <Row className="payment-footer">
+                                            <Col sm="6">Total</Col>
+                                            <Col sm="3"/>
+                                            <Col sm="3">EUR {this.sumInvoices(payments)}</Col>
                                         </Row>
-                                    )
-                                })}
-                                {payments.length?(
-                                    <Row className="payment-footer">
-                                        <Col sm="6">Total</Col>
-                                        <Col sm="3"/>
-                                        <Col sm="3">EUR {this.sumInvoices(payments)}</Col>
-                                    </Row>
-                                ):null}
+                                    ):null}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
-                        <div className="section">
-                            <div className="clearfix">
-                                <div className="float-right">
-                                    <Button onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_PURCHASE)}>Add payout</Button>
-                                </div>
-                                <div className="float-left">
-                                    <div className="font-weight-normal">Payouts</div>
+                        {isClient() && !isAdmin()?null:(
+                            <div className="section">
+                                <div className="clearfix">
+                                    {isAdminOrPM()?(
+                                        <div className="float-right">
+                                            <Button onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_PURCHASE)}>Add payout</Button>
+                                        </div>
+                                    ):null}
+                                    <div className="float-left">
+                                        <div className="font-weight-normal">Payouts</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 )}
             </div>

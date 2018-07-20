@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import TitleBarContent from './TitleBarContent';
 import ProjectOutput from './dashboard/ProjectOutput';
-import {isAdminOrPM, isAdminOrPMOrClient} from "./utils/auth";
+import {isAdmin, isAdminOrPM, isAdminOrPMOrClient, isClient, isDev} from "./utils/auth";
 
 export default class TitleBar extends React.Component {
 
@@ -19,18 +19,22 @@ export default class TitleBar extends React.Component {
             ['/network', 'Developers'],
             ['/network/filter/relevant', 'Relevant for me']
         ], paymentSections = [
-            ['/payments/filter/pending-in', 'Pending payments'],
-            ['/payments/filter/paid-in', 'Paid payments'],
-            ['/payments/filter/pending-out', 'Pending payouts'], // dev, admin and PM
-            ['/payments/filter/paid-out', 'Paid payouts'], // dev, admin and PM
+            ...(isDev()?[]:[
+                ['/payments/filter/pending-in', 'Pending payments'],
+                ['/payments/filter/paid-in', 'Paid payments'],
+            ]),
+            ...(isClient() && !isAdmin()?[]:[
+                ['/payments/filter/pending-out', 'Pending payouts'],
+                ['/payments/filter/paid-out', 'Paid payouts'],
+            ]),
         ], settingsSections = [
             ['/settings/profile', 'Profile'], // All
-            ...(user.is_project_owner?[
+            ...(isClient()?[
                 // Clients only
                 ['/settings/company-profile', 'Company profile'],
                 ['/settings/company-details', 'Company details']
             ]:[]),
-            ...(user.is_project_owner?[]:[
+            ...(isClient()?[]:[
                 // Devs and PMs only
                 ['/settings/experience', 'Experience'],
                 ['/settings/payment', 'Payment settings'],

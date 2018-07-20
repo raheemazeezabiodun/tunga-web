@@ -1100,6 +1100,31 @@ a {
             max-width: 420px;
         }
     }
+
+    &.payments-list-card {
+        padding: 0;
+
+        table {
+            margin-bottom: -40px;
+
+            th {
+                font-weight: $font-weight-medium;
+            }
+
+            &.table th, &.table td {
+                padding: 20px;
+            }
+
+            &.table-striped tbody tr:nth-of-type(odd) {
+                background-color: get-color('lightest-grey');
+            }
+
+
+        }
+        .empty-list {
+            padding: 40px;
+        }
+    }
 }
 
 .user-card {

@@ -88,7 +88,7 @@ export default class PaymentList extends React.Component {
                                             <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
                                             <td>{moment.utc(invoice.due_at).add('days', 14).format('DD/MMM/YYYY')}</td>
                                             <td>
-                                                {isAdmin() && !invoice.paid?(
+                                                {isAdmin() && !invoice.paid && !invoice.project.archived?(
                                                     <Button size="sm"
                                                             onClick={this.onMarkPaid.bind(this, invoice.id)}>Mark as paid</Button>
                                                 ):null}

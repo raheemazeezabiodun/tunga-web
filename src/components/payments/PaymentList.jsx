@@ -6,6 +6,7 @@ import moment from 'moment';
 import Button from "../core/Button";
 import {openConfirm} from "../core/utils/modals";
 import {isAdmin} from "../utils/auth";
+import {batchInvoices} from "../utils/payments";
 
 const PAID_IN = 'paid-in';
 const PENDING_IN = 'pending-in';
@@ -26,12 +27,32 @@ export default class PaymentList extends React.Component {
         });
     }
 
+    onApprovePayout(invoices) {
+        const { InvoiceActions } = this.props;
+        openConfirm(
+            'Are you sure you want to approve this payout?', '',
+            true, {ok: 'Yes'}
+        ).then(response => {
+            invoices.forEach(invoice => {
+                InvoiceActions.updateInvoice(invoice.id, {paid: true}, this.props.selectionKey);
+            });
+        }, error => {
+            // Nothing
+        });
+    }
+
     render() {
         const {filter, invoices} = this.props;
 
+        let invoiceList = invoices;
+
+        if([PENDING_OUT, PAID_OUT].includes(filter)) {
+            invoiceList = batchInvoices(invoices);
+        }
+
         return (
             <div className="content-card payments-list-card">
-                {invoices.length?(
+                {invoiceList.length?(
                     <Table striped>
                         <thead>
                         <tr>
@@ -68,7 +89,7 @@ export default class PaymentList extends React.Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {invoices.map(invoice => {
+                        {invoiceList.map(invoice => {
                             const owner = invoice.project.owner || invoice.project.user;
                             return (
                                 <tr key={invoice.id}>
@@ -76,13 +97,31 @@ export default class PaymentList extends React.Component {
                                     <td><Link to={`/projects/${invoice.project.id}/pay`}>{invoice.project.title}</Link></td>
                                     <td>{invoice.title}</td>
                                     {[PENDING_OUT, PAID_OUT].includes(filter)?(
-                                        <td>Developer</td>
+                                        <td>{invoice.invoices.map(item => {
+                                            return (
+                                                <div>{item.user.display_name}</div>
+                                            );
+                                        })}</td>
                                     ):null}
-                                    <td>{invoice.number}</td>
+                                    <td>{[PENDING_OUT, PAID_OUT].includes(filter)?(
+                                        invoice.invoices.map(item => {
+                                            return (
+                                                <div>{item.number}</div>
+                                            );
+                                        })
+                                    ):(
+                                        invoice.number
+                                    )}</td>
                                     {[PENDING_IN, PAID_IN].includes(filter)?(
                                         <td>€{invoice.amount}</td>
                                     ):null}
-                                    <td>{/*Payout*/}</td>
+                                    <td>{[PENDING_OUT, PAID_OUT].includes(filter)?(
+                                        invoice.invoices.map(item => {
+                                            return (
+                                                <div>€{item.amount}</div>
+                                            );
+                                        })
+                                    ):null}</td>
                                     {filter === PENDING_IN?(
                                         <React.Fragment>
                                             <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
@@ -90,7 +129,9 @@ export default class PaymentList extends React.Component {
                                             <td>
                                                 {isAdmin() && !invoice.paid && !invoice.project.archived?(
                                                     <Button size="sm"
-                                                            onClick={this.onMarkPaid.bind(this, invoice.id)}>Mark as paid</Button>
+                                                            onClick={this.onMarkPaid.bind(this, invoice.id)}>
+                                                        Mark as paid
+                                                    </Button>
                                                 ):null}
                                             </td>
                                         </React.Fragment>
@@ -100,12 +141,27 @@ export default class PaymentList extends React.Component {
                                     ):null}
                                     {filter === PENDING_OUT?(
                                         <React.Fragment>
-                                            <td>Payout Date</td>
-                                            <td/>
+                                            <td>{invoice.invoices.map(item => {
+                                                return (
+                                                    <div>{moment.utc(item.due_at).format('DD/MMM/YYYY')}</div>
+                                                );
+                                            })}</td>
+                                            <td>
+                                                {isAdmin() && !invoice.paid && !invoice.project.archived?(
+                                                    <Button size="sm"
+                                                            onClick={this.onApprovePayout.bind(this, invoice.invoices)}>
+                                                        Approve payout
+                                                    </Button>
+                                                ):null}
+                                            </td>
                                         </React.Fragment>
                                     ):null}
                                     {filter === PAID_OUT?(
-                                        <td>Payment Date</td>
+                                        <td>{invoice.invoices.map(item => {
+                                            return (
+                                                <div>{moment.utc(item.paid_at).format('DD/MMM/YYYY')}</div>
+                                            );
+                                        })}</td>
                                     ):null}
                                 </tr>
                             );

@@ -54,6 +54,12 @@ function ids(state = {}, action) {
         case InvoiceActions.CREATE_INVOICE_SUCCESS:
             newState[targetKey] = [action.invoice.id, ...(state[targetKey] || [])];
             return {...state, ...newState};
+        case InvoiceActions.CREATE_INVOICE_BATCH_SUCCESS:
+            newState[targetKey] = [
+                ...state[targetKey],
+                ...getIds(action.invoices),
+            ];
+            return {...state, ...newState};
         case InvoiceActions.DELETE_INVOICE_SUCCESS:
             if(state[targetKey]) {
                 let currentList = [...state[targetKey]];
@@ -70,10 +76,10 @@ function ids(state = {}, action) {
 }
 
 function invoices(state = {}, action) {
+    let all_invoices = {};
     switch (action.type) {
         case InvoiceActions.LIST_INVOICES_SUCCESS:
         case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
-            let all_invoices = {};
             action.items.forEach(invoice => {
                 all_invoices[invoice.id] = invoice;
             });
@@ -84,6 +90,11 @@ function invoices(state = {}, action) {
             let new_invoice = {};
             new_invoice[action.invoice.id] = action.invoice;
             return {...state, ...new_invoice};
+        case InvoiceActions.CREATE_INVOICE_BATCH_SUCCESS:
+            action.invoices.forEach(invoice => {
+                all_invoices[invoice.id] = invoice;
+            });
+            return {...state, ...all_invoices};
         case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
         case ProgressReportActions.UPDATE_PROGRESS_REPORT_SUCCESS:
             let progressReport = action.progress_report;

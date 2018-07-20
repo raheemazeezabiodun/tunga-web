@@ -10,6 +10,7 @@ import {isAdmin, isAdminOrPM, isClient, isDev, isDevOrClient} from "../utils/aut
 import {openConfirm, openModal} from "../core/utils/modals";
 import {INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../actions/utils/api";
 import IconButton from "../core/IconButton";
+import {batchInvoices, sumInvoices, filterInvoices} from "../utils/payments";
 
 export default class Pay extends React.Component {
     static propTypes = {
@@ -24,22 +25,9 @@ export default class Pay extends React.Component {
         this.state = {open: null};
     }
 
-    filterInvoices(invoices, type) {
-        return invoices.filter(invoice => invoice.type === type)
-    }
-
-    sumInvoices(invoices) {
-        return invoices.map(invoice => {
-            return invoice.amount || 0;
-        }).reduce((total, number) => {
-            return total + Math.round(number);
-        }, 0);
-    }
-
     onCreateInvoice(type) {
         const { project, InvoiceActions } = this.props;
         openModal(<InvoiceForm invoice={{type}}/>, `Add ${type === INVOICE_TYPE_SALE?'Payment':'Payout'}`).then(data => {
-            console.log('data: ', data);
             if(data.type === INVOICE_TYPE_SALE) {
                 InvoiceActions.createInvoice(
                     {...data, user: {id: project.owner?project.owner.id:project.user.id}, project: {id: project.id}},
@@ -74,7 +62,7 @@ export default class Pay extends React.Component {
             cleanInvoice[key] = invoice[key];
         });
         const { InvoiceActions } = this.props;
-        openModal(<InvoiceForm invoice={cleanInvoice}/>, `Add ${invoice.type === INVOICE_TYPE_SALE?'Payment':'Payout'}`).then(data => {
+        openModal(<InvoiceForm invoice={cleanInvoice}/>, `Edit ${invoice.type === INVOICE_TYPE_SALE?'Payment':'Payout'}`).then(data => {
             if(invoice.type === INVOICE_TYPE_SALE) {
                 InvoiceActions.updateInvoice(
                     invoice.id,
@@ -113,13 +101,109 @@ export default class Pay extends React.Component {
         });
     }
 
+    onUpdateInvoiceBatch(ref, invoices) {
+        this.onToggleActions(ref);
+        let invoice = invoices[0];
+        let cleanInvoice = {};
+        ['type', 'title', 'due_at'].forEach(key => {
+            cleanInvoice[key] = invoice[key];
+        });
+
+        let payouts = {};
+        invoices.forEach((item, idx) => {
+            payouts[idx] = {id: item.id, user: item.user, amount: item.amount};
+        });
+        const { project, InvoiceActions } = this.props;
+        openModal(<InvoiceForm invoice={cleanInvoice} payouts={payouts}/>, `Edit ${invoice.type === INVOICE_TYPE_SALE?'Payment':'Payout'}`).then(data => {
+            if(invoice.type === INVOICE_TYPE_PURCHASE) {
+                let cleanData = [],
+                    invoice = data.invoice,
+                    payouts = data.payouts;
+
+                if(payouts && invoice) {
+                    Object.keys(payouts).forEach(idx => {
+                        let payout = payouts[idx];
+                        if(payout.user && payout.amount) {
+                            let payObj = {...invoice, amount: payout.amount, user: {id: payout.user.id}, project: {id: project.id}};
+                            if(payout.id) {
+                                payObj.id = payout.id;
+                            }
+                            payObj.batch_ref = ref;
+                            cleanData.push(payObj);
+                        }
+                    });
+                }
+
+                let retainedIds = [];
+                if(cleanData.length) {
+                    cleanData.forEach(item => {
+                        if(item.id) {
+                            retainedIds.push(item.id);
+                            InvoiceActions.updateInvoice(
+                                item.id,
+                                item,
+                                this.props.selectionKey
+                            );
+                        } else {
+                            InvoiceActions.createInvoice(
+                                item,
+                                this.props.selectionKey
+                            );
+                        }
+                    });
+                }
+
+                invoices.forEach(item => {
+                    if(!retainedIds.includes(item.id)) {
+                        InvoiceActions.deleteInvoice(item.id, this.props.selectionKey);
+                    }
+                });
+            }
+        }, error => {
+
+        });
+    }
+
+    onDeleteInvoiceBatch(ref, invoices) {
+        this.onToggleActions(ref);
+        const { InvoiceActions } = this.props;
+        openConfirm(
+            'Are you sure you want to delete this payout?', '',
+            true, {ok: 'Yes'}
+        ).then(response => {
+            invoices.forEach(invoice => {
+                InvoiceActions.deleteInvoice(invoice.id, this.props.selectionKey);
+            });
+        }, error => {
+            // Nothing
+        });
+    }
+
+    onApprovePayout(ref, invoices) {
+        this.onToggleActions(ref);
+        const { InvoiceActions } = this.props;
+        openConfirm(
+            'Are you sure you want to approve this payout?', '',
+            true, {ok: 'Yes'}
+        ).then(response => {
+            invoices.forEach(invoice => {
+                InvoiceActions.updateInvoice(invoice.id, {paid: true}, this.props.selectionKey);
+            });
+        }, error => {
+            // Nothing
+        });
+    }
+
     onToggleActions(invoiceId) {
         this.setState({open: this.state.open === invoiceId?null:invoiceId});
     }
 
     render() {
-        const {project, invoices} = this.props;
-        const payments = this.filterInvoices(invoices, INVOICE_TYPE_SALE);
+        const {project, invoices} = this.props,
+            payments = filterInvoices(invoices, INVOICE_TYPE_SALE),
+            payouts = filterInvoices(invoices, INVOICE_TYPE_PURCHASE);
+
+        let batchPayouts = batchInvoices(payouts);
 
         return (
             <div className="project-payments">
@@ -143,7 +227,7 @@ export default class Pay extends React.Component {
                                 <div className="payment-list">
                                     {payments.map(invoice => {
                                         return (
-                                            <Row>
+                                            <Row key={invoice.id}>
                                                 <Col sm={6}>{invoice.title}</Col>
                                                 <Col sm={3}>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</Col>
                                                 <Col sm={3}>
@@ -181,7 +265,7 @@ export default class Pay extends React.Component {
                                         <Row className="payment-footer">
                                             <Col sm={6}>Total</Col>
                                             <Col sm={3}/>
-                                            <Col sm={3}>EUR {this.sumInvoices(payments)}</Col>
+                                            <Col sm={3}>EUR {sumInvoices(payments)}</Col>
                                         </Row>
                                     ):null}
                                 </div>
@@ -199,6 +283,52 @@ export default class Pay extends React.Component {
                                     <div className="float-left">
                                         <div className="font-weight-normal">Payouts</div>
                                     </div>
+                                </div>
+
+                                <div className="payment-list">
+                                    {batchPayouts.map(batch => {
+                                        return (
+                                            <Row key={batch.id}>
+                                                <Col sm={6}>{batch.title}</Col>
+                                                <Col sm={3}>{moment.utc(batch.due_at).format('DD/MMM/YYYY')}</Col>
+                                                <Col sm={3}>
+                                                    EUR {batch.amount}
+                                                    {isAdminOrPM() && !project.archived?(
+                                                        <React.Fragment>
+                                                            <div className="actions float-right">
+                                                                <IconButton name="colon" size={null} onClick={this.onToggleActions.bind(this, batch.ref)}/>
+                                                                {this.state.open === batch.ref?(
+                                                                    <div className="dropper">
+                                                                        <Button size="sm"
+                                                                                onClick={this.onUpdateInvoiceBatch.bind(this, batch.ref, batch.invoices)}>
+                                                                            Edit payout
+                                                                        </Button>
+                                                                        <Button size="sm"
+                                                                                onClick={this.onDeleteInvoiceBatch.bind(this, batch.ref, batch.invoices)}>
+                                                                            Delete payout
+                                                                        </Button>
+                                                                        {isAdmin() && !batch.paid?(
+                                                                            <Button size="sm"
+                                                                                    onClick={this.onApprovePayout.bind(this, batch.ref, batch.invoices)}>
+                                                                                Approve payout
+                                                                            </Button>
+                                                                        ):null}
+                                                                    </div>
+                                                                ):null}
+                                                            </div>
+                                                        </React.Fragment>
+                                                    ):null}
+                                                </Col>
+                                            </Row>
+                                        )
+                                    })}
+                                    {payments.length?(
+                                        <Row className="payment-footer">
+                                            <Col sm={6}>Total</Col>
+                                            <Col sm={3}/>
+                                            <Col sm={3}>EUR {sumInvoices(batchPayouts)}</Col>
+                                        </Row>
+                                    ):null}
                                 </div>
                             </div>
                         )}

@@ -30,7 +30,7 @@ export default class InvoiceForm extends React.Component {
         super(props);
         this.state = {
             invoice: props.invoice || {},
-            payouts: {0: {}},
+            payouts: props.payouts || {0: {}},
         }
     }
 

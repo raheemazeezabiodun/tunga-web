@@ -109,7 +109,7 @@ export default class InvoiceForm extends React.Component {
         return (
             <form onSubmit={this.onSave.bind(this)} className="invoice-form">
                 <FormGroup>
-                    <label>Payment title</label>
+                    <label>{this.props.invoice.type === INVOICE_TYPE_SALE?'Payment':'Payout'} title</label>
                     <Input value={this.state.invoice.title}
                            onChange={this.onChangeField.bind(this, 'title')}
                            required/>

@@ -130,7 +130,7 @@ export default class Pay extends React.Component {
                         {isDev()?null:(
                             <div className="section">
                                 <div className="clearfix">
-                                    {isAdminOrPM()?(
+                                    {isAdminOrPM() && !project.archived?(
                                         <div className="float-right">
                                             <Button onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_SALE)}>Add payment</Button>
                                         </div>
@@ -144,11 +144,11 @@ export default class Pay extends React.Component {
                                     {payments.map(invoice => {
                                         return (
                                             <Row>
-                                                <Col sm="6">{invoice.title}</Col>
-                                                <Col sm="3">{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</Col>
-                                                <Col sm="3">
+                                                <Col sm={6}>{invoice.title}</Col>
+                                                <Col sm={3}>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</Col>
+                                                <Col sm={3}>
                                                     EUR {invoice.amount}
-                                                    {isAdminOrPM()?(
+                                                    {isAdminOrPM() && !project.archived?(
                                                         <React.Fragment>
                                                             <div className="actions float-right">
                                                                 <IconButton name="colon" size={null} onClick={this.onToggleActions.bind(this, invoice.id)}/>
@@ -179,9 +179,9 @@ export default class Pay extends React.Component {
                                     })}
                                     {payments.length?(
                                         <Row className="payment-footer">
-                                            <Col sm="6">Total</Col>
-                                            <Col sm="3"/>
-                                            <Col sm="3">EUR {this.sumInvoices(payments)}</Col>
+                                            <Col sm={6}>Total</Col>
+                                            <Col sm={3}/>
+                                            <Col sm={3}>EUR {this.sumInvoices(payments)}</Col>
                                         </Row>
                                     ):null}
                                 </div>
@@ -191,7 +191,7 @@ export default class Pay extends React.Component {
                         {isClient() && !isAdmin()?null:(
                             <div className="section">
                                 <div className="clearfix">
-                                    {isAdminOrPM()?(
+                                    {isAdminOrPM() && !project.archived?(
                                         <div className="float-right">
                                             <Button onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_PURCHASE)}>Add payout</Button>
                                         </div>

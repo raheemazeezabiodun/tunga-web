@@ -88,7 +88,7 @@ export default class InvoiceForm extends React.Component {
                            required/>
                 </FormGroup>
                 <FormGroup>
-                    <label>Invoice due_at</label>
+                    <label>Invoice date</label>
                     <DateTimePicker calendar={true} time={false}
                                     value={this.state.invoice.due_at?new Date(this.state.invoice.due_at):null}
                                     onChange={(due_at) => { this.onChangeValue('due_at', moment.utc(due_at).format())}}

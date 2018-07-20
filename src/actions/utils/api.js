@@ -77,27 +77,17 @@ export const ENDPOINT_SKILLS = getEndpointUrl('skill/');
 export const ENDPOINT_ACTIVITIES = getEndpointUrl('activity/');
 export const ENDPOINT_COMMENTS = getEndpointUrl('comments/');
 export const ENDPOINT_UPLOADS = getEndpointUrl('uploads/');
+export const ENDPOINT_INVOICES = getEndpointUrl('invoices/');
 
 export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 
 export const ENDPOINT_CHANNEL = getEndpointUrl('channel/');
 export const ENDPOINT_DIRECT_CHANNEL = getEndpointUrl('channel/direct/');
 export const ENDPOINT_MESSAGE = getEndpointUrl('message/');
-export const ENDPOINT_CONNECTION = getEndpointUrl('connection/');
-export const ENDPOINT_APPLICATION = getEndpointUrl('application/');
-export const ENDPOINT_ESTIMATE = getEndpointUrl('estimate/');
-export const ENDPOINT_QUOTE = getEndpointUrl('sprint/');
-export const ENDPOINT_SAVED_TASK = getEndpointUrl('saved-task/');
-export const ENDPOINT_PROGRESS_REPORT = getEndpointUrl('progress-report/');
 export const ENDPOINT_CONTACT_REQUEST = getEndpointUrl('contact-request/');
-export const ENDPOINT_SUPPORT_SECTION = getEndpointUrl('support/section/');
-export const ENDPOINT_SUPPORT_PAGE = getEndpointUrl('support/page/');
 export const ENDPOINT_MEDIUM = getEndpointUrl('medium/');
 export const ENDPOINT_OEMBED = getEndpointUrl('oembed/');
 export const ENDPOINT_UPLOAD = getEndpointUrl('upload/');
-export const ENDPOINT_MULTI_TASK_PAYMENT = getEndpointUrl(
-    'multi-task-payment/',
-);
 export const ENDPOINT_SKILL_PAGE = getEndpointUrl('skill-page/');
 export const ENDPOINT_BLOG = getEndpointUrl('blog/');
 
@@ -232,3 +222,9 @@ export const SLACK_SHARE_EVENTS = [
     [SLACK_SHARE_DOCS, 'Documents and uploads'],
     [SLACK_SHARE_REPORTS, 'Progress reports']
 ];
+
+export const INVOICE_TYPE_SALE = 'sale';
+export const INVOICE_TYPE_PURCHASE = 'purchase';
+
+export const PAYMENT_TYPE_SALE = 'sale';
+export const PAYMENT_TYPE_PURCHASE = 'purchase';

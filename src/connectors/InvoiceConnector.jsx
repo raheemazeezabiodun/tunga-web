@@ -2,19 +2,19 @@ import {bindActionCreators} from "redux";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
-import * as ProgressEventActions from "../actions/ProgressEventActions";
+import * as InvoiceActions from "../actions/InvoiceActions";
 import * as ProgressReportActions from "../actions/ProgressReportActions";
 
 function mapStateToProps(state) {
     return {
-        ProgressEvent: state.ProgressEvent
+        Invoice: state.Invoice
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        ProgressEventActions: {
-            ...bindActionCreators(ProgressEventActions, dispatch),
+        InvoiceActions: {
+            ...bindActionCreators(InvoiceActions, dispatch),
             ...bindActionCreators(ProgressReportActions, dispatch),
         }
     };

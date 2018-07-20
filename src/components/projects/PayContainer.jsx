@@ -1,24 +1,36 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {isAdmin, isDevOrClient} from "../utils/auth";
-import connect from "../../connectors/ActivityConnector";
+import { Switch, Route } from 'react-router-dom';
 
-class Pay extends React.Component {
+import InvoiceListContainer from "../payments/InvoiceListContainer";
+import Pay from "./Pay";
+
+import connect from "../../connectors/InvoiceConnector";
+
+class PayContainer extends React.Component {
     static propTypes = {
         project: PropTypes.object,
+        match: PropTypes.object,
     };
 
     render() {
+        const {project, match, Invoice, InvoiceActions} = this.props;
         return (
-            <div className="project-payments">
-                {isDevOrClient() && !isAdmin()?(
-                    <div className="font-weight-normal">No payment planning yet.</div>
-                ):(
-                    <div></div>
-                )}
-            </div>
+            <React.Fragment>
+                <Switch>
+                    <Route path={match.url}
+                           exact
+                           render={props => <InvoiceListContainer {...props}
+                                                                  filters={{project: project.id}}
+                                                                  Invoice={Invoice}
+                                                                  InvoiceActions={InvoiceActions}>
+                               <Pay project={project} {...props}/>
+                           </InvoiceListContainer>}
+                    />
+                </Switch>
+            </React.Fragment>
         );
     }
 }
 
-export default connect(Pay);
+export default connect(PayContainer);

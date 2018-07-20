@@ -2,15 +2,15 @@ import {combineReducers} from 'redux';
 import {LOCATION_CHANGE} from "react-router-redux";
 
 import {getIds} from './utils';
-import * as ProgressEventActions from "../actions/ProgressEventActions";
+import * as InvoiceActions from "../actions/InvoiceActions";
 import * as ProgressReportActions from "../actions/ProgressReportActions";
 
 function created(state = {}, action) {
     let targetKey = action.target || 'new';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_SUCCESS:
-            newState[targetKey] = action.progress_event.id;
+        case InvoiceActions.CREATE_INVOICE_SUCCESS:
+            newState[targetKey] = action.invoice.id;
             return {...state, ...newState};
         default:
             return state;
@@ -18,10 +18,10 @@ function created(state = {}, action) {
 }
 
 function deleted(state = {}, action) {
-    let targetKey = action.id || 'default';
+    let targetKey = action.target || action.id || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.DELETE_PROGRESS_EVENT_SUCCESS:
+        case InvoiceActions.DELETE_INVOICE_SUCCESS:
             newState[targetKey] = action.id;
             return {...state, ...newState};
         default:
@@ -31,54 +31,69 @@ function deleted(state = {}, action) {
 
 function ids(state = {}, action) {
     let selectionKey = action.selection || 'default';
+    let targetKey = action.target || action.id || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_SUCCESS:
+        case InvoiceActions.LIST_INVOICES_SUCCESS:
             newState[selectionKey] = getIds(action.items);
             return {...state, ...newState};
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_SUCCESS:
+        case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
             newState[selectionKey] = [
                 ...state[selectionKey],
                 ...getIds(action.items),
             ];
             return {...state, ...newState};
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_START:
+        case InvoiceActions.LIST_INVOICES_START:
             if (action.prev_selection && state[action.prev_selection]) {
                 newState[selectionKey] = state[action.prev_selection];
                 return {...state, ...newState};
             }
             return state;
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_FAILED:
+        case InvoiceActions.LIST_INVOICES_FAILED:
+            return state;
+        case InvoiceActions.CREATE_INVOICE_SUCCESS:
+            newState[targetKey] = [action.invoice.id, ...(state[targetKey] || [])];
+            return {...state, ...newState};
+        case InvoiceActions.DELETE_INVOICE_SUCCESS:
+            if(state[targetKey]) {
+                let currentList = [...state[targetKey]];
+                let idx = currentList.indexOf(action.id);
+                if(idx > -1) {
+                    newState[targetKey] = [...currentList.slice(0, idx), ...currentList.slice(idx+1)];
+                    return {...state, ...newState};
+                }
+            }
             return state;
         default:
             return state;
     }
 }
 
-function progress_events(state = {}, action) {
+function invoices(state = {}, action) {
     switch (action.type) {
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_SUCCESS:
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_SUCCESS:
-            let all_progress_events = {};
-            action.items.forEach(progress_event => {
-                all_progress_events[progress_event.id] = progress_event;
+        case InvoiceActions.LIST_INVOICES_SUCCESS:
+        case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
+            let all_invoices = {};
+            action.items.forEach(invoice => {
+                all_invoices[invoice.id] = invoice;
             });
-            return {...state, ...all_progress_events};
-        case ProgressEventActions.RETRIEVE_PROGRESS_EVENT_SUCCESS:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_SUCCESS:
-            let new_progress_event = {};
-            new_progress_event[action.progress_event.id] = action.progress_event;
-            return {...state, ...new_progress_event};
+            return {...state, ...all_invoices};
+        case InvoiceActions.CREATE_INVOICE_SUCCESS:
+        case InvoiceActions.RETRIEVE_INVOICE_SUCCESS:
+        case InvoiceActions.UPDATE_INVOICE_SUCCESS:
+            let new_invoice = {};
+            new_invoice[action.invoice.id] = action.invoice;
+            return {...state, ...new_invoice};
         case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
         case ProgressReportActions.UPDATE_PROGRESS_REPORT_SUCCESS:
             let progressReport = action.progress_report;
 
             if(progressReport && progressReport.event && progressReport.event.id) {
                 let progressEventId = progressReport.event.id,
-                    reportProgressEvent = state[progressEventId] || {};
+                    reportInvoice = state[progressEventId] || {};
                 delete progressReport.event;
 
-                let currentProgressReports = [...(reportProgressEvent.progress_reports || [])];
+                let currentProgressReports = [...(reportInvoice.progress_reports || [])];
                 let currentProgressReportIdx = currentProgressReports.map(item => {
                     return item.id;
                 }).indexOf(progressReport.id);
@@ -90,7 +105,7 @@ function progress_events(state = {}, action) {
                 }
 
                 let newState = {};
-                newState[progressEventId] = {...reportProgressEvent, progress_reports: currentProgressReports};
+                newState[progressEventId] = {...reportInvoice, progress_reports: currentProgressReports};
                 return {...state, ...newState};
             }
             return state;
@@ -117,14 +132,14 @@ function isSaving(state = {}, action) {
     let targetKey = action.target || action.id || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_START:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_START:
+        case InvoiceActions.CREATE_INVOICE_START:
+        case InvoiceActions.UPDATE_INVOICE_START:
             newState[targetKey] = true;
             return {...state, ...newState};
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_SUCCESS:
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_FAILED:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_SUCCESS:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.CREATE_INVOICE_SUCCESS:
+        case InvoiceActions.CREATE_INVOICE_FAILED:
+        case InvoiceActions.UPDATE_INVOICE_SUCCESS:
+        case InvoiceActions.UPDATE_INVOICE_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
         case ProgressReportActions.CREATE_PROGRESS_REPORT_START:
@@ -146,14 +161,14 @@ function isSaved(state = {}, action) {
     let targetKey = action.target || action.id || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_SUCCESS:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_SUCCESS:
+        case InvoiceActions.CREATE_INVOICE_SUCCESS:
+        case InvoiceActions.UPDATE_INVOICE_SUCCESS:
             newState[targetKey] = true;
             return {...state, ...newState};
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_START:
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_FAILED:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_START:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.CREATE_INVOICE_START:
+        case InvoiceActions.CREATE_INVOICE_FAILED:
+        case InvoiceActions.UPDATE_INVOICE_START:
+        case InvoiceActions.UPDATE_INVOICE_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
         case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
@@ -174,14 +189,14 @@ function isSaved(state = {}, action) {
 }
 
 function isRetrieving(state = {}, action) {
-    let targetKey = action.id || 'default';
+    let targetKey = action.target || action.id || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.RETRIEVE_PROGRESS_EVENT_START:
+        case InvoiceActions.RETRIEVE_INVOICE_START:
             newState[targetKey] = true;
             return {...state, ...newState};
-        case ProgressEventActions.RETRIEVE_PROGRESS_EVENT_SUCCESS:
-        case ProgressEventActions.RETRIEVE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.RETRIEVE_INVOICE_SUCCESS:
+        case InvoiceActions.RETRIEVE_INVOICE_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
         default:
@@ -190,14 +205,14 @@ function isRetrieving(state = {}, action) {
 }
 
 function isDeleting(state = {}, action) {
-    let targetKey = action.id || 'default';
+    let targetKey = action.target || action.id || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.DELETE_PROGRESS_EVENT_START:
+        case InvoiceActions.DELETE_INVOICE_START:
             newState[targetKey] = true;
             return {...state, ...newState};
-        case ProgressEventActions.DELETE_PROGRESS_EVENT_SUCCESS:
-        case ProgressEventActions.DELETE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.DELETE_INVOICE_SUCCESS:
+        case InvoiceActions.DELETE_INVOICE_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
         default:
@@ -209,11 +224,11 @@ function isFetching(state = {}, action) {
     let selectionKey = action.selection || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_START:
+        case InvoiceActions.LIST_INVOICES_START:
             newState[selectionKey] = true;
             return {...state, ...newState};
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_SUCCESS:
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_FAILED:
+        case InvoiceActions.LIST_INVOICES_SUCCESS:
+        case InvoiceActions.LIST_INVOICES_FAILED:
             newState[selectionKey] = false;
             return {...state, ...newState};
         default:
@@ -225,11 +240,11 @@ function isFetchingMore(state = {}, action) {
     let selectionKey = action.selection || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_START:
+        case InvoiceActions.LIST_MORE_INVOICES_START:
             newState[selectionKey] = true;
             return {...state, ...newState};
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_SUCCESS:
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_FAILED:
+        case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
+        case InvoiceActions.LIST_MORE_INVOICES_FAILED:
             newState[selectionKey] = false;
             return {...state, ...newState};
         default:
@@ -241,8 +256,8 @@ function next(state = {}, action) {
     let selectionKey = action.selection || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_SUCCESS:
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_SUCCESS:
+        case InvoiceActions.LIST_INVOICES_SUCCESS:
+        case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
             newState[selectionKey] = action.next;
             return {...state, ...newState};
         default:
@@ -254,8 +269,8 @@ function previous(state = {}, action) {
     let selectionKey = action.selection || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_SUCCESS:
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_SUCCESS:
+        case InvoiceActions.LIST_INVOICES_SUCCESS:
+        case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
             newState[selectionKey] = action.previous;
             return {...state, ...newState};
         default:
@@ -267,11 +282,11 @@ function count(state = {}, action) {
     let selectionKey = action.selection || 'default';
     let newState = {};
     switch (action.type) {
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_SUCCESS:
+        case InvoiceActions.LIST_INVOICES_SUCCESS:
             newState[selectionKey] = action.count;
             return {...state, ...newState};
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_START:
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_FAILED:
+        case InvoiceActions.LIST_INVOICES_START:
+        case InvoiceActions.LIST_INVOICES_FAILED:
             newState[selectionKey] = 0;
             return {...state, ...newState};
         default:
@@ -281,35 +296,35 @@ function count(state = {}, action) {
 
 function errors(state = {}, action) {
     switch (action.type) {
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.CREATE_INVOICE_FAILED:
             return {...state, create: action.error};
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_START:
-        case ProgressEventActions.CREATE_PROGRESS_EVENT_SUCCESS:
+        case InvoiceActions.CREATE_INVOICE_START:
+        case InvoiceActions.CREATE_INVOICE_SUCCESS:
             return {...state, create: null};
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.UPDATE_INVOICE_FAILED:
             return {...state, update: action.error};
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_START:
-        case ProgressEventActions.UPDATE_PROGRESS_EVENT_SUCCESS:
+        case InvoiceActions.UPDATE_INVOICE_START:
+        case InvoiceActions.UPDATE_INVOICE_SUCCESS:
             return {...state, update: null};
-        case ProgressEventActions.RETRIEVE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.RETRIEVE_INVOICE_FAILED:
             return {...state, retrieve: action.error};
-        case ProgressEventActions.RETRIEVE_PROGRESS_EVENT_START:
-        case ProgressEventActions.RETRIEVE_PROGRESS_EVENT_SUCCESS:
+        case InvoiceActions.RETRIEVE_INVOICE_START:
+        case InvoiceActions.RETRIEVE_INVOICE_SUCCESS:
             return {...state, retrieve: null};
-        case ProgressEventActions.DELETE_PROGRESS_EVENT_FAILED:
+        case InvoiceActions.DELETE_INVOICE_FAILED:
             return {...state, delete: action.error};
-        case ProgressEventActions.DELETE_PROGRESS_EVENT_START:
-        case ProgressEventActions.DELETE_PROGRESS_EVENT_SUCCESS:
+        case InvoiceActions.DELETE_INVOICE_START:
+        case InvoiceActions.DELETE_INVOICE_SUCCESS:
             return {...state, delete: null};
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_FAILED:
+        case InvoiceActions.LIST_INVOICES_FAILED:
             return {...state, list: action.error};
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_START:
-        case ProgressEventActions.LIST_PROGRESS_EVENTS_SUCCESS:
+        case InvoiceActions.LIST_INVOICES_START:
+        case InvoiceActions.LIST_INVOICES_SUCCESS:
             return {...state, list: null};
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_FAILED:
+        case InvoiceActions.LIST_MORE_INVOICES_FAILED:
             return {...state, list: action.error};
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_START:
-        case ProgressEventActions.LIST_MORE_PROGRESS_EVENTS_SUCCESS:
+        case InvoiceActions.LIST_MORE_INVOICES_START:
+        case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
             return {...state, list: null};
         case ProgressReportActions.CREATE_PROGRESS_REPORT_FAILED:
         case ProgressReportActions.UPDATE_PROGRESS_REPORT_FAILED:
@@ -324,11 +339,11 @@ function errors(state = {}, action) {
     }
 }
 
-const ProgressEvent = combineReducers({
+const Invoice = combineReducers({
     created,
     deleted,
     ids,
-    progress_events,
+    invoices,
     isSaving,
     isSaved,
     isRetrieving,
@@ -341,4 +356,4 @@ const ProgressEvent = combineReducers({
     errors,
 });
 
-export default ProgressEvent;
+export default Invoice;

@@ -1,82 +1,82 @@
 import axios from 'axios';
-import {ENDPOINT_PROGRESS_EVENTS} from './utils/api';
+import {ENDPOINT_INVOICES} from './utils/api';
 
-export const CREATE_PROGRESS_EVENT_START = 'CREATE_PROGRESS_EVENT_START';
-export const CREATE_PROGRESS_EVENT_SUCCESS = 'CREATE_PROGRESS_EVENT_SUCCESS';
-export const CREATE_PROGRESS_EVENT_FAILED = 'CREATE_PROGRESS_EVENT_FAILED';
-export const LIST_PROGRESS_EVENTS_START = 'LIST_PROGRESS_EVENTS_START';
-export const LIST_PROGRESS_EVENTS_SUCCESS = 'LIST_PROGRESS_EVENTS_SUCCESS';
-export const LIST_PROGRESS_EVENTS_FAILED = 'LIST_PROGRESS_EVENTS_FAILED';
-export const RETRIEVE_PROGRESS_EVENT_START = 'RETRIEVE_PROGRESS_EVENT_START';
-export const RETRIEVE_PROGRESS_EVENT_SUCCESS = 'RETRIEVE_PROGRESS_EVENT_SUCCESS';
-export const RETRIEVE_PROGRESS_EVENT_FAILED = 'RETRIEVE_PROGRESS_EVENT_FAILED';
-export const UPDATE_PROGRESS_EVENT_START = 'UPDATE_PROGRESS_EVENT_START';
-export const UPDATE_PROGRESS_EVENT_SUCCESS = 'UPDATE_PROGRESS_EVENT_SUCCESS';
-export const UPDATE_PROGRESS_EVENT_FAILED = 'UPDATE_PROGRESS_EVENT_FAILED';
-export const LIST_MORE_PROGRESS_EVENTS_START = 'LIST_MORE_PROGRESS_EVENTS_START';
-export const LIST_MORE_PROGRESS_EVENTS_SUCCESS = 'LIST_MORE_PROGRESS_EVENTS_SUCCESS';
-export const LIST_MORE_PROGRESS_EVENTS_FAILED = 'LIST_MORE_PROGRESS_EVENTS_FAILED';
-export const DELETE_PROGRESS_EVENT_START = 'DELETE_PROGRESS_EVENT_START';
-export const DELETE_PROGRESS_EVENT_SUCCESS = 'DELETE_PROGRESS_EVENT_SUCCESS';
-export const DELETE_PROGRESS_EVENT_FAILED = 'DELETE_PROGRESS_EVENT_FAILED';
+export const CREATE_INVOICE_START = 'CREATE_INVOICE_START';
+export const CREATE_INVOICE_SUCCESS = 'CREATE_INVOICE_SUCCESS';
+export const CREATE_INVOICE_FAILED = 'CREATE_INVOICE_FAILED';
+export const LIST_INVOICES_START = 'LIST_INVOICES_START';
+export const LIST_INVOICES_SUCCESS = 'LIST_INVOICES_SUCCESS';
+export const LIST_INVOICES_FAILED = 'LIST_INVOICES_FAILED';
+export const RETRIEVE_INVOICE_START = 'RETRIEVE_INVOICE_START';
+export const RETRIEVE_INVOICE_SUCCESS = 'RETRIEVE_INVOICE_SUCCESS';
+export const RETRIEVE_INVOICE_FAILED = 'RETRIEVE_INVOICE_FAILED';
+export const UPDATE_INVOICE_START = 'UPDATE_INVOICE_START';
+export const UPDATE_INVOICE_SUCCESS = 'UPDATE_INVOICE_SUCCESS';
+export const UPDATE_INVOICE_FAILED = 'UPDATE_INVOICE_FAILED';
+export const LIST_MORE_INVOICES_START = 'LIST_MORE_INVOICES_START';
+export const LIST_MORE_INVOICES_SUCCESS = 'LIST_MORE_INVOICES_SUCCESS';
+export const LIST_MORE_INVOICES_FAILED = 'LIST_MORE_INVOICES_FAILED';
+export const DELETE_INVOICE_START = 'DELETE_INVOICE_START';
+export const DELETE_INVOICE_SUCCESS = 'DELETE_INVOICE_SUCCESS';
+export const DELETE_INVOICE_FAILED = 'DELETE_INVOICE_FAILED';
 
-export function createProgressEvent(progress_event, target) {
+export function createInvoice(invoice, target) {
     return dispatch => {
-        dispatch(createProgressEventStart(progress_event, target));
+        dispatch(createInvoiceStart(invoice, target));
 
         let headers = {};
 
         axios
-            .post(ENDPOINT_PROGRESS_EVENTS, progress_event, {headers})
+            .post(ENDPOINT_INVOICES, invoice, {headers})
             .then(function(response) {
-                dispatch(createProgressEventSuccess(response.data, target));
+                dispatch(createInvoiceSuccess(response.data, target));
             })
             .catch(function(error) {
                 dispatch(
-                    createProgressEventFailed(
-                        (error.response ? error.response.data : null), progress_event, target
+                    createInvoiceFailed(
+                        (error.response ? error.response.data : null), invoice, target
                     ),
                 );
             });
     };
 }
 
-export function createProgressEventStart(progress_event, target) {
+export function createInvoiceStart(invoice, target) {
     return {
-        type: CREATE_PROGRESS_EVENT_START,
-        progress_event,
+        type: CREATE_INVOICE_START,
+        invoice,
         target
     };
 }
 
-export function createProgressEventSuccess(progress_event, target) {
+export function createInvoiceSuccess(invoice, target) {
     return {
-        type: CREATE_PROGRESS_EVENT_SUCCESS,
-        progress_event,
+        type: CREATE_INVOICE_SUCCESS,
+        invoice,
         target
     };
 }
 
-export function createProgressEventFailed(error, progress_event, target) {
+export function createInvoiceFailed(error, invoice, target) {
     return {
-        type: CREATE_PROGRESS_EVENT_FAILED,
+        type: CREATE_INVOICE_FAILED,
         error,
-        progress_event,
+        invoice,
         target
     };
 }
 
-export function listProgressEvents(filter, selection, prev_selection) {
+export function listInvoices(filter, selection, prev_selection) {
     return dispatch => {
-        dispatch(listProgressEventsStart(filter, selection, prev_selection));
+        dispatch(listInvoicesStart(filter, selection, prev_selection));
         axios
-            .get(ENDPOINT_PROGRESS_EVENTS, {params: filter})
+            .get(ENDPOINT_INVOICES, {params: filter})
             .then(function(response) {
-                dispatch(listProgressEventsSuccess(response.data, filter, selection));
+                dispatch(listInvoicesSuccess(response.data, filter, selection));
             })
             .catch(function(error) {
                 dispatch(
-                    listProgressEventsFailed(
+                    listInvoicesFailed(
                         error.response ? error.response.data : null,
                     ),
                 );
@@ -84,18 +84,18 @@ export function listProgressEvents(filter, selection, prev_selection) {
     };
 }
 
-export function listProgressEventsStart(filter, selection, prev_selection) {
+export function listInvoicesStart(filter, selection, prev_selection) {
     return {
-        type: LIST_PROGRESS_EVENTS_START,
+        type: LIST_INVOICES_START,
         filter,
         selection,
         prev_selection,
     };
 }
 
-export function listProgressEventsSuccess(response, filter, selection) {
+export function listInvoicesSuccess(response, filter, selection) {
     return {
-        type: LIST_PROGRESS_EVENTS_SUCCESS,
+        type: LIST_INVOICES_SUCCESS,
         items: response.results,
         previous: response.previous,
         next: response.next,
@@ -105,25 +105,25 @@ export function listProgressEventsSuccess(response, filter, selection) {
     };
 }
 
-export function listProgressEventsFailed(error, selection) {
+export function listInvoicesFailed(error, selection) {
     return {
-        type: LIST_PROGRESS_EVENTS_FAILED,
+        type: LIST_INVOICES_FAILED,
         error,
         selection,
     };
 }
 
-export function retrieveProgressEvent(id) {
+export function retrieveInvoice(id) {
     return dispatch => {
-        dispatch(retrieveProgressEventStart(id));
+        dispatch(retrieveInvoiceStart(id));
         axios
-            .get(ENDPOINT_PROGRESS_EVENTS + id + '/')
+            .get(ENDPOINT_INVOICES + id + '/')
             .then(function(response) {
-                dispatch(retrieveProgressEventSuccess(response.data, id));
+                dispatch(retrieveInvoiceSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
-                    retrieveProgressEventFailed(
+                    retrieveInvoiceFailed(
                         error.response ? error.response.data : null, id
                     ),
                 );
@@ -131,89 +131,91 @@ export function retrieveProgressEvent(id) {
     };
 }
 
-export function retrieveProgressEventStart(id) {
+export function retrieveInvoiceStart(id) {
     return {
-        type: RETRIEVE_PROGRESS_EVENT_START,
+        type: RETRIEVE_INVOICE_START,
         id,
     };
 }
 
-export function retrieveProgressEventSuccess(progress_event, id) {
+export function retrieveInvoiceSuccess(invoice, id) {
     return {
-        type: RETRIEVE_PROGRESS_EVENT_SUCCESS,
-        progress_event,
+        type: RETRIEVE_INVOICE_SUCCESS,
+        invoice,
         id
     };
 }
 
-export function retrieveProgressEventFailed(error, id) {
+export function retrieveInvoiceFailed(error, id) {
     return {
-        type: RETRIEVE_PROGRESS_EVENT_FAILED,
+        type: RETRIEVE_INVOICE_FAILED,
         error,
         id
     };
 }
 
-export function updateProgressEvent(id, progress_event) {
+export function updateInvoice(id, invoice, target) {
     return dispatch => {
-        dispatch(updateProgressEventStart(id, progress_event, id));
+        dispatch(updateInvoiceStart(id, invoice, target));
 
         let headers = {};
 
         axios
-            .patch(ENDPOINT_PROGRESS_EVENTS + id + '/', progress_event, {
+            .patch(ENDPOINT_INVOICES + id + '/', invoice, {
                 headers: {...headers},
             })
             .then(function(response) {
-                dispatch(updateProgressEventSuccess(response.data, id));
+                dispatch(updateInvoiceSuccess(response.data, id, target));
             })
             .catch(function(error) {
                 dispatch(
-                    updateProgressEventFailed(
-                        (error.response ? error.response.data : null), progress_event, id
+                    updateInvoiceFailed(
+                        (error.response ? error.response.data : null), id, invoice, target
                     ),
                 );
             });
     };
 }
 
-export function updateProgressEventStart(id, progress_event, target) {
+export function updateInvoiceStart(id, invoice, target) {
     return {
-        type: UPDATE_PROGRESS_EVENT_START,
+        type: UPDATE_INVOICE_START,
         id,
-        progress_event,
+        invoice,
         target
     };
 }
 
-export function updateProgressEventSuccess(progress_event, target) {
+export function updateInvoiceSuccess(invoice, id, target) {
     return {
-        type: UPDATE_PROGRESS_EVENT_SUCCESS,
-        progress_event,
+        type: UPDATE_INVOICE_SUCCESS,
+        invoice,
+        id,
         target
     };
 }
 
-export function updateProgressEventFailed(error, progress_event, target) {
+export function updateInvoiceFailed(error, id, invoice, target) {
     return {
-        type: UPDATE_PROGRESS_EVENT_FAILED,
+        type: UPDATE_INVOICE_FAILED,
         error,
-        progress_event,
+        invoice,
+        id,
         target
     };
 }
 
-export function listMoreProgressEvents(url, selection) {
+export function listMoreInvoices(url, selection) {
     return dispatch => {
-        dispatch(listMoreProgressEventsStart(url, selection));
+        dispatch(listMoreInvoicesStart(url, selection));
         axios
             .get(url)
             .then(function(response) {
-                dispatch(listMoreProgressEventsSuccess(response.data, selection));
+                dispatch(listMoreInvoicesSuccess(response.data, selection));
             })
             .catch(function(error) {
                 dispatch(
-                    listMoreProgressEventsFailed(
+                    listMoreInvoicesFailed(
                         error.response ? error.response.data : null,
                         selection,
                     ),
@@ -222,17 +224,17 @@ export function listMoreProgressEvents(url, selection) {
     };
 }
 
-export function listMoreProgressEventsStart(url, selection) {
+export function listMoreInvoicesStart(url, selection) {
     return {
-        type: LIST_MORE_PROGRESS_EVENTS_START,
+        type: LIST_MORE_INVOICES_START,
         url,
         selection,
     };
 }
 
-export function listMoreProgressEventsSuccess(response, selection) {
+export function listMoreInvoicesSuccess(response, selection) {
     return {
-        type: LIST_MORE_PROGRESS_EVENTS_SUCCESS,
+        type: LIST_MORE_INVOICES_SUCCESS,
         items: response.results,
         previous: response.previous,
         next: response.next,
@@ -241,43 +243,46 @@ export function listMoreProgressEventsSuccess(response, selection) {
     };
 }
 
-export function listMoreProgressEventsFailed(error) {
+export function listMoreInvoicesFailed(error) {
     return {
-        type: LIST_MORE_PROGRESS_EVENTS_FAILED,
+        type: LIST_MORE_INVOICES_FAILED,
         error,
     };
 }
 
-export function deleteProgressEvent(id) {
+export function deleteInvoice(id, target) {
     return dispatch => {
-        dispatch(deleteProgressEventStart(id));
-        axios.delete(ENDPOINT_PROGRESS_EVENTS + id + '/')
+        dispatch(deleteInvoiceStart(id));
+        axios.delete(ENDPOINT_INVOICES + id + '/')
             .then(function () {
-                dispatch(deleteProgressEventSuccess(id));
+                dispatch(deleteInvoiceSuccess(id, target));
             }).catch(function (response) {
-            dispatch(deleteProgressEventFailed(response.data, id));
+            dispatch(deleteInvoiceFailed(response.data, id, target));
         });
     }
 }
 
-export function deleteProgressEventStart(id) {
+export function deleteInvoiceStart(id, target) {
     return {
-        type: DELETE_PROGRESS_EVENT_START,
-        id
+        type: DELETE_INVOICE_START,
+        id,
+        target
     }
 }
 
-export function deleteProgressEventSuccess(id) {
+export function deleteInvoiceSuccess(id, target) {
     return {
-        type: DELETE_PROGRESS_EVENT_SUCCESS,
-        id
+        type: DELETE_INVOICE_SUCCESS,
+        id,
+        target
     }
 }
 
-export function deleteProgressEventFailed(error, id) {
+export function deleteInvoiceFailed(error, id, target) {
     return {
-        type: DELETE_PROGRESS_EVENT_FAILED,
+        type: DELETE_INVOICE_FAILED,
         error,
-        id
+        id,
+        target
     }
 }

@@ -1372,6 +1372,48 @@ a {
             }
         }
     }
+
+    .project-payments {
+
+        .payment-list  {
+            margin-right: 120px;
+
+            .btn-icon {
+                height: auto;
+            }
+
+            .actions {
+                position: relative;
+
+                .dropper {
+                    position: absolute;
+                    right: 0;
+                    padding: 8px 8px 12px 8px;
+                    background-color: get-color('white');
+                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.11);
+                    z-index: 1000;
+
+                    .btn {
+                        min-width: 150px;
+
+                        & ~ .btn {
+                            margin-top: 5px;
+                        }
+                    }
+                }
+            }
+
+            .payment-footer {
+                font-weight: $font-weight-normal;
+
+                > div {
+                    border-top: 1px solid get-color('black');
+                    margin-top: 5px;
+                    padding-top: 5px;
+                }
+            }
+        }
+    }
 }
 
 .integration-options {

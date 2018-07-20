@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 import _ from 'lodash';
 import {addPropsToChildren} from "../core/utils/children";
+import Progress from "../core/Progress";
 
-export default class ProjectListContainer extends React.Component  {
+export default class InvoiceListContainer extends React.Component  {
 
     static propTypes = {
         filters: PropTypes.object,
@@ -35,32 +36,40 @@ export default class ProjectListContainer extends React.Component  {
     }
 
     getList() {
-        const {ProjectActions} = this.props;
-        ProjectActions.listProjects({...(this.props.filters || {})}, this.state.selectionKey, this.state.prevKey);
+        const {InvoiceActions} = this.props;
+        InvoiceActions.listInvoices({...(this.props.filters || {})}, this.state.selectionKey, this.state.prevKey);
     }
 
     renderChildren() {
-        const {Project, ProjectActions, children} = this.props, self = this;
-        const selectionKey = this.state.selectionKey;
+        const {Invoice, InvoiceActions, children} = this.props,
+            selectionKey = this.state.selectionKey;
 
         return addPropsToChildren(children, {
-            projects: (Project.ids[selectionKey] || []).map(id => {
-                return Project.projects[id];
+            invoices: (Invoice.ids[selectionKey] || []).map(id => {
+                return Invoice.invoices[id];
             }),
             onLoadMore: () => {
-                ProjectActions.listMoreProjects(Project.next[selectionKey], selectionKey);
+                InvoiceActions.listMoreInvoices(Invoice.next[selectionKey], selectionKey);
             },
-            isLoading: Project.isFetching[selectionKey],
-            isLoadingMore: Project.isFetchingMore[selectionKey],
-            hasMore: !!Project.next[selectionKey],
-            ProjectActions
+            isLoading: Invoice.isFetching[selectionKey],
+            isLoadingMore: Invoice.isFetchingMore[selectionKey],
+            hasMore: !!Invoice.next[selectionKey],
+            selectionKey,
+            InvoiceActions
         });
     }
 
     render() {
+        const {Invoice} = this.props,
+            selectionKey = this.state.selectionKey;
+
         return (
             <React.Fragment>
-                {this.renderChildren()}
+                {Invoice.isFetching[selectionKey]?(
+                    <Progress/>
+                ):(
+                    this.renderChildren()
+                )}
             </React.Fragment>
         );
     }

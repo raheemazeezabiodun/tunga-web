@@ -8,7 +8,7 @@ import Activity from './Activity';
 import Docs from './Docs';
 import Team from './Team';
 import Plan from './Plan';
-import Pay from './Pay';
+import PayContainer from './PayContainer';
 import Settings from './Settings';
 import ProgressEventsContainer from './ProgressEventsContainer';
 import {openConfirm} from "../core/utils/modals";
@@ -65,7 +65,7 @@ export default class ProjectManagement extends React.Component {
                                 ['docs', 'Documentation'],
                                 ['team', 'Team'],
                                 ['plan', 'Planning'],
-                                ['pay', 'Payments'],
+                                ['pay', 'Payments', {exact: false}],
                                 ['settings', 'Settings', {exact: false}]
                             ].map(link => {
                                 let url = link[0];
@@ -84,7 +84,7 @@ export default class ProjectManagement extends React.Component {
                                         ['docs', <Docs {...projectProps}/>],
                                         ['team', <Team {...projectProps}/>],
                                         ['plan', <Plan {...projectProps}/>],
-                                        ['pay', <Pay {...projectProps}/>],
+                                        ['pay', <PayContainer {...projectProps}/>],
                                     ].map(path => {
                                         return (
                                             <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>

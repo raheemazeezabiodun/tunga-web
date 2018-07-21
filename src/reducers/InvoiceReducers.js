@@ -87,6 +87,7 @@ function invoices(state = {}, action) {
         case InvoiceActions.CREATE_INVOICE_SUCCESS:
         case InvoiceActions.RETRIEVE_INVOICE_SUCCESS:
         case InvoiceActions.UPDATE_INVOICE_SUCCESS:
+        case InvoiceActions.PAY_INVOICE_SUCCESS:
             let new_invoice = {};
             new_invoice[action.invoice.id] = action.invoice;
             return {...state, ...new_invoice};
@@ -145,13 +146,22 @@ function isSaving(state = {}, action) {
     switch (action.type) {
         case InvoiceActions.CREATE_INVOICE_START:
         case InvoiceActions.UPDATE_INVOICE_START:
+        case InvoiceActions.PAY_INVOICE_START:
             newState[targetKey] = true;
+            if(action.id) {
+                newState[action.id] = true;
+            }
             return {...state, ...newState};
         case InvoiceActions.CREATE_INVOICE_SUCCESS:
         case InvoiceActions.CREATE_INVOICE_FAILED:
         case InvoiceActions.UPDATE_INVOICE_SUCCESS:
         case InvoiceActions.UPDATE_INVOICE_FAILED:
+        case InvoiceActions.PAY_INVOICE_SUCCESS:
+        case InvoiceActions.PAY_INVOICE_FAILED:
             newState[targetKey] = false;
+            if(action.id) {
+                newState[action.id] = false;
+            }
             return {...state, ...newState};
         case ProgressReportActions.CREATE_PROGRESS_REPORT_START:
         case ProgressReportActions.UPDATE_PROGRESS_REPORT_START:
@@ -174,13 +184,22 @@ function isSaved(state = {}, action) {
     switch (action.type) {
         case InvoiceActions.CREATE_INVOICE_SUCCESS:
         case InvoiceActions.UPDATE_INVOICE_SUCCESS:
+        case InvoiceActions.PAY_INVOICE_SUCCESS:
             newState[targetKey] = true;
+            if(action.id) {
+                newState[action.id] = true;
+            }
             return {...state, ...newState};
         case InvoiceActions.CREATE_INVOICE_START:
         case InvoiceActions.CREATE_INVOICE_FAILED:
         case InvoiceActions.UPDATE_INVOICE_START:
         case InvoiceActions.UPDATE_INVOICE_FAILED:
+        case InvoiceActions.PAY_INVOICE_START:
+        case InvoiceActions.PAY_INVOICE_FAILED:
             newState[targetKey] = false;
+            if(action.id) {
+                newState[action.id] = false;
+            }
             return {...state, ...newState};
         case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
         case ProgressReportActions.UPDATE_PROGRESS_REPORT_SUCCESS:

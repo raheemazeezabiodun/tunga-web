@@ -1433,11 +1433,20 @@ table {
         .payment-list  {
             table {
                 &.table th, &.table td {
-                    padding: 2px 15px;
+                    padding: 5px 15px;
                 }
 
                 a {
                     word-break: normal;
+                }
+
+                .loading {
+                    text-align: left;
+                    margin: 0;
+
+                    > img {
+                        height: 15px !important;
+                    }
                 }
             }
 

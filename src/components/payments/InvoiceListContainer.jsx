@@ -54,6 +54,8 @@ export default class InvoiceListContainer extends React.Component  {
             isLoading: Invoice.isFetching[selectionKey],
             isLoadingMore: Invoice.isFetchingMore[selectionKey],
             hasMore: !!Invoice.next[selectionKey],
+            isSaved: Invoice.isSaved,
+            isSaving: Invoice.isSaving,
             selectionKey,
             InvoiceActions
         });

@@ -100,14 +100,14 @@ export default class PaymentList extends React.Component {
                                     {[PENDING_OUT, PAID_OUT].includes(filter)?(
                                         <td>{invoice.invoices.map(item => {
                                             return (
-                                                <div>{item.user.display_name}</div>
+                                                <div key={item.id}>{item.user.display_name}</div>
                                             );
                                         })}</td>
                                     ):null}
                                     <td>{[PENDING_OUT, PAID_OUT].includes(filter)?(
                                         invoice.invoices.map(item => {
                                             return (
-                                                <div>
+                                                <div key={item.id}>
                                                     <a href={`${ENDPOINT_INVOICES}${item.id}/download/`} target="_blank">
                                                         {item.number}
                                                     </a>
@@ -155,7 +155,7 @@ export default class PaymentList extends React.Component {
                                         <React.Fragment>
                                             <td>{invoice.invoices.map(item => {
                                                 return (
-                                                    <div>{moment.utc(item.due_at).format('DD/MMM/YYYY')}</div>
+                                                    <div key={item.id}>{moment.utc(item.due_at).format('DD/MMM/YYYY')}</div>
                                                 );
                                             })}</td>
                                             <td>
@@ -171,7 +171,7 @@ export default class PaymentList extends React.Component {
                                     {filter === PAID_OUT?(
                                         <td>{invoice.invoices.map(item => {
                                             return (
-                                                <div>{moment.utc(item.paid_at).format('DD/MMM/YYYY')}</div>
+                                                <div key={item.id}>{moment.utc(item.paid_at).format('DD/MMM/YYYY')}</div>
                                             );
                                         })}</td>
                                     ):null}

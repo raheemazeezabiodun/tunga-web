@@ -22,6 +22,9 @@ export const LIST_MORE_INVOICES_FAILED = 'LIST_MORE_INVOICES_FAILED';
 export const DELETE_INVOICE_START = 'DELETE_INVOICE_START';
 export const DELETE_INVOICE_SUCCESS = 'DELETE_INVOICE_SUCCESS';
 export const DELETE_INVOICE_FAILED = 'DELETE_INVOICE_FAILED';
+export const PAY_INVOICE_START = 'PAY_INVOICE_START';
+export const PAY_INVOICE_SUCCESS = 'PAY_INVOICE_SUCCESS';
+export const PAY_INVOICE_FAILED = 'PAY_INVOICE_FAILED';
 
 export function createInvoice(invoice, target) {
     return dispatch => {
@@ -334,4 +337,54 @@ export function deleteInvoiceFailed(error, id, target) {
         id,
         target
     }
+}
+
+export function payInvoice(id, payment, target) {
+    return dispatch => {
+        dispatch(payInvoiceStart(id, payment, target));
+
+        let headers = {};
+
+        axios
+            .post(`${ENDPOINT_INVOICES}${id}/pay/` , payment, {headers})
+            .then(function(response) {
+                dispatch(payInvoiceSuccess(response.data, id, payment, target));
+            })
+            .catch(function(error) {
+                dispatch(
+                    payInvoiceFailed(
+                        (error.response ? error.response.data : null), id, payment, target
+                    ),
+                );
+            });
+    };
+}
+
+export function payInvoiceStart(id, payment, target) {
+    return {
+        type: PAY_INVOICE_START,
+        id,
+        payment,
+        target
+    };
+}
+
+export function payInvoiceSuccess(invoice, id, payment, target) {
+    return {
+        type: PAY_INVOICE_SUCCESS,
+        invoice,
+        payment,
+        id,
+        target
+    };
+}
+
+export function payInvoiceFailed(error, id, payment, target) {
+    return {
+        type: PAY_INVOICE_FAILED,
+        error,
+        id,
+        payment,
+        target
+    };
 }

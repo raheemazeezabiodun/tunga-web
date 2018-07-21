@@ -77,7 +77,7 @@ export default class PrivacyPolicy extends React.Component {
                 <p>
                     As used in this policy “Tunga” refers to Tunga B.V., a
                     private company under Dutch law with is registered office in
-                    Amsterdam (Netherlands) and any of its subsidiaries and
+                    Amsterdam (The Netherlands) and any of its subsidiaries and
                     affiliates.
                 </p>
 

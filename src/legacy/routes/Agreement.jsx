@@ -162,8 +162,7 @@ export default class Agreement extends React.Component {
                 </p>
 
                 <p>
-                    <strong>Tunga:</strong> Tunga BV, registered at Ms van
-                    Riemsdijkweg 57 in Amsterdam, The Netherlands (Chamber of
+                    <strong>Tunga:</strong> Tunga BV, registered at Wibautstraat 131, 1091 GL Amsterdam, The Netherlands (Chamber of
                     Commerce nr: 67015679);
                 </p>
 

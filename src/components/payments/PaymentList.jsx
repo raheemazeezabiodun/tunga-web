@@ -115,13 +115,18 @@ export default class PaymentList extends React.Component {
                                     {[PENDING_IN, PAID_IN].includes(filter)?(
                                         <td>€{invoice.amount}</td>
                                     ):null}
-                                    <td>{[PENDING_OUT, PAID_OUT].includes(filter)?(
-                                        invoice.invoices.map(item => {
-                                            return (
-                                                <div>€{item.amount}</div>
-                                            );
-                                        })
-                                    ):null}</td>
+                                    <td>
+                                        {[PENDING_OUT, PAID_OUT].includes(filter)?(
+                                            <div>
+                                                {invoice.invoices.map(item => {
+                                                    return (
+                                                        <div>€{item.amount}</div>
+                                                    );
+                                                })}
+                                                <div className="font-weight-normal">Subtotal: €{invoice.amount}</div>
+                                            </div>
+                                        ):null}
+                                    </td>
                                     {filter === PENDING_IN?(
                                         <React.Fragment>
                                             <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>

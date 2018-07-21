@@ -86,10 +86,10 @@ export default class ActivityList extends React.Component {
                     }
                     created_at = object.created_at;
                     body = object.isForm ? (
-                        object.body
+                        object.text_body || object.body
                     ) : (
                         <Linkify properties={{target: '_blank'}}>
-                            {object.body}
+                            {object.text_body || object.body}
                         </Linkify>
                     );
                     uploads = object.attachments;
@@ -101,7 +101,7 @@ export default class ActivityList extends React.Component {
                     created_at = object.created_at;
                     body = (
                         <Linkify properties={{target: '_blank'}}>
-                            {object.body}
+                            {object.text_body || object.body}
                         </Linkify>
                     );
                     uploads = object.uploads;

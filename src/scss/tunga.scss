@@ -365,6 +365,15 @@ table {
             font-weight: $font-weight-normal;
         }
     }
+
+    .loading {
+        text-align: left;
+        margin: 0;
+
+        > img {
+            height: 15px !important;
+        }
+    }
 }
 
 // Avatar
@@ -1127,6 +1136,10 @@ table {
             a {
                 word-break: normal;
             }
+
+            .btn {
+                margin-right: 5px;
+            }
         }
 
         .empty-list {
@@ -1438,15 +1451,6 @@ table {
 
                 a {
                     word-break: normal;
-                }
-
-                .loading {
-                    text-align: left;
-                    margin: 0;
-
-                    > img {
-                        height: 15px !important;
-                    }
                 }
             }
 

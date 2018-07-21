@@ -4,10 +4,15 @@ import {Table} from 'reactstrap';
 import moment from 'moment';
 
 import Button from "../core/Button";
+import Progress from "../core/Progress";
+import Icon from "../core/Icon";
+import StripeButton from "../core/StripeButton";
+
 import {openConfirm} from "../core/utils/modals";
-import {isAdmin} from "../utils/auth";
+import {getUser, isAdmin, isClient} from "../utils/auth";
 import {batchInvoices} from "../utils/payments";
 import {ENDPOINT_INVOICES} from "../../actions/utils/api";
+import {parsePaymentObject} from "../utils/stripe";
 
 const PAID_IN = 'paid-in';
 const PENDING_IN = 'pending-in';
@@ -42,8 +47,13 @@ export default class PaymentList extends React.Component {
         });
     }
 
+    onPay(invoice, token) {
+        const {InvoiceActions} = this.props;
+        InvoiceActions.payInvoice(invoice.id, parsePaymentObject(invoice, token), this.props.selectionKey);
+    }
+
     render() {
-        const {filter, invoices} = this.props;
+        const {filter, invoices, isSaving} = this.props;
 
         let invoiceList = invoices;
 
@@ -139,11 +149,30 @@ export default class PaymentList extends React.Component {
                                             <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
                                             <td>{moment.utc(invoice.due_at).add('days', 14).format('DD/MMM/YYYY')}</td>
                                             <td>
-                                                {isAdmin() && !invoice.paid && !invoice.project.archived?(
-                                                    <Button size="sm"
-                                                            onClick={this.onMarkPaid.bind(this, invoice.id)}>
-                                                        Mark as paid
-                                                    </Button>
+                                                {(isClient() || isAdmin()) && !invoice.project.archived?(
+                                                    <div>
+                                                        {invoice.paid?(
+                                                            <div>
+                                                                <Icon name="check" className="green"/> Paid
+                                                            </div>
+                                                        ):isSaving[invoice.id]?(
+                                                            <Progress message="Processing"/>
+                                                        ):(
+                                                            <div>
+                                                                <StripeButton size="sm"
+                                                                              amount={invoice.amount}
+                                                                              email={getUser().email}
+                                                                              description={invoice.title}
+                                                                              onPay={this.onPay.bind(this, invoice)}/>
+                                                                {isAdmin()?(
+                                                                    <Button size="sm"
+                                                                            onClick={this.onMarkPaid.bind(this, invoice.id)}>
+                                                                        Mark as paid
+                                                                    </Button>
+                                                                ):null}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 ):null}
                                             </td>
                                         </React.Fragment>

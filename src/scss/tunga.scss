@@ -1123,6 +1123,10 @@ table {
             &.table th, &.table td {
                 padding: 20px;
             }
+
+            a {
+                word-break: normal;
+            }
         }
 
         .empty-list {
@@ -1431,6 +1435,10 @@ table {
                 &.table th, &.table td {
                     padding: 2px 15px;
                 }
+
+                a {
+                    word-break: normal;
+                }
             }
 
             .btn-icon {
@@ -1508,7 +1516,7 @@ table {
     }
 }
 
-// Project
+// Reports
 .progress-report {
 
     .form-control, .input-group:not(.input-search),
@@ -1686,9 +1694,15 @@ table {
     }
 }
 
-
 .progress-bar-success {
     background-color: get-color('green');
+}
+
+// Other
+
+.subtotal {
+    border-top: 1px solid get-color('black');
+    font-weight: $font-weight-normal;
 }
 
 label {

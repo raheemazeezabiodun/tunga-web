@@ -7,6 +7,7 @@ import Button from "../core/Button";
 import {openConfirm} from "../core/utils/modals";
 import {isAdmin} from "../utils/auth";
 import {batchInvoices} from "../utils/payments";
+import {ENDPOINT_INVOICES} from "../../actions/utils/api";
 
 const PAID_IN = 'paid-in';
 const PENDING_IN = 'pending-in';
@@ -94,7 +95,7 @@ export default class PaymentList extends React.Component {
                             return (
                                 <tr key={invoice.id}>
                                     <td>{owner.company?owner.company.name:'' || owner.display_name}</td>
-                                    <td><Link to={`/projects/${invoice.project.id}/pay`}>{invoice.project.title}</Link></td>
+                                    <td><Link to={`/projects/${invoice.project.id}`}>{invoice.project.title}</Link></td>
                                     <td>{invoice.title}</td>
                                     {[PENDING_OUT, PAID_OUT].includes(filter)?(
                                         <td>{invoice.invoices.map(item => {
@@ -106,11 +107,17 @@ export default class PaymentList extends React.Component {
                                     <td>{[PENDING_OUT, PAID_OUT].includes(filter)?(
                                         invoice.invoices.map(item => {
                                             return (
-                                                <div>{item.number}</div>
+                                                <div>
+                                                    <a href={`${ENDPOINT_INVOICES}${item.id}/download/`} target="_blank">
+                                                        {item.number}
+                                                    </a>
+                                                </div>
                                             );
                                         })
                                     ):(
-                                        invoice.number
+                                        <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/`} target="_blank">
+                                            {invoice.number}
+                                        </a>
                                     )}</td>
                                     {[PENDING_IN, PAID_IN].includes(filter)?(
                                         <td>€{invoice.amount}</td>
@@ -123,7 +130,7 @@ export default class PaymentList extends React.Component {
                                                         <div>€{item.amount}</div>
                                                     );
                                                 })}
-                                                <div className="font-weight-normal">Subtotal: €{invoice.amount}</div>
+                                                <div className="subtotal">€{invoice.amount}</div>
                                             </div>
                                         ):null}
                                     </td>

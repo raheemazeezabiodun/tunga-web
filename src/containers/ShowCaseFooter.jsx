@@ -213,7 +213,7 @@ class ShowCaseFooter extends React.Component {
                                 </div>
                                 <div className="footer-address">
                                     <p>Wibautstraat 131</p>
-                                    <p>Amsterdam, The Netherlands</p>
+                                    <p>1091 GL Amsterdam, The Netherlands</p>
                                     <p>
                                         <a href="mailto:hello@tunga.io">
                                             hello@tunga.io

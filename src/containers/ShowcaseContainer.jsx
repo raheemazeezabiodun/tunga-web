@@ -7,11 +7,12 @@ import {isTungaDomain} from '../utils/router';
 import ChatWindow from '../containers/ChatWindow';
 
 import connect from '../utils/connectors/AuthConnector';
+import {Button} from "react-bootstrap";
 
 class ShowcaseContainer extends React.Component {
     componentDidMount() {
         let hasGlassNav = this.props.hasGlassNav;
-        let updateTopBar = function() {
+        let updateTopBar = function () {
             let windowWidth = $(window).innerWidth();
             if (windowWidth >= 992) {
                 if ($(document).scrollTop() >= 20) {
@@ -42,10 +43,10 @@ class ShowcaseContainer extends React.Component {
                         this.props.headerVideo
                             ? {overflow: 'hidden', position: 'relative'}
                             : headerImage
-                              ? {
-                                    backgroundImage: `url(require(${headerImage}))`,
-                                }
-                              : null
+                            ? {
+                                backgroundImage: `url(require(${headerImage}))`,
+                            }
+                            : null
                     }>
                     {this.props.headerVideo ? (
                         <video
@@ -66,11 +67,11 @@ class ShowcaseContainer extends React.Component {
                         </video>
                     ) : null}
                     {this.props.headerVideo ? (
-                        <div className="video-overlay" />
+                        <div className="video-overlay"/>
                     ) : null}
                     {this.props.hasArrow && false ? (
                         <div className="arrow-overlay">
-                            <div className="ribbon" />
+                            <div className="ribbon"/>
                             <div
                                 className="pointer text-center"
                                 onClick={e => {
@@ -84,7 +85,7 @@ class ShowcaseContainer extends React.Component {
                         <nav
                             className={`navbar navbar-fixed-top ${
                                 this.props.hasGlassNav ? 'navbar-glass' : ''
-                            }`}>
+                                }`}>
                             <div className="navbar-header">
                                 <button
                                     type="button"
@@ -96,16 +97,17 @@ class ShowcaseContainer extends React.Component {
                                     <span className="sr-only">
                                         Toggle navigation
                                     </span>
-                                    <i className="fa tunga-icon-bars" />
+                                    <i className="fa tunga-icon-bars"/>
                                 </button>
                                 <Link className="navbar-brand" to="/">
-                                    <img src={require('../images/logo.png')} />
+                                    <img src={require('../images/logo.png')}/>
                                 </Link>
                             </div>
 
                             <div
                                 id="navbar"
                                 className="collapse navbar-collapse">
+
                                 {Auth.isAuthenticated ? (
                                     <ul className="nav navbar-nav navbar-right nav-actions">
                                         <li>
@@ -120,15 +122,26 @@ class ShowcaseContainer extends React.Component {
                                 ) : (
                                     <ul className="nav navbar-nav navbar-right nav-actions">
                                         <li>
-                                            <Link
-                                                to="/signin"
-                                                activeClassName="active"
-                                                className="primary">
-                                                Login
-                                            </Link>
+                                            <span>
+                                                <button type="button" className="call">
+                                                    <i className="fa fa-phone"/> <span>+31 20 220 2157</span>
+                                                </button>
+
+                                            </span>
+                                            <span>
+                                                <Link
+                                                    to="/signin"
+                                                    activeClassName="active"
+                                                    className="primary">
+                                                    Login
+                                                </Link>
+                                            </span>
+
+
                                         </li>
                                     </ul>
                                 )}
+
                                 <ul className="nav navbar-nav navbar-left nav-main">
                                     <li>
                                         <Link

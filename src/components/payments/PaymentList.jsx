@@ -35,7 +35,7 @@ export default class PaymentList extends React.Component {
             true, {ok: 'Yes'}
         ).then(response => {
             invoices.forEach(invoice => {
-                InvoiceActions.updateInvoice(invoice.id, {paid: true}, this.props.selectionKey);
+                InvoiceActions.updateInvoice(invoice.id, {status: 'approved'}, this.props.selectionKey);
             });
         }, error => {
             // Nothing
@@ -159,11 +159,13 @@ export default class PaymentList extends React.Component {
                                                 );
                                             })}</td>
                                             <td>
-                                                {isAdmin() && !invoice.paid && !invoice.project.archived?(
+                                                {isAdmin() && !invoice.paid && invoice.status !== 'approved' && !invoice.project.archived?(
                                                     <Button size="sm"
                                                             onClick={this.onApprovePayout.bind(this, invoice.invoices)}>
                                                         Approve payout
                                                     </Button>
+                                                ):invoice.status === 'approved' && !invoice.paid?(
+                                                    <div>Processing</div>
                                                 ):null}
                                             </td>
                                         </React.Fragment>

@@ -208,7 +208,7 @@ export default class Pay extends React.Component {
             true, {ok: 'Yes'}
         ).then(response => {
             invoices.forEach(invoice => {
-                InvoiceActions.updateInvoice(invoice.id, {paid: true}, this.props.selectionKey);
+                InvoiceActions.updateInvoice(invoice.id, {status: 'approved'}, this.props.selectionKey);
             });
         }, error => {
             // Nothing
@@ -405,7 +405,7 @@ export default class Pay extends React.Component {
                                                         <div className="subtotal">€{batch.amount}</div>
                                                     </td>
                                                     <td>
-                                                        {isAdminOrPM() && !project.archived && !batch.paid? (
+                                                        {isAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved'? (
                                                             <div className="actions text-right">
                                                                 <IconButton name="colon" size={null}
                                                                             onClick={this.onToggleActions.bind(this, batch.ref)}/>
@@ -428,7 +428,13 @@ export default class Pay extends React.Component {
                                                                     </div>
                                                                 ) : null}
                                                             </div>
-                                                        ) : null}
+                                                        ) : batch.paid?(
+                                                            <div>
+                                                                <Icon name="check" className="green"/> Paid
+                                                            </div>
+                                                        ): batch.status === 'approved'?(
+                                                            <div>Processing</div>
+                                                        ):null}
                                                     </td>
                                                 </tr>
                                             )

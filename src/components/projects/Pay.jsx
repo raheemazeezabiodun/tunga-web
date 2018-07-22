@@ -268,7 +268,7 @@ export default class Pay extends React.Component {
                                                     <td>{invoice.title}</td>
                                                     <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
                                                     <td>
-                                                        <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/`} target="_blank">
+                                                        <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
                                                             {invoice.number}
                                                         </a>
                                                     </td>
@@ -389,7 +389,7 @@ export default class Pay extends React.Component {
                                                         {batch.invoices.map(item => {
                                                             return (
                                                                 <div key={item.id}>
-                                                                    <a href={`${ENDPOINT_INVOICES}${item.id}/download/`} target="_blank">
+                                                                    <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`} target="_blank">
                                                                         {item.number}
                                                                     </a>
                                                                 </div>

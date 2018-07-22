@@ -118,14 +118,14 @@ export default class PaymentList extends React.Component {
                                         invoice.invoices.map(item => {
                                             return (
                                                 <div key={item.id}>
-                                                    <a href={`${ENDPOINT_INVOICES}${item.id}/download/`} target="_blank">
+                                                    <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`} target="_blank">
                                                         {item.number}
                                                     </a>
                                                 </div>
                                             );
                                         })
                                     ):(
-                                        <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/`} target="_blank">
+                                        <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
                                             {invoice.number}
                                         </a>
                                     )}</td>

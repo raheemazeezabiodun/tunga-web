@@ -149,7 +149,23 @@ export default class ActivityList extends React.Component {
                 }
                 break;
             case 'participation':
-                if (item.action === 'add' && showNotifications) {
+                if (['add', 'create'].includes(item.action) && showNotifications) {
+                    creator = activity.created_by;
+                    createdAt = activity.created_at;
+                    let participant = activity.user;
+                    body = (
+                        <div>
+                            <div>Added a participant:</div>
+                            <Avatar image={participant.avatar_url} size="xs" />
+                            <Link to={`/network/${participant.username}/`}>
+                                {participant.display_name}
+                            </Link>
+                        </div>
+                    );
+                }
+                break;
+            case 'legacy_participation':
+                if (['add', 'create'].includes(item.action) && showNotifications) {
                     creator = activity.created_by;
                     createdAt = activity.created_at;
                     let participant = activity.details.user;

@@ -9,7 +9,6 @@ import NavBar from './NavBar';
 import SideBar from './SideBar';
 import TitleBar from './TitleBar';
 import MainContent from './MainContent';
-import Progress from "./core/Progress";
 import BootLogo from "./core/BootLogo";
 
 class DashboardLayout extends React.Component {
@@ -40,14 +39,19 @@ class DashboardLayout extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const {Auth} = this.props;
+    componentDidUpdate(prevProps, prevState, snapShot) {
+        const {Auth, history} = this.props;
         if (
             prevProps.Auth.isAuthenticated !== Auth.isAuthenticated ||
             (prevProps.Auth.isVerifying !== Auth.isVerifying && !Auth.isVerifying)
         ) {
             if(!Auth.isAuthenticated) {
                 window.location.href = window.location.origin;
+            } else {
+                const {user} = Auth;
+                if(!user.can_contribute) {
+                    history.push('/onboard');
+                }
             }
         }
     }

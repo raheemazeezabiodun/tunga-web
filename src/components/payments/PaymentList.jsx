@@ -130,7 +130,32 @@ export default class PaymentList extends React.Component {
                                         </a>
                                     )}</td>
                                     {[PENDING_IN, PAID_IN].includes(filter)?(
-                                        <td>€{invoice.amount}</td>
+                                        <td>
+                                            {invoice.total_amount === invoice.amount?(
+                                                <div>€{invoice.amount}</div>
+                                            ):(
+                                                <div className="clearfix">
+                                                    <div className="float-left">Fee:</div>
+                                                    <div className="float-right">€{invoice.amount}</div>
+                                                    {Math.round(invoice.processing_fee)?(
+                                                        <div className="clearfix">
+                                                            <div className="float-left">Processing:</div>
+                                                            <div className="float-right">€{invoice.processing_fee}</div>
+                                                        </div>
+                                                    ):null}
+                                                    {Math.round(invoice.tax_amount)?(
+                                                        <div className="clearfix">
+                                                            <div className="float-left">VAT:</div>
+                                                            <div className="float-right">€{invoice.tax_amount}</div>
+                                                        </div>
+                                                    ):null}
+                                                    <div className="subtotal">
+                                                        <div className="float-left">Total:</div>
+                                                        <div className="float-right">€{invoice.total_amount}</div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </td>
                                     ):null}
                                     <td>
                                         {[PENDING_OUT, PAID_OUT].includes(filter)?(

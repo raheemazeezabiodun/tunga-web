@@ -134,9 +134,11 @@ export default class PaymentList extends React.Component {
                                             {invoice.total_amount === invoice.amount?(
                                                 <div>€{invoice.amount}</div>
                                             ):(
-                                                <div className="clearfix">
-                                                    <div className="float-left">Fee:</div>
-                                                    <div className="float-right">€{invoice.amount}</div>
+                                                <div>
+                                                    <div className="clearfix">
+                                                        <div className="float-left">Fee:</div>
+                                                        <div className="float-right">€{invoice.amount}</div>
+                                                    </div>
                                                     {Math.round(invoice.processing_fee)?(
                                                         <div className="clearfix">
                                                             <div className="float-left">Processing:</div>

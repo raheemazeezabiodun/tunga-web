@@ -1434,6 +1434,10 @@ table {
 
     .project-payments {
 
+        .section {
+            min-height: 150px;
+        }
+
         .section-title {
             font-weight: $font-weight-normal;
             margin-bottom: 10px;

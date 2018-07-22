@@ -160,7 +160,7 @@ export default class PaymentList extends React.Component {
                                                         ):(
                                                             <div>
                                                                 <StripeButton size="sm"
-                                                                              amount={invoice.amount}
+                                                                              amount={invoice.total_amount}
                                                                               email={getUser().email}
                                                                               description={invoice.title}
                                                                               onPay={this.onPay.bind(this, invoice)}/>

@@ -250,84 +250,85 @@ export default class Pay extends React.Component {
                                     </div>
                                 ) : null}
 
-                                <div className="payment-list">
-                                    <Table striped>
-                                        <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Date</th>
-                                            <th>Invoice</th>
-                                            <th>Amount</th>
-                                            <th/>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {payments.map(invoice => {
-                                            return (
-                                                <tr key={invoice.id}>
-                                                    <td>{invoice.title}</td>
-                                                    <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
-                                                    <td>
-                                                        <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
-                                                            {invoice.number}
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        €{invoice.amount}
-                                                    </td>
-                                                    <td>
-                                                        {invoice.paid?(
-                                                            <div>
-                                                                <Icon name="check" className="green"/> Paid
-                                                            </div>
-                                                        ):isSaving[invoice.id]?(
-                                                            <div>
-                                                                <Progress message="Processing"/>
-                                                            </div>
-                                                        ):(
-                                                            <div className="clearfix">
-                                                                {isClient()?(
-                                                                    <StripeButton size="sm"
-                                                                                  amount={invoice.amount}
-                                                                                  email={getUser().email}
-                                                                                  description={invoice.title}
-                                                                                  onPay={this.onPay.bind(this, invoice)}/>
-                                                                ):null}
-                                                                {isAdminOrPM() && !project.archived ? (
-                                                                    <div className="float-right">
-                                                                        <div className="actions">
-                                                                            <IconButton name="colon" size={null}
-                                                                                        onClick={this.onToggleActions.bind(this, invoice.id)}/>
-                                                                            {this.state.open === invoice.id ? (
-                                                                                <div className="dropper">
-                                                                                    <Button size="sm"
-                                                                                            onClick={this.onUpdateInvoice.bind(this, invoice)}>
-                                                                                        Edit payment
-                                                                                    </Button>
-                                                                                    <Button size="sm"
-                                                                                            onClick={this.onDeleteInvoice.bind(this, invoice.id)}>
-                                                                                        Delete payment
-                                                                                    </Button>
-                                                                                    {isAdmin() && !invoice.paid ? (
+                                {payments.length?(
+                                    <div className="payment-list">
+                                        <Table striped>
+                                            <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Date</th>
+                                                <th>Invoice</th>
+                                                <th>Amount</th>
+                                                <th/>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {payments.map(invoice => {
+                                                return (
+                                                    <tr key={invoice.id}>
+                                                        <td>{invoice.title}</td>
+                                                        <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
+                                                        <td>
+                                                            <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
+                                                                {invoice.number}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            €{invoice.amount}
+                                                        </td>
+                                                        <td>
+                                                            {invoice.paid?(
+                                                                <div>
+                                                                    <Icon name="check" className="green"/> Paid
+                                                                </div>
+                                                            ):isSaving[invoice.id]?(
+                                                                <div>
+                                                                    <Progress message="Processing"/>
+                                                                </div>
+                                                            ):(
+                                                                <div className="clearfix">
+                                                                    {isClient()?(
+                                                                        <StripeButton size="sm"
+                                                                                      amount={invoice.total_amount}
+                                                                                      email={getUser().email}
+                                                                                      description={invoice.title}
+                                                                                      onPay={this.onPay.bind(this, invoice)}/>
+                                                                    ):null}
+                                                                    {isAdminOrPM() && !project.archived ? (
+                                                                        <div className="float-right">
+                                                                            <div className="actions">
+                                                                                <IconButton name="colon" size={null}
+                                                                                            onClick={this.onToggleActions.bind(this, invoice.id)}/>
+                                                                                {this.state.open === invoice.id ? (
+                                                                                    <div className="dropper">
                                                                                         <Button size="sm"
-                                                                                                onClick={this.onMarkPaid.bind(this, invoice.id)}>
-                                                                                            Mark as paid
+                                                                                                onClick={this.onUpdateInvoice.bind(this, invoice)}>
+                                                                                            Edit payment
                                                                                         </Button>
-                                                                                    ) : null}
-                                                                                </div>
-                                                                            ) : null}
+                                                                                        <Button size="sm"
+                                                                                                onClick={this.onDeleteInvoice.bind(this, invoice.id)}>
+                                                                                            Delete payment
+                                                                                        </Button>
+                                                                                        {isAdmin() && !invoice.paid ? (
+                                                                                            <Button size="sm"
+                                                                                                    onClick={this.onMarkPaid.bind(this, invoice.id)}>
+                                                                                                Mark as paid
+                                                                                            </Button>
+                                                                                        ) : null}
+                                                                                    </div>
+                                                                                ) : null}
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                ) : null}
-                                                            </div>
-                                                        )}
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                        </tbody>
-                                        {payments.length ? (
-                                            <thead className="payment-footer">
+                                                                    ) : null}
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })}
+                                            </tbody>
+                                            {payments.length ? (
+                                                <thead className="payment-footer">
                                                 <tr>
                                                     <td >Total</td>
                                                     <td/>
@@ -335,10 +336,11 @@ export default class Pay extends React.Component {
                                                     <td>€{sumInvoices(payments)}</td>
                                                     <td/>
                                                 </tr>
-                                            </thead>
-                                        ) : null}
-                                    </Table>
-                                </div>
+                                                </thead>
+                                            ) : null}
+                                        </Table>
+                                    </div>
+                                ):null}
                             </div>
                         )}
 
@@ -354,94 +356,95 @@ export default class Pay extends React.Component {
                                     </div>
                                 ) : null}
 
-                                <div className="payment-list">
-                                    <Table striped>
-                                        <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Date</th>
-                                            <th>Developer</th>
-                                            <th>Invoice</th>
-                                            <th>Amount</th>
-                                            <th/>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {batchPayouts.map(batch => {
-                                            return (
-                                                <tr key={batch.id}>
-                                                    <td>{batch.title}</td>
-                                                    <td>
-                                                        {batch.invoices.map(item => {
-                                                            return (
-                                                                <div key={item.id}>{moment.utc(item.due_at).format('DD/MMM/YYYY')}</div>
-                                                            );
-                                                        })}
-                                                    </td>
-                                                    <td>
-                                                        {batch.invoices.map(item => {
-                                                            return (
-                                                                <div key={item.id}>{item.user.display_name}</div>
-                                                            );
-                                                        })}
-                                                    </td>
-                                                    <td>
-                                                        {batch.invoices.map(item => {
-                                                            return (
-                                                                <div key={item.id}>
-                                                                    <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`} target="_blank">
-                                                                        {item.number}
-                                                                    </a>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </td>
-                                                    <td>
-                                                        {batch.invoices.map(item => {
-                                                            return (
-                                                                <div key={item.id}>€{item.amount}</div>
-                                                            );
-                                                        })}
-                                                        <div className="subtotal">€{batch.amount}</div>
-                                                    </td>
-                                                    <td>
-                                                        {isAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved'? (
-                                                            <div className="actions text-right">
-                                                                <IconButton name="colon" size={null}
-                                                                            onClick={this.onToggleActions.bind(this, batch.ref)}/>
-                                                                {this.state.open === batch.ref ? (
-                                                                    <div className="dropper">
-                                                                        <Button size="sm"
-                                                                                onClick={this.onUpdateInvoiceBatch.bind(this, batch.ref, batch.invoices)}>
-                                                                            Edit payout
-                                                                        </Button>
-                                                                        <Button size="sm"
-                                                                                onClick={this.onDeleteInvoiceBatch.bind(this, batch.ref, batch.invoices)}>
-                                                                            Delete payout
-                                                                        </Button>
-                                                                        {isAdmin() && !batch.paid ? (
-                                                                            <Button size="sm"
-                                                                                    onClick={this.onApprovePayout.bind(this, batch.ref, batch.invoices)}>
-                                                                                Approve payout
-                                                                            </Button>
-                                                                        ) : null}
+                                {batchPayouts.length?(
+                                    <div className="payment-list">
+                                        <Table striped>
+                                            <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Date</th>
+                                                <th>Developer</th>
+                                                <th>Invoice</th>
+                                                <th>Amount</th>
+                                                <th/>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {batchPayouts.map(batch => {
+                                                return (
+                                                    <tr key={batch.id}>
+                                                        <td>{batch.title}</td>
+                                                        <td>
+                                                            {batch.invoices.map(item => {
+                                                                return (
+                                                                    <div key={item.id}>{moment.utc(item.due_at).format('DD/MMM/YYYY')}</div>
+                                                                );
+                                                            })}
+                                                        </td>
+                                                        <td>
+                                                            {batch.invoices.map(item => {
+                                                                return (
+                                                                    <div key={item.id}>{item.user.display_name}</div>
+                                                                );
+                                                            })}
+                                                        </td>
+                                                        <td>
+                                                            {batch.invoices.map(item => {
+                                                                return (
+                                                                    <div key={item.id}>
+                                                                        <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`} target="_blank">
+                                                                            {item.number}
+                                                                        </a>
                                                                     </div>
-                                                                ) : null}
-                                                            </div>
-                                                        ) : batch.paid?(
-                                                            <div>
-                                                                <Icon name="check" className="green"/> Paid
-                                                            </div>
-                                                        ): batch.status === 'approved'?(
-                                                            <div>Processing</div>
-                                                        ):null}
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                        </tbody>
-                                        {batchPayouts.length ? (
-                                            <thead className="payment-footer">
+                                                                );
+                                                            })}
+                                                        </td>
+                                                        <td>
+                                                            {batch.invoices.map(item => {
+                                                                return (
+                                                                    <div key={item.id}>€{item.amount}</div>
+                                                                );
+                                                            })}
+                                                            <div className="subtotal">€{batch.amount}</div>
+                                                        </td>
+                                                        <td>
+                                                            {isAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved'? (
+                                                                <div className="actions text-right">
+                                                                    <IconButton name="colon" size={null}
+                                                                                onClick={this.onToggleActions.bind(this, batch.ref)}/>
+                                                                    {this.state.open === batch.ref ? (
+                                                                        <div className="dropper">
+                                                                            <Button size="sm"
+                                                                                    onClick={this.onUpdateInvoiceBatch.bind(this, batch.ref, batch.invoices)}>
+                                                                                Edit payout
+                                                                            </Button>
+                                                                            <Button size="sm"
+                                                                                    onClick={this.onDeleteInvoiceBatch.bind(this, batch.ref, batch.invoices)}>
+                                                                                Delete payout
+                                                                            </Button>
+                                                                            {isAdmin() && !batch.paid ? (
+                                                                                <Button size="sm"
+                                                                                        onClick={this.onApprovePayout.bind(this, batch.ref, batch.invoices)}>
+                                                                                    Approve payout
+                                                                                </Button>
+                                                                            ) : null}
+                                                                        </div>
+                                                                    ) : null}
+                                                                </div>
+                                                            ) : batch.paid?(
+                                                                <div>
+                                                                    <Icon name="check" className="green"/> Paid
+                                                                </div>
+                                                            ): batch.status === 'approved'?(
+                                                                <div>Processing</div>
+                                                            ):null}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })}
+                                            </tbody>
+                                            {batchPayouts.length ? (
+                                                <thead className="payment-footer">
                                                 <tr>
                                                     <th>Total</th>
                                                     <th/>
@@ -450,10 +453,11 @@ export default class Pay extends React.Component {
                                                     <th>€{sumInvoices(batchPayouts)}</th>
                                                     <th/>
                                                 </tr>
-                                            </thead>
-                                        ) : null}
-                                    </Table>
-                                </div>
+                                                </thead>
+                                            ) : null}
+                                        </Table>
+                                    </div>
+                                ):null}
                             </div>
                         )}
                     </div>

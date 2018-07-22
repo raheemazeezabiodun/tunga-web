@@ -24,7 +24,6 @@ export default class Team extends React.Component {
         openModal(
             <ProjectMemberForm type={typeMap[type]} max={max} />, title, true, {size: 'sm'}
         ).then(users => {
-            console.log('users: ', users);
             if(users && users.length) {
                 const {project, ProjectActions} = this.props,
                     reqData = {};

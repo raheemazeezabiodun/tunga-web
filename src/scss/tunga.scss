@@ -1012,7 +1012,7 @@ table {
             text-align: center;
             color: get-color('black');
             padding-bottom: px-to-rem(8);
-            min-width: px-to-rem(130);
+            min-width: px-to-rem(200);
 
             &.active {
                 border-bottom: 3px $brand-color solid;

@@ -136,8 +136,10 @@ export default class CompanyDetails extends React.Component {
                                 />
                             </FormGroup>
                         </div>
-                        <div className="col-sm-4">
-                        {errors.company &&
+                    </div>
+                    <div className="row">
+                        <div className="col-sm-8">
+                            {errors.company &&
                             errors.company.vat_number ? (
                                 <FieldError
                                     message={errors.company.vat_number}

@@ -44,6 +44,7 @@ export default class StepOne extends React.Component {
         const {user, ProfileActions} = this.props;
         let reqData = {
             user: {
+                id: user.id,
                 first_name: this.state.first_name,
                 last_name: this.state.last_name
             }

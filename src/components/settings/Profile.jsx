@@ -66,7 +66,7 @@ export default class Profile extends React.Component {
             delete profile[key];
         });
 
-        ProfileActions.updateProfile(user.profile.id, {...profile, user: nestedUser});
+        ProfileActions.updateProfile(user.profile.id, {...profile, user: {id: user.id, nestedUser}});
         return;
     };
 

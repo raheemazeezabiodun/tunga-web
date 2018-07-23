@@ -105,7 +105,7 @@ export default class PaymentList extends React.Component {
                             return (
                                 <tr key={invoice.id}>
                                     <td>{owner.company?owner.company.name:'' || owner.display_name}</td>
-                                    <td><Link to={`/projects/${invoice.project.id}`}>{invoice.project.title}</Link></td>
+                                    <td><a href={`/projects/${invoice.project.id}`} target="_blank">{invoice.project.title}</a></td>
                                     <td>{invoice.title}</td>
                                     {[PENDING_OUT, PAID_OUT].includes(filter)?(
                                         <td>{invoice.invoices.map(item => {

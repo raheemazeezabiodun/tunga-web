@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
     }
 
     getDays(date) {
-        let period = humanizeDuration((moment().unix() - moment.utc('2016-06-09T18:29:52.879000' || date).add('day', 1).startOf('day').unix())*1000, { largest: 1, round: true, units: ['d']}).split(' ');
+        let period = humanizeDuration((moment().unix() - moment.utc(date).add('day', 1).startOf('day').unix())*1000, { largest: 1, round: true, units: ['d']}).split(' ');
         return {number: period[0], name: period[1]};
     }
 

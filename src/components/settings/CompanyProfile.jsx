@@ -71,7 +71,7 @@ export default class CompanyProfile extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label className="control-label">Your company Name</label>
+                                <label className="control-label">Your Company Name</label>
                                 <CustomInputGroup
                                     onChange={this.onChangeField.bind(this, 'name')}
                                     value={this.state.company.name}
@@ -120,7 +120,7 @@ export default class CompanyProfile extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label className="control-label">Technologies used by your company</label>
+                                <label className="control-label">Technologies used by my company</label>
                                 <SkillSelector
                                     placeholder="Type here to add a technology, e.g Python, Android or Rails"
                                     onChange={this.onChangeSkills.bind(this)}

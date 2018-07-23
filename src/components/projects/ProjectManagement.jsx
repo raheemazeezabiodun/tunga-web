@@ -33,7 +33,7 @@ export default class ProjectManagement extends React.Component {
                     Accepting this project means you agree to our Code of Conduct.
                     Please read it carefully <a href="https://tunga.io/code-of-conduct" target="_blank">here</a>.
                 </div>,
-                'Accept Invite?', false,
+                'Accept Invite?', true,
                 {ok: 'Accept', cancel: 'Reject'}
             ).then(response => {
                 self.updateParticipationStatus('accepted');

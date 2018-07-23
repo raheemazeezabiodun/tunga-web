@@ -95,7 +95,7 @@ export default class Plan extends React.Component {
             });
         }
 
-        openModal(<MilestoneForm milestone={cleanedMilestone}/>, milestone?'Add a milestone':'Change milestone').then(data => {
+        openModal(<MilestoneForm milestone={cleanedMilestone}/>, milestone?'Change milestone':'Add a milestone').then(data => {
             if(data) {
                 if(data.reason) {
                     let changes = this.parseChangeLog(editFields, data.reason, data, milestone);

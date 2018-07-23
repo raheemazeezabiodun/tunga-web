@@ -40,11 +40,10 @@ export default class MessageWidget extends React.Component {
                             </button>
                         </span>
                     ) : null}
-                    <textarea
+                    <input
                         type="text"
                         className="form-control"
                         placeholder={this.props.placeholder}
-                        rows="2"
                         onKeyUp={this.onBodyChange.bind(this)}
                     />
                 </div>

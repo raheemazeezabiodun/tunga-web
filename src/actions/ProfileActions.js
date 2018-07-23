@@ -7,7 +7,9 @@ import {
     ENDPOINT_USER_EDUCATION,
     ENDPOINT_USER_WORK,
     ENDPOINT_COUNTRIES,
-    ENDPOINT_COMPANY, composeFormData,
+    ENDPOINT_COMPANY,
+    ENDPOINT_NOTIFICATIONS,
+    composeFormData,
 } from './utils/api';
 
 export const UPDATE_ACCOUNT_INFO_START = 'UPDATE_ACCOUNT_INFO_START';
@@ -43,6 +45,9 @@ export const GET_COUNTRIES_FAILED = 'GET_COUNTRIES_FAILED';
 export const UPDATE_COMPANY_START = 'UPDATE_COMPANY_START';
 export const UPDATE_COMPANY_SUCCESS = 'UPDATE_COMPANY_SUCCESS';
 export const UPDATE_COMPANY_FAILED = 'UPDATE_COMPANY_FAILED';
+export const GET_NOTIFICATIONS_START = 'GET_NOTIFICATIONS_START';
+export const GET_NOTIFICATIONS_SUCCESS = 'GET_NOTIFICATIONS_SUCCESS';
+export const GET_NOTIFICATIONS_FAILED = 'GET_NOTIFICATIONS_FAILED';
 
 export function updateAccountInfo(user) {
     // Requires password and limited to a few account fields
@@ -507,5 +512,39 @@ export function updateCompanyFailed(error, id) {
         type: UPDATE_COMPANY_FAILED,
         error,
         id
+    };
+}
+
+export function getNotifications() {
+    return dispatch => {
+        dispatch(getNotificationsStart());
+        axios
+            .get(ENDPOINT_NOTIFICATIONS)
+            .then(function(response) {
+                dispatch(getNotificationsSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(getNotificationsFailed(error.response?error.response.data:null));
+            });
+    };
+}
+
+export function getNotificationsStart() {
+    return {
+        type: GET_NOTIFICATIONS_START,
+    };
+}
+
+export function getNotificationsSuccess(notifications) {
+    return {
+        type: GET_NOTIFICATIONS_SUCCESS,
+        notifications,
+    };
+}
+
+export function getNotificationsFailed(error) {
+    return {
+        type: GET_NOTIFICATIONS_FAILED,
+        error,
     };
 }

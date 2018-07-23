@@ -14,7 +14,25 @@ function countries(state = [], action) {
     }
 }
 
-const defaultStatuses = {
+const defaultNotifications = {
+    profile: {required: [], optional: []},
+    projects: [], invoices: [],
+    events: [], reports: [],
+    activities: []
+};
+
+function notifications(state = defaultNotifications, action) {
+    switch (action.type) {
+        case ProfileActions.GET_NOTIFICATIONS_SUCCESS:
+            return action.notifications;
+        case ProfileActions.GET_NOTIFICATIONS_FAILED:
+            return defaultNotifications;
+        default:
+            return state;
+    }
+}
+
+const defaultIsRetrieving = {
     profile: false,
     user: false,
     account: false,
@@ -24,7 +42,7 @@ const defaultStatuses = {
     education: false
 };
 
-function isRetrieving(state = defaultStatuses, action) {
+function isRetrieving(state = defaultIsRetrieving, action) {
     switch (action.type) {
         case ProfileActions.RETRIEVE_PROFILE_START:
             return {...state, profile: true};
@@ -36,12 +54,17 @@ function isRetrieving(state = defaultStatuses, action) {
         case SettingsActions.RETRIEVE_SETTINGS_SUCCESS:
         case SettingsActions.RETRIEVE_SETTINGS_FAILED:
             return {...state, settings: false};
+        case ProfileActions.GET_NOTIFICATIONS_START:
+            return {...state, notifications: true};
+        case ProfileActions.GET_NOTIFICATIONS_SUCCESS:
+        case ProfileActions.GET_NOTIFICATIONS_FAILED:
+            return {...state, notifications: false};
         default:
             return state;
     }
 }
 
-function isSaving(state = defaultStatuses, action) {
+function isSaving(state = defaultIsRetrieving, action) {
     switch (action.type) {
         case ProfileActions.UPDATE_PROFILE_START:
             return {...state, profile: true};
@@ -94,7 +117,7 @@ function isSaving(state = defaultStatuses, action) {
     }
 }
 
-function isSaved(state = defaultStatuses, action) {
+function isSaved(state = defaultIsRetrieving, action) {
     switch (action.type) {
         case ProfileActions.UPDATE_PROFILE_SUCCESS:
             return {...state, profile: true};
@@ -143,7 +166,7 @@ function isSaved(state = defaultStatuses, action) {
         case SettingsActions.UPDATE_SETTINGS_FAILED:
             return {...state, settings: false};
         case LOCATION_CHANGE:
-            return defaultStatuses;
+            return defaultIsRetrieving;
         default:
             return state;
     }
@@ -209,6 +232,7 @@ const Profile = combineReducers({
     isSaved,
     errors,
     countries,
+    notifications
 });
 
 export default Profile;

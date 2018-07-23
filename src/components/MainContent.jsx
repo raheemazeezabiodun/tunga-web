@@ -2,6 +2,7 @@ import React from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
 
 import OnboardContainer from './onboard/OnboardContainer';
+import Dashboard from './dashboard/Dashboard';
 import PaymentListContainer from './payments/PaymentListContainer';
 import NetworkContainer from './network/NetworkContainer';
 import SettingsContainer from './settings/SettingsContainer';
@@ -13,6 +14,7 @@ const MainContent = () => {
         <div className='main-content'>
             <Switch>
                 <Route path='/onboard' component={OnboardContainer}/>
+                <Route path='/dashboard' component={Dashboard}/>
                 <Route path='/projects' component={ProjectsContainer}/>
                 <Route path='/network/invite' component={UserForm}/>
                 <Route path='/network' component={NetworkContainer}/>

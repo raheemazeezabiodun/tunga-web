@@ -59,7 +59,7 @@ export const ENDPOINT_RESET_PASSWORD_CONFIRM = getEndpointUrl(
 // Account
 export const ENDPOINT_PROFILE = getEndpointUrl('me/profile/');
 export const ENDPOINT_COMPANY = getEndpointUrl('me/company/');
-export const ENDPOINT_NOTIFICATION = getEndpointUrl('me/notification/');
+export const ENDPOINT_NOTIFICATIONS = getEndpointUrl('me/notification/');
 export const ENDPOINT_ACCOUNT_INFO = getEndpointUrl('me/account/');
 export const ENDPOINT_ACCOUNT_SETTINGS = getEndpointUrl('me/settings/');
 export const ENDPOINT_USER_INFO = getEndpointUrl('me/user/');
@@ -228,3 +228,16 @@ export const INVOICE_TYPE_PURCHASE = 'purchase';
 
 export const PAYMENT_TYPE_SALE = 'sale';
 export const PAYMENT_TYPE_PURCHASE = 'purchase';
+
+
+export const STATUS_INITIAL = 'initial';
+export const STATUS_PENDING = 'pending';
+export const STATUS_INITIATED = 'initiated';
+export const STATUS_SUBMITTED = 'submitted';
+export const STATUS_PROCESSING = 'processing';
+export const STATUS_COMPLETED = 'completed';
+export const STATUS_FAILED = 'failed';
+export const STATUS_ACCEPTED = 'accepted';
+export const STATUS_REJECTED = 'rejected';
+export const STATUS_APPROVED = 'approved';
+export const STATUS_DECLINED = 'declined';

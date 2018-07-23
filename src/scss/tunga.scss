@@ -148,7 +148,13 @@ a {
 .tunga-ic-sz-xl,
 .tunga-ic-sz-main-xl,
 .tunga-ic-sz-main-xlg {
-    font-size: px-to-rem(75);
+    font-size: px-to-rem(50);
+}
+
+.tunga-ic-sz-xxl,
+.tunga-ic-sz-main-xxl,
+.tunga-ic-sz-main-xxlg {
+    font-size: px-to-rem(60);
 }
 
 .tunga-ic-sz-webfunnel {
@@ -1211,6 +1217,83 @@ table {
                 height: 40px;
                 margin-top: 0;
             }
+        }
+    }
+}
+
+// Dashboard
+.dashboard {
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+
+        > .col,
+        > [class*="col-"] {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+    }
+
+    .card {
+        min-height: 270px;
+        padding: 32px 40px;
+        margin-bottom: 20px;
+        border-width: 0;
+        border-radius: 0;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
+
+        .section-title {
+            margin-bottom: 16px;
+        }
+    }
+
+    .notification {
+        background-color: get-color('lightest-grey');
+        padding: 10px 15px 10px 23px;
+        margin-bottom: 14px;
+        box-shadow: 1px 1px 3px 0 rgba(154, 154, 154, 0.5);
+
+        .btn-icon {
+            height: auto;
+            line-height: 1;
+            color: get-color('black');
+            margin-left: 25px;
+        }
+    }
+
+    .cta {
+        position: fixed;
+        right: 80px;
+        bottom: 40px;
+
+        span {
+            display: none;
+            margin-right: 10px;
+        }
+
+        &:hover {
+            span {
+                display: inline-block;
+            }
+        }
+    }
+
+    .countdown {
+        font-weight: 600;
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1;
+
+        .number {
+            display: inline-block;
+            font-size: px-to-rem(86);
+        }
+
+        .period {
+            position: relative;
+            top: -25px;
+            display: inline-block;
+            font-size: px-to-rem(16);
         }
     }
 }

@@ -49,7 +49,7 @@ class DashboardLayout extends React.Component {
                 window.location.href = window.location.origin;
             } else {
                 const {user} = Auth;
-                if(!user.can_contribute) {
+                if(!user.is_developer && !user.can_contribute) {
                     history.push('/onboard');
                 }
             }

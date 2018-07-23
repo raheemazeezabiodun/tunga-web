@@ -54,7 +54,7 @@ export default class TitleBar extends React.Component {
                 <Switch>
                     {[
                         ['/onboard', 'Welcome to Tunga!'],
-                        ['/dashboard', <div>Hi {user.display_name}</div>, isAdminOrPMOrClient()?'/projects/new':null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
+                        ['/dashboard', <div>Hi {user.display_name}</div>, null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
                         ['/projects/new', 'Projects', null, [...projectsSections, ['/projects/new', 'Create new project']]],
                         ['/projects/filter/:filter', ...projectLists],
                         ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?'/projects/new':null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],

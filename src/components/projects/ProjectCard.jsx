@@ -36,7 +36,7 @@ export default class ProjectCard extends React.Component {
             project?(
                 <Link to={`/projects/${project.id}`} className="project-card">
                     <Icon name="circle" size="card" className={`status-icon ${project.archived?'red':'green'}`}/>
-                    <div className="font-weight-medium">{project.title}</div>
+                    <div className="card-title">{project.title}</div>
                     {nextDeadline?(
                         <div>Next deadline: {moment.utc(nextDeadline).local().format('DD/MMM/YYYY')}</div>
                     ):null}

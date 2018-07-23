@@ -362,6 +362,8 @@ a {
 
 // Tables
 table {
+    font-size: $font-size-sm;
+
     .table-striped tbody tr:nth-of-type(odd) {
         background-color: get-color('lightest-grey');
     }

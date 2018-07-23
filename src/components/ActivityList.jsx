@@ -614,12 +614,11 @@ export default class ActivityList extends React.Component {
                         {activity.user.hide ? null : (
                             <p>
                                 {activity.user.id && activity.user.username ? (
-                                    <Link
-                                        to={`/network/${
+                                    <a href={`/network/${
                                             activity.user.username
-                                        }/`}>
+                                        }/`} target="_blank">
                                         {display_name}
-                                    </Link>
+                                    </a>
                                 ) : (
                                     <span className="username">
                                         {display_name}

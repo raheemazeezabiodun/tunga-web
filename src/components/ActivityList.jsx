@@ -228,7 +228,7 @@ export default class ActivityList extends React.Component {
                                     <Icon
                                         name={
                                             'flag' +
-                                            (activity.type === LEGACY_PROGRESS_EVENT_TYPE_SUBMIT
+                                            ([PROGRESS_EVENT_TYPE_MILESTONE, LEGACY_PROGRESS_EVENT_TYPE_SUBMIT].includes(activity.type)
                                                 ? '-checkered'
                                                 : '-o')
                                         }

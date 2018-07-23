@@ -90,7 +90,7 @@ class Dashboard extends React.Component {
                                                     </div>
                                                     {(events || []).map(event => {
                                                         return (
-                                                            <div>
+                                                            <div className="item">
                                                                 Scheduled update for <Link to={`/projects/${event.project.id}/events/${event.id}`}>{event.project.title}{event.title?`: ${event.title}`:''}</Link>
                                                             </div>
                                                         );
@@ -103,7 +103,8 @@ class Dashboard extends React.Component {
                                                     </div>
                                                     {(reports || []).map(report => {
                                                         return (
-                                                            <div>
+                                                            <div className="item clearfix">
+                                                                <div className="date float-right">{moment.utc(report.created_at).format('DD/MMM')}</div>
                                                                 Progress report from <Link to={`/network/${report.user.username}`}>{report.user.display_name}</Link> for <Link to={`/projects/${report.project.id}/events/${report.event.id}`}>{report.project.title}</Link>
                                                             </div>
                                                         );
@@ -136,7 +137,7 @@ class Dashboard extends React.Component {
                                     <div className="section-title"><Icon name="projects"/> {isDev()?'Project I am working on':'Running projects'}</div>
                                     {(projects || []).map(project => {
                                         return (
-                                            <div>
+                                            <div className="project-item">
                                                 <Link to={`/projects/${project.id}`}>{project.title}</Link>
                                             </div>
                                         );

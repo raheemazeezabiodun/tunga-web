@@ -407,18 +407,20 @@ export default class Settings extends React.Component {
 
                         <div className="section">
                             <div className="font-weight-normal">{project.archived?'Un-archive':'Archive'} project</div>
-                            {project.archived?(
-                                <div>
-                                    Un-archive this project to re-enable project activity.
-                                </div>
-                            ):(
-                                <div>
-                                    Mark this project as archived and readonly.<br/>
-                                    This will also remove this project from your project list and send it to the archived list.
-                                </div>
-                            )}
-                            <Button onClick={this.onToggleArchiveProject}>{project.archived?'Un-archive':'Archive'} project</Button>
+                            <div className="text text-sm">
+                                {project.archived?(
+                                    <div>
+                                        Un-archive this project to re-enable project activity.
+                                    </div>
+                                ):(
+                                    <div>
+                                        Mark this project as archived and readonly.<br/>
+                                        This will also remove this project from your project list and send it to the archived list.
+                                    </div>
+                                )}
+                            </div>
                         </div>
+                        <Button onClick={this.onToggleArchiveProject}>{project.archived?'Un-archive':'Archive'} project</Button>
                     </div>
                 ):null}
             </div>

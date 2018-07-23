@@ -1740,9 +1740,10 @@ table {
 }
 
 .message {
-    margin: 5px 0;
+    font-size: $font-size-sm;
     width: 75%;
     min-width: 300px;
+    margin: 5px 0;
 
     &.new {
         font-weight: 400;

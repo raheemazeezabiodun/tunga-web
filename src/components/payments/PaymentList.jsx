@@ -24,7 +24,7 @@ export default class PaymentList extends React.Component {
     onMarkPaid(invoiceId) {
         const { InvoiceActions } = this.props;
         openConfirm(
-            'Are you sure you want to mark this invoice as paid?', '',
+            <div className="font-weight-bold">Are you sure you want to mark this invoice as paid?</div>, '',
             true, {ok: 'Yes'}
         ).then(response => {
             InvoiceActions.updateInvoice(invoiceId, {paid: true}, this.props.selectionKey);
@@ -36,7 +36,7 @@ export default class PaymentList extends React.Component {
     onApprovePayout(invoices) {
         const { InvoiceActions } = this.props;
         openConfirm(
-            'Are you sure you want to approve this payout?', '',
+            <div className="font-weight-bold">Are you sure you want to approve this payout?</div>, '',
             true, {ok: 'Yes'}
         ).then(response => {
             invoices.forEach(invoice => {

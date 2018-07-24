@@ -113,7 +113,7 @@ export default class StepOne extends React.Component {
                             ) : null}
                             <FormGroup>
                                 <label>Your company name</label>
-                                <Input value={errorSource[companyField]}
+                                <Input value={this.state.company}
                                        onChange={this.onChangeField.bind(this, 'company')} />
                             </FormGroup>
                         </Col>

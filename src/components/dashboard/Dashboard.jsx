@@ -47,6 +47,10 @@ class Dashboard extends React.Component {
 
         const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}} = this.props;
 
+        let shouldUpdateProfile = profile.required.length || profile.optional.length,
+            shouldConnectPayoneer = isDev() && ![STATUS_APPROVED, STATUS_PENDING].includes(getUser().payoneer_status),
+            hasActivities = activities.length;
+
         return (
             <div className="dashboard">
                 {isRetrieving.notifications?(
@@ -58,26 +62,32 @@ class Dashboard extends React.Component {
                                 <div className="card">
                                     <div className="section-title"><Icon name="bell"/> Notifications</div>
 
-                                    {profile.required.length || profile.optional.length?(
-                                        this.renderNotification(
-                                            <div>Please complete your profile {profile.required.length?<span>to be able to {isDev()?'accept':'create'} projects</span>:''}</div>,
-                                            'Go to profile', '/settings/'
-                                        )
-                                    ):null}
+                                    {shouldUpdateProfile || shouldConnectPayoneer || hasActivities?(
+                                        <div>
+                                            {shouldUpdateProfile?(
+                                                this.renderNotification(
+                                                    <div>Please complete your profile {profile.required.length?<span>to be able to {isDev()?'accept':'create'} projects</span>:''}</div>,
+                                                    'Go to profile', '/settings/'
+                                                )
+                                            ):null}
 
-                                    {isDev() && ![STATUS_APPROVED, STATUS_PENDING].includes(getUser().payoneer_status)?(
-                                        this.renderNotification('Please connect your account with Payoneer to receive payments', 'Set up Payoneer', '/settings/payment/')
-                                    ):null}
+                                            {shouldConnectPayoneer?(
+                                                this.renderNotification('Please connect your account with Payoneer to receive payments', 'Set up Payoneer', '/settings/payment/')
+                                                ):null}
 
-                                    {activities.length?(
-                                        activities.slice(0, 4 - (((profile.required.length || profile.optional.length)?1:0)+(isDev() && ![STATUS_APPROVED, STATUS_PENDING].includes(getUser().payoneer_status)?1:0))).map(item => {
-                                            return this.renderNotification(
-                                                <div>
-                                                    {getUser().id === item.activity.user.id?'You have':(<span><Link to={`/network/${item.activity.user.username}`}>{item.activity.user.display_name}</Link> has</span>)} been added to {isDev()?'the':'your'} team for {item.activity.project.title}
-                                                </div>,
-                                                'Go to project', `/projects/${item.activity.project.id}`);
-                                        })
-                                    ):null}
+                                            {activities.length?(
+                                                activities.slice(0, 4 - ((shouldUpdateProfile?1:0)+(shouldConnectPayoneer?1:0))).map(item => {
+                                                    return this.renderNotification(
+                                                        <div>
+                                                            {getUser().id === item.activity.user.id?'You have':(<span><Link to={`/network/${item.activity.user.username}`}>{item.activity.user.display_name}</Link> has</span>)} been added to {isDev()?'the':'your'} team for {item.activity.project.title}
+                                                        </div>,
+                                                        'Go to project', `/projects/${item.activity.project.id}`);
+                                                })
+                                            ):null}
+                                        </div>
+                                    ):(
+                                        <div>No notifications</div>
+                                    )}
                                 </div>
 
                                 <Row>
@@ -88,27 +98,34 @@ class Dashboard extends React.Component {
                                                     <div className="section-title">
                                                         <Icon name="flag-checkered"/> Upcoming updates
                                                     </div>
-                                                    {(events || []).map(event => {
+
+                                                    {events.length?events.map(event => {
                                                         return (
                                                             <div className="item">
                                                                 Scheduled update for <Link to={`/projects/${event.project.id}/events/${event.id}`}>{event.project.title}{event.title?`: ${event.title}`:''}</Link>
                                                             </div>
                                                         );
-                                                    })}
+                                                    }):(
+                                                        <div>
+                                                            No upcoming updates
+                                                        </div>
+                                                    )}
                                                 </div>
                                             ):(
                                                 <div>
                                                     <div className="section-title">
                                                         <Icon name="newspaper-o"/> Latest progress reports
                                                     </div>
-                                                    {(reports || []).map(report => {
+                                                    {reports.length?reports.map(report => {
                                                         return (
                                                             <div className="item clearfix">
                                                                 <div className="date float-right">{moment.utc(report.created_at).format('DD/MMM')}</div>
                                                                 Progress report from <Link to={`/network/${report.user.username}`}>{report.user.display_name}</Link> for <Link to={`/projects/${report.project.id}/events/${report.event.id}`}>{report.project.title}</Link>
                                                             </div>
                                                         );
-                                                    })}
+                                                    }):(
+                                                        <div>No new progress reports</div>
+                                                    )}
                                                 </div>
                                             )}
 
@@ -127,7 +144,9 @@ class Dashboard extends React.Component {
                                                         <span className="period">{this.getDays(invoices[0].due_at).name}</span>
                                                     </div>
                                                 </div>
-                                            ):null}
+                                            ):(
+                                                <div>No upcoming payments.</div>
+                                            )}
                                         </div>
                                     </Col>
                                 </Row>
@@ -135,13 +154,15 @@ class Dashboard extends React.Component {
                             <Col sm={4}>
                                 <div className="card">
                                     <div className="section-title"><Icon name="projects"/> {isDev()?'Project I am working on':'Running projects'}</div>
-                                    {(projects || []).map(project => {
+                                    {projects.length?projects.map(project => {
                                         return (
                                             <div className="project-item">
                                                 <Link to={`/projects/${project.id}`}>{project.title}</Link>
                                             </div>
                                         );
-                                    })}
+                                    }):(
+                                        <div>No projects</div>
+                                    )}
                                 </div>
                             </Col>
                         </Row>

@@ -370,6 +370,13 @@ export default class LandingPage extends ComponentWithModal {
                                         />
                                     </a>
                                 </li>
+                                <li>
+                                    <a
+                                        href="https://www.rabobank.nl/bedrijven/groei/personeel/afrikaanse-programmeurs/"
+                                        target="_blank">
+                                        <img src={require('../images/press/rabobank.png')}/>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </Reveal>

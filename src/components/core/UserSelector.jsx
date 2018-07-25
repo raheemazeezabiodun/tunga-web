@@ -50,16 +50,23 @@ class UserSelector extends React.Component {
         if(!_.isEqual(this.state.selected, prevState.selected) && this.props.onChange) {
             this.props.onChange(this.state.selected);
         }
+
+        if(!_.isEqual(this.state.search, prevState.search)) {
+            this.getUsers({search: this.state.search, account_type: this.props.account_type});
+        }
+    }
+
+    searchKey() {
+        return `${this.state.selectionKey}-${this.state.search}`;
     }
 
     getUsers(filter) {
         const {UserActions} = this.props;
-        UserActions.listUsers(filter, this.state.selectionKey, this.state.prevKey);
+        UserActions.listUsers(filter, this.searchKey(), this.state.prevKey);
     }
 
     onChange(e) {
         let username = e.target.value;
-        this.getUsers({search: username, account_type: this.props.account_type});
         this.setState({search: username, showSuggestions: !!username});
     }
 
@@ -127,7 +134,7 @@ class UserSelector extends React.Component {
 
                         {this.state.showSuggestions?(
                             <div className="list-group suggestions">
-                                {(this.props.User.ids[this.state.selectionKey] || []).map(id => {
+                                {(this.props.User.ids[this.searchKey()] || []).map(id => {
                                     let user = this.props.User.users[id] || {};
                                     if(this.state.selected.indexOf(id) > -1) {
                                         return null;

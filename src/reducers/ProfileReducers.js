@@ -24,7 +24,7 @@ const defaultNotifications = {
 function notifications(state = defaultNotifications, action) {
     switch (action.type) {
         case ProfileActions.GET_NOTIFICATIONS_SUCCESS:
-            return action.notifications;
+            return {...defaultNotifications, ...action.notifications};
         case ProfileActions.GET_NOTIFICATIONS_FAILED:
             return defaultNotifications;
         default:

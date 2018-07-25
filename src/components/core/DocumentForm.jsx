@@ -15,12 +15,14 @@ import {DOCUMENT_TYPES} from "../../actions/utils/api";
 export default class DocumentForm extends React.Component {
     static defaultProps = {
         type: 'file',
+        enableDescription: false,
     };
 
     static propTypes = {
         type: PropTypes.string,
         documentType: PropTypes.string,
         documentTypes: PropTypes.array,
+        enableDescription: PropTypes.bool,
         onChange: PropTypes.func,
     };
 
@@ -90,10 +92,12 @@ export default class DocumentForm extends React.Component {
                         <Upload onChange={(files) => {this.onChange('file', files[0])}}/>
                     </FormGroup>
                 )}
-                <FormGroup>
+                {this.props.enableDescription?(
+                    <FormGroup>
                     <TextArea placeholder="Description"
                               onChange={(e) => {this.onChange('description', e.target.value)}}/>
-                </FormGroup>
+                    </FormGroup>
+                ):null}
                 <FormGroup>
                     <Button type="submit" className="float-right">Save</Button>
                 </FormGroup>

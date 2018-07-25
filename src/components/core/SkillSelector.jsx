@@ -45,6 +45,14 @@ class SkillSelector extends React.Component {
         if(!_.isEqual(this.state.selected, prevState.selected) && this.props.onChange) {
             this.props.onChange(this.state.selected);
         }
+
+        if(!_.isEqual(this.state.search, prevState.search)) {
+            this.getSkills({search: this.state.search});
+        }
+    }
+
+    searchKey() {
+        return `${this.state.selectionKey}-${this.state.search}`;
     }
 
     processSelected(selected) {
@@ -68,7 +76,7 @@ class SkillSelector extends React.Component {
 
     getSkills(filter) {
         const {SkillActions} = this.props;
-        SkillActions.getSkills(filter, this.state.selectionKey, this.state.prevKey);
+        SkillActions.getSkills(filter, this.searchKey(), this.state.prevKey);
     }
 
     onKeyPress = (e) => {
@@ -81,7 +89,6 @@ class SkillSelector extends React.Component {
 
     onChange = (e) => {
         let skill = e.target.value;
-        this.getSkills({search: skill});
         this.setState({
             search: skill,
             showSuggestions: !!skill
@@ -142,7 +149,7 @@ class SkillSelector extends React.Component {
                                     onKeyPress={this.onKeyPress}/>
                         {this.state.showSuggestions?(
                             <div className="list-group suggestions">
-                                {(this.props.Skill.skills[this.state.selectionKey] || []).map(skill => {
+                                {(this.props.Skill.skills[this.searchKey()] || []).map(skill => {
                                     if(this.state.selected.indexOf(skill.name) > -1) {
                                         return null;
                                     }

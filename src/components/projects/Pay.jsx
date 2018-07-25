@@ -31,12 +31,12 @@ export default class Pay extends React.Component {
 
     onCreateInvoice(type) {
         const {project, InvoiceActions} = this.props;
-        openModal(<InvoiceForm
-            invoice={{type}}/>, `Add ${type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
+        openModal(<InvoiceForm invoice={{type}} project={project}/>, `Add ${type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
             if (data.type === INVOICE_TYPE_SALE) {
                 InvoiceActions.createInvoice(
                     {
                         ...data,
+                        milestone: data.milestone?{id: data.milestone.id}:null,
                         user: {id: project.owner ? project.owner.id : project.user.id},
                         project: {id: project.id}
                     },
@@ -50,6 +50,7 @@ export default class Pay extends React.Component {
                         if (payout.user && payout.amount) {
                             cleanData.push({
                                 ...invoice,
+                                milestone: invoice.milestone?{id: invoice.milestone.id}:null,
                                 amount: payout.amount,
                                 user: {id: payout.user.id},
                                 project: {id: project.id}
@@ -72,16 +73,15 @@ export default class Pay extends React.Component {
     onUpdateInvoice(invoice) {
         this.onToggleActions(invoice.id);
         let cleanInvoice = {};
-        ['id', 'type', 'title', 'due_at', 'amount'].forEach(key => {
+        ['id', 'type', 'title', 'due_at', 'amount', 'milestone'].forEach(key => {
             cleanInvoice[key] = invoice[key];
         });
-        const {InvoiceActions} = this.props;
-        openModal(<InvoiceForm
-            invoice={cleanInvoice}/>, `Edit ${invoice.type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
+        const {project, InvoiceActions} = this.props;
+        openModal(<InvoiceForm invoice={cleanInvoice} project={project}/>, `Edit ${invoice.type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
             if (invoice.type === INVOICE_TYPE_SALE) {
                 InvoiceActions.updateInvoice(
                     invoice.id,
-                    data,
+                    {...data, milestone: data.milestone?{id: data.milestone.id}:null},
                     this.props.selectionKey
                 );
             }
@@ -120,7 +120,7 @@ export default class Pay extends React.Component {
         this.onToggleActions(ref);
         let invoice = invoices[0];
         let cleanInvoice = {};
-        ['type', 'title', 'due_at'].forEach(key => {
+        ['type', 'title', 'due_at', 'milestone'].forEach(key => {
             cleanInvoice[key] = invoice[key];
         });
 
@@ -130,7 +130,10 @@ export default class Pay extends React.Component {
         });
         const {project, InvoiceActions} = this.props;
         openModal(<InvoiceForm invoice={cleanInvoice}
-                               payouts={payouts}/>, `Edit ${invoice.type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
+                               payouts={payouts}
+                               project={project}/>,
+            `Edit ${invoice.type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`
+        ).then(data => {
             if (invoice.type === INVOICE_TYPE_PURCHASE) {
                 let cleanData = [],
                     invoice = data.invoice,
@@ -142,6 +145,7 @@ export default class Pay extends React.Component {
                         if (payout.user && payout.amount) {
                             let payObj = {
                                 ...invoice,
+                                milestone: invoice.milestone?{id: invoice.milestone.id}:null,
                                 amount: payout.amount,
                                 user: {id: payout.user.id},
                                 project: {id: project.id}

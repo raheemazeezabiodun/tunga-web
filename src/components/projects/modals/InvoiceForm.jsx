@@ -7,7 +7,7 @@ import _ from 'lodash';
 import Button from '../../../components/core/Button';
 import Input from "../../core/Input";
 import DateTimePicker from "../../core/DateTimePicker";
-import UserSelector from "../../core/UserSelector";
+import MilestoneSelector from "../../core/MilestoneSelector";
 
 import {INVOICE_TYPE_SALE} from "../../../actions/utils/api";
 import IconButton from "../../core/IconButton";
@@ -19,8 +19,10 @@ export default class InvoiceForm extends React.Component {
             type: PropTypes.string,
             title: PropTypes.string,
             due_at: PropTypes.string,
+            milestone: PropTypes.object,
             amount: PropTypes.string,
         }),
+        project: PropTypes.object,
         proceed: PropTypes.func,
         cancel: PropTypes.func,
         dismiss: PropTypes.func,
@@ -120,6 +122,12 @@ export default class InvoiceForm extends React.Component {
                                     value={this.state.invoice.due_at?new Date(this.state.invoice.due_at):null}
                                     onChange={(due_at) => { this.onChangeValue('due_at', moment.utc(due_at).format())}}
                                     required/>
+                </FormGroup>
+                <FormGroup>
+                    <label>Milestone</label>
+                    <MilestoneSelector variant="bottom" max={1}
+                                       filters={{project: this.props.project?this.props.project.id:null}}
+                                       selected={this.state.invoice.milestone?[this.state.invoice.milestone]:[]} onChange={milestones => this.onChangeValue('milestone', milestones[0] || null)}/>
                 </FormGroup>
                 {this.state.invoice.type === INVOICE_TYPE_SALE?(
                     <FormGroup>

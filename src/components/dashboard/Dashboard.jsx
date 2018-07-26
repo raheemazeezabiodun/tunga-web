@@ -43,6 +43,25 @@ class Dashboard extends React.Component {
         );
     }
 
+    renderNotificationType(item) {
+        switch (item.activity_type)  {
+            case 'participation':
+                return this.renderNotification(
+                    <div>
+                        {getUser().id === item.activity.user.id?'You have':(<span><Link to={`/network/${item.activity.user.username}`}>{item.activity.user.display_name}</Link> has</span>)} been added to {isDev()?'the':'your'} team for {item.activity.project.title}
+                    </div>,
+                    'Go to project', `/projects/${item.activity.project.id}/participation`);
+            case 'document':
+                return this.renderNotification(
+                    <div>
+                        {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} added a document to project {item.activity.project.title}
+                    </div>,
+                    'Go to project', `/projects/${item.activity.project.id}/docs`);
+            default:
+                return null;
+        }
+    }
+
     render() {
 
         const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}} = this.props;
@@ -59,109 +78,114 @@ class Dashboard extends React.Component {
                     <React.Fragment>
                         <Row>
                             <Col sm={8}>
-                                <div className="card">
+                                <div className="card notification-card">
                                     <div className="section-title"><Icon name="bell"/> Notifications</div>
 
-                                    {shouldUpdateProfile || shouldConnectPayoneer || hasActivities?(
-                                        <div>
-                                            {shouldUpdateProfile?(
-                                                this.renderNotification(
-                                                    <div>Please complete your profile {profile.required.length?<span>to be able to {isDev()?'accept':'create'} projects</span>:''}</div>,
-                                                    'Go to profile', '/settings/'
-                                                )
-                                            ):null}
-
-                                            {shouldConnectPayoneer?(
-                                                this.renderNotification('Please connect your account with Payoneer to receive payments', 'Set up Payoneer', '/settings/payment/')
+                                    <div className="card-content">
+                                        {shouldUpdateProfile || shouldConnectPayoneer || hasActivities?(
+                                            <div>
+                                                {shouldUpdateProfile?(
+                                                    this.renderNotification(
+                                                        <div>Please complete your profile {profile.required.length?<span>to be able to {isDev()?'accept':'create'} projects</span>:''}</div>,
+                                                        'Go to profile', '/settings/'
+                                                    )
                                                 ):null}
 
-                                            {activities.length?(
-                                                activities.slice(0, 4 - ((shouldUpdateProfile?1:0)+(shouldConnectPayoneer?1:0))).map(item => {
-                                                    return this.renderNotification(
-                                                        <div>
-                                                            {getUser().id === item.activity.user.id?'You have':(<span><Link to={`/network/${item.activity.user.username}`}>{item.activity.user.display_name}</Link> has</span>)} been added to {isDev()?'the':'your'} team for {item.activity.project.title}
-                                                        </div>,
-                                                        'Go to project', `/projects/${item.activity.project.id}`);
-                                                })
-                                            ):null}
-                                        </div>
-                                    ):(
-                                        <div>No notifications</div>
-                                    )}
+                                                {shouldConnectPayoneer?(
+                                                    this.renderNotification('Please connect your account with Payoneer to receive payments', 'Set up Payoneer', '/settings/payment/')
+                                                ):null}
+
+                                                {activities.length?(
+                                                    activities.slice(0, 10 - ((shouldUpdateProfile?1:0)+(shouldConnectPayoneer?1:0))).map(item => {
+                                                        return this.renderNotificationType(item);
+                                                    })
+                                                ):null}
+                                            </div>
+                                        ):(
+                                            <div>No notifications</div>
+                                        )}
+                                    </div>
                                 </div>
-
-                                <Row>
-                                    <Col sm={6}>
-                                        <div className="card">
-                                            {isDev()?(
-                                                <div>
-                                                    <div className="section-title">
-                                                        <Icon name="flag-checkered"/> Upcoming updates
-                                                    </div>
-
-                                                    {events.length?events.map(event => {
-                                                        return (
-                                                            <div className="item">
-                                                                Scheduled update for <Link to={`/projects/${event.project.id}/events/${event.id}`}>{event.project.title}{event.title?`: ${event.title}`:''}</Link>
-                                                            </div>
-                                                        );
-                                                    }):(
-                                                        <div>
-                                                            No upcoming updates
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            ):(
-                                                <div>
-                                                    <div className="section-title">
-                                                        <Icon name="newspaper-o"/> Latest progress reports
-                                                    </div>
-                                                    {reports.length?reports.map(report => {
-                                                        return (
-                                                            <div className="item clearfix">
-                                                                <div className="date float-right">{moment.utc(report.created_at).format('DD/MMM')}</div>
-                                                                Progress report from <Link to={`/network/${report.user.username}`}>{report.user.display_name}</Link> for <Link to={`/projects/${report.project.id}/events/${report.event.id}`}>{report.project.title}</Link>
-                                                            </div>
-                                                        );
-                                                    }):(
-                                                        <div>No new progress reports</div>
-                                                    )}
-                                                </div>
-                                            )}
-
-                                        </div>
-                                    </Col>
-                                    <Col sm={6}>
-                                        <div className="card">
-                                            <div className="section-title"><Icon name="cash"/> Upcoming payments</div>
-                                            {invoices.length?(
-                                                <div>
-                                                    <div>
-                                                        Next payment for <Link to={`/projects/${invoices[0].project.id}/pay/`}>{invoices[0].project.title}: {invoices[0].title}</Link> is due in:
-                                                    </div>
-                                                    <div className="countdown">
-                                                        <span className="number">{this.getDays(invoices[0].due_at).number}</span>
-                                                        <span className="period">{this.getDays(invoices[0].due_at).name}</span>
-                                                    </div>
-                                                </div>
-                                            ):(
-                                                <div>No upcoming payments.</div>
-                                            )}
-                                        </div>
-                                    </Col>
-                                </Row>
                             </Col>
                             <Col sm={4}>
                                 <div className="card">
                                     <div className="section-title"><Icon name="projects"/> {isDev()?'Project I am working on':'Running projects'}</div>
-                                    {projects.length?projects.map(project => {
-                                        return (
-                                            <div className="project-item">
-                                                <Link to={`/projects/${project.id}`}>{project.title}</Link>
+
+                                    <div className="card-content">
+                                        {projects.length?projects.map(project => {
+                                            return (
+                                                <div className="project-item">
+                                                    <Link to={`/projects/${project.id}`}>{project.title}</Link>
+                                                </div>
+                                            );
+                                        }):(
+                                            <div>No projects</div>
+                                        )}
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={4}>
+                                <div className="card">
+                                    {isDev()?(
+                                        <div>
+                                            <div className="section-title">
+                                                <Icon name="flag-checkered"/> Upcoming updates
                                             </div>
-                                        );
-                                    }):(
-                                        <div>No projects</div>
+
+                                            <div className="card-content">
+                                                {events.length?events.map(event => {
+                                                    return (
+                                                        <div className="item">
+                                                            Scheduled update for <Link to={`/projects/${event.project.id}/events/${event.id}`}>{event.project.title}{event.title?`: ${event.title}`:''}</Link>
+                                                        </div>
+                                                    );
+                                                }):(
+                                                    <div>
+                                                        No upcoming updates
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ):(
+                                        <div>
+                                            <div className="section-title">
+                                                <Icon name="newspaper-o"/> Latest progress reports
+                                            </div>
+
+                                            <div className="card-content">
+                                                {reports.length?reports.map(report => {
+                                                    return (
+                                                        <div className="item clearfix">
+                                                            <div className="date float-right">{moment.utc(report.created_at).format('DD/MMM')}</div>
+                                                            Progress report from <Link to={`/network/${report.user.username}`}>{report.user.display_name}</Link> for <Link to={`/projects/${report.project.id}/events/${report.event.id}`}>{report.project.title}</Link>
+                                                        </div>
+                                                    );
+                                                }):(
+                                                    <div>No new progress reports</div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                </div>
+                            </Col>
+                            <Col sm={4}>
+                                <div className="card">
+                                    <div className="section-title"><Icon name="cash"/> Upcoming payments</div>
+                                    {invoices.length?(
+                                        <div>
+                                            <div>
+                                                Next payment for <Link to={`/projects/${invoices[0].project.id}/pay/`}>{invoices[0].project.title}: {invoices[0].title}</Link> is due in:
+                                            </div>
+                                            <div className="countdown">
+                                                <span className="number">{this.getDays(invoices[0].due_at).number}</span>
+                                                <span className="period">{this.getDays(invoices[0].due_at).name}</span>
+                                            </div>
+                                        </div>
+                                    ):(
+                                        <div>No upcoming payments.</div>
                                     )}
                                 </div>
                             </Col>

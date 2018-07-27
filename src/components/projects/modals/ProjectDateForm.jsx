@@ -63,7 +63,7 @@ export default class ProjectDateForm extends React.Component {
                                     onChange={(date) => { this.onChangeValue('date', moment(date).format())}}
                                     required/>
                 </FormGroup>
-                {this.state.project.id?(
+                {this.props.project.date?(
                     <FormGroup>
                         <label>Reason for changing date</label>
                         <TextArea value={this.state.project.reason}

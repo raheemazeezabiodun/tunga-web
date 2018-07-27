@@ -15,7 +15,7 @@ class ProgressEventsContainer extends React.Component {
     };
 
     render() {
-        const {ProgressEvent, ProgressEventActions, match} = this.props;
+        const {project, ProgressEvent, ProgressEventActions, match} = this.props;
 
         return (
             <React.Fragment>
@@ -25,7 +25,7 @@ class ProgressEventsContainer extends React.Component {
                                                                           eventId={props.match.params.eventId}
                                                                           ProgressEvent={ProgressEvent}
                                                                           ProgressEventActions={ProgressEventActions}>
-                               <ProgressEventDetails {...props}/>
+                               <ProgressEventDetails project={project} {...props}/>
                            </ProgressEventDetailContainer>}
                     />
                 </Switch>

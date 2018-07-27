@@ -50,7 +50,7 @@ class Dashboard extends React.Component {
                     <div>
                         {getUser().id === item.activity.user.id?'You have':(<span><Link to={`/network/${item.activity.user.username}`}>{item.activity.user.display_name}</Link> has</span>)} been added to {isDev()?'the':'your'} team for {item.activity.project.title}
                     </div>,
-                    'Go to project', `/projects/${item.activity.project.id}/participation`);
+                    'Go to project', `/projects/${item.activity.project.id}/team`);
             case 'document':
                 return this.renderNotification(
                     <div>

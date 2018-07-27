@@ -264,23 +264,23 @@ export default class ActivityList extends React.Component {
                 break;
             case 'progress_report':
                 if (
-                    isDev() &&
+                    isDev() && (
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
                         PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.event.type) ||
-                    (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && !activity.user.is_developer)
+                    (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && !activity.user.is_developer))
                 ) {
                     break;
                 }
                 if (
-                    isPM() &&
+                    isPM() && (
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
                         PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.event.type) ||
-                    (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_owner)
+                    (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_owner))
                 ) {
                     break;
                 }

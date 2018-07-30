@@ -792,8 +792,9 @@ table {
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: px-to-rem(40);
-            line-height: px-to-rem(20);
+            color: get-color('black');
+            line-height: 1.5;
+            height: auto;
             padding: 0;
             margin: 0;
         }

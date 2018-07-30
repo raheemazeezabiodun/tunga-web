@@ -8,6 +8,7 @@ import Button from './Button';
 import TextArea from './TextArea';
 
 import store from '../../store';
+import IconButton from "./IconButton";
 
 class GenericModal extends React.Component {
     static propTypes = {
@@ -70,8 +71,11 @@ class GenericModal extends React.Component {
                     backdrop={safe_options.mustRespond ? 'static' : true}
                     keyboard={!safe_options.mustRespond}>
                     {!options.mustRespond || safe_options.title?(
-                        <ModalHeader toggle={safe_options.mustRespond?null:dismiss}>
+                        <ModalHeader toggle={false}>
                             {safe_options.title || ''}
+                            {safe_options.mustRespond?null:(
+                                <IconButton name="close" size="sm" className="close" onClick={dismiss}/>
+                            )}
                         </ModalHeader>
                     ):null}
                     <ModalBody>

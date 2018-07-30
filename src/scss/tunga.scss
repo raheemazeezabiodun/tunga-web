@@ -368,6 +368,8 @@ table {
     }
 
     &.table {
+        margin-bottom: 0;
+
         th {
             font-weight: $font-weight-normal;
         }
@@ -1104,7 +1106,6 @@ table {
 
 .content-card {
     background-color: get-color('white');
-    min-height: 560px;
     padding: 40px;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
     border: solid 1px #ececec;
@@ -1115,7 +1116,6 @@ table {
 
     &.project-form-card {
         max-width: 920px;
-        min-height: 540px;
 
         .form-group {
             padding-bottom: 20px;

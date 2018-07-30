@@ -1031,10 +1031,11 @@ table {
 
 // Main Content
 .main-content {
-    margin-top: px-to-rem(180);
+    margin-top: px-to-rem(40);
     margin-left: px-to-rem(120);
     @include padding-x(px-to-rem(80));
-    padding-top: px-to-rem(40);
+    padding-top: px-to-rem(180);
+    padding-bottom: 40px;
 }
 
 // Cards
@@ -1360,6 +1361,10 @@ table {
 .account-settings {
     form {
         margin-bottom: 20px;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
     }
 }
 

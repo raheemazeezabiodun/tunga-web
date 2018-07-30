@@ -57,7 +57,7 @@ export default class ProjectManagement extends React.Component {
 
         return (
             project?(
-                <div className="project-page">
+                <div className="project-page clearfix">
                     <div className="project-activity float-left">
                         <div className="project-filters">
                             {[

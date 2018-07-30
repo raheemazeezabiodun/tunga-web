@@ -1374,12 +1374,12 @@ table {
     }
 }
 
-// Project Page
+// Project Page 1160
 .project-page {
 
     .project-activity {
-        width: 65.52%;
-        max-width: 760px;
+        width: 80.30%;
+        max-width: 810px; // 810/1160
         min-height: 560px;
         background-color: get-color('white');
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
@@ -1459,8 +1459,8 @@ table {
     }
 
     .project-details {
-        width: 32.76%;
-        max-width: 380px;
+        width: 28.45%;
+        max-width: 330px; // 330/1160
         min-height: 560px;
         padding: 30px 40px;
         background-color: get-color('white');

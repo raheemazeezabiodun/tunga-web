@@ -12,7 +12,35 @@
 }
 
 @include media-breakpoint-up(md) { // >= 768px
+    .titlebar {
+        @include padding-x(px-to-rem(40));
 
+        .title-action {
+            right: 60px;
+        }
+
+        .title-filters {
+            left: 40px;
+
+            a {
+                min-width: px-to-rem(160);
+            }
+        }
+    }
+
+    .main-content {
+        @include padding-x(px-to-rem(40));
+    }
+
+    .dashboard {
+        .card {
+            padding: 32px 30px;
+        }
+
+        .cta {
+            right: 40px;
+        }
+    }
 }
 
 @include media-breakpoint-up(lg) { // >= 992px

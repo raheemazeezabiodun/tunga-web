@@ -1025,12 +1025,12 @@ table {
     .title-action {
         position: absolute;
         top: 42px;
-        right: 60px;
+        right: 40px;
     }
 
     .title-filters {
         position: absolute;
-        left: 40px;
+        left: 20px;
         bottom: -3px;
 
         a {
@@ -1039,7 +1039,7 @@ table {
             text-align: center;
             color: get-color('black');
             padding-bottom: px-to-rem(8);
-            min-width: px-to-rem(160);
+            /*min-width: px-to-rem(160);*/
 
             &.active {
                 border-bottom: 3px $brand-color solid;
@@ -1055,7 +1055,7 @@ table {
 // Main Content
 .main-content {
     margin-top: px-to-rem(40);
-    @include padding-x(px-to-rem(40));
+    @include padding-x(px-to-rem(20));
     padding-top: px-to-rem(180);
     padding-bottom: 40px;
 }
@@ -1314,7 +1314,7 @@ table {
 
     .cta {
         position: fixed;
-        right: 40px;
+        right: 20px;
         bottom: 40px;
 
         span {

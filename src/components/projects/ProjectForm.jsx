@@ -53,7 +53,7 @@ export default class ProjectForm extends React.Component {
             <div className="content-card project-form-card">
                 <form onSubmit={this.onSave}>
                     <Row>
-                        <Col>
+                        <Col lg={6}>
                             <FormGroup>
                                 <Label for="projectTitle">
                                     Project Title*
@@ -123,7 +123,7 @@ export default class ProjectForm extends React.Component {
                                 />
                             </FormGroup>
                         </Col>
-                        <Col>
+                        <Col lg={6}>
                             <FormGroup>
                                 <Label for="projectDescription">
                                     Short Description of the project*

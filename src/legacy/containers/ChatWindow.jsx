@@ -205,7 +205,7 @@ class ChatWindow extends React.Component {
                                 <button
                                     className="btn chat-btn chat-top-btn"
                                     onClick={this.closeWindow.bind(this)}>
-                                    <i className="fa fa-times fa-lg" />
+                                    <i className="tunga-icon-close" />
                                 </button>
                                 {channel && channel.id ? (
                                     <ChannelView
@@ -228,7 +228,7 @@ class ChatWindow extends React.Component {
                         <button
                             className="btn chat-btn"
                             onClick={this.closeWindow.bind(this)}>
-                            <i className="fa fa-times" />
+                            <i className="tunga-icon-close" />
                         </button>
                     ) : (
                         <OverlayTrigger placement="top" overlay={tooltip}>

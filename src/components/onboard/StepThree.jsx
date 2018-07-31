@@ -42,7 +42,7 @@ export default class StepThree extends React.Component {
     onChangeValue(key, value) {
         let newState = {};
         newState[key] = value;
-        this.setState({profile: {...this.state.profile, ...newState}});
+        this.setState(newState);
     }
 
     onChangeField(key, e) {

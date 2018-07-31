@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import React from 'react';
 import {FormGroup, Row, Col} from 'reactstrap';
 import moment from "moment";
-import _ from 'lodash';
 
 import Button from '../../../components/core/Button';
 import Input from "../../core/Input";
 import DateTimePicker from "../../core/DateTimePicker";
+import UserSelector from "../../core/UserSelector";
 import MilestoneSelector from "../../core/MilestoneSelector";
 
 import {INVOICE_TYPE_SALE} from "../../../actions/utils/api";
@@ -88,7 +88,7 @@ export default class InvoiceForm extends React.Component {
                     {idx === 0?(
                         <label>Developer</label>
                     ):null}
-                    <UserSelector max={1}
+                    <UserSelector max={1} variant="bottom"
                                   selected={payout.user?[payout.user]:[]}
                                   onChange={users => this.onPayoutUpdate(idx, 'user', users[0])}/>
                 </Col>

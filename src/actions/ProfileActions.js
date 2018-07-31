@@ -470,7 +470,7 @@ export function updateCompany(id, company) {
         let request_method = id ? 'patch' : 'post';
 
         let headers = {},
-            data = profile;
+            data = company;
         if (company && company.user && company.user.image) {
             headers['Content-Type'] = 'multipart/form-data';
             data = composeFormData(company);

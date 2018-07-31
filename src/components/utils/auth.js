@@ -42,7 +42,7 @@ export function isAdminOrPM() {
 }
 
 export function isAdminOrPMOrClient() {
-    return isAdmin() || isClient();
+    return isAdmin() || isPM() || isClient();
 }
 
 export function isDevOrClient() {

@@ -32,6 +32,14 @@ export default class Experience extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapShot) {
+        if(!prevProps.isSaved.profile && this.props.isSaved.profile) {
+            if(window) {
+                window.scrollTo(0, 0);
+            }
+        }
+    }
+
     filterSkills(category) {
         let filteredSkills = [];
         cleanSkills(this.state.skills).map(skill => {

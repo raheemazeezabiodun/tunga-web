@@ -38,7 +38,6 @@ import {
 export function scrollList(listId) {
     let activity_list = $(`#list${listId}.activity-list`);
     activity_list.scrollTop(activity_list.find('.activity-wrapper').height());
-    console.log('activity_list: ', activity_list.find('.activity-wrapper').height());
 }
 
 export default class ActivityList extends React.Component {

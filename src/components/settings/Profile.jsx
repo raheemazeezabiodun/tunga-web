@@ -39,6 +39,14 @@ export default class Profile extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapShot) {
+       if(!prevProps.isSaved.profile && this.props.isSaved.profile) {
+           if(window) {
+               window.scrollTo(0, 0);
+           }
+       }
+    }
+
     onChangeValue(key, value) {
         let newState = {};
         newState[key] = value;

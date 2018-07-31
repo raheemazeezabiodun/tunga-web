@@ -65,14 +65,16 @@ class DashboardLayout extends React.Component {
                 <React.Fragment>
                     <NavBar user={user} onSignOut={logout}/>
                     <Media query="(min-width: 992px)">
-                        {matches =>
-                            matches?(
-                                <SideBar/>
-                            ):null
+                        {isLargeDevice =>
+                            <React.Fragment>
+                                {isLargeDevice?(
+                                    <SideBar/>
+                                ):null}
+                                <TitleBar user={user} isLargeDevice={isLargeDevice}/>
+                                <MainContent isLargeDevice={isLargeDevice}/>
+                            </React.Fragment>
                         }
                     </Media>
-                    <TitleBar user={user}/>
-                    <MainContent/>
                 </React.Fragment>
             ):(
                 <BootLogo/>

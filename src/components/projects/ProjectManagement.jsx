@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import moment from 'moment';
+import {withProps} from "recompose";
+import Media from "react-media";
 
 import Avatar from '../core/Avatar';
 import Activity from './Activity';
@@ -80,14 +82,14 @@ export default class ProjectManagement extends React.Component {
                                 <Switch>
                                     <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
                                     {[
-                                        ['activity', <Activity {...projectProps}/>],
-                                        ['docs', <Docs {...projectProps}/>],
-                                        ['team', <Team {...projectProps}/>],
-                                        ['plan', <Plan {...projectProps}/>],
-                                        ['pay', <PayContainer {...projectProps}/>],
+                                        ['activity', Activity],
+                                        ['docs', Docs],
+                                        ['team', Team],
+                                        ['plan', Plan],
+                                        ['pay', PayContainer],
                                     ].map(path => {
                                         return (
-                                            <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>
+                                            <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} component={withProps(projectProps)(path[1])}/>
                                         );
                                     })}
                                     <Route key={`project-management-path--settings`}

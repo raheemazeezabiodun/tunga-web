@@ -63,6 +63,7 @@
         "react-widgets": "^3.4.3",
         "react-youtube": "^7.0.0",
         "reactstrap": "^6.1.0",
+        "recompose": "^0.28.0",
         "redux": "^3.5.2",
         "redux-thunk": "^2.1.0",
         "striptags": "^2.2.1"

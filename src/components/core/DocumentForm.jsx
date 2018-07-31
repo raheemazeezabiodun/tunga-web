@@ -74,7 +74,7 @@ export default class DocumentForm extends React.Component {
                 )}
                 <FormGroup>
                     <Input placeholder="Insert title here"
-                           onChange={(e) => {this.onChange('title', e.target.value)}}/>
+                           onChange={(e) => {this.onChange('title', e.target.value)}} required/>
                 </FormGroup>
                 {type === 'url'?(
                     <FormGroup>

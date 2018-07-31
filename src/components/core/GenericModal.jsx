@@ -71,7 +71,7 @@ class GenericModal extends React.Component {
                     backdrop={safe_options.mustRespond ? 'static' : true}
                     keyboard={!safe_options.mustRespond}>
                     {!options.mustRespond || safe_options.title?(
-                        <ModalHeader toggle={false}>
+                        <ModalHeader toggle={null}>
                             {safe_options.title || ''}
                             {safe_options.mustRespond?null:(
                                 <IconButton name="close" size="sm" className="close" onClick={dismiss}/>

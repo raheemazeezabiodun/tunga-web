@@ -8,11 +8,13 @@ import Progress from "../core/Progress";
 import Icon from "../core/Icon";
 import StripeButton from "../core/StripeButton";
 
-import {openConfirm} from "../core/utils/modals";
+import {openConfirm, openModal} from "../core/utils/modals";
 import {getUser, isAdmin, isClient} from "../utils/auth";
 import {batchInvoices} from "../utils/payments";
 import {ENDPOINT_INVOICES} from "../../actions/utils/api";
 import {parsePaymentObject} from "../utils/stripe";
+import PaymentOptions from "./PaymentOptions";
+import InvoiceDetails from "./InvoiceDetails";
 
 const PAID_IN = 'paid-in';
 const PENDING_IN = 'pending-in';
@@ -44,6 +46,21 @@ export default class PaymentList extends React.Component {
             });
         }, error => {
             // Nothing
+        });
+    }
+
+    openPay(invoice) {
+        openModal(<PaymentOptions/>, 'Payment options', true, {className: 'modal-pay'}).then(type => {
+            if(type === 'card') {
+                $(`.pay_stripe_${invoice.id}`).click();
+            } else {
+                openModal(
+                    <InvoiceDetails invoice={invoice}/>,
+                    'Download Invoice', true, {className: 'modal-pay'}
+                );
+            }
+        }).catch(error=> {
+
         });
     }
 
@@ -190,7 +207,9 @@ export default class PaymentList extends React.Component {
                                                                               amount={invoice.total_amount}
                                                                               email={getUser().email}
                                                                               description={invoice.title}
-                                                                              onPay={this.onPay.bind(this, invoice)}/>
+                                                                              onPay={this.onPay.bind(this, invoice)}
+                                                                              className={`pay_stripe_${invoice.id}`}/>
+                                                                <Button size="sm" onClick={this.openPay.bind(this, invoice)}><Icon name="cash"/> Pay</Button>
                                                                 {isAdmin()?(
                                                                     <Button size="sm"
                                                                             onClick={this.onMarkPaid.bind(this, invoice.id)}>

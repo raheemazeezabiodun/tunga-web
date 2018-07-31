@@ -56,7 +56,7 @@ export default class StripeButton extends React.Component {
                 token={this.onStripeToken.bind(this)}
                 reconfigureOnUpdate={false}
                 triggerEvent="onClick">
-                <Button className={this.props.className || ''}
+                <Button className={`stripe-btn ${this.props.className || ''}`}
                         {...this.props.size?{size: this.props.size}:{}}>
                     <Icon name="card"/> Pay with Card
                 </Button>

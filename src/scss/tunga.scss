@@ -263,6 +263,7 @@ a {
                 min-width: 130px;
                 min-height: 130px;
                 margin-right: px-to-rem(20);
+                box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5) !important;
 
                 &:last-of-type {
                     margin-right: 0;
@@ -778,6 +779,20 @@ table {
         }
     }
 
+    &.modal-pay {
+        max-width: 450px;
+
+        .btn-group {
+            &.choice-group {
+                .btn {
+                    &.btn-card, &.btn-dotted-card {
+                        min-width: 175px;
+                    }
+                }
+            }
+        }
+    }
+
     .modal-content {
         border-radius: 0;
 
@@ -1156,6 +1171,10 @@ table {
 
             .btn {
                 margin-right: 5px;
+            }
+
+            .stripe-btn {
+                display: none;
             }
         }
 
@@ -1576,6 +1595,10 @@ table {
                 a {
                     word-break: normal;
                 }
+
+                .stripe-btn {
+                    display: none;
+                }
             }
 
             .btn-icon {
@@ -1650,6 +1673,12 @@ table {
 .slack-form {
     .btn {
         margin-right: 10px;
+    }
+}
+
+.invoice-details {
+    .table {
+        margin-bottom: 20px;
     }
 }
 

@@ -15,6 +15,8 @@ import {openConfirm, openModal} from "../core/utils/modals";
 import {ENDPOINT_INVOICES, INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../actions/utils/api";
 import {batchInvoices, sumInvoices, filterInvoices} from "../utils/payments";
 import {parsePaymentObject} from "../utils/stripe";
+import PaymentOptions from "../payments/PaymentOptions";
+import InvoiceDetails from "../payments/InvoiceDetails";
 
 export default class Pay extends React.Component {
     static propTypes = {
@@ -223,6 +225,21 @@ export default class Pay extends React.Component {
         this.setState({open: this.state.open === invoiceId ? null : invoiceId});
     }
 
+    openPay(invoice) {
+        openModal(<PaymentOptions/>, 'Payment options', true, {className: 'modal-pay'}).then(type => {
+            if(type === 'card') {
+                $(`.pay_stripe_${invoice.id}`).click();
+            } else {
+                openModal(
+                    <InvoiceDetails invoice={invoice}/>,
+                    'Download Invoice', true, {className: 'modal-pay'}
+                );
+            }
+        }).catch(error=> {
+
+        });
+    }
+
     onPay(invoice, token) {
         const {InvoiceActions} = this.props;
         InvoiceActions.payInvoice(invoice.id, parsePaymentObject(invoice, token), this.props.selectionKey);
@@ -317,11 +334,15 @@ export default class Pay extends React.Component {
                                                             ):(
                                                                 <div className="clearfix">
                                                                     {isClient()?(
-                                                                        <StripeButton size="sm"
-                                                                                      amount={invoice.total_amount}
-                                                                                      email={getUser().email}
-                                                                                      description={invoice.title}
-                                                                                      onPay={this.onPay.bind(this, invoice)}/>
+                                                                        <React.Fragment>
+                                                                            <StripeButton size="sm"
+                                                                                          amount={invoice.total_amount}
+                                                                                          email={getUser().email}
+                                                                                          description={invoice.title}
+                                                                                          onPay={this.onPay.bind(this, invoice)}
+                                                                                          className={`pay_stripe_${invoice.id}`}/>
+                                                                            <Button size="sm" onClick={this.openPay.bind(this, invoice)}><Icon name="cash"/> Pay</Button>
+                                                                        </React.Fragment>
                                                                     ):null}
                                                                     {isAdminOrPM() && !project.archived ? (
                                                                         <div className="float-right">

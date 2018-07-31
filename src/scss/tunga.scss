@@ -768,6 +768,10 @@ table {
 
     &.modal-upload {
         max-width: 380px;
+
+        .modal-title {
+            font-size: px-to-rem(16);
+        }
     }
 
     .modal-content {

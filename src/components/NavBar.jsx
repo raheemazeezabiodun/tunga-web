@@ -32,7 +32,7 @@ export default class NavBar extends React.Component {
         let {user} = this.props;
 
         return (
-            <nav className={`navbar navbar-expand-${this.props.breakpoint || 'lg'} fixed-top navbar-dark bg-primary ${this.props.className || ''}`}>
+            <nav className={`navbar navbar-expand-${this.props.breakpoint || 'md'} fixed-top navbar-dark bg-primary ${this.props.className || ''}`}>
                 <Link to="/" className="navbar-brand">
                     <img src={require('../images/logo.png')} />
                 </Link>

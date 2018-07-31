@@ -469,12 +469,18 @@ export function updateCompany(id, company) {
         dispatch(updateCompanyStart(id, company));
         let request_method = id ? 'patch' : 'post';
 
-        var headers = {};
+        let headers = {},
+            data = profile;
+        if (company && company.user && company.user.image) {
+            headers['Content-Type'] = 'multipart/form-data';
+            data = composeFormData(company);
+        }
+
         axios
             .request({
                 url: ENDPOINT_COMPANY,
                 method: request_method,
-                data: company,
+                data,
                 headers,
             })
             .then(function(response) {

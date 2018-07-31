@@ -59,15 +59,19 @@ export default class StepThree extends React.Component {
 
         if(user.is_project_owner) {
             // Clients get a company object
-            ProfileActions.updateCompany(user.company.id, {
+
+            let companyData = {
                 tel_number: this.state.phone_number,
                 vat_number: this.state.vat_number,
                 reg_no: this.state.reg_no
-            });
+            };
 
             if(this.state.image) {
-                ProfileActions.updateProfile(user.profile.id, {image: this.state.image});
+                companyData.user = {image: this.state.image};
             }
+
+            ProfileActions.updateCompany(user.company.id, companyData);
+
         } else {
             // Other users get a profile
             let profileData = {

@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
         return (
             <div className="notification">
                 <div className="float-right">
-                    {linkUrl?(<Link to={linkUrl}>{linkText}</Link>):null} <IconButton name="close" size="sm"/>
+                    {linkUrl?(<Link to={linkUrl}>{linkText}</Link>):null} <IconButton name="close" size="sm" disabled={true}/>
                 </div>
                 {text}
             </div>

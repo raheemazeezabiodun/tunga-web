@@ -1,7 +1,8 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import Media from "react-media";
 
 import * as AuthActions from '../legacy/actions/AuthActions';
 
@@ -63,7 +64,13 @@ class DashboardLayout extends React.Component {
             user && user.id && !this.state.showProgress?(
                 <React.Fragment>
                     <NavBar user={user} onSignOut={logout}/>
-                    <SideBar/>
+                    <Media query="(min-width: 992px)">
+                        {matches =>
+                            matches?(
+                                <SideBar/>
+                            ):null
+                        }
+                    </Media>
                     <TitleBar user={user}/>
                     <MainContent/>
                 </React.Fragment>

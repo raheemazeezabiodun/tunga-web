@@ -48,6 +48,7 @@
         "react-joyride": "^1.10.1",
         "react-linkify": "^0.2.0",
         "react-markdown": "^3.3.2",
+        "react-media": "^1.8.0",
         "react-overlays": "^0.8.3",
         "react-rating": "^1.1.2",
         "react-redux": "^5.0.1",

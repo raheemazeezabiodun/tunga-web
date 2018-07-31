@@ -16,7 +16,13 @@
 }
 
 @include media-breakpoint-up(lg) { // >= 992px
+    .titlebar {
+        left: 120px;
+    }
 
+    .main-content {
+        margin-left: px-to-rem(120);
+    }
 }
 
 @include media-breakpoint-up(xl) { // >= 1200px

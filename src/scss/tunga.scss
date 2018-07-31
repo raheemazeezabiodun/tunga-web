@@ -1014,7 +1014,7 @@ table {
     position: fixed;
     z-index: 1020;
     top: 50px;
-    left: 120px;
+    left: 0;
     right: 0;
     height: 130px;
     background-color: get-color('white');
@@ -1055,7 +1055,6 @@ table {
 // Main Content
 .main-content {
     margin-top: px-to-rem(40);
-    margin-left: px-to-rem(120);
     @include padding-x(px-to-rem(40));
     padding-top: px-to-rem(180);
     padding-bottom: 40px;

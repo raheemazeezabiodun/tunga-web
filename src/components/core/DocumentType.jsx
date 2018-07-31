@@ -22,7 +22,9 @@ export default class DocumentType extends React.Component {
         ];
 
         return (
-            <ChoiceGroup variant="card" choices={choices} onChange={this.onChange}/>
+            <div className="text-center">
+                <ChoiceGroup variant="card" choices={choices} onChange={this.onChange}/>
+            </div>
         );
     }
 }

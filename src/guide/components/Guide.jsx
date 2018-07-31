@@ -726,9 +726,9 @@ export default class Guide extends React.Component {
                                     ['secondary', 'Choice Group Secondary'],
                                     ['outline-secondary', 'Choice Group Outline Secondary'],
                                     ['card', 'Choice Group Card'],
-                                    ['dotted-card', 'Choice Group Dotted Card'],
+                                    //['dotted-card', 'Choice Group Dotted Card'],
                                     [
-                                        'dotted-card',
+                                        'card',
                                         'Choice Group Dotted Card with Icons',
                                         {
                                             choices: [

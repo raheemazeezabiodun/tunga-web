@@ -65,7 +65,7 @@ export default class ChoiceGroup extends React.Component {
                                 {...filterEventProps(this.props)}
                                 onClick={this.onChange.bind(this, choiceValue)}>
                             {choiceName}
-                            {choiceIcon?(
+                            {choiceIcon && this.props.variant === 'card'?(
                                 <Icon name={choiceIcon} size={'lg'} className="icon"/>
                             ):null}
                          </Button>

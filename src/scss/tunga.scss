@@ -235,15 +235,14 @@ a {
 
 .btn-card, .btn-dotted-card {
     color: get-color('black');
-    background-color: transparent;
+    background-color: get-color('light-grey');
     @include padding(px-to-rem(30));
     border: 1px #e1e1e1 solid;
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
 
-    &.active {
+    &:hover, &:focus, &.active {
         border-color: $brand-color;
-        box-shadow: none;
     }
 }
 
@@ -265,8 +264,13 @@ a {
                 min-height: 130px;
                 margin-right: px-to-rem(20);
 
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
                 .icon {
                     display: block;
+                    margin-bottom: 10px;
                 }
             }
         }

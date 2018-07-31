@@ -1018,19 +1018,19 @@ table {
     right: 0;
     height: 130px;
     background-color: get-color('white');
-    @include padding-x(px-to-rem(80));
+    @include padding-x(px-to-rem(40));
     padding-top: px-to-rem(42);
     box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
 
     .title-action {
         position: absolute;
         top: 42px;
-        right: 100px;
+        right: 60px;
     }
 
     .title-filters {
         position: absolute;
-        left: 80px;
+        left: 40px;
         bottom: -3px;
 
         a {
@@ -1039,7 +1039,7 @@ table {
             text-align: center;
             color: get-color('black');
             padding-bottom: px-to-rem(8);
-            min-width: px-to-rem(200);
+            min-width: px-to-rem(160);
 
             &.active {
                 border-bottom: 3px $brand-color solid;
@@ -1056,15 +1056,15 @@ table {
 .main-content {
     margin-top: px-to-rem(40);
     margin-left: px-to-rem(120);
-    @include padding-x(px-to-rem(80));
+    @include padding-x(px-to-rem(40));
     padding-top: px-to-rem(180);
     padding-bottom: 40px;
 }
 
 // Cards
 .card-list, .row.card-list {
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: -10px;
+    margin-left: -10px;
 
     > .col,
     > [class*="col-"] {
@@ -1186,10 +1186,9 @@ table {
 
 .user-card {
     @include card-link(get-color('black'));
-
     height: 400px;
     background-color: get-color('white');
-    padding: 40px 40px 20px 40px;
+    padding: 40px 30px 20px 30px;
     border: solid 1px #ececec;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.21);
 
@@ -1211,6 +1210,7 @@ table {
     .skills {
         height: 65px;
         margin-bottom: 20px;
+        overflow: hidden;
     }
 }
 
@@ -1219,7 +1219,7 @@ table {
     position: relative;
     height: 140px;
     background-color: get-color('white');
-    padding: 40px 40px 20px 40px;
+    padding: 40px 30px 20px 30px;
     border: solid 1px #ececec;
     box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
 
@@ -1271,7 +1271,7 @@ table {
 
     .card {
         height: 270px;
-        padding: 32px 40px;
+        padding: 32px 30px;
         margin-bottom: 20px;
         border-width: 0;
         border-radius: 0;
@@ -1410,15 +1410,15 @@ table {
 .project-page {
 
     .project-activity {
-        width: 80.30%;
-        max-width: 810px; // 810/1160
+        width: 72.82%; // 600/824
+        max-width: 810px;
         min-height: 560px;
         background-color: get-color('white');
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
 
         .project-activity-wrapper {
             position: relative;
-            padding: 40px;
+            padding: 20px;
 
             .activity-filter {
                 position: absolute;
@@ -1491,10 +1491,10 @@ table {
     }
 
     .project-details {
-        width: 28.45%;
-        max-width: 330px; // 330/1160
+        width: 24.76%; // 204/824
+        max-width: 330px;
         min-height: 560px;
-        padding: 30px 40px;
+        padding: 30px 20px;
         background-color: get-color('white');
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
 
@@ -1526,8 +1526,9 @@ table {
             color: get-color('black');
             font-weight: $font-weight-normal;
             text-align: center;
-            padding: px-to-rem(20);
-            min-width: px-to-rem(120);
+            @include padding-x(px-to-rem(15));
+            @include padding-y(px-to-rem(20));
+            min-width: px-to-rem(80);
 
             &.active {
                 border-bottom: 3px $brand-color solid;
@@ -1743,7 +1744,7 @@ table {
 
     .map {
         width: 100%;
-        min-width: 620px;
+        min-width: 544px;
         min-height: 272px;
         background-color: get-color('white');
         padding: 0;
@@ -1754,7 +1755,10 @@ table {
         box-shadow: none;
     }
 
-    .profile-details {
+    .row {
+        margin-right: -10px;
+        margin-left: -10px;
+
         > .col,
         > [class*="col-"] {
             padding-right: 10px;

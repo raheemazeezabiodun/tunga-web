@@ -1,17 +1,87 @@
 @import "../../node_modules/bootstrap/scss/mixins/_breakpoints.scss";
+@import "variables";
+@import "functions";
+@import "mixins";
 
-@include media-breakpoint-down(xs) {
-
-}
-
-@include media-breakpoint-down(sm) {
-
-}
-
-@include media-breakpoint-down(md) {
+@include media-breakpoint-up(xs) { // >= 0px
 
 }
 
-@include media-breakpoint-down(lg) {
+@include media-breakpoint-up(sm) { // >= 576px
 
+}
+
+@include media-breakpoint-up(md) { // >= 768px
+
+}
+
+@include media-breakpoint-up(lg) { // >= 992px
+
+}
+
+@include media-breakpoint-up(xl) { // >= 1200px
+    .titlebar {
+        @include padding-x(px-to-rem(80));
+
+        .title-action {
+            right: 100px;
+        }
+
+        .title-filters {
+            left: 80px;
+
+            a {
+                min-width: px-to-rem(200);
+            }
+        }
+    }
+
+    .main-content {
+        @include padding-x(px-to-rem(80));
+    }
+
+    .dashboard {
+        .card {
+            padding: 32px 40px;
+        }
+    }
+
+    .user-profile {
+        .map {
+            width: 100%;
+            min-width: 620px;
+        }
+    }
+
+    .user-card {
+        padding: 40px 40px 20px 40px;
+    }
+
+    .project-card {
+        padding: 40px 40px 20px 40px;
+    }
+
+    .project-page {
+        .project-activity {
+            width: 69.82%; // 810/1160
+            max-width: 810px;
+
+            .project-activity-wrapper {
+                padding: 40px;
+            }
+        }
+
+        .project-details {
+            width: 28.45%; // 330/1160
+            max-width: 330px;
+            padding: 30px 40px;
+        }
+
+        .project-filters {
+            a {
+                padding: px-to-rem(20);
+                min-width: px-to-rem(120);
+            }
+        }
+    }
 }

@@ -24,7 +24,10 @@
 }
 
 @include media-breakpoint-up(sm) { // >= 576px
-
+    .message {
+        width: 75%;
+        min-width: 300px;
+    }
 }
 
 @include media-breakpoint-up(md) { // >= 768px

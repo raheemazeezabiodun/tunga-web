@@ -1781,8 +1781,8 @@ table {
 
 .message {
     font-size: $font-size-sm;
-    width: 75%;
-    min-width: 300px;
+    width: 100%;
+    min-width: 200px;
     margin: 5px 0;
 
     &.new {

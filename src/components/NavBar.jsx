@@ -9,7 +9,7 @@ import SearchBox from './core/SearchBox';
 
 export default class NavBar extends React.Component {
     static defaultProps = {
-        breakpoint: 'lg',
+        breakpoint: 'md',
     };
 
     static propTypes = {

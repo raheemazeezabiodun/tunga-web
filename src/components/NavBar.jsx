@@ -33,7 +33,7 @@ export default class NavBar extends React.Component {
 
         return (
             <nav className={`navbar navbar-expand-${this.props.breakpoint || 'md'} fixed-top navbar-dark bg-primary ${this.props.className || ''}`}>
-                <Link to="/" className="navbar-brand">
+                <Link to="/dashboard" className="navbar-brand">
                     <img src={require('../images/logo.png')} />
                 </Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">

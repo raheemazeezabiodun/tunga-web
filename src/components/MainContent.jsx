@@ -1,5 +1,6 @@
 import React from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
+import {withProps} from 'recompose';
 
 import OnboardContainer from './onboard/OnboardContainer';
 import Dashboard from './dashboard/Dashboard';
@@ -9,12 +10,12 @@ import SettingsContainer from './settings/SettingsContainer';
 import ProjectsContainer from "./projects/ProjectsContainer";
 import UserForm from "./network/UserForm";
 
-const MainContent = ({isLargeDevice}) => {
+const MainContent = ({isLargeDevice=true}) => {
     return (
         <div className='main-content'>
             <Switch>
                 <Route path='/onboard' component={OnboardContainer}/>
-                <Route path='/dashboard' component={Dashboard}/>
+                <Route path='/dashboard' component={withProps({isLargeDevice})(Dashboard)}/>
                 <Route path='/projects' component={ProjectsContainer}/>
                 {isLargeDevice?(
                     <React.Fragment>

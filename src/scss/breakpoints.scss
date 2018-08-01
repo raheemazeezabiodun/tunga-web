@@ -30,11 +30,16 @@
 
     .main-content {
         @include padding-x(px-to-rem(40));
+        padding-top: px-to-rem(140);
     }
 
     .dashboard {
         .card {
             padding: 32px 30px;
+        }
+
+        .notification {
+            padding: 10px 15px 10px 23px;
         }
 
         .cta {
@@ -46,10 +51,38 @@
 @include media-breakpoint-up(lg) { // >= 992px
     .titlebar {
         left: 120px;
+        height: 130px;
+        padding-top: px-to-rem(42);
     }
 
     .main-content {
         margin-left: px-to-rem(120);
+        padding-top: px-to-rem(180);
+    }
+
+    .dashboard {
+        .card {
+            height: 270px;
+
+            .card-content {
+                max-height: 163px;
+                overflow-y: auto;
+            }
+        }
+    }
+
+    .project-page {
+        .project-activity {
+            float: left;
+            width: 72.82%; // 600/824
+            max-width: 810px;
+        }
+
+        .project-details {
+            float: right;
+            width: 24.76%; // 204/824
+            max-width: 330px;
+        }
     }
 }
 

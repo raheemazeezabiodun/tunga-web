@@ -1016,10 +1016,10 @@ table {
     top: 50px;
     left: 0;
     right: 0;
-    height: 130px;
+    height: 90px;
     background-color: get-color('white');
-    @include padding-x(px-to-rem(40));
-    padding-top: px-to-rem(42);
+    @include padding-x(px-to-rem(20));
+    padding-top: px-to-rem(20);
     box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
 
     .title-action {
@@ -1056,7 +1056,7 @@ table {
 .main-content {
     margin-top: px-to-rem(40);
     @include padding-x(px-to-rem(20));
-    padding-top: px-to-rem(180);
+    padding-top: px-to-rem(120);
     padding-bottom: 40px;
 }
 
@@ -1269,8 +1269,7 @@ table {
     }
 
     .card {
-        height: 270px;
-        padding: 32px 30px;
+        padding: 20px;
         margin-bottom: 20px;
         border-width: 0;
         border-radius: 0;
@@ -1291,16 +1290,11 @@ table {
         .project-item {
             margin-bottom: 14px;
         }
-
-        .card-content {
-            max-height: 163px;
-            overflow-y: auto;
-        }
     }
 
     .notification {
         background-color: get-color('lightest-grey');
-        padding: 10px 15px 10px 23px;
+        padding: 10px;
         margin-bottom: 14px;
         box-shadow: 1px 1px 3px 0 rgba(154, 154, 154, 0.5);
 
@@ -1409,8 +1403,6 @@ table {
 .project-page {
 
     .project-activity {
-        width: 72.82%; // 600/824
-        max-width: 810px;
         min-height: 560px;
         background-color: get-color('white');
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.11);
@@ -1490,8 +1482,6 @@ table {
     }
 
     .project-details {
-        width: 24.76%; // 204/824
-        max-width: 330px;
         min-height: 560px;
         padding: 30px 20px;
         background-color: get-color('white');

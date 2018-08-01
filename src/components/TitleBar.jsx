@@ -9,7 +9,7 @@ import {isAdmin, isAdminOrPM, isAdminOrPMOrClient, isClient, isDev} from "./util
 export default class TitleBar extends React.Component {
 
     render() {
-        const {user} = this.props;
+        const {user, isLargeDevice} = this.props;
 
         let projectsSections = [
                 ['/projects', 'Active Projects'],
@@ -55,14 +55,18 @@ export default class TitleBar extends React.Component {
                     {[
                         ['/onboard', 'Welcome to Tunga!'],
                         ['/dashboard', <div>Hi {user.display_name}</div>, null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
-                        ['/projects/new', 'Projects', null, [...projectsSections, ['/projects/new', 'Create new project']]],
-                        ['/projects/filter/:filter', ...projectLists],
-                        ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?'/projects/new':null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
-                        ['/projects', ...projectLists],
-                        ['/network/invite', 'Network', null, [...networkSections, ['/network/invite', 'Invite User']]],
-                        ['/network', 'Network', isAdminOrPM()?'/network/invite':null, networkSections],
-                        ['/payments', 'Payments', null, paymentSections],
-                        ['/settings', 'Settings', null, settingsSections],
+                        ...(isLargeDevice?
+                        [
+                            ['/projects/new', 'Projects', null, [...projectsSections, ['/projects/new', 'Create new project']]],
+                            ['/projects/filter/:filter', ...projectLists],
+                            ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?'/projects/new':null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
+                            ['/projects', ...projectLists],
+                            ['/network/invite', 'Network', null, [...networkSections, ['/network/invite', 'Invite User']]],
+                            ['/network', 'Network', isAdminOrPM()?'/network/invite':null, networkSections],
+                            ['/payments', 'Payments', null, paymentSections],
+                            ['/settings', 'Settings', null, settingsSections],
+                        ]:[])
+
                     ].map(path => {
                         return (
                             <Route key={`title-path--${path}`}

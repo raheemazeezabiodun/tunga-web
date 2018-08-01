@@ -5,11 +5,11 @@ import { Row, Col } from 'reactstrap';
 import randomstring from 'randomstring';
 import humanizeDuration from 'humanize-duration';
 import moment from 'moment';
+import Media from "react-media";
 
 import Icon from "../core/Icon";
 import Progress from "../core/Progress";
 import IconButton from "../core/IconButton";
-
 import connect from '../../connectors/ProfileConnector';
 
 import {getUser, isDev} from "../utils/auth";
@@ -71,6 +71,78 @@ class Dashboard extends React.Component {
         }
     }
 
+    renderReportSection(colProps) {
+        const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}, isLargeDevice} = this.props;
+
+        return (
+            <Row>
+                <Col {...colProps}>
+                    <div className="card">
+                        {isDev()?(
+                            <div>
+                                <div className="section-title">
+                                    <Icon name="flag-checkered"/> Upcoming updates
+                                </div>
+
+                                <div className="card-content">
+                                    {events.length?events.map(event => {
+                                        return (
+                                            <div className="item">
+                                                Scheduled update for <Link to={`/projects/${event.project.id}/events/${event.id}`}>{event.project.title}{event.title?`: ${event.title}`:''}</Link>
+                                            </div>
+                                        );
+                                    }):(
+                                        <div>
+                                            No upcoming updates
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ):(
+                            <div>
+                                <div className="section-title">
+                                    <Icon name="newspaper-o"/> Latest progress reports
+                                </div>
+
+                                <div className="card-content">
+                                    {reports.length?reports.map(report => {
+                                        return (
+                                            <div className="item clearfix">
+                                                <div className="date float-right">{moment.utc(report.created_at).format('DD/MMM')}</div>
+                                                Progress report from <Link to={`/network/${report.user.username}`}>{report.user.display_name}</Link> for <Link to={`/projects/${report.project.id}/events/${report.event.id}`}>{report.project.title}</Link>
+                                            </div>
+                                        );
+                                    }):(
+                                        <div>No new progress reports</div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                    </div>
+                </Col>
+                <Col {...colProps}>
+                    <div className="card">
+                        <div className="section-title"><Icon name="cash"/> Upcoming payments</div>
+                        {invoices.length?(
+                            <div>
+                                <div>
+                                    Next payment for <Link to={`/projects/${invoices[0].project.id}/pay/`}>{invoices[0].project.title}: {invoices[0].title}</Link> is due in:
+                                </div>
+                                <div className="countdown">
+                                    <span className="number">{this.getDays(invoices[0].due_at).number}</span>
+                                    <span className="period">{this.getDays(invoices[0].due_at).name}</span>
+                                </div>
+                            </div>
+                        ):(
+                            <div>No upcoming payments.</div>
+                        )}
+                    </div>
+                </Col>
+            </Row>
+        );
+    }
+
     render() {
 
         const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}, isLargeDevice} = this.props;
@@ -84,122 +156,67 @@ class Dashboard extends React.Component {
                 {isRetrieving.notifications?(
                     <Progress/>
                 ):(
-                    <React.Fragment>
-                        <Row>
-                            <Col sm={8}>
-                                <div className="card notification-card">
-                                    <div className="section-title"><Icon name="bell"/> Notifications</div>
-
-                                    <div className="card-content">
-                                        {shouldUpdateProfile || shouldConnectPayoneer || hasActivities?(
-                                            <div>
-                                                {shouldUpdateProfile?(
-                                                    this.renderNotification(
-                                                        <div>Please complete your profile {profile.required.length?<span>to be able to {isDev()?'accept':'create'} projects</span>:''}</div>,
-                                                        'Go to profile', '/settings/'
-                                                    )
-                                                ):null}
-
-                                                {shouldConnectPayoneer?(
-                                                    this.renderNotification('Please connect your account with Payoneer to receive payments', 'Set up Payoneer', '/settings/payment/')
-                                                ):null}
-
-                                                {activities.length?(
-                                                    activities.slice(0, 10 - ((shouldUpdateProfile?1:0)+(shouldConnectPayoneer?1:0))).map(item => {
-                                                        return this.renderNotificationType(item);
-                                                    })
-                                                ):null}
-                                            </div>
-                                        ):(
-                                            <div>No notifications</div>
-                                        )}
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col sm={4}>
-                                <div className="card">
-                                    <div className="section-title"><Icon name="projects"/> {isDev()?'Project I am working on':'Running projects'}</div>
-
-                                    <div className="card-content">
-                                        {projects.length?projects.map(project => {
-                                            return (
-                                                <div className="project-item">
-                                                    <Link to={`/projects/${project.id}`}>{project.title}</Link>
-                                                </div>
-                                            );
-                                        }):(
-                                            <div>No projects</div>
-                                        )}
-                                    </div>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm={4}>
-                                <div className="card">
-                                    {isDev()?(
-                                        <div>
-                                            <div className="section-title">
-                                                <Icon name="flag-checkered"/> Upcoming updates
-                                            </div>
+                    <Media query="(max-width: 576px)">
+                        {isSmallDevice => (
+                            <React.Fragment>
+                                <Row>
+                                    <Col sm={8}>
+                                        <div className="card notification-card">
+                                            <div className="section-title"><Icon name="bell"/> Notifications</div>
 
                                             <div className="card-content">
-                                                {events.length?events.map(event => {
-                                                    return (
-                                                        <div className="item">
-                                                            Scheduled update for <Link to={`/projects/${event.project.id}/events/${event.id}`}>{event.project.title}{event.title?`: ${event.title}`:''}</Link>
-                                                        </div>
-                                                    );
-                                                }):(
+                                                {shouldUpdateProfile || shouldConnectPayoneer || hasActivities?(
                                                     <div>
-                                                        No upcoming updates
+                                                        {shouldUpdateProfile?(
+                                                            this.renderNotification(
+                                                                <div>Please complete your profile {profile.required.length?<span>to be able to {isDev()?'accept':'create'} projects</span>:''}</div>,
+                                                                'Go to profile', '/settings/'
+                                                            )
+                                                        ):null}
+
+                                                        {shouldConnectPayoneer?(
+                                                            this.renderNotification('Please connect your account with Payoneer to receive payments', 'Set up Payoneer', '/settings/payment/')
+                                                        ):null}
+
+                                                        {activities.length?(
+                                                            activities.slice(0, 10 - ((shouldUpdateProfile?1:0)+(shouldConnectPayoneer?1:0))).map(item => {
+                                                                return this.renderNotificationType(item);
+                                                            })
+                                                        ):null}
                                                     </div>
+                                                ):(
+                                                    <div>No notifications</div>
                                                 )}
                                             </div>
                                         </div>
-                                    ):(
-                                        <div>
-                                            <div className="section-title">
-                                                <Icon name="newspaper-o"/> Latest progress reports
-                                            </div>
+                                        {isSmallDevice?null:(
+                                            this.renderReportSection({sm: 6})
+                                        )}
+                                    </Col>
+                                    <Col sm={4}>
+                                        <div className="card">
+                                            <div className="section-title"><Icon name="projects"/> {isDev()?'Project I am working on':'Running projects'}</div>
 
                                             <div className="card-content">
-                                                {reports.length?reports.map(report => {
+                                                {projects.length?projects.map(project => {
                                                     return (
-                                                        <div className="item clearfix">
-                                                            <div className="date float-right">{moment.utc(report.created_at).format('DD/MMM')}</div>
-                                                            Progress report from <Link to={`/network/${report.user.username}`}>{report.user.display_name}</Link> for <Link to={`/projects/${report.project.id}/events/${report.event.id}`}>{report.project.title}</Link>
+                                                        <div className="project-item">
+                                                            <Link to={`/projects/${project.id}`}>{project.title}</Link>
                                                         </div>
                                                     );
                                                 }):(
-                                                    <div>No new progress reports</div>
+                                                    <div>No projects</div>
                                                 )}
                                             </div>
                                         </div>
-                                    )}
-
-                                </div>
-                            </Col>
-                            <Col sm={4}>
-                                <div className="card">
-                                    <div className="section-title"><Icon name="cash"/> Upcoming payments</div>
-                                    {invoices.length?(
-                                        <div>
-                                            <div>
-                                                Next payment for <Link to={`/projects/${invoices[0].project.id}/pay/`}>{invoices[0].project.title}: {invoices[0].title}</Link> is due in:
-                                            </div>
-                                            <div className="countdown">
-                                                <span className="number">{this.getDays(invoices[0].due_at).number}</span>
-                                                <span className="period">{this.getDays(invoices[0].due_at).name}</span>
-                                            </div>
-                                        </div>
-                                    ):(
-                                        <div>No upcoming payments.</div>
-                                    )}
-                                </div>
-                            </Col>
-                        </Row>
-                    </React.Fragment>
+                                    </Col>
+                                </Row>
+                                {isSmallDevice?(
+                                    this.renderReportSection({sm: 12})
+                                ):null}
+                            </React.Fragment>
+                        )}
+                    </Media>
                 )}
                 {isLargeDevice?(
                     <Link to="/projects/new" className="btn btn-icon cta">

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import {Link} from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import randomstring from 'randomstring';
@@ -16,6 +17,14 @@ import {STATUS_APPROVED, STATUS_PENDING} from "../../actions/utils/api";
 
 
 class Dashboard extends React.Component {
+
+    static defaultProps = {
+        isLargeDevice: true
+    };
+
+    static propTypes = {
+        isLargeDevice: PropTypes.bool,
+    };
 
     constructor(props) {
         super(props);
@@ -64,7 +73,7 @@ class Dashboard extends React.Component {
 
     render() {
 
-        const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}} = this.props;
+        const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}, isLargeDevice} = this.props;
 
         let shouldUpdateProfile = profile.required.length || profile.optional.length,
             shouldConnectPayoneer = isDev() && ![STATUS_APPROVED, STATUS_PENDING].includes(getUser().payoneer_status),
@@ -192,9 +201,11 @@ class Dashboard extends React.Component {
                         </Row>
                     </React.Fragment>
                 )}
-                <Link to="/projects/new" className="btn btn-icon cta">
-                    <span>Create new project</span> <Icon name="add" size="xl"/>
-                </Link>
+                {isLargeDevice?(
+                    <Link to="/projects/new" className="btn btn-icon cta">
+                        <span>Create new project</span> <Icon name="add" size="xl"/>
+                    </Link>
+                ):null}
             </div>
         );
     }

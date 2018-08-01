@@ -3,6 +3,22 @@
 @import "functions";
 @import "mixins";
 
+@include media-breakpoint-down(sm) { // <= 576px
+    .navbar {
+        .input-group.input-search {
+            width: auto;
+        }
+
+        .nav-item.dropdown {
+            text-align: right;
+
+            &.show {
+                padding-bottom: 10px;
+            }
+        }
+    }
+}
+
 @include media-breakpoint-up(xs) { // >= 0px
 
 }

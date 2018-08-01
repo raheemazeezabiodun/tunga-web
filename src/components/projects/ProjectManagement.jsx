@@ -59,89 +59,98 @@ export default class ProjectManagement extends React.Component {
 
         return (
             project?(
-                <div className="project-page clearfix">
-                    <div className="project-activity float-left">
-                        <div className="project-filters">
-                            {[
-                                ['activity', 'Meeting room'],
-                                ['docs', 'Documentation'],
-                                ['team', 'Team'],
-                                ['plan', 'Planning'],
-                                ['pay', 'Payments', {exact: false}],
-                                ['settings', 'Settings', {exact: false}]
-                            ].map(link => {
-                                let url = link[0];
-                                return (
-                                    <NavLink key={`project-filters-link--${link[0]}`} exact to={`${match.url}/${url}`} activeClassName="active" {...link[2]}>{link[1]}</NavLink>
-                                )
-                            })}
-                        </div>
+                <Media query="(min-width: 992px)">
+                    {isLargeDevice =>
+                        <div className="project-page clearfix">
+                            <div className="project-activity">
+                                {isLargeDevice?(
+                                    <div className="project-filters">
+                                        {[
+                                            ['activity', 'Meeting room'],
+                                            ['docs', 'Documentation'],
+                                            ['team', 'Team'],
+                                            ['plan', 'Planning'],
+                                            ['pay', 'Payments', {exact: false}],
+                                            ['settings', 'Settings', {exact: false}]
+                                        ].map(link => {
+                                            let url = link[0];
+                                            return (
+                                                <NavLink key={`project-filters-link--${link[0]}`} exact to={`${match.url}/${url}`} activeClassName="active" {...link[2]}>{link[1]}</NavLink>
+                                            )
+                                        })}
+                                    </div>
+                                ):null}
 
-                        <div className="project-activity-wrapper">
-                            {hasProjectAccess(project)?(
-                                <Switch>
-                                    <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
-                                    {[
-                                        ['activity', Activity],
-                                        ['docs', Docs],
-                                        ['team', Team],
-                                        ['plan', Plan],
-                                        ['pay', PayContainer],
-                                    ].map(path => {
-                                        return (
-                                            <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} component={withProps(projectProps)(path[1])}/>
-                                        );
-                                    })}
-                                    <Route key={`project-management-path--settings`}
-                                           path={`${match.url}/settings/:section?`}
-                                           render={props => <Settings {...projectProps} section={props.match.params.section}/>}/>
-                                    <Route key={`project-management-path--event`}
-                                           path={`${match.url}/events`}
-                                           render={props => <ProgressEventsContainer project={project} {...props}/>}/>
-                                </Switch>
-                            ):(
-                                <Warning message="You don't have permission to access this project's resources"/>
-                            )}
-                        </div>
-                    </div>
-                    <div className="project-details float-right">
-                        <div className="section font-weight-normal">{project.title}</div>
-
-                        <div className="section">
-                            <div className="font-weight-normal">Description</div>
-                            <div>{project.description || 'No description'}</div>
-                        </div>
-
-                        {project.deadline?(
-                            <div className="section">
-                                <div className="font-weight-normal">Deadline</div>
-                                <div>{project.deadline ? moment(project.deadline).format('Do of MMMM YYYY'): 'Deadline not set'}</div>
+                                <div className="project-activity-wrapper">
+                                    {hasProjectAccess(project)?(
+                                        <Switch>
+                                            <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
+                                            {[
+                                                ['activity', Activity],
+                                                ['docs', Docs],
+                                                ['team', Team],
+                                                ['plan', Plan],
+                                                ['pay', PayContainer],
+                                            ].map(path => {
+                                                return (
+                                                    <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} component={withProps(projectProps)(path[1])}/>
+                                                );
+                                            })}
+                                            <Route key={`project-management-path--settings`}
+                                                   path={`${match.url}/settings/:section?`}
+                                                   render={props => <Settings {...projectProps} section={props.match.params.section}/>}/>
+                                            <Route key={`project-management-path--event`}
+                                                   path={`${match.url}/events`}
+                                                   render={props => <ProgressEventsContainer project={project} {...props}/>}/>
+                                        </Switch>
+                                    ):(
+                                        <Warning message="You don't have permission to access this project's resources"/>
+                                    )}
+                                </div>
                             </div>
-                        ):null}
 
-                        <div className="font-weight-normal">Team</div>
+                            {isLargeDevice?(
+                                <div className="project-details">
+                                    <div className="section font-weight-normal">{project.title}</div>
 
-                        <div className="section">
-                            <div>Project Owner</div>
-                            <div>{project.owner ? <Avatar image={project.owner.avatar_url} title={project.owner.display_name} verified/> : null}</div>
+                                    <div className="section">
+                                        <div className="font-weight-normal">Description</div>
+                                        <div>{project.description || 'No description'}</div>
+                                    </div>
+
+                                    {project.deadline?(
+                                        <div className="section">
+                                            <div className="font-weight-normal">Deadline</div>
+                                            <div>{project.deadline ? moment(project.deadline).format('Do of MMMM YYYY'): 'Deadline not set'}</div>
+                                        </div>
+                                    ):null}
+
+                                    <div className="font-weight-normal">Team</div>
+
+                                    <div className="section">
+                                        <div>Project Owner</div>
+                                        <div>{project.owner ? <Avatar image={project.owner.avatar_url} title={project.owner.display_name} verified/> : null}</div>
+                                    </div>
+
+                                    <div className="section">
+                                        <div>Project Manager</div>
+                                        <div>{project.pm ? <Avatar image={project.pm.avatar_url} title={project.pm.display_name} verified/> : null}</div>
+                                    </div>
+
+                                    <div className="section">
+                                        <div>Team</div>
+                                        <div>{project.participation.map(participation => {
+                                            return <Avatar key={`Team ${participation.user.id}`}
+                                                           image={participation.user.avatar_url} title={participation.user.display_name}
+                                                           verified={participation.status === 'accepted'}/>
+                                        })}
+                                        </div>
+                                    </div>
+                                </div>
+                            ):null}
                         </div>
-
-                        <div className="section">
-                            <div>Project Manager</div>
-                            <div>{project.pm ? <Avatar image={project.pm.avatar_url} title={project.pm.display_name} verified/> : null}</div>
-                        </div>
-
-                        <div className="section">
-                            <div>Team</div>
-                            <div>{project.participation.map(participation => {
-                                return <Avatar key={`Team ${participation.user.id}`}
-                                               image={participation.user.avatar_url} title={participation.user.display_name}
-                                               verified={participation.status === 'accepted'}/>
-                            })}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    }
+                </Media>
             ):null
         );
     }

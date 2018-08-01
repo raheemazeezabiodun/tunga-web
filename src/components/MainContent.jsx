@@ -10,9 +10,9 @@ import SettingsContainer from './settings/SettingsContainer';
 import ProjectsContainer from "./projects/ProjectsContainer";
 import UserForm from "./network/UserForm";
 
-const MainContent = ({isLargeDevice=true}) => {
+const MainContent = ({isLargeDevice=true, className}) => {
     return (
-        <div className='main-content'>
+        <div className={`main-content ${className || ''}`}>
             <Switch>
                 <Route path='/onboard' component={OnboardContainer}/>
                 <Route path='/dashboard' component={withProps({isLargeDevice})(Dashboard)}/>

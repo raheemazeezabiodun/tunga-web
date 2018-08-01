@@ -58,7 +58,8 @@ class DashboardLayout extends React.Component {
     }
 
     render() {
-        const {Auth: {user}, AuthActions: {logout}} = this.props;
+        const {Auth: {user}, AuthActions: {logout}, match} = this.props,
+            isProjectsRoute = match.url === '/projects';
 
         return (
             user && user.id && !this.state.showProgress?(
@@ -70,8 +71,8 @@ class DashboardLayout extends React.Component {
                                 {isLargeDevice?(
                                     <SideBar/>
                                 ):null}
-                                <TitleBar user={user} isLargeDevice={isLargeDevice}/>
-                                <MainContent isLargeDevice={isLargeDevice}/>
+                                <TitleBar user={user} isLargeDevice={isLargeDevice} showBreadCrumbs={isProjectsRoute && !isLargeDevice}/>
+                                <MainContent isLargeDevice={isLargeDevice} className={isProjectsRoute && !isLargeDevice?'has-breadcrumbs':''}/>
                             </React.Fragment>
                         }
                     </Media>

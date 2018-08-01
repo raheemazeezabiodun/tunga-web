@@ -1022,6 +1022,18 @@ table {
     padding-top: px-to-rem(20);
     box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
 
+    &.has-breadcrumbs {
+        height: 70px;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+
+        ol {
+            margin-bottom: 0;
+        }
+    }
+
     .title-action {
         position: absolute;
         top: 42px;
@@ -1058,6 +1070,10 @@ table {
     @include padding-x(px-to-rem(20));
     padding-top: px-to-rem(120);
     padding-bottom: 40px;
+
+    &.has-breadcrumbs {
+        padding-top: px-to-rem(100);
+    }
 }
 
 // Cards

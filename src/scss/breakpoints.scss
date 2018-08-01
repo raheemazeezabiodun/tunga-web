@@ -50,6 +50,10 @@
     .main-content {
         @include padding-x(px-to-rem(40));
         padding-top: px-to-rem(140);
+
+        &.has-breadcrumbs {
+            padding-top: px-to-rem(120);
+        }
     }
 
     .dashboard {

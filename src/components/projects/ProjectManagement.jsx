@@ -87,10 +87,12 @@ export default class ProjectManagement extends React.Component {
                                             <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
                                             {[
                                                 ['activity', Activity],
-                                                ['docs', Docs],
-                                                ['team', Team],
-                                                ['plan', Plan],
-                                                ['pay', PayContainer],
+                                                ...(isLargeDevice?[
+                                                    ['docs', Docs],
+                                                    ['team', Team],
+                                                    ['plan', Plan],
+                                                    ['pay', PayContainer],
+                                                ]:[])
                                             ].map(path => {
                                                 return (
                                                     <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} component={withProps(projectProps)(path[1])}/>
@@ -102,6 +104,7 @@ export default class ProjectManagement extends React.Component {
                                             <Route key={`project-management-path--event`}
                                                    path={`${match.url}/events`}
                                                    render={props => <ProgressEventsContainer project={project} {...props}/>}/>
+                                            <Redirect from="*" to={`/projects/${project.id}/activity`}/>
                                         </Switch>
                                     ):(
                                         <Warning message="You don't have permission to access this project's resources"/>

@@ -250,6 +250,7 @@ export default class Profile extends React.Component {
                                         <label className="control-label">Upload ID (passport or national ID card)</label>
                                         <Upload
                                             type='image'
+                                            className='upload-id-doc'
                                             placeholder={user.profile.id_document?<img src={user.profile.id_document} height="150px" title="ID document"/>:<Icon name='id' size='xl' />}
                                             onChange={this.onChangeFile.bind(this, 'id_document')}
                                         />

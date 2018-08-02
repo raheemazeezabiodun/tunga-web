@@ -105,7 +105,9 @@ export default class Upload extends React.Component {
                                 </div>
                             );
                         }):(
-                            this.props.placeholder || <i className="tg-ic-upload"/>
+                            <div className="placeholder">
+                                {this.props.placeholder || <i className="tg-ic-upload"/>}
+                            </div>
                         )}
 
                         {((typeof this.props.instructions !== 'boolean' || this.props.instructions) && (!this.props.multiple && this.state.files.length === 0) || (this.props.multiple && (this.state.files.length < this.props.max || this.props.max === 0)))?(

@@ -577,6 +577,23 @@ table {
 
 // Uploads
 .upload-input {
+
+    &.upload-id-doc {
+        .dropzone {
+            .placeholder {
+                min-height: 150px;
+
+                [class*="tg-ic"] {
+                    font-size: 150px;
+                }
+            }
+
+            img {
+                height: 150px;
+            }
+        }
+    }
+
     .dropzone {
         display: flex;
         flex-direction: row;

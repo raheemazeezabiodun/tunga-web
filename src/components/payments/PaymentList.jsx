@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {Table} from 'reactstrap';
 import moment from 'moment';
 
@@ -9,7 +9,7 @@ import Icon from "../core/Icon";
 import StripeButton from "../core/StripeButton";
 
 import {openConfirm, openModal} from "../core/utils/modals";
-import {getUser, isAdmin, isClient} from "../utils/auth";
+import {getUser, isAdmin, isClient, isDev} from "../utils/auth";
 import {batchInvoices} from "../utils/payments";
 import {ENDPOINT_INVOICES} from "../../actions/utils/api";
 import {parsePaymentObject} from "../utils/stripe";
@@ -22,6 +22,27 @@ const PAID_OUT = 'paid-out';
 const PENDING_OUT = 'pending-out';
 
 export default class PaymentList extends React.Component {
+
+    static defaultProps = {
+        invoices: [],
+        filter: null,
+        isSaving: {}
+    };
+
+    static propTypes = {
+        invoices: PropTypes.array,
+        filter: PropTypes.string,
+        isSaving: PropTypes.object,
+        history: PropTypes.object,
+    };
+
+
+    componentDidMount() {
+        const { history, filter } = this.props;
+        if(history && ![...(isDev()?[]:[PENDING_IN, PAID_IN]), PENDING_OUT, PAID_OUT].includes(filter)) {
+            history.push('/payments');
+        }
+    }
 
     onMarkPaid(invoiceId) {
         const { InvoiceActions } = this.props;
@@ -72,8 +93,11 @@ export default class PaymentList extends React.Component {
     render() {
         const {filter, invoices, isSaving} = this.props;
 
-        let invoiceList = invoices;
+        if(![...(isDev()?[]:[PENDING_IN, PAID_IN]), PENDING_OUT, PAID_OUT].includes(filter)) {
+            return null;
+        }
 
+        let invoiceList = invoices;
         if([PENDING_OUT, PAID_OUT].includes(filter)) {
             invoiceList = batchInvoices(invoices);
         }

@@ -7,6 +7,7 @@ import PaymentList from "./PaymentList";
 
 import connect from "../../connectors/InvoiceConnector";
 import {INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../actions/utils/api";
+import {isDev} from "../utils/auth";
 
 class PaymentListContainer extends React.Component {
     static propTypes = {
@@ -19,7 +20,6 @@ class PaymentListContainer extends React.Component {
         return (
             <React.Fragment>
                 <Switch>
-                    <Redirect exact from={`${match.url}`} to={`${match.url}/filter/pending-in`}/>
                     <Route path={`${match.url}/filter/:filter`}
                            exact
                            render={props => <InvoiceListContainer {...props}
@@ -32,6 +32,7 @@ class PaymentListContainer extends React.Component {
                                <PaymentList project={project} {...props} filter={props.match.params.filter}/>
                            </InvoiceListContainer>}
                     />
+                    <Redirect from="*" to={`${match.url}/filter/${isDev()?'pending-out':'pending-in'}`}/>
                 </Switch>
             </React.Fragment>
         );

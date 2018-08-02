@@ -12,7 +12,7 @@ import Progress from "../core/Progress";
 import IconButton from "../core/IconButton";
 import connect from '../../connectors/ProfileConnector';
 
-import {getUser, isDev} from "../utils/auth";
+import {getUser, isDev, isPM} from "../utils/auth";
 import {DOC_TYPE_OTHER, STATUS_APPROVED, STATUS_PENDING} from "../../actions/utils/api";
 
 
@@ -86,7 +86,7 @@ class Dashboard extends React.Component {
             <Row>
                 <Col {...colProps}>
                     <div className="card">
-                        {isDev()?(
+                        {isDev() || isPM()?(
                             <div>
                                 <div className="section-title">
                                     <Icon name="flag-checkered"/> Upcoming updates

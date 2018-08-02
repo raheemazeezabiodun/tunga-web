@@ -147,6 +147,20 @@ export default class ActivityList extends React.Component {
                     uploads = [activity];
                 }
                 break;
+            case 'document':
+                if (showFiles) {
+                    creator = activity.created_by;
+                    createdAt = activity.created_at;
+                    body = (
+                        <div>
+                            <div>Added a document:</div>
+                            <a href={activity.download_url} target="_blank">
+                                <Icon name={activity.file?'download':'link'}/> {activity.title?`${activity.title} | `:''} {activity.download_url}
+                            </a>
+                        </div>
+                    );
+                }
+                break;
             case 'participation':
                 if (['add', 'create'].includes(item.action) && showNotifications) {
                     creator = activity.created_by;

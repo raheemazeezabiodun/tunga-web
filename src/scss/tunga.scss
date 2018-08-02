@@ -19,15 +19,11 @@ body {
     width: 100%;
     min-height: 100%;
     background-color: get-color('lightest-grey');
-    /*word-break: break-all;*/
+    word-break: break-word;
 }
 
 i {
     vertical-align: middle;
-}
-
-a {
-    word-break: break-all;
 }
 
 // Progress
@@ -646,6 +642,10 @@ table {
         margin-bottom: 5px;
         background-color: get-color('light-grey');
         border-radius: 6px;
+
+        a {
+            word-break: break-all;
+        }
 
         .btn {
             position: absolute;

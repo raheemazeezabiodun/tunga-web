@@ -13,7 +13,7 @@ import IconButton from "../core/IconButton";
 import connect from '../../connectors/ProfileConnector';
 
 import {getUser, isDev} from "../utils/auth";
-import {STATUS_APPROVED, STATUS_PENDING} from "../../actions/utils/api";
+import {DOC_TYPE_OTHER, STATUS_APPROVED, STATUS_PENDING} from "../../actions/utils/api";
 
 
 class Dashboard extends React.Component {
@@ -71,7 +71,7 @@ class Dashboard extends React.Component {
             case 'document':
                 return this.renderNotification(
                     <div>
-                        {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} added a document to project {item.activity.project.title}
+                        {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} added a {item.activity.type !== DOC_TYPE_OTHER?item.activity.type:''} document to project {item.activity.project.title}
                     </div>,
                     'Go to project', `/projects/${item.activity.project.id}/docs`);
             default:

@@ -1548,9 +1548,8 @@ table {
             color: get-color('black');
             font-weight: $font-weight-normal;
             text-align: center;
-            @include padding-x(px-to-rem(15));
             @include padding-y(px-to-rem(20));
-            min-width: px-to-rem(80);
+            width: 16.66%;
 
             &.active {
                 border-bottom: 3px $brand-color solid;

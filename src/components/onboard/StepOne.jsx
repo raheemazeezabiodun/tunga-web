@@ -119,7 +119,7 @@ export default class StepOne extends React.Component {
                         </Col>
                     </Row>
 
-                    <div>
+                    <div className="clearfix">
                         <IconButton type="submit" name="arrow-right" size='main'
                                     className="float-right onboard-action"
                                     disabled={this.props.isSaving.profile}/>

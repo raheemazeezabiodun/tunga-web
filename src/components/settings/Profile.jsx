@@ -251,7 +251,7 @@ export default class Profile extends React.Component {
                                         <Upload
                                             type='image'
                                             className='upload-id-doc'
-                                            placeholder={user.profile.id_document?<img src={user.profile.id_document} height="150px" title="ID document"/>:<Icon name='id' size='xl' />}
+                                            placeholder={user.profile.id_document?<img src={user.profile.id_document} height="130px" title="ID document"/>:<Icon name='id' size='xl' />}
                                             onChange={this.onChangeFile.bind(this, 'id_document')}
                                         />
                                     </FormGroup>

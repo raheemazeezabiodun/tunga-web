@@ -148,7 +148,7 @@ export default class StepTwo extends React.Component {
                             </FormGroup>
                         </Col>
                     </Row>
-                    <div>
+                    <div className="clearfix">
                         <IconButton name="arrow-left" size="main"
                                     className="float-left onboard-action"
                                     onClick={() => this.props.history.push('/onboard/step-one')} />

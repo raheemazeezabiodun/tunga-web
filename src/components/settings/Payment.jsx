@@ -5,6 +5,8 @@ import Payoneer from "../core/Payoneer";
 export default (props) => {
 
     return (
-        <Payoneer {...props} nextUrl={`${window.location.origin}/settings/payment`} errorUrl={`${window.location.origin}/settings/payment`}/>
+        <Payoneer {...props}
+                  nextUrl={`${window.location.origin}/settings/payment`}
+                  errorUrl={`${window.location.origin}/settings/payment`}/>
     );
 };

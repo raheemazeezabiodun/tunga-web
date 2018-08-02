@@ -49,6 +49,10 @@ export function isDevOrClient() {
     return isDev() || isClient();
 }
 
+export function isDevOrPM() {
+    return isDev() || isPM();
+}
+
 export function getMyParticipation(project) {
     let myParticipation = null;
     if(project.participation) {

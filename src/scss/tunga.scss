@@ -581,15 +581,15 @@ table {
     &.upload-id-doc {
         .dropzone {
             .placeholder {
-                min-height: 150px;
+                min-height: 130px;
 
                 [class*="tg-ic"] {
-                    font-size: 150px;
+                    font-size: 130px;
                 }
             }
 
             img {
-                height: 150px;
+                height: 130px;
             }
         }
     }

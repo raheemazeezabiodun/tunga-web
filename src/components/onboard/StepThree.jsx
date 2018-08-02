@@ -8,6 +8,7 @@ import Icon from '../core/Icon';
 import Upload from '../core/Upload';
 import IconButton from "../core/IconButton";
 import Avatar from "../core/Avatar";
+import {isDevOrPM} from "../utils/auth";
 
 
 export default class StepThree extends React.Component {
@@ -35,7 +36,7 @@ export default class StepThree extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.isSaved.profile || nextProps.isSaved.company) {
-            this.props.history.push('/onboard/finish');
+            this.props.history.push(`/onboard/${isDevOrPM()?'identity':'finish'}`);
         }
     }
 
@@ -149,11 +150,13 @@ export default class StepThree extends React.Component {
                             </FormGroup>
                         </Col>
                     </Row>
-                    <div>
+                    <div className="clearfix">
                         <IconButton name='arrow-left' size='main'
                                     className="float-left onboard-action"
                                     onClick={() => this.props.history.push('/onboard/step-two')} />
-                        <IconButton type="submit" name='check2' size='main'
+                        <IconButton type="submit"
+                                    name={isDevOrPM()?'arrow-right':'check2'}
+                                    size='main'
                                     className="btn float-right onboard-action"/>
                     </div>
                 </form>

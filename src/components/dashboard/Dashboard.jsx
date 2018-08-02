@@ -195,7 +195,7 @@ class Dashboard extends React.Component {
                                     </Col>
                                     <Col sm={4}>
                                         <div className="card">
-                                            <div className="section-title"><Icon name="projects"/> {isDev()?'Project I am working on':'Running projects'}</div>
+                                            <div className="section-title"><Icon name="projects"/> {isDev()?'Projects I am working on':'Running projects'}</div>
 
                                             <div className="card-content">
                                                 {projects.length?projects.map(project => {

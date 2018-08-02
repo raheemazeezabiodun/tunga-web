@@ -42,12 +42,20 @@ class Dashboard extends React.Component {
     }
 
     renderNotification(text, linkText, linkUrl) {
+        const {isLargeDevice} = this.props,
+            actionLink = linkUrl?(<Link to={linkUrl}>{linkText}</Link>):null;
+
         return (
-            <div className="notification">
+            <div className="notification clearfix">
                 <div className="float-right">
-                    {linkUrl?(<Link to={linkUrl}>{linkText}</Link>):null} <IconButton name="close" size="sm" disabled={true}/>
+                    {isLargeDevice && actionLink?actionLink:null} <IconButton name="close" size="sm" disabled={true}/>
                 </div>
                 {text}
+                {isLargeDevice || !actionLink?null:(
+                    <div className="float-right">
+                        {actionLink}
+                    </div>
+                )}
             </div>
         );
     }

@@ -38,7 +38,7 @@
         "react-bootstrap": "^0.30.7",
         "react-confirm": "^0.1.14",
         "react-copy-to-clipboard": "^5.0.0",
-        "react-dom": "^15.1.0",
+        "react-dom": "^16.0.1",
         "react-dropzone": "^3.5.0",
         "react-helmet": "^5.0.3",
         "react-joyride": "^1.10.1",

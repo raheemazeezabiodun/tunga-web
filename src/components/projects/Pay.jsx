@@ -455,7 +455,9 @@ export default class Pay extends React.Component {
                                                                     <div key={item.id}>€{item.amount}</div>
                                                                 );
                                                             })}
-                                                            <div className="subtotal">€{batch.amount}</div>
+                                                            {isDev()?null:(
+                                                                <div className="subtotal">€{batch.amount}</div>
+                                                            )}
                                                         </td>
                                                         <td>
                                                             {isAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved'? (

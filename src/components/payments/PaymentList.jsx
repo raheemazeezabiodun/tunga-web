@@ -208,7 +208,9 @@ export default class PaymentList extends React.Component {
                                                         <div>€{item.amount}</div>
                                                     );
                                                 })}
-                                                <div className="subtotal">€{invoice.amount}</div>
+                                                {isDev()?null:(
+                                                    <div className="subtotal">€{invoice.amount}</div>
+                                                )}
                                             </div>
                                         ):null}
                                     </td>

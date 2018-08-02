@@ -6,7 +6,7 @@ import {openConfirm, openModal} from '../core/utils/modals';
 import ProjectMemberForm from './modals/ProjectMemberForm';
 import Avatar from '../core/Avatar';
 
-import {isAdminOrClient, isAdminOrPM, isAdminOrPMOrClient} from '../utils/auth';
+import {isAdminOrClient, isAdminOrPM, isAdminOrPMOrClient, isDev} from '../utils/auth';
 
 export default class Team extends React.Component {
     static propTypes = {
@@ -101,7 +101,8 @@ export default class Team extends React.Component {
                                     image={participation.user.avatar_url}
                                     title={participation.user.display_name}
                                     onRemove={this.onDeleteUser.bind(this, participation.user, 'dev', participation)}
-                                    remove={isAdminOrPMOrClient() && !project.archived} />
+                                    remove={isAdminOrPMOrClient() && !project.archived}
+                                    verified={isDev() && participation.status === 'accepted'}/>
                         )
                     })}
                     {isAdminOrPMOrClient() && !project.archived?(

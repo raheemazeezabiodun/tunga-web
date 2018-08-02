@@ -11,9 +11,9 @@ import ProjectsContainer from "./projects/ProjectsContainer";
 import UserForm from "./network/UserForm";
 import {getUser} from "./utils/auth";
 
-const MainContent = ({isLargeDevice=true}) => {
+const MainContent = ({isLargeDevice=true, className}) => {
     return (
-        <div className='main-content'>
+        <div className={`main-content ${className || ''}`}>
             <Switch>
                 <Route path='/onboard' component={OnboardContainer}/>
                 {getUser().can_contribute?(

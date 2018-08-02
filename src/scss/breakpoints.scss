@@ -69,6 +69,16 @@
             right: 40px;
         }
     }
+
+    .project-page {
+        .project-activity {
+            min-height: 560px;
+        }
+
+        .project-details {
+            min-height: 560px;
+        }
+    }
 }
 
 @include media-breakpoint-up(lg) { // >= 992px

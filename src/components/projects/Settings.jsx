@@ -10,7 +10,7 @@ import {SOCIAL_LOGIN_URLS, SOCIAL_PROVIDERS} from "../../legacy/constants/Api";
 import CustomInputGroup from "../core/CustomInputGroup";
 import Button from "../core/Button";
 import Success from "../core/Success";
-import {isAdminOrPMOrClient} from "../utils/auth";
+import {isAdminOrPMOrClient, isDev} from "../utils/auth";
 import Info from "../core/Info";
 import Select from "../core/Select";
 import {SLACK_SHARE_COMMENTS, SLACK_SHARE_DOCS, SLACK_SHARE_EVENTS, SLACK_SHARE_REPORTS} from "../../actions/utils/api";
@@ -130,7 +130,9 @@ export default class Settings extends React.Component {
             <div className="project-settings">
                 <div className="section">
                     <div className="font-weight-normal">Integrations</div>
-                    <div className="text text-sm font-weight-thin">Add an integration by clicking on the icons</div>
+                    {isDev()?null:(
+                        <div className="text text-sm font-weight-thin">Add an integration by clicking on the icons</div>
+                    )}
 
                     <div className="clearfix">
                         <ul className="integration-options pull-right">

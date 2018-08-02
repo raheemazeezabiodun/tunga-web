@@ -14,7 +14,7 @@ import PayContainer from './PayContainer';
 import Settings from './Settings';
 import ProgressEventsContainer from './ProgressEventsContainer';
 import {openConfirm} from "../core/utils/modals";
-import {getMyParticipation, hasProjectAccess, isPendingProjectParticipant} from "../utils/auth";
+import {getMyParticipation, hasProjectAccess, isDev, isPendingProjectParticipant} from "../utils/auth";
 import Warning from "../core/Warning";
 
 export default class ProjectManagement extends React.Component {
@@ -71,7 +71,7 @@ export default class ProjectManagement extends React.Component {
                                             ['team', 'Team'],
                                             ['plan', 'Planning'],
                                             ['pay', 'Payments', {exact: false}],
-                                            ['settings', 'Settings', {exact: false}]
+                                            ['settings', isDev()?'Integrations':'Settings', {exact: false}]
                                         ].map(link => {
                                             let url = link[0];
                                             return (

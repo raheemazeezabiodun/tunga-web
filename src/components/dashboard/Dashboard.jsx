@@ -74,6 +74,27 @@ class Dashboard extends React.Component {
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} added a {item.activity.type !== DOC_TYPE_OTHER?item.activity.type:''} document to project {item.activity.project.title}
                     </div>,
                     'Go to project', `/projects/${item.activity.project.id}/docs`);
+            case 'invoice':
+                return this.renderNotification(
+                    <div>
+                        {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} generated an invoice for {item.activity.project.title}: {item.activity.title}
+                    </div>,
+                    'Go to project', `/projects/${item.activity.project.id}/pay`);
+            case 'field_change_log':
+                if(!['start_date', 'deadline', 'due_at'].includes(item.activity.field)) {
+                    // On date changes
+                    break;
+                }
+                const fieldDisplayMap = {
+                    start_date: 'start date',
+                    deadline: 'deadline',
+                    due_at: 'milestone',
+                };
+                return this.renderNotification(
+                    <div>
+                        {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} changed {item.activity.target_type === 'progress_event'?<span>due date for <Link to={`/projects/${item.activity.target.project.id}/events/${item.activity.target.id}`}>{item.activity.target.title}</Link></span>:<span>project {fieldDisplayMap[item.activity.field] || 'planning'}</span>} to {moment.utc(item.activity.new_value).local().format('Do, MMMM YYYY')} for {item.activity.target.project?item.activity.target.project.title:item.activity.target.title}
+                    </div>,
+                    'Go to project', `/projects/${item.activity.target.project?item.activity.target.project.id:item.activity.target.id}/plan`);
             default:
                 return null;
         }

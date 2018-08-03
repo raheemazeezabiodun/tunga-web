@@ -31,7 +31,7 @@ import {
 import Progress from "./core/Progress";
 import LoadMore from "./core/LoadMore";
 import {
-    DOC_TYPE_OTHER,
+    DOC_TYPE_OTHER, INVOICE_TYPE_SALE,
     PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT, PROGRESS_EVENT_TYPE_MILESTONE,
     PROGRESS_EVENT_TYPE_PM
 } from "../actions/utils/api";
@@ -157,6 +157,31 @@ export default class ActivityList extends React.Component {
                             <div>Added a {activity.type !== DOC_TYPE_OTHER?activity.type:''} document:</div>
                             <a href={activity.download_url} target="_blank">
                                 <Icon name={activity.file?'download':'link'}/> {activity.title?`${activity.title} | `:''} {activity.download_url}
+                            </a>
+                        </div>
+                    );
+                }
+                break;
+            case 'invoice':
+                if (showNotifications) {
+                    if(isDev() || isClient() && activity.user.id !== getUser().id) {
+                        // Devs only see their own invoices
+                        break;
+                    }
+
+                    if(isClient() && !isAdmin() && activity.type !== INVOICE_TYPE_SALE) {
+                        // Clients only see sales invoices
+                        break;
+                    }
+
+                    creator = activity.created_by;
+                    createdAt = activity.created_at;
+                    body = (
+                        <div>
+                            <div>Generated an invoice:</div>
+                            <div>{activity.title}</div>
+                            <a href={activity.download_url} target="_blank">
+                                {activity.number}
                             </a>
                         </div>
                     );

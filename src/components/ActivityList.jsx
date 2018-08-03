@@ -187,6 +187,28 @@ export default class ActivityList extends React.Component {
                     );
                 }
                 break;
+            case 'field_change_log':
+                if (showNotifications) {
+                    if(!['start_date', 'deadline', 'due_at'].includes(activity.field)) {
+                        // On date changes
+                        break;
+                    }
+
+                    creator = activity.created_by;
+                    createdAt = activity.created_at;
+                    const displayMap = {
+                        start_date: 'start date',
+                        deadline: 'deadline',
+                        due_at: 'milestone',
+                    };
+                    body = (
+                        <div>
+                            <div><Icon name="flag-checkered"/> Changed {activity.target_type === 'progress_event'?<span>due date for <Link to={`/projects/${activity.target.project.id}/events/${activity.target.id}`}>{activity.target.title}</Link></span>:<span>project {displayMap[activity.field] || 'planning'}</span>} to {moment.utc(activity.new_value).local().format('Do, MMMM YYYY')}</div>
+                            <div>{activity.reason}</div>
+                        </div>
+                    );
+                }
+                break;
             case 'participation':
                 if (['add', 'create'].includes(item.action) && showNotifications) {
                     creator = activity.created_by;

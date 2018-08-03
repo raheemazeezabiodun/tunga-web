@@ -65,7 +65,7 @@ export default class Profile extends React.Component {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
 
-        let profile = this.state.profile, nestedUser = {};
+        let profile = {...this.state.profile}, nestedUser = {};
 
         ['first_name', 'last_name', 'image'].forEach(key => {
             if(profile[key]) {

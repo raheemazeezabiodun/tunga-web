@@ -12,8 +12,8 @@ import Progress from "../core/Progress";
 import IconButton from "../core/IconButton";
 import connect from '../../connectors/ProfileConnector';
 
-import {getUser, isDev, isPM} from "../utils/auth";
-import {DOC_TYPE_OTHER, STATUS_APPROVED, STATUS_PENDING} from "../../actions/utils/api";
+import {getUser, isAdmin, isClient, isDev, isPM} from "../utils/auth";
+import {DOC_TYPE_OTHER, INVOICE_TYPE_SALE, STATUS_APPROVED, STATUS_PENDING} from "../../actions/utils/api";
 
 
 class Dashboard extends React.Component {
@@ -75,6 +75,15 @@ class Dashboard extends React.Component {
                     </div>,
                     'Go to project', `/projects/${item.activity.project.id}/docs`);
             case 'invoice':
+                if(isDev() && item.activity.user.id !== getUser().id) {
+                    // Devs only see their own invoices
+                    return null;
+                }
+
+                if(isClient() && !isAdmin() && item.activity.type !== INVOICE_TYPE_SALE) {
+                    // Clients only see sales invoices
+                    return null;
+                }
                 return this.renderNotification(
                     <div>
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} generated an invoice for {item.activity.project.title}: {item.activity.title}

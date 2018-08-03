@@ -164,7 +164,7 @@ export default class ActivityList extends React.Component {
                 break;
             case 'invoice':
                 if (showNotifications) {
-                    if(isDev() || isClient() && activity.user.id !== getUser().id) {
+                    if(isDev() && activity.user.id !== getUser().id) {
                         // Devs only see their own invoices
                         break;
                     }

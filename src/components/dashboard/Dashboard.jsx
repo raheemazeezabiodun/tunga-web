@@ -256,11 +256,6 @@ class Dashboard extends React.Component {
                         )}
                     </Media>
                 )}
-                {isLargeDevice?(
-                    <Link to="/projects/new" className="btn btn-icon cta">
-                        <span>Create new project</span> <Icon name="add" size="xl"/>
-                    </Link>
-                ):null}
             </div>
         );
     }

@@ -1339,23 +1339,6 @@ table {
         }
     }
 
-    .cta {
-        position: fixed;
-        right: 20px;
-        bottom: 40px;
-
-        span {
-            display: none;
-            margin-right: 10px;
-        }
-
-        &:hover {
-            span {
-                display: inline-block;
-            }
-        }
-    }
-
     .countdown {
         font-weight: 600;
         margin-top: 10px;

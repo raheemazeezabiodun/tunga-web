@@ -92,7 +92,7 @@ export default class TitleBar extends React.Component {
                     <Switch>
                         {[
                             ['/onboard', 'Welcome to Tunga!'],
-                            ['/dashboard', <div>Hi {user.display_name}</div>, null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
+                            ['/dashboard', <div>Hi {user.display_name}</div>, isLargeDevice?'/projects/new':null, null, {subTitle: moment().format('dddd, Do of MMMM')}],
                             ...(isLargeDevice?
                                 [
                                     ['/projects/new', 'Projects', null, [...projectsSections, ['/projects/new', 'Create new project']]],

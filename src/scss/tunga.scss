@@ -1892,7 +1892,7 @@ table {
         font-size: px-to-rem(25);
         line-height: 50px;
         color: get-color('white');
-        background: #ccc url(../images/chatheader.jpg);
+        background: #ccc url(../assets/images/chatheader.jpg);
         background-size: cover;
         border-radius: 50%;
         box-shadow: 0 0 10px #777;
@@ -1918,7 +1918,7 @@ table {
             height: 162px;
             padding: 10px;
             margin-bottom: 10px;
-            background: #ccc url(../images/chatheader.jpg);
+            background: #ccc url(../assets/images/chatheader.jpg);
 
             .heading {
                 text-align: center;

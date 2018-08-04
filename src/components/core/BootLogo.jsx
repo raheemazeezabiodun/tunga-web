@@ -5,7 +5,7 @@ const BootLogo = ({}) => {
     return (
         <div className="boot-logo">
             <div>
-                <img src={require('../../images/logo.png')} />
+                <img src={require('../../assets/images/logo.png')} />
             </div>
             <Progress/>
         </div>

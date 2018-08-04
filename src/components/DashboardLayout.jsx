@@ -1,63 +1,27 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Media from "react-media";
-
-import * as AuthActions from '../legacy/actions/AuthActions';
 
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import TitleBar from './TitleBar';
 import MainContent from './MainContent';
-import BootLogo from "./core/BootLogo";
+import PropTypes from "prop-types";
 
-class DashboardLayout extends React.Component {
+export default class DashboardLayout extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        const {Auth: {user}} = this.props;
-
-        this.state= {
-            hasVerified: user && user.id,
-            showProgress: !user || !user.id // Used to prevent flickering
-        };
-    }
-
-    componentDidMount() {
-        const {Auth} = this.props;
-        if (!this.state.hasVerified && !Auth.isAuthenticated && !this.props.Auth.isVerifying) {
-            this.props.AuthActions.verify();
-        }
-
-        if(this.state.showProgress) {
-            // Wait one second to prevent flickering
-            let self = this;
-            setTimeout(() => {
-                self.setState({showProgress: false});
-            }, 1000);
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapShot) {
-        const {Auth, history} = this.props;
-        if (
-            prevProps.Auth.isAuthenticated !== Auth.isAuthenticated ||
-            (prevProps.Auth.isVerifying !== Auth.isVerifying && !Auth.isVerifying)
-        ) {
-            if(!Auth.isAuthenticated) {
-                window.location.href = window.location.origin;
-            }
-        }
-    }
+    static propTypes = {
+        user: PropTypes.object.required,
+        logout: PropTypes.object,
+        match: PropTypes.object,
+    };
 
     render() {
-        const {Auth: {user}, AuthActions: {logout}, match} = this.props,
+        const {user, logout, match} = this.props,
             isProjectsRoute = match.url === '/projects';
 
         return (
-            user && user.id && !this.state.showProgress?(
+            user && user.id?(
                 <React.Fragment>
                     <NavBar user={user} onSignOut={logout}/>
                     <Media query="(min-width: 992px)">
@@ -73,22 +37,9 @@ class DashboardLayout extends React.Component {
                     </Media>
                 </React.Fragment>
             ):(
-                <BootLogo/>
+                <Redirect from="*" to="/"/>
             )
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        Auth: state.Auth
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        AuthActions: bindActionCreators(AuthActions, dispatch),
-    };
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DashboardLayout));

@@ -5,6 +5,8 @@ import {connect} from "react-redux";
 import * as ActivityActions from "../actions/ActivityActions";
 import * as CommentActions from "../actions/CommentActions";
 import * as UploadActions from "../actions/UploadActions";
+import * as ChannelActions from "../actions/ChannelActions";
+import * as MessageActions from "../actions/MessageActions";
 
 function mapStateToProps(state) {
     return {
@@ -18,6 +20,8 @@ function mapDispatchToProps(dispatch) {
             ...bindActionCreators(ActivityActions, dispatch),
             ...bindActionCreators(CommentActions, dispatch),
             ...bindActionCreators(UploadActions, dispatch),
+            ...bindActionCreators(ChannelActions, dispatch),
+            ...bindActionCreators(MessageActions, dispatch),
         }
     };
 }

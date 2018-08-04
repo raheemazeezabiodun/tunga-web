@@ -76,18 +76,16 @@ export const ENDPOINT_PROGRESS_REPORTS = getEndpointUrl('progress-reports/');
 export const ENDPOINT_SKILLS = getEndpointUrl('skill/');
 export const ENDPOINT_ACTIVITIES = getEndpointUrl('activity/');
 export const ENDPOINT_COMMENTS = getEndpointUrl('comments/');
+export const ENDPOINT_CHANNELS = getEndpointUrl('channels/');
+export const ENDPOINT_MESSAGES = getEndpointUrl('messages/');
 export const ENDPOINT_UPLOADS = getEndpointUrl('uploads/');
 export const ENDPOINT_INVOICES = getEndpointUrl('invoices/');
 
 export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 
-export const ENDPOINT_CHANNEL = getEndpointUrl('channel/');
-export const ENDPOINT_DIRECT_CHANNEL = getEndpointUrl('channel/direct/');
-export const ENDPOINT_MESSAGE = getEndpointUrl('message/');
 export const ENDPOINT_CONTACT_REQUEST = getEndpointUrl('contact-request/');
 export const ENDPOINT_MEDIUM = getEndpointUrl('medium/');
 export const ENDPOINT_OEMBED = getEndpointUrl('oembed/');
-export const ENDPOINT_UPLOAD = getEndpointUrl('upload/');
 export const ENDPOINT_SKILL_PAGE = getEndpointUrl('skill-page/');
 export const ENDPOINT_BLOG = getEndpointUrl('blog/');
 
@@ -241,3 +239,10 @@ export const STATUS_ACCEPTED = 'accepted';
 export const STATUS_REJECTED = 'rejected';
 export const STATUS_APPROVED = 'approved';
 export const STATUS_DECLINED = 'declined';
+
+export const CHANNEL_TYPES = {
+    direct: 1,
+    topic: 2,
+    support: 3,
+    developer: 4,
+};

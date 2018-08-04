@@ -5,12 +5,12 @@ import moment from 'moment';
 import TimeAgo from 'react-timeago';
 import {ProgressBar} from 'react-bootstrap';
 
-import Linkify from './Linkify';
+import Linkify from '../Linkify';
 import randomstring from 'randomstring';
 
-import Avatar from './core/Avatar';
-import Attachments from './Attachments';
-import Icon from "./core/Icon";
+import Avatar from '../core/Avatar';
+import Attachments from '../Attachments';
+import Icon from "../core/Icon";
 
 import {
     LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
@@ -19,7 +19,7 @@ import {
     LEGACY_PROGRESS_EVENT_TYPE_PM,
     LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
     LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-} from '../legacy/constants/Api';
+} from '../../legacy/constants/Api';
 import {
     isAuthenticated,
     getUser,
@@ -27,18 +27,29 @@ import {
     isClient,
     isDev,
     isPM,
-} from './utils/auth';
-import Progress from "./core/Progress";
-import LoadMore from "./core/LoadMore";
+} from '../utils/auth';
+import Progress from "../core/Progress";
+import LoadMore from "../core/LoadMore";
 import {
     DOC_TYPE_OTHER, INVOICE_TYPE_SALE,
     PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT, PROGRESS_EVENT_TYPE_MILESTONE,
     PROGRESS_EVENT_TYPE_PM
-} from "../actions/utils/api";
+} from "../../actions/utils/api";
+import {resizeOverviewBox} from "../../legacy/containers/ChatWindow";
 
 export function scrollList(listId) {
-    let activity_list = $(`#list${listId}.activity-list`);
-    activity_list.scrollTop(activity_list.find('.activity-wrapper').height());
+    let activityList = $(`#list${listId}.activity-list`);
+    activityList.scrollTop(activityList.find('.activity-wrapper').height());
+}
+
+export function resizeActivityBox(listId, offset, contentSelector) {
+    let activityBox = $(`#list${listId}.activity-list`),
+        windowHeight = $(window).height(),
+        contentHeight = $(contentSelector || '#app-root').height(),
+        activityHeight = activityBox.height();
+
+    activityHeight += (windowHeight - offset) - contentHeight;
+    activityBox.css('height', `${activityHeight}px`);
 }
 
 export default class ActivityList extends React.Component {
@@ -53,6 +64,8 @@ export default class ActivityList extends React.Component {
         showNotifications: PropTypes.bool,
         showFiles: PropTypes.bool,
         showProgressReports: PropTypes.bool,
+        heightOffset: PropTypes.number,
+        contentSelector: PropTypes.string,
     };
 
     static defaultProps = {
@@ -63,6 +76,8 @@ export default class ActivityList extends React.Component {
         showNotifications: true,
         showFiles: true,
         showProgressReports: true,
+        heightOffset: 0,
+        contentSelector: '#app-root',
     };
 
     constructor(props) {
@@ -71,7 +86,13 @@ export default class ActivityList extends React.Component {
     }
 
     componentDidMount() {
+        resizeActivityBox(this.state.listId, this.props.heightOffset, this.props.contentSelector);
         scrollList(this.state.listId);
+
+        let self = this;
+        $(window).resize(function () {
+            resizeActivityBox(self.state.listId, self.props.heightOffset, self.props.contentSelector);
+        });
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {

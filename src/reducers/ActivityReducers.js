@@ -3,7 +3,35 @@ import {combineReducers} from 'redux';
 import * as ActivityActions from '../actions/ActivityActions';
 import * as CommentActions from '../actions/CommentActions';
 import * as UploadActions from '../actions/UploadActions';
+import * as ChannelActions from "../actions/ChannelActions";
+import * as MessageActions from "../actions/MessageActions";
+import {LOGIN_SUCCESS, LOGOUT_SUCCESS, VERIFY_SUCCESS} from "../actions/AuthActions";
+
 import {getIds} from './utils';
+
+function channel(state = {}, action) {
+    switch (action.type) {
+        case ChannelActions.CREATE_CHANNEL_SUCCESS:
+        case ChannelActions.RETRIEVE_CHANNEL_SUCCESS:
+        case ChannelActions.UPDATE_CHANNEL_SUCCESS:
+            return action.channel;
+        case ChannelActions.CREATE_CHANNEL_START:
+        case ChannelActions.CREATE_CHANNEL_FAILED:
+        case ChannelActions.RETRIEVE_CHANNEL_START:
+        case ChannelActions.RETRIEVE_CHANNEL_FAILED:
+        case LOGIN_SUCCESS:
+        case LOGOUT_SUCCESS:
+        case VERIFY_SUCCESS:
+            return {};
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+            if (action.filter && action.filter.since > 0) {
+                return {...state, new: action.items.length};
+            }
+            return state;
+        default:
+            return state;
+    }
+}
 
 function ids(state = {}, action) {
     let selectionKey = action.selection || 'default';
@@ -40,16 +68,22 @@ function ids(state = {}, action) {
             return state;
         case ActivityActions.LIST_ACTIVITIES_FAILED:
             return state;
+        case MessageActions.CREATE_MESSAGE_SUCCESS:
+            newState[targetKey] = [
+                `message_${action.message.id}`,
+                ...(state[targetKey] || {}),
+            ];
+            return {...state, ...newState};
         case CommentActions.CREATE_COMMENT_SUCCESS:
             newState[targetKey] = [
                 `comment_${action.comment.id}`,
-                ...state[targetKey],
+                ...(state[targetKey] || {}),
             ];
             return {...state, ...newState};
         case UploadActions.CREATE_UPLOAD_SUCCESS:
             newState[targetKey] = [
                 `upload_${action.upload.id}`,
-                ...state[targetKey],
+                ...(state[targetKey] || {}),
             ];
             return {...state, ...newState};
         default:
@@ -71,8 +105,14 @@ function activities(state = {}, action) {
             let new_activity = {};
             new_activity[action.activity.id] = action.activity;
             return {...state, ...new_activity};
+        case MessageActions.CREATE_MESSAGE_SUCCESS:
+            let activityId = `message_${action.message.id}`;
+            newActivity[activityId] = {
+                id: activityId, action: 'create', activity_type: 'message', activity: action.message
+            };
+            return {...state, ...newActivity};
         case CommentActions.CREATE_COMMENT_SUCCESS:
-            let activityId = `comment_${action.comment.id}`;
+            activityId = `comment_${action.comment.id}`;
             newActivity[activityId] = {
                 id: activityId, action: 'create', activity_type: 'comment', activity: action.comment
             };
@@ -184,6 +224,7 @@ function count(state = {}, action) {
 }
 
 const Activity = combineReducers({
+    channel,
     ids,
     activities,
     isRetrieving,

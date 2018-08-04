@@ -1871,6 +1871,85 @@ table {
     background-color: get-color('green');
 }
 
+.chat-widget {
+    position: fixed;
+    right: 80px;
+    bottom: 10px;
+    z-index: 1040;
+
+    .controls {
+        position: relative;
+        text-align: right;
+
+        .badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+        }
+    }
+
+    .chat-btn, .btn.chat-btn {
+        font-size: px-to-rem(25);
+        line-height: 50px;
+        color: get-color('white');
+        background: #ccc url(../images/chatheader.jpg);
+        background-size: cover;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #777;
+        height: 50px;
+        width: 50px;
+        position: relative;
+        outline-width: 0;
+    }
+
+    .message-box {
+        position: relative;
+        width: 440px;
+        background-color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 -2px 5px #777;
+
+        .chat-header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: get-color('white');
+            height: 162px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #ccc url(../images/chatheader.jpg);
+
+            .heading {
+                text-align: center;
+                font-size: px-to-rem(22);
+                font-weight: 400;
+            }
+
+            .chat-close {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                z-index: 1;
+                font-size: px-to-rem(15);
+                line-height: 1.5;
+                color: get-color('white');
+                background: transparent none;
+                height: 25px;
+                width: 25px;
+            }
+        }
+
+        .activity-list {
+            margin: 10px 15px;
+        }
+
+        .message-widget {
+            padding: 15px;
+        }
+    }
+}
+
 // Other
 
 .subtotal {

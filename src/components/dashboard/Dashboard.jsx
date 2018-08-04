@@ -64,13 +64,13 @@ class Dashboard extends React.Component {
         switch (item.activity_type)  {
             case 'participation':
                 return this.renderNotification(
-                    <div>
+                    <div key={item.id}>
                         {getUser().id === item.activity.user.id?'You have':(<span><Link to={`/network/${item.activity.user.username}`}>{item.activity.user.display_name}</Link> has</span>)} been added to {isDev()?'the':'your'} team for {item.activity.project.title}
                     </div>,
                     'Go to project', `/projects/${item.activity.project.id}/team`);
             case 'document':
                 return this.renderNotification(
-                    <div>
+                    <div key={item.id}>
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} added a {item.activity.type !== DOC_TYPE_OTHER?item.activity.type:''} document to project {item.activity.project.title}
                     </div>,
                     'Go to project', `/projects/${item.activity.project.id}/docs`);
@@ -85,7 +85,7 @@ class Dashboard extends React.Component {
                     return null;
                 }
                 return this.renderNotification(
-                    <div>
+                    <div key={item.id}>
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} generated an invoice for {item.activity.project.title}: {item.activity.title}
                     </div>,
                     'Go to project', `/projects/${item.activity.project.id}/pay`);
@@ -100,7 +100,7 @@ class Dashboard extends React.Component {
                     due_at: 'milestone',
                 };
                 return this.renderNotification(
-                    <div>
+                    <div key={item.id}>
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} changed {item.activity.target_type === 'progress_event'?<span>due date for <Link to={`/projects/${item.activity.target.project.id}/events/${item.activity.target.id}`}>{item.activity.target.title}</Link></span>:<span>project {fieldDisplayMap[item.activity.field] || 'planning'}</span>} to {moment.utc(item.activity.new_value).local().format('Do, MMMM YYYY')} for {item.activity.target.project?item.activity.target.project.title:item.activity.target.title}
                     </div>,
                     'Go to project', `/projects/${item.activity.target.project?item.activity.target.project.id:item.activity.target.id}/plan`);
@@ -125,7 +125,7 @@ class Dashboard extends React.Component {
                                 <div className="card-content">
                                     {events.length?events.map(event => {
                                         return (
-                                            <div className="item">
+                                            <div key={event.id} className="item">
                                                 Scheduled update for <Link to={`/projects/${event.project.id}/events/${event.id}`}>{event.project.title}{event.title?`: ${event.title}`:''}</Link>
                                             </div>
                                         );
@@ -145,7 +145,7 @@ class Dashboard extends React.Component {
                                 <div className="card-content">
                                     {reports.length?reports.map(report => {
                                         return (
-                                            <div className="item clearfix">
+                                            <div key={report.id} className="item clearfix">
                                                 <div className="date float-right">{moment.utc(report.created_at).format('DD/MMM')}</div>
                                                 Progress report from <Link to={`/network/${report.user.username}`}>{report.user.display_name}</Link> for <Link to={`/projects/${report.project.id}/events/${report.event.id}`}>{report.project.title}</Link>
                                             </div>
@@ -238,7 +238,7 @@ class Dashboard extends React.Component {
                                             <div className="card-content">
                                                 {projects.length?projects.map(project => {
                                                     return (
-                                                        <div className="project-item">
+                                                        <div key={project.id} className="project-item">
                                                             <Link to={`/projects/${project.id}`}>{project.title}</Link>
                                                         </div>
                                                     );

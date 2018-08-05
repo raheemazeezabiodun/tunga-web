@@ -36,11 +36,9 @@ export default class NavBar extends React.Component {
     render() {
         let {user, variant, breakpoint, className, isLargeDevice} = this.props;
 
-        _.truncate(user.first_name, {length: 8});
-
         return (
             <nav className={`navbar navbar-expand-${breakpoint || 'md'} fixed-top navbar-dark ${className || ''} ${variant?`navbar-${variant}`:''}`} >
-                <Link to="/dashboard" className="navbar-brand">
+                <Link to={`/${variant === 'dashboard'?'dashboard':''}`} className="navbar-brand">
                     <img src={require('../assets/images/logo.png')} />
                 </Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,6 +94,11 @@ export default class NavBar extends React.Component {
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-account">
                                         <li>
+                                            {variant === 'dashboard'?null:(
+                                                <Link to="/dashboard">
+                                                    <Icon name="meter" size="navbar"/> Dashboard
+                                                </Link>
+                                            )}
                                             <Link to="#" onClick={this.onSignOut.bind(this)}>
                                                 <Icon name="logout" size="navbar"/> Sign Out
                                             </Link>

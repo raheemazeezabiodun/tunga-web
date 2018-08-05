@@ -2,6 +2,7 @@ import React from 'react';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {LOCATION_CHANGE} from 'react-router-redux';
 import {withProps} from 'recompose';
+import Media from "react-media";
 
 import connect from '../connectors/AuthConnector';
 
@@ -11,6 +12,7 @@ import DashboardLayout from './DashboardLayout';
 import ChatWidget from "./chat/ChatWidget";
 import LegacyRedirect from './LegacyRedirect';
 import BootLogo from "./core/BootLogo";
+import ShowcaseLayout from "./showcase/ShowcaseLayout";
 
 
 class App extends React.Component {
@@ -62,27 +64,32 @@ class App extends React.Component {
             !this.state.isVerified || this.state.showProgress?(
                 <BootLogo/>
             ):(
-                <div>
-                    <Switch>
-                        {user && user.id?'dashboard|projects|network|payments|settings|onboard'.split('|').map(path => {
-                            return (
-                                <Route key={`app-path--${path}`} path={`/${path}`} component={withProps({user, logout})(DashboardLayout)}/>
-                            );
-                        }):null}
-                        <Redirect from="/home" to={{...location, pathname: '/dashboard'}}/>
-                        <Redirect from="/profile" to={{...location, pathname: '/settings'}}/>
-                        <Redirect from="/task" to={{...location, pathname: '/projects'}}/>
-                        <Redirect from="/work" to={{...location, pathname: '/projects'}}/>
-                        <Redirect from="/people" to={{...location, pathname: '/network'}}/>
-                        <Redirect from="/member" to={{...location, pathname: '/network'}}/>
-                        <Redirect from="/estimate" to={{...location, pathname: '/proposal'}}/>
-                        <Route path="*" component={LegacyRedirect} />
-                    </Switch>
+                <Media query="(min-width: 992px)">
+                    {isLargeDevice => (
+                        <div>
+                            <Switch>
+                                {user && user.id?'dashboard|projects|network|payments|settings|onboard'.split('|').map(path => {
+                                    return (
+                                        <Route key={`app-path--${path}`} path={`/${path}`} render={props => <DashboardLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>}/>
+                                    );
+                                }):null}
+                                <Redirect from="/home" to={{...location, pathname: '/dashboard'}}/>
+                                <Redirect from="/profile" to={{...location, pathname: '/settings'}}/>
+                                <Redirect from="/task" to={{...location, pathname: '/projects'}}/>
+                                <Redirect from="/work" to={{...location, pathname: '/projects'}}/>
+                                <Redirect from="/people" to={{...location, pathname: '/network'}}/>
+                                <Redirect from="/member" to={{...location, pathname: '/network'}}/>
+                                <Redirect from="/estimate" to={{...location, pathname: '/proposal'}}/>
+                                <Route exact path="/" render={props => <ShowcaseLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>} />
+                                <Route path="*" component={LegacyRedirect} />
+                            </Switch>
 
-                    {!user || user.is_admin || user.is_project_manager?null:(
-                        <ChatWidget/>
+                            {!user || user.is_admin || user.is_project_manager?null:(
+                                <ChatWidget/>
+                            )}
+                        </div>
                     )}
-                </div>
+                </Media>
             )
         )
     }

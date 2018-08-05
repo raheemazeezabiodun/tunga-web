@@ -5,6 +5,13 @@
 
 @include media-breakpoint-down(sm) { // <= 576px
     .navbar {
+        .navbar-nav {
+            .btn.btn-nav {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
         .input-group.input-search {
             width: auto;
         }
@@ -31,6 +38,48 @@
 }
 
 @include media-breakpoint-up(md) { // >= 768px
+    .navbar {
+        &.navbar-showcase {
+            position: absolute;
+            background-color: transparent;
+            box-shadow: none;
+            margin-top: 20px;
+            padding-left: 0;
+            padding-right: 20px;
+
+            #navbar {
+                margin-left: 20px;
+            }
+
+            .navbar-nav {
+                &.navbar-main {
+                    li {
+                        @include padding-x(px-to-rem(10));
+
+                        &:first-child {
+                            padding-left: 0;
+                        }
+
+                        > a {
+                            color: get-color('light-grey');
+                            @include padding-y(px-to-rem(8));
+                            @include padding-x(0);
+
+                            &:hover,
+                            &.active,
+                            &:hover.active,
+                            &:focus.active,
+                            &:visited.active {
+                                color: get-color('light-grey');
+                                border-bottom: 1px solid get-color('light-grey');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     .titlebar {
         @include padding-x(px-to-rem(40));
 
@@ -78,6 +127,24 @@
 }
 
 @include media-breakpoint-up(lg) { // >= 992px
+    .navbar {
+        &.navbar-showcase {
+            padding-right: 40px;
+
+            #navbar {
+                margin-left: 40px;
+            }
+
+            .navbar-nav {
+                &.navbar-main {
+                    li {
+                        @include padding-x(px-to-rem(20));
+                    }
+                }
+            }
+        }
+    }
+
     .titlebar {
         left: 120px;
         height: 130px;

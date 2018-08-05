@@ -904,6 +904,7 @@ table {
 // Navbar
 .navbar {
     @include padding-y(0);
+    background-color: $brand-color;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 
     .navbar-brand {
@@ -924,7 +925,6 @@ table {
         > li {
             > a {
                 color: get-color('white');
-                background-color: $brand-color;
                 line-height: 50px;
                 @include padding-x(px-to-rem(10));
 
@@ -978,6 +978,25 @@ table {
                 }
             }
         }
+
+        .btn.btn-nav {
+            height: px-to-rem(40);
+            line-height: px-to-rem(40);
+            @include padding-x(px-to-rem(20));
+            color: $brand-color;
+            background-color: get-color('light-grey');
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+        }
+    }
+}
+
+// Showcase
+.showcase {
+    header {
+        display: flex;
+        flex-direction: column;
+        background-color: get-color('dark-grey');
+        min-height: 100vh;
     }
 }
 

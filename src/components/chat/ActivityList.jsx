@@ -11,15 +11,9 @@ import randomstring from 'randomstring';
 import Avatar from '../core/Avatar';
 import Attachments from './Attachments';
 import Icon from "../core/Icon";
+import Progress from "../core/Progress";
+import LoadMore from "../core/LoadMore";
 
-import {
-    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
-    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
-    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
-    LEGACY_PROGRESS_EVENT_TYPE_PM,
-    LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
-    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
-} from '../../legacy/constants/Api';
 import {
     isAuthenticated,
     getUser,
@@ -28,14 +22,20 @@ import {
     isDev,
     isPM,
 } from '../utils/auth';
-import Progress from "../core/Progress";
-import LoadMore from "../core/LoadMore";
 import {
-    DOC_TYPE_OTHER, INVOICE_TYPE_SALE,
-    PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT, PROGRESS_EVENT_TYPE_MILESTONE,
-    PROGRESS_EVENT_TYPE_PM
+    DOC_TYPE_OTHER,
+    INVOICE_TYPE_SALE,
+    PROGRESS_EVENT_TYPE_CLIENT,
+    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+    PROGRESS_EVENT_TYPE_MILESTONE,
+    PROGRESS_EVENT_TYPE_PM,
+    LEGACY_PROGRESS_EVENT_TYPE_MILESTONE,
+    LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
+    LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
+    LEGACY_PROGRESS_EVENT_TYPE_PM,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
 } from "../../actions/utils/api";
-import {resizeOverviewBox} from "../../legacy/containers/ChatWindow";
 
 export function scrollList(listId) {
     let activityList = $(`#list${listId}.activity-list`);

@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ChoiceGroup from "../../core/ChoiceGroup";
 
-import * as UserSettings from "../../../legacy/utils/UserSettings";
-import {openCookieConsentPopUp} from "../../utils/consent";
+import ChoiceGroup from "../../core/ChoiceGroup";
 import Button from "../../core/Button";
 import Progress from "../../core/Progress";
+
+import * as UserSettings from "../../utils/settings";
+import {openCookieConsentPopUp} from "../../utils/consent";
 
 export default class Privacy extends React.Component {
     static propTypes = {

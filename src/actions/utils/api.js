@@ -221,6 +221,16 @@ export const PROGRESS_EVENT_TYPE_CLIENT = 'client';
 export const PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL = 'internal';
 export const PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT = 9;
 
+export const LEGACY_PROGRESS_EVENT_TYPE_DEFAULT = 1;
+export const LEGACY_PROGRESS_EVENT_TYPE_PERIODIC = 2;
+export const LEGACY_PROGRESS_EVENT_TYPE_MILESTONE = 3;
+export const LEGACY_PROGRESS_EVENT_TYPE_SUBMIT = 4;
+export const LEGACY_PROGRESS_EVENT_TYPE_COMPLETE = 5;
+export const LEGACY_PROGRESS_EVENT_TYPE_PM = 6;
+export const LEGACY_PROGRESS_EVENT_TYPE_CLIENT = 7;
+export const LEGACY_PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL = 8;
+export const LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT = 9;
+
 export const SLACK_SHARE_COMMENTS = 'slack_share_tunga_comments';
 export const SLACK_SHARE_DOCS = 'slack_share_tunga_docs';
 export const SLACK_SHARE_REPORTS = 'slack_share_tunga_reports';

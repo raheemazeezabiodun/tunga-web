@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import randomstring from "randomstring";
 
-import connect from "../../connectors/ActivityConnector";
+import connect from "../../../connectors/ActivityConnector";
 
-import ActivityList from "../chat/ActivityList";
-import IconButton from "../core/IconButton";
-import MessageWidget from "../core/MessageWidget";
+import ActivityList from "../../chat/ActivityList";
+import IconButton from "../../core/IconButton";
+import MessageWidget from "../../core/MessageWidget";
 
 class Activity extends React.Component {
     static propTypes = {

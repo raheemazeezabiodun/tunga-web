@@ -2,14 +2,14 @@ import PropTypes from "prop-types";
 import React from "react";
 import _ from "lodash";
 
-import DocumentPicker from "../core/DocumentPicker";
-import Icon from "../core/Icon";
+import DocumentPicker from "../../core/DocumentPicker";
+import Icon from "../../core/Icon";
 import {
     DOC_TYPE_ESTIMATE, DOC_TYPE_OTHER, DOC_TYPE_PROPOSAL, DOC_TYPE_REQUIREMENTS,
     DOCUMENT_TYPES_MAP
-} from "../../actions/utils/api";
+} from "../../../actions/utils/api";
 
-import {isAdminOrPMOrClient} from '../utils/auth';
+import {isAdminOrPMOrClient} from '../../utils/auth';
 
 export default class Docs extends React.Component {
     static propTypes = {

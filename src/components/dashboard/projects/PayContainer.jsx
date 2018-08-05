@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import InvoiceListContainer from "../dashboard/payments/InvoiceListContainer";
 import Pay from "./Pay";
 
-import connect from "../../connectors/InvoiceConnector";
+import InvoiceListContainer from "../../dashboard/payments/InvoiceListContainer";
+import connect from "../../../connectors/InvoiceConnector";
 
 class PayContainer extends React.Component {
     static propTypes = {

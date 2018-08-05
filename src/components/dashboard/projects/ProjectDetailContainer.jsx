@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
-import {addPropsToChildren} from "../core/utils/children";
-import Progress from "../core/Progress";
+
+import Progress from "../../core/Progress";
+
+import {addPropsToChildren} from "../../core/utils/children";
+
 
 export default class ProjectDetailContainer extends React.Component  {
 

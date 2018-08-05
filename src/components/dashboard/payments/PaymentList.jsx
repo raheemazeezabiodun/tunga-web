@@ -7,14 +7,14 @@ import Button from "../../core/Button";
 import Progress from "../../core/Progress";
 import Icon from "../../core/Icon";
 import StripeButton from "../../core/StripeButton";
+import PaymentOptions from "./PaymentOptions";
+import InvoiceDetails from "./InvoiceDetails";
 
 import {openConfirm, openModal} from "../../core/utils/modals";
 import {getUser, isAdmin, isClient, isDev} from "../../utils/auth";
 import {batchInvoices} from "../../utils/payments";
 import {ENDPOINT_INVOICES} from "../../../actions/utils/api";
 import {parsePaymentObject} from "../../utils/stripe";
-import PaymentOptions from "./PaymentOptions";
-import InvoiceDetails from "./InvoiceDetails";
 
 const PAID_IN = 'paid-in';
 const PENDING_IN = 'pending-in';

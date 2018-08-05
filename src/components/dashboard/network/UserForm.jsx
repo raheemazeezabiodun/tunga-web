@@ -7,7 +7,7 @@ import Button from "../../core/Button";
 import Progress from "../../core/Progress";
 import Success from "../../core/Success";
 
-import {USER_TYPE_CHOICES} from "../../../legacy/constants/Api";
+import {USER_TYPE_CHOICES} from "../../../actions/utils/api";
 import connect from "../../../connectors/AuthConnector";
 
 class UserForm extends React.Component {

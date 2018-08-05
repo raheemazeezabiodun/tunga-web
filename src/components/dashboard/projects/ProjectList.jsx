@@ -3,8 +3,8 @@ import React from 'react';
 import {Row, Col} from 'reactstrap';
 
 import ProjectCard from './ProjectCard';
-import Progress from "../core/Progress";
-import LoadMore from "../core/LoadMore";
+import Progress from "../../core/Progress";
+import LoadMore from "../../core/LoadMore";
 
 export default class ProjectList extends React.Component {
     static propTypes = {

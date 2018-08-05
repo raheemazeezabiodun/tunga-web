@@ -2,12 +2,10 @@ import PropTypes from "prop-types";
 import React from 'react';
 import {FormGroup} from 'reactstrap';
 
-import Button from '../../../components/core/Button';
-import Input from "../../core/Input";
-import DateTimePicker from "../../core/DateTimePicker";
-import TextArea from "../../core/TextArea";
-import moment from "moment/moment";
-import CustomInputGroup from "../../core/CustomInputGroup";
+import Button from '../../../../components/core/Button';
+import Input from "../../../core/Input";
+import TextArea from "../../../core/TextArea";
+import CustomInputGroup from "../../../core/CustomInputGroup";
 
 export default class PlanningForm extends React.Component {
     static propTypes = {

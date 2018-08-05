@@ -6,6 +6,7 @@ import InvoiceListContainer from "./InvoiceListContainer";
 import PaymentList from "./PaymentList";
 
 import connect from "../../../connectors/InvoiceConnector";
+
 import {INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../../actions/utils/api";
 import {isDev} from "../../utils/auth";
 

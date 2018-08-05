@@ -2,13 +2,13 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import randomstring from 'randomstring';
 
-import connect from '../../connectors/ProjectConnector';
-
 import ProjectListContainer from './ProjectListContainer';
 import ProjectList from './ProjectList';
 import ProjectDetailContainer from './ProjectDetailContainer';
 import ProjectManagement from "./ProjectManagement";
 import ProjectForm from "./ProjectForm";
+
+import connect from '../../../connectors/ProjectConnector';
 
 
 class ProjectsContainer extends React.Component {

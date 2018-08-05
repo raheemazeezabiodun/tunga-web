@@ -3,20 +3,21 @@ import React from 'react';
 import {Table} from 'react-bootstrap';
 import moment from 'moment';
 
-import Button from "../core/Button";
-import Icon from "../core/Icon";
+import Button from "../../core/Button";
+import Icon from "../../core/Icon";
 import InvoiceForm from "./modals/InvoiceForm";
-import IconButton from "../core/IconButton";
-import StripeButton from "../core/StripeButton";
-import Progress from "../core/Progress";
+import IconButton from "../../core/IconButton";
+import StripeButton from "../../core/StripeButton";
+import Progress from "../../core/Progress";
+import PaymentOptions from "../../dashboard/payments/PaymentOptions";
+import InvoiceDetails from "../../dashboard/payments/InvoiceDetails";
 
-import {isAdmin, isAdminOrPM, isClient, isDev, isDevOrClient, getUser} from "../utils/auth";
-import {openConfirm, openModal} from "../core/utils/modals";
-import {ENDPOINT_INVOICES, INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../actions/utils/api";
-import {batchInvoices, sumInvoices, filterInvoices} from "../utils/payments";
-import {parsePaymentObject} from "../utils/stripe";
-import PaymentOptions from "../dashboard/payments/PaymentOptions";
-import InvoiceDetails from "../dashboard/payments/InvoiceDetails";
+import {isAdmin, isAdminOrPM, isClient, isDev, isDevOrClient, getUser} from "../../utils/auth";
+import {openConfirm, openModal} from "../../core/utils/modals";
+import {ENDPOINT_INVOICES, INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../../actions/utils/api";
+import {batchInvoices, sumInvoices, filterInvoices} from "../../utils/payments";
+import {parsePaymentObject} from "../../utils/stripe";
+
 
 export default class Pay extends React.Component {
     static propTypes = {

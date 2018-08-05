@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import {Link, Switch, Route} from 'react-router-dom';
 import moment from "moment";
 
-import Linkify from '../core/Linkify';
-
-import {isDev, isClient, getUser} from "../utils/auth";
-import Icon from "../core/Icon";
+import Linkify from '../../core/Linkify';
+import Icon from "../../core/Icon";
 import ProgressReportForm from "./ProgressReportForm";
 import ProgressReport from "./ProgressReport";
+
+import {isDev, isClient, getUser} from "../../utils/auth";
+
 
 export default class ProgressEventDetails extends React.Component {
 

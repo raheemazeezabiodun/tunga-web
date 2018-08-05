@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 import React from "react";
-
 import { Row, Col, Label, FormGroup } from "reactstrap";
-import ChoiceGroup from "../core/ChoiceGroup";
-import SkillSelector from "../core/SkillSelector";
-import TextArea from "../core/TextArea";
-import DateTimePicker from "../core/DateTimePicker";
-import Input from "../core/Input";
-import Button from "../core/Button";
-import DocumentPicker from "../core/DocumentPicker";
-import FieldError from '../core/FieldError';
 
-import {cleanSkills, DOCUMENT_TYPES_CLIENTS} from "../../actions/utils/api";
+import ChoiceGroup from "../../core/ChoiceGroup";
+import SkillSelector from "../../core/SkillSelector";
+import TextArea from "../../core/TextArea";
+import DateTimePicker from "../../core/DateTimePicker";
+import Input from "../../core/Input";
+import Button from "../../core/Button";
+import DocumentPicker from "../../core/DocumentPicker";
+import FieldError from '../../core/FieldError';
+
+import {cleanSkills, DOCUMENT_TYPES_CLIENTS} from "../../../actions/utils/api";
 
 export default class ProjectForm extends React.Component {
     static propTypes = {

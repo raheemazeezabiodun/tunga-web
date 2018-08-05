@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 import _ from 'lodash';
-import {addPropsToChildren} from "../../core/utils/children";
+
 import Progress from "../../core/Progress";
+
+import {addPropsToChildren} from "../../core/utils/children";
 
 export default class InvoiceListContainer extends React.Component  {
 

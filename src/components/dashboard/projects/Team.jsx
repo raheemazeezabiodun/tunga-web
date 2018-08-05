@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import IconButton from '../core/IconButton'
-import {openConfirm, openModal} from '../core/utils/modals';
+import IconButton from '../../core/IconButton'
+import {openConfirm, openModal} from '../../core/utils/modals';
 import ProjectMemberForm from './modals/ProjectMemberForm';
-import Avatar from '../core/Avatar';
+import Avatar from '../../core/Avatar';
 
-import {isAdminOrClient, isAdminOrPM, isAdminOrPMOrClient, isDev} from '../utils/auth';
+import {isAdminOrClient, isAdminOrPM, isAdminOrPMOrClient, isDev} from '../../utils/auth';
+
 
 export default class Team extends React.Component {
     static propTypes = {

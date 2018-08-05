@@ -2,19 +2,21 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {FormGroup, Row, Col} from 'reactstrap';
 import {NavLink} from 'react-router-dom';
-import Avatar from "../core/Avatar";
-import ChoiceGroup from "../core/ChoiceGroup";
-import Icon from "../core/Icon";
+import Avatar from "../../core/Avatar";
+import ChoiceGroup from "../../core/ChoiceGroup";
+import Icon from "../../core/Icon";
+import Info from "../../core/Info";
+import Select from "../../core/Select";
+import CustomInputGroup from "../../core/CustomInputGroup";
+import Button from "../../core/Button";
+import Success from "../../core/Success";
 
-import {SOCIAL_LOGIN_URLS, SOCIAL_PROVIDERS} from "../../legacy/constants/Api";
-import CustomInputGroup from "../core/CustomInputGroup";
-import Button from "../core/Button";
-import Success from "../core/Success";
-import {isAdminOrPMOrClient, isDev} from "../utils/auth";
-import Info from "../core/Info";
-import Select from "../core/Select";
-import {SLACK_SHARE_COMMENTS, SLACK_SHARE_DOCS, SLACK_SHARE_EVENTS, SLACK_SHARE_REPORTS} from "../../actions/utils/api";
-import {openConfirm} from "../core/utils/modals";
+import {isAdminOrPMOrClient, isDev} from "../../utils/auth";
+import {
+    SOCIAL_LOGIN_URLS, SOCIAL_PROVIDERS,
+    SLACK_SHARE_COMMENTS, SLACK_SHARE_DOCS, SLACK_SHARE_EVENTS, SLACK_SHARE_REPORTS
+} from "../../../actions/utils/api";
+import {openConfirm} from "../../core/utils/modals";
 
 export default class Settings extends React.Component {
     static defaultProps = {

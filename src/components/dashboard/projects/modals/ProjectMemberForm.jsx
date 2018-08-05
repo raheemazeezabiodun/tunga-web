@@ -1,9 +1,9 @@
 import React from 'react';
-import {FormGroup, Row} from 'reactstrap';
+import {FormGroup} from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import UserSelector from '../../core/UserSelector';
-import Button from '../../core/Button';
+import UserSelector from '../../../core/UserSelector';
+import Button from '../../../core/Button';
 
 
 export default class ProjectMemberForm extends React.Component {

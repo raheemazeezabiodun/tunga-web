@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Table} from 'reactstrap';
 
 import Icon from "../../core/Icon";
+
 import {ENDPOINT_INVOICES} from "../../../actions/utils/api";
 
 export default class InvoiceDetails extends React.Component {

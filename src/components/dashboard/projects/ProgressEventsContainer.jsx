@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import connect from '../../connectors/ProgressEventConnector';
-
 import ProgressEventDetailContainer from './ProgressEventDetailContainer';
 import ProgressEventDetails from './ProgressEventDetails';
+
+import connect from '../../../connectors/ProgressEventConnector';
 
 
 class ProgressEventsContainer extends React.Component {

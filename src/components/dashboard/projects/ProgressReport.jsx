@@ -3,11 +3,11 @@ import {Link} from 'react-router-dom';
 import {ProgressBar} from 'react-bootstrap';
 import moment from 'moment';
 
-import Avatar from '../core/Avatar';
-import Linkify from '../core/Linkify';
+import Avatar from '../../core/Avatar';
+import Linkify from '../../core/Linkify';
+import Icon from "../../core/Icon";
 
-import {getUser, isAdmin} from '../utils/auth';
-import Icon from "../core/Icon";
+import {getUser, isAdmin} from '../../utils/auth';
 
 export default class ProgressReport extends React.Component {
 

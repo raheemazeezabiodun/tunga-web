@@ -7,8 +7,8 @@ import FieldError from '../../core/FieldError';
 import SkillSelector from '../../core/SkillSelector';
 import { openModal } from '../../core/utils/modals';
 import Icon from '../../core/Icon';
-import WorkForm from './WorkForm';
-import EducationForm from './EducationForm';
+import WorkForm from './modals/WorkForm';
+import EducationForm from './modals/EducationForm';
 import Button from "../../core/Button";
 
 import {cleanSkills} from "../../../actions/utils/api";

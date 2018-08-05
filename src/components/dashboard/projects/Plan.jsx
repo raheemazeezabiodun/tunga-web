@@ -3,13 +3,14 @@ import React from 'react';
 import moment from 'moment';
 import { Row, Col } from 'reactstrap';
 
-import IconButton from '../core/IconButton';
-import Icon from '../core/Icon';
-import { openModal } from '../core/utils/modals';
-import {isAdmin, isAdminOrPMOrClient, isDevOrClient} from '../utils/auth';
+import IconButton from '../../core/IconButton';
+import Icon from '../../core/Icon';
 import MilestoneForm from "./modals/MilestoneForm";
 import PlanningForm from "./modals/PlanningForm";
 import ProjectDateForm from "./modals/ProjectDateForm";
+
+import { openModal } from '../../core/utils/modals';
+import {isAdmin, isAdminOrPMOrClient, isDevOrClient} from '../../utils/auth';
 
 
 export default class Plan extends React.Component {

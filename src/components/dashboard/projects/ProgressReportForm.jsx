@@ -3,15 +3,15 @@ import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 
-import FieldError from '../core/FieldError';
-import DateTimePicker from '../core/DateTimePicker';
-import Success from "../core/Success";
-import Button from "../core/Button";
-import ChoiceGroup from "../core/ChoiceGroup";
-import Upload from "../core/Upload";
-import TextArea from "../core/TextArea";
-import Select from "../core/Select";
-import Input from "../core/Input";
+import FieldError from '../../core/FieldError';
+import DateTimePicker from '../../core/DateTimePicker';
+import Success from "../../core/Success";
+import Button from "../../core/Button";
+import ChoiceGroup from "../../core/ChoiceGroup";
+import Upload from "../../core/Upload";
+import TextArea from "../../core/TextArea";
+import Select from "../../core/Select";
+import Input from "../../core/Input";
 
 import {
     REPORT_STATUSES,
@@ -20,9 +20,9 @@ import {
     PROGRESS_EVENT_TYPE_PM,
     PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
     REPORT_STUCK_REASONS, PROGRESS_EVENT_TYPE_MILESTONE,
-} from '../../actions/utils/api';
-import {getUser, isClient, isDev, isPM} from "../utils/auth";
-import {openConfirm} from "../core/utils/modals";
+} from '../../../actions/utils/api';
+import {getUser, isClient, isDev, isPM} from "../../utils/auth";
+import {openConfirm} from "../../core/utils/modals";
 
 export default class ProgressReportForm extends React.Component {
     static propTypes = {

@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import moment from "moment";
-import Icon from "../core/Icon";
+
+import Icon from "../../core/Icon";
 
 export default class ProjectCard extends React.Component {
     static propTypes = {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Payoneer from "../core/Payoneer";
+import Payoneer from "../../core/Payoneer";
 
 export default (props) => {
 

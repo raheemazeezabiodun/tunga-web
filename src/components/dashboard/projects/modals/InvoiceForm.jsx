@@ -3,14 +3,14 @@ import React from 'react';
 import {FormGroup, Row, Col} from 'reactstrap';
 import moment from "moment";
 
-import Button from '../../../components/core/Button';
-import Input from "../../core/Input";
-import DateTimePicker from "../../core/DateTimePicker";
-import UserSelector from "../../core/UserSelector";
-import MilestoneSelector from "../../core/MilestoneSelector";
+import Button from '../../../core/Button';
+import Input from "../../../core/Input";
+import DateTimePicker from "../../../core/DateTimePicker";
+import UserSelector from "../../../core/UserSelector";
+import MilestoneSelector from "../../../core/MilestoneSelector";
 
-import {INVOICE_TYPE_SALE} from "../../../actions/utils/api";
-import IconButton from "../../core/IconButton";
+import {INVOICE_TYPE_SALE} from "../../../../actions/utils/api";
+import IconButton from "../../../core/IconButton";
 
 export default class InvoiceForm extends React.Component {
     static propTypes = {

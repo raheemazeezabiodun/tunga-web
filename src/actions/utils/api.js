@@ -145,6 +145,16 @@ export function cleanSkills(skills) {
     return cleanedData;
 }
 
+export const USER_TYPE_DEVELOPER = 1;
+export const USER_TYPE_PROJECT_OWNER = 2;
+export const USER_TYPE_PROJECT_MANAGER = 3;
+
+export const USER_TYPE_CHOICES = [
+    {id: USER_TYPE_DEVELOPER, name: 'Developer'},
+    {id: USER_TYPE_PROJECT_OWNER, name: 'Project Owner'},
+    {id: USER_TYPE_PROJECT_MANAGER, name: 'Project Manager'},
+];
+
 export const DOC_TYPE_REQUIREMENTS = 'requirements';
 export const DOC_TYPE_WIREFRAMES = 'wireframes';
 export const DOC_TYPE_ESTIMATE = 'estimate';

@@ -2,12 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {FormGroup, Row, Col} from 'reactstrap';
 
-import Input from '../../core/InputGroup';
 import FieldError from '../../core/FieldError';
 import Icon from '../../core/Icon';
 import Upload from '../../core/Upload';
 import IconButton from "../../core/IconButton";
-import Avatar from "../../core/Avatar";
+
 import {isDevOrPM} from "../../utils/auth";
 
 

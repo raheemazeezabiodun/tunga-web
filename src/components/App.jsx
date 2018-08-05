@@ -8,9 +8,9 @@ import connect from '../connectors/AuthConnector';
 
 import store from '../store';
 
-import DashboardLayout from './DashboardLayout';
+import DashboardLayout from './dashboard/DashboardLayout';
 import ChatWidget from "./chat/ChatWidget";
-import LegacyRedirect from './LegacyRedirect';
+import LegacyRedirect from './showcase/LegacyRedirect';
 import BootLogo from "./core/BootLogo";
 import ShowcaseLayout from "./showcase/ShowcaseLayout";
 

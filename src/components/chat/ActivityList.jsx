@@ -5,11 +5,11 @@ import moment from 'moment';
 import TimeAgo from 'react-timeago';
 import {ProgressBar} from 'react-bootstrap';
 
-import Linkify from '../Linkify';
+import Linkify from '../core/Linkify';
 import randomstring from 'randomstring';
 
 import Avatar from '../core/Avatar';
-import Attachments from '../Attachments';
+import Attachments from './Attachments';
 import Icon from "../core/Icon";
 
 import {

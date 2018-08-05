@@ -14,7 +14,7 @@ import Upload from '../../components/core/Upload';
 import ChoiceGroup from '../../components/core/ChoiceGroup';
 import Avatar from '../../components/core/Avatar';
 import NavBar from '../../components/NavBar';
-import SideBar from '../../components/SideBar';
+import SideBar from '../../components/dashboard/SideBar';
 import Select from '../../components/core/Select';
 import CountrySelector from '../../components/core/CountrySelector';
 import {openAlert, openConfirm, openPrompt, openModal} from '../../components/core/utils/modals';

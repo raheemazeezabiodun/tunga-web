@@ -3,9 +3,9 @@ import { Redirect } from 'react-router-dom';
 import Media from "react-media";
 
 import NavBar from '../NavBar';
-import SideBar from '../SideBar';
-import TitleBar from '../TitleBar';
-import MainContent from '../MainContent';
+import SideBar from '../dashboard/SideBar';
+import TitleBar from '../dashboard/TitleBar';
+import MainContent from '../dashboard/MainContent';
 import PropTypes from "prop-types";
 
 export default class ShowcaseLayout extends React.Component {

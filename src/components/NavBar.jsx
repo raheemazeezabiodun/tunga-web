@@ -24,6 +24,26 @@ export default class NavBar extends React.Component {
         isLargeDevice: PropTypes.bool,
     };
 
+    componentDidMount() {
+        let updateNavbar = function() {
+            let windowWidth = $(window).innerWidth();
+            if (windowWidth >= 768) {
+                if ($(document).scrollTop() >= 20) {
+                    $('.navbar').addClass('navbar-showcase-fixed');
+                } else {
+                    $('.navbar').removeClass('navbar-showcase-fixed');
+                }
+            }
+        };
+
+        const {variant} = this.props;
+        if(variant === 'showcase') {
+            $(document).ready(updateNavbar);
+            $(document).scroll(updateNavbar);
+            $(window).resize(updateNavbar);
+        }
+    }
+
     onSignOut(e) {
         if(e) {
             e.preventDefault();

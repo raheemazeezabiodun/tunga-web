@@ -46,6 +46,12 @@
             padding-left: 0;
             padding-right: 20px;
 
+            &.navbar-showcase-fixed,
+            &.navbar-showcase-always-fixed {
+                margin-top: 0;
+                background-color: $brand-color;
+            }
+
             #navbar {
                 margin-left: 20px;
             }

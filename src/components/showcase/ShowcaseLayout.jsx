@@ -22,11 +22,15 @@ export default class ShowcaseLayout extends React.Component {
     };
 
     render() {
-        const {user, logout, match, isLargeDevice} = this.props;
+        const {user, logout, match, isLargeDevice} = this.props,
+            isAgreementPage = /^\/(privacy|agreement|code-of-conduct)(\/|$)/ig.test(window.location.pathname);
 
         return (
             <div className="showcase">
-                <NavBar variant="showcase" user={user} onSignOut={logout} isLargeDevice={isLargeDevice}/>
+                <NavBar variant="showcase" user={user}
+                        onSignOut={logout}
+                        isLargeDevice={isLargeDevice}
+                        className={isAgreementPage?'navbar-showcase-always-fixed':''}/>
 
                 <Switch>
                     <Route path='/our-story' component={OurStory}/>

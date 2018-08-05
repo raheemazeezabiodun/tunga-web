@@ -157,7 +157,7 @@ class Footer extends React.Component {
                                         .slice(0, 4)
                                         .map(article => {
                                             return (
-                                                <li>
+                                                <li key={article.id}>
                                                     <a
                                                         target="_blank"
                                                         href={

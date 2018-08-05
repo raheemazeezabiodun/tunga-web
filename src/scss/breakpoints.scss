@@ -124,6 +124,10 @@
         }
     }
 
+    .chat-widget {
+        right: 40px;
+    }
+
     .showcase {
         header {
             background-image: url('../assets/images/showcase/welcome-header.jpg');
@@ -159,6 +163,32 @@
 
                     &.latest-from-blog {
                         clear: both;
+                    }
+                }
+            }
+        }
+
+        .landing-page {
+
+            #services {
+                margin-top: 50px;
+                @include clearfix();
+
+                .service {
+                    float: left;
+                    width: 33.33%;
+                    height: 200px;
+                    padding: 0;
+
+                    .wrapper {
+                        /*.font-size(1.4);*/
+                        padding: 20px 15px;
+
+                        .headline {
+                            font-size: px-to-rem(24);
+                            margin-bottom: 22px;
+                            margin-bottom: 10px;
+                        }
                     }
                 }
             }
@@ -225,6 +255,10 @@
         }
     }
 
+    .chat-widget {
+        right: 80px;
+    }
+
     .showcase {
         #contact-us {
             text-align: center;
@@ -278,6 +312,23 @@
 
                     &.latest-from-blog {
                         clear: none;
+                    }
+                }
+            }
+        }
+
+        .landing-page {
+
+            #services {
+                margin-top: 100px;
+
+                .service {
+                    .wrapper {
+                        padding: 30px;
+
+                        .headline {
+                            margin-bottom: 22px;
+                        }
                     }
                 }
             }

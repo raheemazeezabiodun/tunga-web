@@ -63,7 +63,7 @@ export default class NavBar extends React.Component {
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/friends-of-tunga" activeClassName="active">
+                                <NavLink to="/friends" activeClassName="active">
                                     Friends Of Tunga
                                 </NavLink>
                             </li>
@@ -75,7 +75,7 @@ export default class NavBar extends React.Component {
                         </ul>
                     ):null}
                     <ul className="navbar-nav ml-auto">
-                        {user?(
+                        {user && user.id?(
                             <React.Fragment>
                                 {variant === 'showcase'?null:(
                                     <li>
@@ -110,7 +110,6 @@ export default class NavBar extends React.Component {
                             <li>
                                 <Link
                                     to="/signin"
-                                    activeClassName="active"
                                     className="btn btn-nav">
                                     Login
                                 </Link>

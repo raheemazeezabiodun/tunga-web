@@ -1884,7 +1884,7 @@ table {
 
 .chat-widget {
     position: fixed;
-    right: 80px;
+    right: 20px;
     bottom: 10px;
     z-index: 1040;
 
@@ -2034,11 +2034,13 @@ textarea {
     header {
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+        justify-content: space-between;
+        min-height: 50vh;
         color: get-color('white');
         background: url('../assets/images/showcase/welcome-header-mobile.jpg') no-repeat center;
         background-size: cover;
         padding-top: 170px;
+        padding-bottom: 80px;
 
         &.height-100 {
             min-height: 100vh;
@@ -2053,8 +2055,7 @@ textarea {
         }
 
         .cta {
-            margin-top: 60px;
-            margin-bottom: 80px;
+            margin-top: 30px;
             @include padding-x(px-to-rem(30));
             min-width: 260px;
         }
@@ -2204,6 +2205,51 @@ textarea {
             &:active {
                 color: get-color('white');
             }
+        }
+    }
+
+    .landing-page {
+        header {
+            padding-bottom: 0;
+        }
+
+        #services {
+            margin-top: 50px;
+
+            .service {
+                color: get-color('black');
+                background-color: rgba(250, 250, 250, 0.9);
+                padding: 0 15px;
+
+                .wrapper {
+                    @include padding-y(px-to-rem(20));
+                    margin: 0 auto;
+
+                    .headline {
+                        font-weight: 500;
+                        margin-bottom: 6px;
+                    }
+
+                    a {
+                        display: block;
+                    }
+                }
+
+                &:nth-child(2) {
+                    background-color: rgba(234, 234, 234, 0.9);
+                }
+
+                &:last-child {
+                    background-color: rgba(217, 217, 217, 0.9);
+                }
+            }
+        }
+    }
+
+    .friends-page {
+        a:not(.btn) {
+            color: get-color('white');
+            text-decoration: underline;
         }
     }
 }

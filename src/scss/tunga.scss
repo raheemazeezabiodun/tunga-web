@@ -62,6 +62,8 @@ i {
 .showcase-title {
     font-size: px-to-rem(55);
     font-weight: $font-weight-medium;
+    line-height: 1.1;
+    margin-bottom: 15px;
 }
 
 .showcase-desc {
@@ -987,16 +989,6 @@ table {
             background-color: get-color('light-grey');
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
         }
-    }
-}
-
-// Showcase
-.showcase {
-    header {
-        display: flex;
-        flex-direction: column;
-        background-color: get-color('dark-grey');
-        min-height: 100vh;
     }
 }
 
@@ -2034,6 +2026,185 @@ textarea {
 
     h6 {
         padding-bottom: 8px;
+    }
+}
+
+// Showcase
+.showcase {
+    header {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        color: get-color('white');
+        background: url('../assets/images/showcase/welcome-header-mobile.jpg') no-repeat center;
+        background-size: cover;
+        padding-top: 170px;
+
+        &.height-100 {
+            min-height: 100vh;
+        }
+
+        &.height-50 {
+            min-height: 50vh;
+        }
+
+        .container {
+            max-width: 1000px;
+        }
+
+        .cta {
+            margin-top: 60px;
+            margin-bottom: 80px;
+            @include padding-x(px-to-rem(30));
+            min-width: 260px;
+        }
+    }
+
+    .section-heading {
+        text-align: center;
+        font-size: px-to-rem(24);
+        font-weight: 500;
+        color: get-color('black');
+        margin-top: 80px;
+        margin-bottom: 50px;
+
+        .border {
+            display: block;
+            max-width: 200px;
+            margin: 28px auto 0;
+            height: 3px;
+            background-color: $brand-color;
+        }
+    }
+
+    #contact-us {
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-bottom: 90px;
+
+        .section-heading {
+            margin-bottom: 60px;
+        }
+
+        form {
+            margin-top: 40px;
+        }
+
+        .form-control {
+            height: 40px;
+            line-height: 40px;
+            box-shadow: 0 2px 4px 0 rgba(193, 193, 193, 0.5);
+        }
+
+        textarea {
+            min-height: 115px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+    }
+
+    footer {
+        padding: 45px 15px;
+        background-color: #202020;
+        color: get-color('white');
+
+        .sections {
+            .section {
+                margin-bottom: 20px;
+
+                &.social {
+                    text-align: center;
+
+                    .tunga-logo-btm {
+                        img {
+                            width: 100px;
+                        }
+                    }
+
+                    .social-networks {
+                        margin-top: 20px;
+
+                        a:first-child {
+                            margin-left: 0;
+                        }
+
+                        a:last-child {
+                            margin-right: 0;
+                        }
+
+                        a {
+                            display: inline-block;
+                            text-align: center;
+                            font-size: px-to-rem(18);
+                            color: get-color('white');
+                            width: 40px;
+                            height: 40px;
+                            padding-top: 6px;
+                            border: 1px solid get-color('white');
+                            border-radius: 50%;
+                            margin: 0 5px;
+
+                            .fa {
+                                color: get-color('white');
+                            }
+                        }
+                    }
+
+                    .footer-address {
+                        line-height: 0.7;
+                        padding: 30px 0;
+                    }
+                }
+
+                &.footer-info {
+                    text-align: left;
+                    h4 {
+                        font-size: px-to-rem(20);
+                        text-align: left;
+                    }
+
+                    ul {
+                        margin-bottom: 15px;
+                    }
+                }
+
+                &.latest-from-blog {
+                    text-align: left;
+                    margin-bottom: 0;
+
+                    li {
+                        padding: 2px 0;
+                        max-height: 40px;
+                        overflow: hidden;
+                    }
+                }
+            }
+        }
+
+        h4 {
+            font-size: px-to-rem(18);
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .fa {
+            color: $brand-color;
+        }
+
+        a {
+            color: get-color('white');
+
+            &:hover,
+            &:focus,
+            &:active {
+                color: get-color('white');
+            }
+        }
     }
 }
 

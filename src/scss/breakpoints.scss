@@ -40,7 +40,6 @@
 @include media-breakpoint-up(md) { // >= 768px
     .navbar {
         &.navbar-showcase {
-            position: absolute;
             background-color: transparent;
             box-shadow: none;
             margin-top: 20px;
@@ -124,6 +123,47 @@
             min-height: 520px;
         }
     }
+
+    .showcase {
+        header {
+            background-image: url('../assets/images/showcase/welcome-header.jpg');
+        }
+
+        #contact-us {
+            text-align: center;
+
+            .contact-sections {
+                text-align: center;
+                display: inline-block;
+
+                .section {
+                    text-align: left;
+                }
+            }
+        }
+
+        footer {
+            text-align: center;
+
+            .sections {
+                display: inline-block;
+                @include clearfix();
+
+                .section {
+                    @include clearfix();
+
+                    &.footer-info {
+                        float: left;
+                        width: 270px;
+                    }
+
+                    &.latest-from-blog {
+                        clear: both;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @include media-breakpoint-up(lg) { // >= 992px
@@ -136,6 +176,10 @@
             }
 
             .navbar-nav {
+                a {
+                    font-size: px-to-rem(16);
+                }
+
                 &.navbar-main {
                     li {
                         @include padding-x(px-to-rem(20));
@@ -178,6 +222,65 @@
             float: right;
             width: 24.76%; // 204/824
             max-width: 330px;
+        }
+    }
+
+    .showcase {
+        #contact-us {
+            text-align: center;
+
+            form {
+                margin-top: 0;
+            }
+
+            .contact-info {
+                margin-bottom: 70px;
+            }
+
+            .contact-sections {
+                text-align: center;
+                display: inline-block;
+
+                .section {
+                    float: left;
+                    text-align: left;
+
+                    &:first-child {
+                        max-width: 470px;
+                        margin-right: 50px;
+                    }
+
+                    &:last-child {
+                        width: 410px;
+                    }
+                }
+            }
+        }
+
+        footer {
+            .sections {
+                display: inline-block;
+                @include clearfix();
+
+                .section {
+                    float: left;
+                    width: 270px;
+                    @include clearfix();
+
+                    &:first-child {
+                        margin-right: 86px;
+                    }
+
+                    &:last-child {
+                        width: auto;
+                        max-width: 270px;
+                    }
+
+                    &.latest-from-blog {
+                        clear: none;
+                    }
+                }
+            }
         }
     }
 }

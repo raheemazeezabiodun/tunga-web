@@ -8,6 +8,7 @@ import Skill from './SkillReducers';
 import Activity from './ActivityReducers';
 import ProgressEvent from './ProgressEventReducers';
 import Invoice from './InvoiceReducers';
+import Utility from './UtilityReducers';
 
 const TungaApp = combineReducers({
     Auth,
@@ -18,6 +19,7 @@ const TungaApp = combineReducers({
     Activity,
     ProgressEvent,
     Invoice,
+    Utility,
     routing: routerReducer,
 });
 

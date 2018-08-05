@@ -1,12 +1,9 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import Media from "react-media";
+import PropTypes from "prop-types";
+import {Switch, Route, Redirect} from 'react-router-dom';
 
 import NavBar from '../NavBar';
-import SideBar from '../dashboard/SideBar';
-import TitleBar from '../dashboard/TitleBar';
-import MainContent from '../dashboard/MainContent';
-import PropTypes from "prop-types";
+import Home from "./Home";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -22,11 +19,12 @@ export default class ShowcaseLayout extends React.Component {
         return (
             <div className="showcase">
                 <NavBar variant="showcase" user={user} onSignOut={logout} isLargeDevice={isLargeDevice}/>
-                <header>
 
-                </header>
+                <Switch>
+                    <Route path='/' component={Home}/>
+                    <Redirect to="*" from='/'/>
+                </Switch>
             </div>
         )
     }
 }
-

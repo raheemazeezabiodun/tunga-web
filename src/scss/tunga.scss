@@ -2252,6 +2252,34 @@ textarea {
             text-decoration: underline;
         }
     }
+
+    .agreement-page {
+        padding-top: 100px;
+
+        .container {
+            max-width: 900px;
+            margin-bottom: 50px;
+        }
+        
+        h3 {
+            margin-top: 20px;
+        }
+
+        .info-list {
+
+            .row {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .tag {
+                color: #888 !important;
+                background-color: #eee;
+                padding: 5px 8px;
+                margin: 2px;
+            }
+        }
+    }
 }
 
 @import "breakpoints";

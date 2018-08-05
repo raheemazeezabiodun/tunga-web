@@ -9,6 +9,9 @@ import Quality from "./Quality";
 import Pricing from "./Pricing";
 import Friends from "./Friends";
 import FriendsRules from "./FriendsRules";
+import Privacy from "./Privacy";
+import Agreement from "./Agreement";
+import CodeOfConduct from "./CodeOfConduct";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -33,6 +36,9 @@ export default class ShowcaseLayout extends React.Component {
                     <Route path='/friends' component={Friends}/>
                     <Redirect from="/friends-of-tunga" to='/friends'/>
                     <Redirect from="/friends-of-tunga-rules" to='/friends/rules'/>
+                    <Route path='/privacy' component={Privacy}/>
+                    <Route path='/agreement' component={Agreement}/>
+                    <Route path='/code-of-conduct' component={CodeOfConduct}/>
                     <Route exact path='/' component={Home}/>
                     <Redirect from="*" to='/'/>
                 </Switch>

@@ -2601,6 +2601,95 @@ textarea {
         }
     }
 
+    .pricing-page {
+        background-color: get-color('light-grey');
+
+        header {
+            background-image: url('../assets/images/showcase/PricingwebTungadevelopersatwork.jpg');
+        }
+
+        #pricing-options {
+            display: block;
+            text-align: center;
+            padding-top: 80px;
+            padding-bottom: 50px;
+
+            .pricing-slides {
+                @include clearfix();
+
+                .slide {
+                    padding: 25px 0;
+                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+                    margin-bottom: 20px;
+                    text-align: center;
+                    font-size: px-to-rem(14);
+                    font-weight: 300;
+                    background-color: get-color('white');
+
+                    .section-heading {
+                        padding-top: 0;
+                        margin-bottom: 20px;
+
+                        .border {
+                            max-width: 200px;
+                            margin-top: 20px;
+                        }
+                    }
+
+                    .description {
+                        height: 106px;
+                        margin: 0 auto;
+                    }
+
+                    .perks {
+                        display: inline-block;
+                        font-size: px-to-rem(15);
+                        font-weight: 500;
+                        line-height: 1;
+                        height: 150px;
+                        margin: 0 auto;
+
+                        .perk-service {
+                            text-align: left;
+                        }
+                        .perk-fee {
+                            text-align: right;
+                        }
+                        .perk-custom {
+                            font-size: px-to-rem(18);
+                            text-align: center;
+                        }
+                    }
+
+                    .disclaimer {
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+
+        #pricing-action {
+            padding-bottom: 80px;
+
+            .btn {
+                min-width: 260px;
+            }
+        }
+
+        ul {
+            li {
+                .description {
+                    min-height: 100px;
+                    p {
+                        width: 80%;
+                        text-align: center;
+                        margin: 0 auto;
+                    }
+                }
+            }
+        }
+    }
+
     .friends-page {
         a:not(.btn) {
             color: get-color('white');

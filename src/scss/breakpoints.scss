@@ -25,6 +25,14 @@
             }
         }
     }
+
+    .showcase {
+        .our-story-page {
+            header {
+                background-image: url('../assets/images/showcase/OurStoryDevelopersWorking.jpg') !important;
+            }
+        }
+    }
 }
 
 // >= 0px
@@ -224,6 +232,17 @@
                 }
             }
         }
+
+        .our-story-page {
+            #partners {
+                .partner-links {
+                    li {
+                        max-width: 20%;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -386,17 +405,27 @@
                     width: auto;
                 }
             }
+
+            #development-style {
+                .development-style-cases {
+                    .case {
+                        float: left;
+                        max-width: 302px;
+                        margin-right: 20px;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
         }
 
-        #development-style {
-            .development-style-cases {
-                .case {
-                    float: left;
-                    max-width: 302px;
-                    margin-right: 20px;
-
-                    &:last-child {
-                        margin-right: 0;
+        .our-story-page {
+            .content {
+                section {
+                    .container {
+                        max-width: 970px;
                     }
                 }
             }

@@ -13,8 +13,10 @@ import {proxySafeUrl} from '../../utils/proxy';
 class Footer extends React.Component {
 
     componentDidMount() {
-        const {UtilityActions} = this.props;
-        UtilityActions.getMediumPosts();
+        const {Utility, UtilityActions} = this.props;
+        if(!Utility.posts || !Utility.posts.length) {
+            UtilityActions.getMediumPosts();
+        }
     }
 
     render() {

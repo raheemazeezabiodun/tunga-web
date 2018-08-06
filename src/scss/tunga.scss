@@ -2473,7 +2473,7 @@ textarea {
             padding-bottom: 80px;
         }
 
-        section:nth-child(even) {
+        section:nth-child(odd) {
             background-color: get-color('light-grey');
         }
 
@@ -2521,6 +2521,82 @@ textarea {
                 width: 100%;
                 height: 100%;
                 border: 0;
+            }
+        }
+    }
+
+    .quality-page {
+
+        header {
+            background-image: url('../assets/images/showcase/QualityTungadevelopersmeeting.jpg');
+        }
+
+        #select-devs-section {
+            .section-heading {
+                .border {
+                    max-width: 400px;
+                }
+            }
+        }
+
+        #new-quality-guide {
+            .container {
+                max-width: 760px;
+            }
+
+            .step {
+                margin-bottom: 40px;
+
+                .step-icon {
+                    font-size: px-to-rem(140);
+                    line-height: 1.4;
+                    color: $brand-color;
+                    text-align: center;
+                }
+
+                .step-body {
+                    position: relative;
+                    font-size: px-to-rem(14);
+
+                    > * {
+                        margin-left: 50px;
+                    }
+
+                    h1 {
+                        font-size: px-to-rem(22);
+                        font-weight: 500;
+                        color: get-color('black');
+                        margin-top: 0;
+                    }
+
+                    .number {
+                        position: absolute;
+                        top: -20px;
+                        left: 0;
+                        font-size: px-to-rem(74);
+                        font-weight: 400;
+                        margin-left: 0;
+                    }
+                }
+            }
+
+            .dot-connector {
+                display: none;
+                margin: 0 85px 20px;
+
+                img {
+                    max-width: 100%;
+                }
+            }
+        }
+
+        #press {
+            background-color: transparent;
+            opacity: 0.6;
+            margin-top: 50px;
+
+            &:hover {
+                opacity: 1;
             }
         }
     }

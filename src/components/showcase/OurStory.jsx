@@ -5,6 +5,7 @@ import YouTube from 'react-youtube';
 import Header from "./elements/Header";
 import Footer from "./elements/Footer";
 import Title from "./elements/Title";
+import Partners from "./elements/Partners";
 
 export default () => {
     let title = (
@@ -94,8 +95,8 @@ export default () => {
                 </div>
             </section>
 
-            <section id="partners">
-                <div className="container">
+            <Partners title={
+                <div>
                     <Title>
                         Our Mission: 21st Century Jobs for African
                         Youths
@@ -111,75 +112,8 @@ export default () => {
                         independent and make their mark in the
                         international economic marketplace.
                     </p>
-
-                    <Reveal effect="animated fadeInLeft">
-                        <div>
-                            <ul className="partner-links">
-                                <li>
-                                    <a
-                                        href="http://www.butterflyworks.org/"
-                                        target="_blank"
-                                        title="Butterfly Works">
-                                        <img
-                                            src={require('../../assets/images/partners/butterfly-works-logo.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.dioraphte.nl/en/"
-                                        target="_blank"
-                                        title="Dioraphte">
-                                        <img
-                                            src={require('../../assets/images/partners/dioraphte.jpg')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.oxfam.org/"
-                                        target="_blank"
-                                        title="Oxfam">
-                                        <img
-                                            src={require('../../assets/images/partners/oxfam.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="http://www.doen.nl/about-doen/general.htm"
-                                        target="_blank"
-                                        title="the DOEN Foundation">
-                                        <img
-                                            src={require('../../assets/images/partners/DOEN.gif')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.edukans.nl/"
-                                        target="_blank"
-                                        title="Edukans">
-                                        <img
-                                            src={require('../../assets/images/partners/edukans.jpg')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.triodos.com/"
-                                        target="_blank"
-                                        title="Triodos Bank">
-                                        <img
-                                            src={require('../../assets/images/partners/triodos-bank.png')}
-                                        />
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </Reveal>
                 </div>
-            </section>
+            }/>
 
             <section>
                 <div className="container">

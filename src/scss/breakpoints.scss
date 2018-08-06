@@ -29,7 +29,13 @@
     .showcase {
         .our-story-page {
             header {
-                background-image: url('../assets/images/showcase/OurStoryDevelopersWorking.jpg') !important;
+                background-image: url('../assets/images/showcase/OurStoryDevelopersWorking.jpg');
+            }
+        }
+
+        .quality-page {
+            header {
+                background-image: url('../assets/images/showcase/QualityTungadevelopersmeetingmobile.jpg');
             }
         }
     }
@@ -243,6 +249,42 @@
                 }
             }
         }
+
+        .quality-page {
+            #new-quality-guide {
+                .step {
+                    margin-bottom: 0;
+
+                    .step-icon {
+                        float: left;
+                        max-width: 210px;
+                        text-align: center;
+                        margin-right: 20px;
+                    }
+
+                    .step-body {
+                        float: left;
+                        max-width: 480px;
+                    }
+
+                    &:nth-of-type(even) {
+                        .step-icon {
+                            float: right;
+                            margin-right: 0;
+                            margin-left: 20px;
+                        }
+
+                        .step-body {
+                            float: right;
+                        }
+                    }
+                }
+
+                .dot-connector {
+                    display: block;
+                }
+            }
+        }
     }
 }
 
@@ -422,11 +464,9 @@
         }
 
         .our-story-page {
-            .content {
-                section {
-                    .container {
-                        max-width: 970px;
-                    }
+            section {
+                .container {
+                    max-width: 970px;
                 }
             }
         }

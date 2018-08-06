@@ -8,6 +8,8 @@ import Header from "./elements/Header";
 import ContactUs from "./elements/ContactUs";
 import Footer from "./elements/Footer";
 import Title from "./elements/Title";
+import Press from "./elements/Press";
+import Partners from "./elements/Partners";
 import Button from "../core/Button";
 import Icon from "../core/Icon";
 
@@ -230,140 +232,7 @@ export default () => {
                 </div>
             </section>
 
-            <section id="press">
-                <div className="container">
-                    <Reveal effect="animated fadeInLeft">
-                        <div>
-                            <ul className="press-links">
-                                <li>
-                                    <a
-                                        href="http://www.bbc.co.uk/news/world-africa-38294998"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/bbc.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.youtube.com/watch?v=v9uRtYpZDQs"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/campus-party.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.oneworld.nl/startup-tunga-lanceert-pilot-programma-voor-nieuw-soort-freelance-platform"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/OWlogo.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="http://trendwatching.com/blog/featured-innovator-tunga/"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/trend-watching.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://soundcloud.com/african-tech-round-up/a-chat-with-ernesto-spruyt-of-tungaio?in=african-tech-round-up/sets/quick-chats"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/African-Tech-Round-Up.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.nabc.nl/africa-business-news/5/technology/377/tunga-founder-ernesto-spruyt-we-create-21st-century-jobs-in-africa"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/netherlands-african-business-council.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://blog.tunga.io/our-developers-dont-want-aid-they-want-to-be-productive-4aba9173211e"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/bnr.jpg')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.telegraaf.nl/nieuws/1876342/podium-voor-afrikaans-it-talent"
-                                        target="_blank">
-                                        <img style={{height: '25px',}}
-                                             src={require('../../assets/images/press/Telegraaf.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.sprout.nl/artikel/startup-van-de-week/deze-nederlandse-startup-laat-websites-en-apps-bouwen-door-afrikaanse"
-                                        target="_blank">
-                                        <img style={{height: '25px',}}
-                                             src={require('../../assets/images/press/sprout.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.gsma.com/mobilefordevelopment/programme/ecosystem-accelerator/three-takeaways-africa-technology-business-forum/"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/Gsma.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.social-enterprise.nl/wie-doen-het/tunga/"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/social-enterprise.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://soundcloud.com/boostznl/10-van-idee-tot-app-hoe-doe-je-dat-zonder-it-kennis-en-groot-budget"
-                                        target="_blank">
-                                        <img
-                                            src={require('../../assets/images/press/Boostz-logo.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://socreatie.nl/ernesto-spruyt-afrikaanse-programmeurs-inhuren-via-tunga/"
-                                        target="_blank">
-                                        <img style={{height: '40px',}}
-                                             src={require('../../assets/images/press/socreatie.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.rabobank.nl/bedrijven/groei/personeel/afrikaanse-programmeurs/"
-                                        target="_blank">
-                                        <img src={require('../../assets/images/press/rabobank.png')}/>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </Reveal>
-                </div>
-            </section>
+            <Press/>
 
             <section id="case-studies">
                 <div className="container">
@@ -412,79 +281,12 @@ export default () => {
                 </div>
             </section>
 
-            <section id="partners">
-                <div className="container">
-                    <div className="supported-by">
-                        Supported By:
-                    </div>
-                    <Reveal effect="animated fadeInLeft">
-                        <div>
-                            <ul className="partner-links">
-                                <li>
-                                    <a
-                                        href="http://www.butterflyworks.org/"
-                                        target="_blank"
-                                        title="Butterfly Works">
-                                        <img
-                                            src={require('../../assets/images/partners/butterfly-works-logo.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.dioraphte.nl/en/"
-                                        target="_blank"
-                                        title="Dioraphte">
-                                        <img
-                                            src={require('../../assets/images/partners/dioraphte.jpg')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.oxfam.org/"
-                                        target="_blank"
-                                        title="Oxfam">
-                                        <img
-                                            src={require('../../assets/images/partners/oxfam.png')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="http://www.doen.nl/about-doen/general.htm"
-                                        target="_blank"
-                                        title="the DOEN Foundation">
-                                        <img
-                                            src={require('../../assets/images/partners/DOEN.gif')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.edukans.nl/"
-                                        target="_blank"
-                                        title="Edukans">
-                                        <img
-                                            src={require('../../assets/images/partners/edukans.jpg')}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="https://www.triodos.com/"
-                                        target="_blank"
-                                        title="Triodos Bank">
-                                        <img
-                                            src={require('../../assets/images/partners/triodos-bank.png')}
-                                        />
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </Reveal>
+            <Partners title={
+                <div className="supported-by">
+                    Supported By:
                 </div>
-            </section>
+            }>
+            </Partners>
 
             <section className="what-we-do-best">
                 <div className="container ">

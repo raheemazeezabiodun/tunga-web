@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ENDPOINT_ACCOUNT_SETTINGS} from '../constants/Api';
+import {ENDPOINT_ACCOUNT_SETTINGS} from './utils/api';
 
 export const RETRIEVE_SETTINGS_START = 'RETRIEVE_SETTINGS_START';
 export const RETRIEVE_SETTINGS_SUCCESS = 'RETRIEVE_SETTINGS_SUCCESS';
@@ -48,25 +48,26 @@ export function retrieveSettingsFailed(error) {
 
 export function updateSettings(settings) {
     return dispatch => {
+        dispatch(updateSettingsStart(settings));
         axios
-            .put(ENDPOINT_ACCOUNT_SETTINGS, settings)
+            .patch(ENDPOINT_ACCOUNT_SETTINGS, settings)
             .then(function(response) {
                 dispatch(updateSettingsSuccess(response.data));
             })
             .catch(function(error) {
                 dispatch(
                     updateSettingsFailed(
-                        error.response ? error.response.data : null,
+                        error.response ? error.response.data : null, settings
                     ),
                 );
             });
     };
 }
 
-export function updateSettingsStart(id) {
+export function updateSettingsStart(settings) {
     return {
         type: UPDATE_SETTINGS_START,
-        id,
+        settings,
     };
 }
 
@@ -77,9 +78,10 @@ export function updateSettingsSuccess(settings) {
     };
 }
 
-export function updateSettingsFailed(error) {
+export function updateSettingsFailed(error, settings) {
     return {
         type: UPDATE_SETTINGS_FAILED,
         error,
+        settings
     };
 }

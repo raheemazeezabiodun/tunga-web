@@ -1,21 +1,57 @@
 import {combineReducers} from 'redux';
-import * as ProjectActions from '../actions/ProjectActions';
-import {LOGOUT_SUCCESS} from '../actions/AuthActions';
-import {PATH_CHANGE} from '../actions/NavActions';
+import {LOCATION_CHANGE} from "react-router-redux";
 
-function project(state = {}, action) {
+import {getIds} from './utils';
+import * as ProjectActions from "../actions/ProjectActions";
+import * as ParticipationActions from "../actions/ParticipationActions";
+import * as DocumentActions from "../actions/DocumentActions";
+import * as ProgressEventActions from "../actions/ProgressEventActions";
+
+function created(state = {}, action) {
+    let targetKey = action.target || 'new';
+    let newState = {};
     switch (action.type) {
         case ProjectActions.CREATE_PROJECT_SUCCESS:
-        case ProjectActions.RETRIEVE_PROJECT_SUCCESS:
-            return action.project;
-        case ProjectActions.UPDATE_PROJECT_SUCCESS:
-            return {...state, ...action.project};
+            newState[targetKey] = action.project.id;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function deleted(state = {}, action) {
+    let targetKey = action.id || 'default';
+    let newState = {};
+    switch (action.type) {
         case ProjectActions.DELETE_PROJECT_SUCCESS:
-        case ProjectActions.CREATE_PROJECT_START:
-        case ProjectActions.CREATE_PROJECT_FAILED:
-        case ProjectActions.RETRIEVE_PROJECT_START:
-        case ProjectActions.RETRIEVE_PROJECT_FAILED:
-            return {};
+            newState[targetKey] = action.id;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function ids(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.LIST_PROJECTS_SUCCESS:
+            newState[selectionKey] = getIds(action.items);
+            return {...state, ...newState};
+        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
+            newState[selectionKey] = [
+                ...state[selectionKey],
+                ...getIds(action.items),
+            ];
+            return {...state, ...newState};
+        case ProjectActions.LIST_PROJECTS_START:
+            if (action.prev_selection && state[action.prev_selection]) {
+                newState[selectionKey] = state[action.prev_selection];
+                return {...state, ...newState};
+            }
+            return state;
+        case ProjectActions.LIST_PROJECTS_FAILED:
+            return state;
         default:
             return state;
     }
@@ -25,136 +61,305 @@ function projects(state = {}, action) {
     switch (action.type) {
         case ProjectActions.LIST_PROJECTS_SUCCESS:
         case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
-            var all_projects = {};
+            let all_projects = {};
             action.items.forEach(project => {
                 all_projects[project.id] = project;
             });
             return {...state, ...all_projects};
-        case ProjectActions.LIST_PROJECTS_START:
-        case ProjectActions.LIST_PROJECTS_FAILED:
+        case ProjectActions.RETRIEVE_PROJECT_SUCCESS:
+        case ProjectActions.UPDATE_PROJECT_SUCCESS:
+            let new_project = {};
+            new_project[action.project.id] = action.project;
+            return {...state, ...new_project};
+        case ParticipationActions.CREATE_PARTICIPATION_SUCCESS:
+        case ParticipationActions.UPDATE_PARTICIPATION_SUCCESS:
+            let participation = action.participation;
+            if(participation && participation.project && participation.project.id) {
+                let projectId = participation.project.id,
+                    participationProject = state[projectId] || {};
+
+                delete participation.project;
+
+                let currentParticipation = [...(participationProject.participation || [])];
+                let currentParticipationIdx = currentParticipation.map(item => {
+                    return item.id;
+                }).indexOf(participation.id);
+
+                if(currentParticipationIdx === -1) {
+                    currentParticipation.push(participation);
+                } else {
+                    currentParticipation[currentParticipationIdx] = participation;
+                }
+
+                let newState = {};
+                newState[projectId] = {...participationProject, participation: currentParticipation};
+                return {...state, ...newState};
+            }
+            return state;
+        case DocumentActions.CREATE_DOCUMENT_SUCCESS:
+        case DocumentActions.UPDATE_DOCUMENT_SUCCESS:
+            let document = action.document;
+
+            if(document && document.project && document.project.id) {
+                let projectId = document.project.id,
+                    documentProject = state[projectId] || {};
+                delete document.project;
+
+                let currentDocuments = [...(documentProject.documents || [])];
+                let currentDocumentIdx = currentDocuments.map(item => {
+                    return item.id;
+                }).indexOf(document.id);
+
+                if(currentDocumentIdx === -1) {
+                    currentDocuments.push(document);
+                } else {
+                    currentDocuments[currentDocumentIdx] = document;
+                }
+
+                let newState = {};
+                newState[projectId] = {...documentProject, documents: currentDocuments};
+                return {...state, ...newState};
+            }
+            return state;
+        case ProgressEventActions.CREATE_PROGRESS_EVENT_SUCCESS:
+        case ProgressEventActions.UPDATE_PROGRESS_EVENT_SUCCESS:
+            let progress_event = action.progress_event;
+
+            if(progress_event && progress_event.project && progress_event.project.id) {
+                let projectId = progress_event.project.id,
+                    progressEventProject = state[projectId] || {};
+                delete progress_event.project;
+
+                let currentProgressEvents = [...(progressEventProject.progress_events || [])];
+                let currentProgressEventIdx = currentProgressEvents.map(item => {
+                    return item.id;
+                }).indexOf(progress_event.id);
+
+                if(currentProgressEventIdx === -1) {
+                    currentProgressEvents.push(progress_event);
+                } else {
+                    currentProgressEvents[currentProgressEventIdx] = progress_event;
+                }
+
+                let newState = {};
+                newState[projectId] = {...progressEventProject, progress_events: currentProgressEvents};
+                return {...state, ...newState};
+            }
+            return state;
+        case ParticipationActions.DELETE_PARTICIPATION_SUCCESS:
+            let newState = {};
+            Object.keys(state).forEach(id => {
+                let project = state[id],
+                    newParticipation = [];
+
+                project.participation.forEach(participation => {
+                    if(participation.id !== action.id) {
+                        newParticipation.push(participation);
+                    }
+                });
+                newState[project.id] = {...project, participation: newParticipation};
+            });
+            return newState;
+        case DocumentActions.DELETE_DOCUMENT_SUCCESS:
+            newState = {};
+            Object.keys(state).forEach(id => {
+                let project = state[id],
+                    newDocs = [];
+
+                project.documents.forEach(doc => {
+                    if(doc.id !== action.id) {
+                        newDocs.push(doc);
+                    }
+                });
+                newState[project.id] = {...project, documents: newDocs};
+            });
+            return newState;
+        case ProgressEventActions.DELETE_PROGRESS_EVENT_SUCCESS:
+            newState = {};
+            Object.keys(state).forEach(id => {
+                let project = state[id],
+                    newProgressEvents = [];
+
+                project.progress_events.forEach(progressEvent => {
+                    if(progressEvent.id !== action.id) {
+                        newProgressEvents.push(progressEvent);
+                    }
+                });
+                newState[project.id] = {...project, progress_events: newProgressEvents};
+            });
+            return newState;
+        default:
+            return state;
+    }
+}
+
+function isSaving(state = {}, action) {
+    let targetKey = action.target || action.id || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.CREATE_PROJECT_START:
+        case ProjectActions.UPDATE_PROJECT_START:
+            newState[targetKey] = true;
+            return {...state, ...newState};
+        case ProjectActions.CREATE_PROJECT_SUCCESS:
+        case ProjectActions.CREATE_PROJECT_FAILED:
+        case ProjectActions.UPDATE_PROJECT_SUCCESS:
+        case ProjectActions.UPDATE_PROJECT_FAILED:
+            newState[targetKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function isSaved(state = {}, action) {
+    let targetKey = action.target || action.id || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.CREATE_PROJECT_SUCCESS:
+        case ProjectActions.UPDATE_PROJECT_SUCCESS:
+            newState[targetKey] = true;
+            return {...state, ...newState};
+        case ProjectActions.CREATE_PROJECT_START:
+        case ProjectActions.CREATE_PROJECT_FAILED:
+        case ProjectActions.UPDATE_PROJECT_START:
+        case ProjectActions.UPDATE_PROJECT_FAILED:
+            newState[targetKey] = false;
+            return {...state, ...newState};
+        case ParticipationActions.CREATE_PARTICIPATION_SUCCESS:
+        case ParticipationActions.UPDATE_PARTICIPATION_SUCCESS:
+            newState['participation'] = true;
+            return {...state, ...newState};
+        case ParticipationActions.CREATE_PARTICIPATION_START:
+        case ParticipationActions.CREATE_PARTICIPATION_FAILED:
+        case ParticipationActions.UPDATE_PARTICIPATION_START:
+        case ParticipationActions.UPDATE_PARTICIPATION_FAILED:
+            newState['participation'] = false;
+            return {...state, ...newState};
+        case DocumentActions.CREATE_DOCUMENT_SUCCESS:
+        case DocumentActions.UPDATE_DOCUMENT_SUCCESS:
+            newState['docs'] = true;
+            return {...state, ...newState};
+        case DocumentActions.CREATE_DOCUMENT_START:
+        case DocumentActions.CREATE_DOCUMENT_FAILED:
+        case DocumentActions.UPDATE_DOCUMENT_START:
+        case DocumentActions.UPDATE_DOCUMENT_FAILED:
+            newState['docs'] = false;
+            return {...state, ...newState};
+        case LOCATION_CHANGE:
             return {};
         default:
             return state;
     }
 }
 
-function ids(state = [], action) {
-    switch (action.type) {
-        case ProjectActions.LIST_PROJECTS_SUCCESS:
-        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
-            var new_projects = action.items.map(project => {
-                return project.id;
-            });
-            return [...state, ...new_projects];
-        case ProjectActions.LIST_PROJECTS_START:
-        case ProjectActions.LIST_PROJECTS_FAILED:
-            return [];
-        default:
-            return state;
-    }
-}
-
-function next(state = null, action) {
-    switch (action.type) {
-        case ProjectActions.LIST_PROJECTS_SUCCESS:
-        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
-            return action.next;
-        default:
-            return state;
-    }
-}
-
-function previous(state = null, action) {
-    switch (action.type) {
-        case ProjectActions.LIST_PROJECTS_SUCCESS:
-        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
-            return action.previous;
-        default:
-            return state;
-    }
-}
-
-function isSaving(state = false, action) {
-    switch (action.type) {
-        case ProjectActions.CREATE_PROJECT_START:
-        case ProjectActions.UPDATE_PROJECT_START:
-            return true;
-        case ProjectActions.CREATE_PROJECT_SUCCESS:
-        case ProjectActions.CREATE_PROJECT_FAILED:
-        case ProjectActions.UPDATE_PROJECT_SUCCESS:
-        case ProjectActions.UPDATE_PROJECT_FAILED:
-        case ProjectActions.RETRIEVE_PROJECT_START:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isSaved(state = false, action) {
-    switch (action.type) {
-        case ProjectActions.CREATE_PROJECT_SUCCESS:
-        case ProjectActions.UPDATE_PROJECT_SUCCESS:
-            return true;
-        case ProjectActions.CREATE_PROJECT_START:
-        case ProjectActions.CREATE_PROJECT_FAILED:
-        case ProjectActions.UPDATE_PROJECT_START:
-        case ProjectActions.UPDATE_PROJECT_FAILED:
-        case PATH_CHANGE:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isFetching(state = false, action) {
-    switch (action.type) {
-        case ProjectActions.LIST_PROJECTS_START:
-            return true;
-        case ProjectActions.LIST_PROJECTS_SUCCESS:
-        case ProjectActions.LIST_PROJECTS_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isFetchingMore(state = false, action) {
-    switch (action.type) {
-        case ProjectActions.LIST_MORE_PROJECTS_START:
-            return true;
-        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
-        case ProjectActions.LIST_MORE_PROJECTS_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isRetrieving(state = false, action) {
+function isRetrieving(state = {}, action) {
+    let targetKey = action.id || 'default';
+    let newState = {};
     switch (action.type) {
         case ProjectActions.RETRIEVE_PROJECT_START:
-            return true;
+            newState[targetKey] = true;
+            return {...state, ...newState};
         case ProjectActions.RETRIEVE_PROJECT_SUCCESS:
         case ProjectActions.RETRIEVE_PROJECT_FAILED:
-            return false;
+            newState[targetKey] = false;
+            return {...state, ...newState};
         default:
             return state;
     }
 }
 
-function isDeleting(state = false, action) {
+function isDeleting(state = {}, action) {
+    let targetKey = action.id || 'default';
+    let newState = {};
     switch (action.type) {
         case ProjectActions.DELETE_PROJECT_START:
-            return true;
+            newState[targetKey] = true;
+            return {...state, ...newState};
         case ProjectActions.DELETE_PROJECT_SUCCESS:
         case ProjectActions.DELETE_PROJECT_FAILED:
-            return false;
+            newState[targetKey] = false;
+            return {...state, ...newState};
         default:
-            return false;
+            return state;
     }
 }
 
-function error(state = {}, action) {
+function isFetching(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.LIST_PROJECTS_START:
+            newState[selectionKey] = true;
+            return {...state, ...newState};
+        case ProjectActions.LIST_PROJECTS_SUCCESS:
+        case ProjectActions.LIST_PROJECTS_FAILED:
+            newState[selectionKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function isFetchingMore(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.LIST_MORE_PROJECTS_START:
+            newState[selectionKey] = true;
+            return {...state, ...newState};
+        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
+        case ProjectActions.LIST_MORE_PROJECTS_FAILED:
+            newState[selectionKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function next(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.LIST_PROJECTS_SUCCESS:
+        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
+            newState[selectionKey] = action.next;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function previous(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.LIST_PROJECTS_SUCCESS:
+        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
+            newState[selectionKey] = action.previous;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function count(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ProjectActions.LIST_PROJECTS_SUCCESS:
+            newState[selectionKey] = action.count;
+            return {...state, ...newState};
+        case ProjectActions.LIST_PROJECTS_START:
+        case ProjectActions.LIST_PROJECTS_FAILED:
+            newState[selectionKey] = 0;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function errors(state = {}, action) {
     switch (action.type) {
         case ProjectActions.CREATE_PROJECT_FAILED:
             return {...state, create: action.error};
@@ -166,46 +371,46 @@ function error(state = {}, action) {
         case ProjectActions.UPDATE_PROJECT_START:
         case ProjectActions.UPDATE_PROJECT_SUCCESS:
             return {...state, update: null};
+        case ProjectActions.RETRIEVE_PROJECT_FAILED:
+            return {...state, retrieve: action.error};
+        case ProjectActions.RETRIEVE_PROJECT_START:
+        case ProjectActions.RETRIEVE_PROJECT_SUCCESS:
+            return {...state, retrieve: null};
+        case ProjectActions.DELETE_PROJECT_FAILED:
+            return {...state, delete: action.error};
+        case ProjectActions.DELETE_PROJECT_START:
+        case ProjectActions.DELETE_PROJECT_SUCCESS:
+            return {...state, delete: null};
+        case ProjectActions.LIST_PROJECTS_FAILED:
+            return {...state, list: action.error};
+        case ProjectActions.LIST_PROJECTS_START:
+        case ProjectActions.LIST_PROJECTS_SUCCESS:
+            return {...state, list: null};
+        case ProjectActions.LIST_MORE_PROJECTS_FAILED:
+            return {...state, list: action.error};
+        case ProjectActions.LIST_MORE_PROJECTS_START:
+        case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
+            return {...state, list: null};
         default:
             return state;
     }
 }
 
-export function running(state = [], action) {
-    switch (action.type) {
-        case ProjectActions.LIST_RUNNING_PROJECTS_SUCCESS:
-            return action.items;
-        case ProjectActions.CREATE_PROJECT_SUCCESS:
-            return [action.project, ...state];
-        case LOGOUT_SUCCESS:
-            return [];
-        default:
-            return state;
-    }
-}
-
-const detail = combineReducers({
-    project,
-    isRetrieving,
+const Project = combineReducers({
+    created,
+    deleted,
+    ids,
+    projects,
     isSaving,
     isSaved,
+    isRetrieving,
     isDeleting,
-    error,
-});
-
-const list = combineReducers({
-    projects,
-    ids,
     isFetching,
     isFetchingMore,
     next,
     previous,
-});
-
-const Project = combineReducers({
-    detail,
-    list,
-    running,
+    count,
+    errors,
 });
 
 export default Project;

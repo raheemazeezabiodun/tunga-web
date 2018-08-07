@@ -11,7 +11,9 @@ module.exports = {
     cache: true,
     entry: {
         vendor: ['babel-polyfill', 'react', 'react-dom', 'react-router', 'redux', 'react-redux'],
-        app: path.join(srcPath, 'app.js')
+        app: path.join(srcPath, 'app.js'),
+        legacy: path.join(srcPath, 'legacy/app.js'),
+        guide: path.join(srcPath, 'guide/app.js')
     },
     output: {
         path: path.join(__dirname, 'build'),
@@ -19,7 +21,7 @@ module.exports = {
         filename: '[name].js?v='+ common_config.hash,
         library: ['[name]'],
         pathInfo: true
-    },   
+    },
     module: {
         loaders: [
             { test: /\.coffee$/, loader: 'coffee-loader' },
@@ -32,8 +34,8 @@ module.exports = {
             { test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=fonts/[hash].[ext]" },
             { test: /\.ejs$/, loader: 'ejs-compiled?htmlmin' },
             { test: /\.mp4$/, loader: 'file-loader?name=videos/[hash].[ext]?v='+ common_config.hash},
-            { test: /\.(mp3|wav)$/, loader: 'file-loader?name=audio/[hash].[ext]?v='+ common_config.hash}
-
+            { test: /\.(mp3|wav)$/, loader: 'file-loader?name=audio/[hash].[ext]?v='+ common_config.hash},
+            { test: /\.json$/, loader: 'json-loader' }
         ]
     },
     resolve: {
@@ -44,6 +46,8 @@ module.exports = {
     plugins: [
         common_config.plugins.chunkVendorPlugin,
         common_config.plugins.HTMLInjectPlugin,
+        common_config.plugins.LegacyHTMLInjectPlugin,
+        common_config.plugins.StyleGuideInjectPlugin,
         common_config.plugins.noErrorsPlugin,
         new OpenBrowserPlugin({}),
         common_config.plugins.magicGlobalsPlugin,
@@ -56,7 +60,6 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        progress: true           
-    } 
-    
+        progress: true
+    }
 };

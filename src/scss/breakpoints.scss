@@ -1,0 +1,630 @@
+@import "../../node_modules/bootstrap/scss/mixins/_breakpoints.scss";
+@import "variables";
+@import "functions";
+@import "mixins";
+
+// <= 576px
+@include media-breakpoint-down(sm) {
+    .navbar {
+        .navbar-nav {
+            .btn.btn-nav {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        .input-group.input-search {
+            width: auto;
+        }
+
+        .nav-item.dropdown {
+            text-align: right;
+
+            &.show {
+                padding-bottom: 10px;
+            }
+        }
+    }
+
+    .showcase {
+        .our-story-page {
+            header {
+                background-image: url('../assets/images/showcase/OurStoryDevelopersWorking.jpg');
+            }
+        }
+
+        .quality-page {
+            header {
+                background-image: url('../assets/images/showcase/QualityTungadevelopersmeetingmobile.jpg');
+            }
+        }
+    }
+}
+
+// >= 0px
+@include media-breakpoint-up(xs) {
+
+}
+
+// >= 576px
+@include media-breakpoint-up(sm) {
+    .message {
+        width: 75%;
+        min-width: 300px;
+    }
+}
+
+// >= 768px
+@include media-breakpoint-up(md) {
+    .navbar {
+        &.navbar-showcase {
+            background-color: transparent;
+            box-shadow: none;
+            margin-top: 20px;
+            padding-left: 0;
+            padding-right: 20px;
+
+            &.navbar-showcase-fixed,
+            &.navbar-showcase-always-fixed {
+                margin-top: 0;
+                background-color: $brand-color;
+            }
+
+            #navbar {
+                margin-left: 20px;
+            }
+
+            .navbar-nav {
+                &.navbar-main {
+                    li {
+                        @include padding-x(px-to-rem(10));
+
+                        &:first-child {
+                            padding-left: 0;
+                        }
+
+                        > a {
+                            color: get-color('light-grey');
+                            @include padding-y(px-to-rem(8));
+                            @include padding-x(0);
+
+                            &:hover,
+                            &.active,
+                            &:hover.active,
+                            &:focus.active,
+                            &:visited.active {
+                                color: get-color('light-grey');
+                                border-bottom: 1px solid get-color('light-grey');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .titlebar {
+        @include padding-x(px-to-rem(40));
+
+        .title-action {
+            right: 60px;
+        }
+
+        .title-filters {
+            left: 40px;
+
+            a {
+                min-width: px-to-rem(160);
+            }
+        }
+    }
+
+    .main-content {
+        @include padding-x(px-to-rem(40));
+        padding-top: px-to-rem(140);
+
+        &.has-breadcrumbs {
+            padding-top: px-to-rem(120);
+        }
+    }
+
+    .dashboard {
+        .card {
+            padding: 32px 30px;
+        }
+
+        .notification {
+            padding: 10px 15px 10px 23px;
+        }
+    }
+
+    .project-page {
+        .project-activity {
+            min-height: 520px;
+        }
+
+        .project-details {
+            min-height: 520px;
+        }
+    }
+
+    .chat-widget {
+        right: 40px;
+    }
+
+    .showcase {
+        header {
+            background-image: url('../assets/images/showcase/welcome-header.jpg');
+        }
+
+        #contact-us {
+            text-align: center;
+
+            .contact-sections {
+                text-align: center;
+                display: inline-block;
+
+                .section {
+                    text-align: left;
+                }
+            }
+        }
+
+        footer {
+            text-align: center;
+
+            .sections {
+                display: inline-block;
+                @include clearfix();
+
+                .section {
+                    @include clearfix();
+
+                    &.footer-info {
+                        float: left;
+                        width: 270px;
+                    }
+
+                    &.latest-from-blog {
+                        clear: both;
+                    }
+                }
+            }
+        }
+
+        .landing-page {
+
+            #services {
+                margin-top: 50px;
+                @include clearfix();
+
+                .service {
+                    float: left;
+                    width: 33.33%;
+                    height: 200px;
+                    padding: 0;
+
+                    .wrapper {
+                        /*.font-size(1.4);*/
+                        padding: 20px 15px;
+
+                        .headline {
+                            font-size: px-to-rem(24);
+                            margin-bottom: 22px;
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+            }
+
+            #unique-approach {
+                .btn {
+                    display: inline-block;
+                    width: auto;
+                }
+            }
+
+            #meet-developers {
+                font-size: px-to-rem(18);
+                font-weight: 300;
+                height: 300px;
+                padding: 104px 0 0;
+
+                .headline,
+                a.headline {
+                    font-size: px-to-rem(30);
+                    font-weight: 500;
+                    text-align: center;
+                }
+            }
+        }
+
+        .our-story-page {
+            #partners {
+                .partner-links {
+                    li {
+                        max-width: 20%;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        .quality-page {
+            #new-quality-guide {
+                .step {
+                    margin-bottom: 0;
+
+                    .step-icon {
+                        float: left;
+                        max-width: 210px;
+                        text-align: center;
+                        margin-right: 20px;
+                    }
+
+                    .step-body {
+                        float: left;
+                        max-width: 480px;
+                    }
+
+                    &:nth-of-type(even) {
+                        .step-icon {
+                            float: right;
+                            margin-right: 0;
+                            margin-left: 20px;
+                        }
+
+                        .step-body {
+                            float: right;
+                        }
+                    }
+                }
+
+                .dot-connector {
+                    display: block;
+                }
+            }
+        }
+
+        .friends-page {
+            #referral {
+                .referral-widgets {
+                    .cc-email {
+                        padding-left: 46px;
+                        padding-right: 28px;
+
+                        .cc-email-widget {
+                            .values {
+                                max-width: 474px;
+                            }
+                        }
+                    }
+
+                    .linkedin-share {
+                        padding: 30px 28px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// >= 992px
+@include media-breakpoint-up(lg) {
+    .navbar {
+        &.navbar-showcase {
+            padding-right: 40px;
+
+            #navbar {
+                margin-left: 40px;
+            }
+
+            .navbar-nav {
+                a {
+                    font-size: px-to-rem(16);
+                }
+
+                &.navbar-main {
+                    li {
+                        @include padding-x(px-to-rem(20));
+                    }
+                }
+            }
+        }
+    }
+
+    .titlebar {
+        left: 120px;
+        height: 130px;
+        padding-top: px-to-rem(42);
+    }
+
+    .main-content {
+        margin-left: px-to-rem(120);
+        padding-top: px-to-rem(180);
+    }
+
+    .dashboard {
+        .card {
+            height: 270px;
+
+            .card-content {
+                max-height: 163px;
+                overflow-y: auto;
+            }
+        }
+    }
+
+    .project-page {
+        .project-activity {
+            float: left;
+            width: 72.82%; // 600/824
+            max-width: 810px;
+        }
+
+        .project-details {
+            float: right;
+            width: 24.76%; // 204/824
+            max-width: 330px;
+        }
+    }
+
+    .chat-widget {
+        right: 80px;
+    }
+
+    .showcase {
+        #contact-us {
+            text-align: center;
+
+            form {
+                margin-top: 0;
+            }
+
+            .contact-info {
+                margin-bottom: 70px;
+            }
+
+            .contact-sections {
+                text-align: center;
+                display: inline-block;
+
+                .section {
+                    float: left;
+                    text-align: left;
+
+                    &:first-child {
+                        max-width: 470px;
+                        margin-right: 50px;
+                    }
+
+                    &:last-child {
+                        width: 410px;
+                    }
+                }
+            }
+        }
+
+        footer {
+            .sections {
+                display: inline-block;
+                @include clearfix();
+
+                .section {
+                    float: left;
+                    width: 270px;
+                    @include clearfix();
+
+                    &:first-child {
+                        margin-right: 86px;
+                    }
+
+                    &:last-child {
+                        width: auto;
+                        max-width: 270px;
+                    }
+
+                    &.latest-from-blog {
+                        clear: none;
+                    }
+                }
+            }
+        }
+
+        .landing-page {
+
+            #services {
+                margin-top: 100px;
+
+                .service {
+                    .wrapper {
+                        padding: 30px;
+
+                        .headline {
+                            margin-bottom: 22px;
+                        }
+                    }
+                }
+            }
+
+            #unique-approach {
+                @include padding-x(0);
+
+                .approach-body {
+                    max-width: 623px;
+                    float: right;
+                    margin-right: 129px;
+                }
+
+                .side-pic {
+                    display: block;
+                    height: 640px;
+                    background: transparent url('../assets/images/showcase/developer-working-thin.jpg') no-repeat center;
+                    background-size: cover;
+                }
+
+                .btn {
+                    display: inline-block;
+                    width: auto;
+                }
+            }
+
+            #development-style {
+                .development-style-cases {
+                    .case {
+                        float: left;
+                        max-width: 302px;
+                        margin-right: 20px;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .our-story-page {
+            section {
+                .container {
+                    max-width: 970px;
+                }
+            }
+        }
+    }
+}
+
+// >= 1200px
+@include media-breakpoint-up(xl) {
+    .titlebar {
+        @include padding-x(px-to-rem(80));
+
+        .title-action {
+            right: 100px;
+        }
+
+        .title-filters {
+            left: 80px;
+
+            a {
+                min-width: px-to-rem(200);
+            }
+        }
+    }
+
+    .main-content {
+        @include padding-x(px-to-rem(80));
+    }
+
+    .dashboard {
+        .card {
+            padding: 32px 40px;
+        }
+    }
+
+    .user-profile {
+        .map {
+            width: 100%;
+            min-width: 620px;
+        }
+    }
+
+    .user-card {
+        padding: 40px 40px 20px 40px;
+    }
+
+    .project-card {
+        padding: 40px 40px 20px 40px;
+    }
+
+    .project-page {
+        .project-activity {
+            width: 69.82%; // 810/1160
+            max-width: 810px;
+
+            .project-activity-wrapper {
+                padding: 40px;
+            }
+        }
+
+        .project-details {
+            width: 28.45%; // 330/1160
+            max-width: 330px;
+            padding: 30px 40px;
+        }
+    }
+
+    .showcase {
+        .landing-page {
+            #development-style {
+                .development-style-cases {
+                    .case {
+                        margin-right: 60px;
+                    }
+                }
+            }
+        }
+
+        .friends-page {
+            .content {
+                .container {
+                    max-width: 1140px;
+                }
+            }
+
+            #who-we-are {
+                .container {
+                    max-width: 100%;
+                }
+
+                .looking-for-options {
+                    display: inline-block;
+
+                    .option {
+                        float: left;
+                        width: 360px;
+                        margin-right: 20px;
+                        margin-bottom: 0;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+
+                        .first-content-box {
+                            height: 100px;
+                        }
+                    }
+                }
+            }
+
+            #referral {
+                .referral-widgets {
+                    .cc-email {
+                        float: left;
+                        min-width: 730px;
+                        padding-left: 46px;
+                        padding-right: 28px;
+                        margin-right: 20px;
+                        margin-bottom: 0;
+
+                        .cc-email-widget {
+                            max-width: 650px;
+
+                            .values {
+                                float: left;
+                                max-width: 474px;
+                                width: 87%;
+                            }
+                        }
+                    }
+
+                    .linkedin-share {
+                        float: left;
+                        width: 350px;
+                        padding: 30px 28px;
+                    }
+                }
+            }
+        }
+    }
+}

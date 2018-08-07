@@ -17,6 +17,8 @@ config.plugins = [
   new webpack.optimize.UglifyJsPlugin({ minimize: true }),
   common_config.plugins.chunkVendorPlugin,
   common_config.plugins.HTMLInjectPlugin,
+  common_config.plugins.LegacyHTMLInjectPlugin,
+  common_config.plugins.StyleGuideInjectPlugin,
   common_config.plugins.noErrorsPlugin,
   common_config.plugins.magicGlobalsPlugin
 ];

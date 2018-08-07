@@ -1,286 +1,238 @@
 import {combineReducers} from 'redux';
-import * as TaskActions from '../actions/TaskActions';
-import * as ChannelActions from '../actions/ChannelActions';
-import {CREATE_COMMENT_SUCCESS} from '../actions/CommentActions';
-import {CREATE_MESSAGE_SUCCESS} from '../actions/MessageActions';
 
-import {getTaskKey, getChannelKey} from '../utils/reducers';
+import * as ActivityActions from '../actions/ActivityActions';
+import * as CommentActions from '../actions/CommentActions';
+import * as UploadActions from '../actions/UploadActions';
+import * as ChannelActions from "../actions/ChannelActions";
+import * as MessageActions from "../actions/MessageActions";
+import {LOGIN_SUCCESS, LOGOUT_SUCCESS, VERIFY_SUCCESS} from "../actions/AuthActions";
 
-const ITEM_TYPE_TASK = 'task';
-const ITEM_TYPE_CHANNEL = 'channel';
+import {getIds} from './utils';
 
-export function getReversedActivity(items, state) {
-    return [...items].reverse();
-}
-
-function getNextActivityState(
-    state,
-    action,
-    type,
-    old_activity = [],
-    new_activity = [],
-) {
-    var item_key = null;
-    switch (type) {
-        case ITEM_TYPE_TASK:
-            item_key = getTaskKey(action.id);
-            break;
-        case ITEM_TYPE_CHANNEL:
-            item_key = getChannelKey(action.id);
-            break;
-        default:
-            break;
-    }
-    if (item_key) {
-        var item_activity = {};
-        item_activity[item_key] = [
-            ...(old_activity || []),
-            ...getReversedActivity(action.items),
-            ...(new_activity || []),
-        ];
-        return {...state, ...item_activity};
-    }
-    return state;
-}
-
-function getConcreteActivities(state, key) {
-    var concrete_acitiviy = [];
-    var items = state[key] || [];
-    items.forEach(item => {
-        if (item.id) {
-            concrete_acitiviy.push(item);
-        }
-    });
-    return concrete_acitiviy;
-}
-
-function getNextStateOptimistic(state, items, id, type) {
-    var item_key = null;
-    switch (type) {
-        case ITEM_TYPE_TASK:
-            item_key = getTaskKey(id);
-            break;
-        case ITEM_TYPE_CHANNEL:
-            item_key = getChannelKey(id);
-            break;
-        default:
-            break;
-    }
-    if (item_key) {
-        var item_activity = {};
-        item_activity[item_key] = [...(state[item_key] || []), ...items];
-        return {...state, ...item_activity};
-    }
-    return state;
-}
-
-function getOptimisticUploadActivities(uploads) {
-    return uploads.map(upload => {
-        return {action: 'upload', activity_type: 'upload', activity: upload};
-    });
-}
-
-function clearItemActivity(state, key) {
-    return changeStateKey(state, key, []);
-}
-
-function changeStateKey(state, key, value) {
-    var new_state = {...state};
-    new_state[key] = value;
-    return new_state;
-}
-
-function activity(state = {}, action) {
+function channel(state = {}, action) {
     switch (action.type) {
-        case TaskActions.LIST_TASK_ACTIVITY_SUCCESS:
-            return getNextActivityState(state, action, ITEM_TYPE_TASK);
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_SUCCESS:
-            return getNextActivityState(state, action, ITEM_TYPE_CHANNEL);
-        case TaskActions.LIST_MORE_TASK_ACTIVITY_SUCCESS:
-            if (action.items) {
-                return getNextActivityState(
-                    state,
-                    action,
-                    ITEM_TYPE_TASK,
-                    [],
-                    state[getTaskKey(action.id)],
-                );
+        case ChannelActions.CREATE_CHANNEL_SUCCESS:
+        case ChannelActions.RETRIEVE_CHANNEL_SUCCESS:
+        case ChannelActions.UPDATE_CHANNEL_SUCCESS:
+            return action.channel;
+        case ChannelActions.CREATE_CHANNEL_START:
+        case ChannelActions.CREATE_CHANNEL_FAILED:
+        case ChannelActions.RETRIEVE_CHANNEL_START:
+        case ChannelActions.RETRIEVE_CHANNEL_FAILED:
+        case LOGIN_SUCCESS:
+        case LOGOUT_SUCCESS:
+        case VERIFY_SUCCESS:
+            return {};
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+            if (action.filter && action.filter.since > 0) {
+                return {...state, new: action.items.length};
             }
             return state;
-        case ChannelActions.LIST_MORE_CHANNEL_ACTIVITY_SUCCESS:
-            if (action.items) {
-                return getNextActivityState(
-                    state,
-                    action,
-                    ITEM_TYPE_CHANNEL,
-                    [],
-                    state[getChannelKey(action.id)],
-                );
+        default:
+            return state;
+    }
+}
+
+function ids(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let targetKey = action.target || action.id || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+            let newIds = getIds(action.items);
+            if(action.filter && action.filter.since) {
+                let cleanedIds = [];
+                if(state[selectionKey]) {
+                    state[selectionKey].forEach(id => {
+                        if(typeof id === 'number') {
+                            cleanedIds.push(id);
+                        }
+                    });
+                }
+                newState[selectionKey] = [...newIds, ...cleanedIds];
+            } else {
+                newState[selectionKey] = newIds;
+            }
+            return {...state, ...newState};
+        case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
+            newState[selectionKey] = [
+                ...state[selectionKey],
+                ...getIds(action.items),
+            ];
+            return {...state, ...newState};
+        case ActivityActions.LIST_ACTIVITIES_START:
+            if (action.prev_selection && state[action.prev_selection]) {
+                newState[selectionKey] = state[action.prev_selection];
+                return {...state, ...newState};
             }
             return state;
-        case TaskActions.LIST_NEW_TASK_ACTIVITY_SUCCESS:
-            return getNextActivityState(
-                state,
-                action,
-                ITEM_TYPE_TASK,
-                getConcreteActivities(state, getTaskKey(action.id)),
-            );
-        case ChannelActions.LIST_NEW_CHANNEL_ACTIVITY_SUCCESS:
-            return getNextActivityState(
-                state,
-                action,
-                ITEM_TYPE_CHANNEL,
-                getConcreteActivities(state, getChannelKey(action.id)),
-            );
-        case CREATE_COMMENT_SUCCESS:
-            return getNextStateOptimistic(
-                state,
-                [
-                    {
-                        action: 'comment',
-                        activity_type: 'comment',
-                        activity: action.comment,
-                    },
-                ],
-                action.comment.object_id,
-                ITEM_TYPE_TASK,
-            );
-        case CREATE_MESSAGE_SUCCESS:
-            return getNextStateOptimistic(
-                state,
-                [
-                    {
-                        action: 'send',
-                        activity_type: 'message',
-                        activity: action.message,
-                    },
-                ],
-                action.message.channel,
-                ITEM_TYPE_CHANNEL,
-            );
-        case ChannelActions.SHARE_CHANNEL_UPLOAD_SUCCESS:
-            return getNextStateOptimistic(
-                state,
-                getOptimisticUploadActivities(action.uploads),
-                action.channel.id,
-                ITEM_TYPE_CHANNEL,
-            );
-        case TaskActions.SHARE_TASK_UPLOAD_SUCCESS:
-            return getNextStateOptimistic(
-                state,
-                getOptimisticUploadActivities(action.uploads),
-                action.task.id,
-                ITEM_TYPE_TASK,
-            );
-        case TaskActions.LIST_TASK_ACTIVITY_START:
-        case TaskActions.LIST_TASK_ACTIVITY_FAILED:
-            return clearItemActivity(state, getTaskKey(action.id));
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_START:
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_FAILED:
-            return clearItemActivity(state, getChannelKey(action.id));
+        case ActivityActions.LIST_ACTIVITIES_FAILED:
+            return state;
+        case MessageActions.CREATE_MESSAGE_SUCCESS:
+            newState[targetKey] = [
+                `message_${action.message.id}`,
+                ...(state[targetKey] || {}),
+            ];
+            return {...state, ...newState};
+        case CommentActions.CREATE_COMMENT_SUCCESS:
+            newState[targetKey] = [
+                `comment_${action.comment.id}`,
+                ...(state[targetKey] || {}),
+            ];
+            return {...state, ...newState};
+        case UploadActions.CREATE_UPLOAD_SUCCESS:
+            newState[targetKey] = [
+                `upload_${action.upload.id}`,
+                ...(state[targetKey] || {}),
+            ];
+            return {...state, ...newState};
         default:
             return state;
     }
 }
 
-function next(state = {}, action) {
+function activities(state = {}, action) {
+    let newActivity = {};
     switch (action.type) {
-        case TaskActions.LIST_TASK_ACTIVITY_SUCCESS:
-        case TaskActions.LIST_MORE_TASK_ACTIVITY_SUCCESS:
-            return changeStateKey(state, getTaskKey(action.id), action.next);
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_SUCCESS:
-        case ChannelActions.LIST_MORE_CHANNEL_ACTIVITY_SUCCESS:
-            return changeStateKey(state, getChannelKey(action.id), action.next);
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+        case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
+            let all_activities = {};
+            action.items.forEach(activity => {
+                all_activities[activity.id] = activity;
+            });
+            return {...state, ...all_activities};
+        case ActivityActions.RETRIEVE_ACTIVITY_SUCCESS:
+            let new_activity = {};
+            new_activity[action.activity.id] = action.activity;
+            return {...state, ...new_activity};
+        case MessageActions.CREATE_MESSAGE_SUCCESS:
+            let activityId = `message_${action.message.id}`;
+            newActivity[activityId] = {
+                id: activityId, action: 'create', activity_type: 'message', activity: action.message
+            };
+            return {...state, ...newActivity};
+        case CommentActions.CREATE_COMMENT_SUCCESS:
+            activityId = `comment_${action.comment.id}`;
+            newActivity[activityId] = {
+                id: activityId, action: 'create', activity_type: 'comment', activity: action.comment
+            };
+            return {...state, ...newActivity};
+        case UploadActions.CREATE_UPLOAD_SUCCESS:
+            activityId = `upload_${action.upload.id}`;
+            newActivity[activityId] = {
+                id: activityId, action: 'upload', activity_type: 'upload', activity: action.upload
+            };
+            return {...state, ...newActivity};
         default:
             return state;
     }
 }
 
-function previous(state = {}, action) {
+function isRetrieving(state = {}, action) {
+    let targetKey = action.id || 'default';
+    let newState = {};
     switch (action.type) {
-        case TaskActions.LIST_TASK_ACTIVITY_SUCCESS:
-        case TaskActions.LIST_MORE_TASK_ACTIVITY_SUCCESS:
-            return changeStateKey(
-                state,
-                getTaskKey(action.id),
-                action.previous,
-            );
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_SUCCESS:
-        case ChannelActions.LIST_MORE_CHANNEL_ACTIVITY_SUCCESS:
-            return changeStateKey(
-                state,
-                getChannelKey(action.id),
-                action.previous,
-            );
-        default:
-            return state;
-    }
-}
-
-function count(state = {}, action) {
-    switch (action.type) {
-        case TaskActions.LIST_TASK_ACTIVITY_SUCCESS:
-        case TaskActions.LIST_MORE_TASK_ACTIVITY_SUCCESS:
-            return changeStateKey(state, getTaskKey(action.id), action.count);
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_SUCCESS:
-        case ChannelActions.LIST_MORE_CHANNEL_ACTIVITY_SUCCESS:
-            return changeStateKey(
-                state,
-                getChannelKey(action.id),
-                action.count,
-            );
-        case TaskActions.LIST_TASK_ACTIVITY_START:
-        case TaskActions.LIST_TASK_ACTIVITY_FAILED:
-            return changeStateKey(state, getTaskKey(action.id), 0);
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_START:
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_FAILED:
-            return changeStateKey(state, getChannelKey(action.id), 0);
+        case ActivityActions.RETRIEVE_ACTIVITY_START:
+            newState[targetKey] = true;
+            return {...state, ...newState};
+        case ActivityActions.RETRIEVE_ACTIVITY_SUCCESS:
+        case ActivityActions.RETRIEVE_ACTIVITY_FAILED:
+            newState[targetKey] = false;
+            return {...state, ...newState};
         default:
             return state;
     }
 }
 
 function isFetching(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
     switch (action.type) {
-        case TaskActions.LIST_TASK_ACTIVITY_START:
-            return changeStateKey(state, getTaskKey(action.id), true);
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_START:
-            return changeStateKey(state, getChannelKey(action.id), true);
-        case TaskActions.LIST_TASK_ACTIVITY_SUCCESS:
-        case TaskActions.LIST_TASK_ACTIVITY_FAILED:
-            return changeStateKey(state, getTaskKey(action.id), false);
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_SUCCESS:
-        case ChannelActions.LIST_CHANNEL_ACTIVITY_FAILED:
-            return changeStateKey(state, getChannelKey(action.id), false);
+        case ActivityActions.LIST_ACTIVITIES_START:
+            newState[selectionKey] = !action.filter.since;
+            return {...state, ...newState};
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+        case ActivityActions.LIST_ACTIVITIES_FAILED:
+            newState[selectionKey] = false;
+            return {...state, ...newState};
         default:
             return state;
     }
 }
 
 function isFetchingMore(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
     switch (action.type) {
-        case TaskActions.LIST_MORE_TASK_ACTIVITY_START:
-            return changeStateKey(state, getTaskKey(action.id), true);
-        case ChannelActions.LIST_MORE_CHANNEL_ACTIVITY_START:
-            return changeStateKey(state, getChannelKey(action.id), true);
-        case TaskActions.LIST_MORE_TASK_ACTIVITY_SUCCESS:
-        case TaskActions.LIST_MORE_TASK_ACTIVITY_FAILED:
-            return changeStateKey(state, getTaskKey(action.id), false);
-        case ChannelActions.LIST_MORE_CHANNEL_ACTIVITY_SUCCESS:
-        case ChannelActions.LIST_MORE_CHANNEL_ACTIVITY_FAILED:
-            return changeStateKey(state, getChannelKey(action.id), false);
+        case ActivityActions.LIST_MORE_ACTIVITIES_START:
+            newState[selectionKey] = true;
+            return {...state, ...newState};
+        case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
+        case ActivityActions.LIST_MORE_ACTIVITIES_FAILED:
+            newState[selectionKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function next(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+            if(action.filter && action.filter.since) {
+                return state;
+            }
+            newState[selectionKey] = action.next;
+            return {...state, ...newState};
+        case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
+            newState[selectionKey] = action.next;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function previous(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+        case ActivityActions.LIST_MORE_ACTIVITIES_SUCCESS:
+            newState[selectionKey] = action.previous;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function count(state = {}, action) {
+    let selectionKey = action.selection || 'default';
+    let newState = {};
+    switch (action.type) {
+        case ActivityActions.LIST_ACTIVITIES_SUCCESS:
+            newState[selectionKey] = action.count;
+            return {...state, ...newState};
+        case ActivityActions.LIST_ACTIVITIES_START:
+        case ActivityActions.LIST_ACTIVITIES_FAILED:
+            newState[selectionKey] = 0;
+            return {...state, ...newState};
         default:
             return state;
     }
 }
 
 const Activity = combineReducers({
-    items: activity,
+    channel,
+    ids,
+    activities,
+    isRetrieving,
     isFetching,
     isFetchingMore,
-    count,
     next,
     previous,
+    count,
 });
 
 export default Activity;

@@ -7,26 +7,9 @@ import {
     ENDPOINT_APPLY,
     ENDPOINT_RESET_PASSWORD,
     ENDPOINT_RESET_PASSWORD_CONFIRM,
-    ENDPOINT_MY_APPS,
-    ENDPOINT_TASK,
     ENDPOINT_EMAIL_VISITOR,
     ENDPOINT_INVITE,
-    SOCIAL_PROVIDERS,
-} from '../constants/Api';
-import {listRunningProjects} from './ProjectActions';
-import {updateAccountInfo, updateAuthUser} from './ProfileActions';
-
-import {
-    sendGAEvent,
-    sendTwitterSignUpEvent,
-    GA_EVENT_CATEGORIES,
-    GA_EVENT_ACTIONS,
-    GA_EVENT_LABELS,
-    AUTH_METHODS,
-    getGAUserType,
-    getUserTypeTwitter,
-} from '../utils/tracking';
-import {getUser} from 'utils/auth';
+} from './utils/api';
 
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -53,21 +36,6 @@ export const RESET_PASSWORD_CONFIRM_START = 'RESET_PASSWORD_CONFIRM_START';
 export const RESET_PASSWORD_CONFIRM_SUCCESS = 'RESET_PASSWORD_CONFIRM_SUCCESS';
 export const RESET_PASSWORD_CONFIRM_FAILED = 'RESET_PASSWORD_CONFIRM_FAILED';
 export const AUTH_REDIRECT = 'AUTH_REDIRECT';
-export const LIST_RUNNING_TASKS_START = 'LIST_RUNNING_TASKS_START';
-export const LIST_RUNNING_TASKS_SUCCESS = 'LIST_RUNNING_TASKS_SUCCESS';
-export const LIST_RUNNING_TASKS_FAILED = 'LIST_RUNNING_TASKS_FAILED';
-export const LIST_REPOS_START = 'LIST_REPOS_START';
-export const LIST_REPOS_SUCCESS = 'LIST_REPOS_SUCCESS';
-export const LIST_REPOS_FAILED = 'LIST_REPOS_FAILED';
-export const LIST_ISSUES_START = 'LIST_ISSUES_START';
-export const LIST_ISSUES_SUCCESS = 'LIST_ISSUES_SUCCESS';
-export const LIST_ISSUES_FAILED = 'LIST_ISSUES_FAILED';
-export const GET_SLACK_APP_START = 'GET_SLACK_APP_START';
-export const GET_SLACK_APP_SUCCESS = 'GET_SLACK_APP_SUCCESS';
-export const GET_SLACK_APP_FAILED = 'GET_SLACK_APP_FAILED';
-export const LIST_SLACK_CHANNELS_START = 'LIST_SLACK_CHANNELS_START';
-export const LIST_SLACK_CHANNELS_SUCCESS = 'LIST_SLACK_CHANNELS_SUCCESS';
-export const LIST_SLACK_CHANNELS_FAILED = 'LIST_SLACK_CHANNELS_FAILED';
 export const EMAIL_VISITOR_AUTH_START = 'EMAIL_VISITOR_AUTH_START';
 export const EMAIL_VISITOR_AUTH_SUCCESS = 'EMAIL_VISITOR_AUTH_SUCCESS';
 export const EMAIL_VISITOR_AUTH_FAILED = 'EMAIL_VISITOR_AUTH_FAILED';
@@ -106,11 +74,6 @@ export function authStart(credentials) {
 
 export function authSuccess(data) {
     let user = data.user;
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.AUTH,
-        GA_EVENT_ACTIONS.SIGN_IN,
-        getGAUserType(user),
-    );
     return {
         type: LOGIN_SUCCESS,
         user,
@@ -150,7 +113,6 @@ export function authEmailVisitorStart(credentials) {
 }
 
 export function authEmailVisitorSuccess(visitor) {
-    sendGAEvent(GA_EVENT_CATEGORIES.AUTH, GA_EVENT_ACTIONS.BROWSE_DEVS);
     return {
         type: EMAIL_VISITOR_AUTH_SUCCESS,
         visitor,
@@ -260,17 +222,13 @@ export function logoutStart() {
 }
 
 export function logoutSuccess() {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.AUTH,
-        GA_EVENT_ACTIONS.LOG_OUT,
-        getGAUserType(getUser()),
-    );
     return {
         type: LOGOUT_SUCCESS,
     };
 }
 
 export function logoutFailed(error) {
+    console.log('logoutFailed: ', error);
     return {
         type: LOGOUT_FAILED,
         error,
@@ -284,10 +242,6 @@ export function register(details) {
             .post(ENDPOINT_REGISTER, details)
             .then(function(response) {
                 dispatch(registerSuccess(response.data));
-
-                var user_type = getUserTypeTwitter(details.type);
-                var method = AUTH_METHODS.EMAIL;
-                sendTwitterSignUpEvent({user_type, method});
             })
             .catch(function(error) {
                 dispatch(
@@ -306,12 +260,6 @@ export function registerStart(details) {
 
 export function registerSuccess(data) {
     let user = data.user;
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.REGISTRATION,
-        GA_EVENT_ACTIONS.SIGN_UP,
-        getGAUserType(user),
-    );
-
     return {
         type: REGISTER_SUCCESS,
         user,
@@ -349,11 +297,6 @@ export function applyStart(details) {
 }
 
 export function applySuccess(application) {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.AUTH,
-        GA_EVENT_ACTIONS.DEV_APPLY,
-        GA_EVENT_LABELS.DEVELOPER,
-    );
     return {
         type: APPLY_SUCCESS,
         application,
@@ -432,7 +375,6 @@ export function resetPasswordStart(email) {
 }
 
 export function resetPasswordSuccess(response) {
-    sendGAEvent(GA_EVENT_CATEGORIES.AUTH, GA_EVENT_ACTIONS.RECOVER_PASSWORD);
     return {
         type: RESET_PASSWORD_SUCCESS,
         response,
@@ -472,11 +414,6 @@ export function resetPasswordConfirmStart(credentials) {
 }
 
 export function resetPasswordConfirmSuccess(response) {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.AUTH,
-        GA_EVENT_ACTIONS.RECOVER_PASSWORD_CONFIRM,
-    );
-
     return {
         type: RESET_PASSWORD_CONFIRM_SUCCESS,
         response,
@@ -494,222 +431,6 @@ export function authRedirect(path) {
     return {
         type: AUTH_REDIRECT,
         path,
-    };
-}
-
-export function listRunningTasks() {
-    return dispatch => {
-        var filter = {filter: 'running'};
-        dispatch(listRunningTasksStart(filter));
-        axios
-            .get(ENDPOINT_TASK, {params: filter})
-            .then(function(response) {
-                dispatch(listRunningTasksSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listRunningTasksFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function listRunningTasksStart(filter) {
-    return {
-        type: LIST_RUNNING_TASKS_START,
-        filter,
-    };
-}
-
-export function listRunningTasksSuccess(response) {
-    return {
-        type: LIST_RUNNING_TASKS_SUCCESS,
-        items: response.results,
-        previous: response.previous,
-        next: response.next,
-        count: response.count,
-    };
-}
-
-export function listRunningTasksFailed(error) {
-    return {
-        type: LIST_RUNNING_TASKS_FAILED,
-        error,
-    };
-}
-
-export function listRepos(provider, task = null) {
-    return dispatch => {
-        dispatch(listReposStart(provider));
-        axios
-            .get(ENDPOINT_MY_APPS + provider + '/repos/', {params: {task}})
-            .then(function(response) {
-                dispatch(listReposSuccess(response.data, provider));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listReposFailed(
-                        error.response ? error.response.data : null,
-                        error.response ? error.response.status : null,
-                        provider,
-                    ),
-                );
-            });
-    };
-}
-
-export function listReposStart(provider) {
-    return {
-        type: LIST_REPOS_START,
-        provider,
-    };
-}
-
-export function listReposSuccess(repos, status_code, provider) {
-    return {
-        type: LIST_REPOS_SUCCESS,
-        repos,
-        provider,
-    };
-}
-
-export function listReposFailed(error, status_code, provider) {
-    return {
-        type: LIST_REPOS_FAILED,
-        error,
-        status_code,
-        provider,
-    };
-}
-
-export function listIssues(provider, task = null) {
-    return dispatch => {
-        dispatch(listIssuesStart(provider));
-        axios
-            .get(ENDPOINT_MY_APPS + provider + '/issues/', {params: {task}})
-            .then(function(response) {
-                dispatch(listIssuesSuccess(response.data, provider));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listIssuesFailed(
-                        error.response ? error.response.data : null,
-                        error.response ? error.response.status : null,
-                        provider,
-                    ),
-                );
-            });
-    };
-}
-
-export function listIssuesStart(provider) {
-    return {
-        type: LIST_ISSUES_START,
-        provider,
-    };
-}
-
-export function listIssuesSuccess(issues, provider) {
-    return {
-        type: LIST_ISSUES_SUCCESS,
-        issues,
-        provider,
-    };
-}
-
-export function listIssuesFailed(error, status_code, provider) {
-    return {
-        type: LIST_ISSUES_FAILED,
-        error,
-        status_code,
-        provider,
-    };
-}
-
-export function getSlackApp(task = null) {
-    return dispatch => {
-        dispatch(getSlackAppStart());
-        axios
-            .get(ENDPOINT_MY_APPS + `${SOCIAL_PROVIDERS.slack}/`, {
-                params: {task},
-            })
-            .then(function(response) {
-                dispatch(getSlackAppSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    getSlackAppFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function getSlackAppStart() {
-    return {
-        type: GET_SLACK_APP_START,
-    };
-}
-
-export function getSlackAppSuccess(details) {
-    return {
-        type: GET_SLACK_APP_SUCCESS,
-        details,
-    };
-}
-
-export function getSlackAppFailed(error) {
-    return {
-        type: GET_SLACK_APP_FAILED,
-        error,
-    };
-}
-
-export function listSlackChannels(task = null) {
-    return dispatch => {
-        dispatch(listSlackChannelsStart());
-        axios
-            .get(
-                ENDPOINT_MY_APPS + `${SOCIAL_PROVIDERS.slack}` + '/channels/',
-                {
-                    params: {task},
-                },
-            )
-            .then(function(response) {
-                dispatch(listSlackChannelsSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    listSlackChannelsFailed(
-                        error.response ? error.response.data : null,
-                        error.response ? error.response.status : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function listSlackChannelsStart() {
-    return {
-        type: LIST_SLACK_CHANNELS_START,
-    };
-}
-
-export function listSlackChannelsSuccess(channels) {
-    return {
-        type: LIST_SLACK_CHANNELS_SUCCESS,
-        channels,
-    };
-}
-
-export function listSlackChannelsFailed(error, status_code) {
-    return {
-        type: LIST_SLACK_CHANNELS_FAILED,
-        error,
-        status_code,
     };
 }
 
@@ -737,11 +458,6 @@ export function inviteStart(details) {
 }
 
 export function inviteSuccess(invite) {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.AUTH,
-        GA_EVENT_ACTIONS.DEV_INVITE,
-        getGAUserType(getUser()),
-    );
     return {
         type: INVITE_SUCCESS,
         invite,
@@ -793,5 +509,3 @@ export function retrieveInviteFailed(error) {
         error,
     };
 }
-
-export {updateAccountInfo, updateAuthUser};

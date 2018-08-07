@@ -1,0 +1,76 @@
+@import "functions";
+
+// Colors
+$color-palette: (
+    'black': #444,
+    'white': #fff,
+    'pink': #ed134d,
+    'lightest-grey': #fafafa,
+    'light-grey': #f8f8f8,
+    'showcase-grey': #f6f6f6,
+    'dark-grey': #888,
+    'green': #40bb56,
+    'orange': #ff7904,
+    'red': #e93232,
+    'blue': #009eff,
+    'facebook': #3d5b99,
+    'google': #e25714,
+    'linkedin': #0077b5,
+    'github': #333,
+    'slack': #2c3239,
+    'twitter': #1da1f2,
+    'trello': #026aa7,
+    'skype': #00aff0,
+    'whatsapp': #25d366,
+    'harvest': #f66a23,
+    'coinbase': #0168bb,
+    'consent-bg': #202020
+);
+
+@function get-color($key) {
+    @return map-get($color-palette, $key);
+}
+
+// Variables
+$brand-color: get-color('pink');
+
+$font-weight-thin: 100;
+$font-weight-medium: 500;
+
+// Bootstrap overrides
+$theme-colors: (
+    "primary": $brand-color,
+    "secondary": get-color('dark-grey')
+);
+
+$font-size-normal: px-to-rem(14);
+$font-size-sm: ($font-size-normal * 0.875);
+$font-size-lg: ($font-size-normal * 1.25);
+$font-size-xl: ($font-size-normal * 1.5);
+$font-size-xxl: ($font-size-normal * 1.75);
+
+$line-height-xl: 1.5;
+$line-height-xxl: 1.5;
+
+$enable-shadows: true;
+
+$input-btn-padding-y-sm: px-to-rem(5);
+$input-btn-padding-y: px-to-rem(7);
+$input-btn-padding-x: px-to-rem(20);
+$input-btn-padding-y-lg: px-to-rem(11);
+$input-btn-padding-x-lg: px-to-rem(25);
+$input-btn-padding-y-xl: px-to-rem(13);
+$input-btn-padding-x-xl: px-to-rem(30);
+$input-btn-padding-y-xxl: px-to-rem(16);
+$input-btn-padding-x-xxl: px-to-rem(35);
+
+$input-placeholder-color: #ccc;
+
+$input-bg: get-color('light-grey');
+$input-border-width: 0;
+$input-box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
+$input-focus-box-shadow: 0 0 0 .2rem rgba(0, 158, 255, 0.3);
+
+$btn-box-shadow: 2px 2px 3px 0 rgba(68, 68, 68, 0.8);
+
+$input-group-addon-bg: $input-bg;

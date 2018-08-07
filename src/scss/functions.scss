@@ -1,0 +1,7 @@
+@function px-to-rem($pixels) {
+    @return 1rem * ($pixels/16);
+}
+
+@function px-to-line-height($pixels) {
+    @return ($pixels/16);
+}

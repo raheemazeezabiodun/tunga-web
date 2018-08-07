@@ -1,14 +1,5 @@
 import axios from 'axios';
-import {ENDPOINT_MESSAGE} from '../constants/Api';
-import {updateChannelRead} from './ChannelActions';
-
-import {
-    sendGAEvent,
-    GA_EVENT_CATEGORIES,
-    GA_EVENT_ACTIONS,
-    getGAUserType,
-} from '../utils/tracking';
-import {getUser} from 'utils/auth';
+import {composeFormData, ENDPOINT_MESSAGES} from './utils/api';
 
 export const CREATE_MESSAGE_START = 'CREATE_MESSAGE_START';
 export const CREATE_MESSAGE_SUCCESS = 'CREATE_MESSAGE_SUCCESS';
@@ -22,138 +13,109 @@ export const RETRIEVE_MESSAGE_FAILED = 'RETRIEVE_MESSAGE_FAILED';
 export const UPDATE_MESSAGE_START = 'UPDATE_MESSAGE_START';
 export const UPDATE_MESSAGE_SUCCESS = 'UPDATE_MESSAGE_SUCCESS';
 export const UPDATE_MESSAGE_FAILED = 'UPDATE_MESSAGE_FAILED';
-export const DELETE_MESSAGE_START = 'DELETE_MESSAGE_START';
-export const DELETE_MESSAGE_SUCCESS = 'DELETE_MESSAGE_SUCCESS';
-export const DELETE_MESSAGE_FAILED = 'DELETE_MESSAGE_FAILED';
-export const UPDATE_MESSAGE_READ_START = 'UPDATE_MESSAGE_READ_START';
-export const UPDATE_MESSAGE_READ_SUCCESS = 'UPDATE_MESSAGE_READ_SUCCESS';
-export const UPDATE_MESSAGE_READ_FAILED = 'UPDATE_MESSAGE_READ_FAILED';
 export const LIST_MORE_MESSAGES_START = 'LIST_MORE_MESSAGES_START';
 export const LIST_MORE_MESSAGES_SUCCESS = 'LIST_MORE_MESSAGES_SUCCESS';
 export const LIST_MORE_MESSAGES_FAILED = 'LIST_MORE_MESSAGES_FAILED';
-export const LIST_NEW_MESSAGES_START = 'LIST_NEW_MESSAGES_START';
-export const LIST_NEW_MESSAGES_SUCCESS = 'LIST_NEW_MESSAGES_SUCCESS';
-export const LIST_NEW_MESSAGES_FAILED = 'LIST_NEW_MESSAGES_FAILED';
+export const DELETE_MESSAGE_START = 'DELETE_MESSAGE_START';
+export const DELETE_MESSAGE_SUCCESS = 'DELETE_MESSAGE_SUCCESS';
+export const DELETE_MESSAGE_FAILED = 'DELETE_MESSAGE_FAILED';
 
-export function createMessage(message, attachments) {
+export function createMessage(message, target) {
     return dispatch => {
-        dispatch(createMessageStart(message));
+        dispatch(createMessageStart(message, target));
 
-        var headers = {},
+        let headers = {},
             data = message;
-        if (attachments && attachments.length) {
+
+        if (message.uploads && message.uploads.length) {
             headers['Content-Type'] = 'multipart/form-data';
-
-            data = new FormData();
-            Object.keys(message).map((key, idx) => {
-                if (!Array.isArray(message[key]) || message[key].length) {
-                    data.append(key, message[key]);
-                }
-            });
-
-            attachments.map((file, idx) => {
-                data.append('file' + idx, file);
-            });
+            data = composeFormData(message);
         }
 
         axios
-            .post(ENDPOINT_MESSAGE, data, {headers})
+            .post(ENDPOINT_MESSAGES, data, {headers})
             .then(function(response) {
-                dispatch(createMessageSuccess(response.data));
+                dispatch(createMessageSuccess(response.data, target));
             })
             .catch(function(error) {
                 dispatch(
                     createMessageFailed(
-                        error.response ? error.response.data : null,
+                        (error.response ? error.response.data : null), message, target
                     ),
                 );
             });
     };
 }
 
-export function createMessageStart(message) {
+export function createMessageStart(message, target) {
     return {
         type: CREATE_MESSAGE_START,
         message,
+        target
     };
 }
 
-export function createMessageSuccess(message) {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.MESSAGE,
-        GA_EVENT_ACTIONS.SEND,
-        getGAUserType(getUser()),
-    );
-
+export function createMessageSuccess(message, target) {
     return {
         type: CREATE_MESSAGE_SUCCESS,
         message,
+        target
     };
 }
 
-export function createMessageFailed(error) {
+export function createMessageFailed(error, message, target) {
     return {
         type: CREATE_MESSAGE_FAILED,
         error,
+        message,
+        target
     };
 }
 
-export function listMessages(filter) {
+export function listMessages(filter, selection, prev_selection) {
     return dispatch => {
-        let get_new = filter && filter.since > -1;
-        dispatch(listMessagesStart(filter, get_new));
+        dispatch(listMessagesStart(filter, selection, prev_selection));
         axios
-            .get(ENDPOINT_MESSAGE, {params: filter})
+            .get(ENDPOINT_MESSAGES, {params: filter})
             .then(function(response) {
-                if (
-                    filter &&
-                    filter.channel &&
-                    response.data.results &&
-                    response.data.results.length
-                ) {
-                    dispatch(
-                        updateChannelRead(filter.channel, {
-                            last_read: response.data.results[0].id,
-                        }),
-                    );
-                }
-                dispatch(listMessagesSuccess(response.data, filter, get_new));
+                dispatch(listMessagesSuccess(response.data, filter, selection));
             })
             .catch(function(error) {
                 dispatch(
                     listMessagesFailed(
                         error.response ? error.response.data : null,
-                        filter,
-                        get_new,
                     ),
                 );
             });
     };
 }
 
-export function listMessagesStart(filter, new_only = false) {
+export function listMessagesStart(filter, selection, prev_selection) {
     return {
-        type: new_only ? LIST_NEW_MESSAGES_START : LIST_MESSAGES_START,
+        type: LIST_MESSAGES_START,
         filter,
+        selection,
+        prev_selection,
     };
 }
 
-export function listMessagesSuccess(response, filter, new_only = false) {
+export function listMessagesSuccess(response, filter, selection) {
     return {
-        type: new_only ? LIST_NEW_MESSAGES_SUCCESS : LIST_MESSAGES_SUCCESS,
+        type: LIST_MESSAGES_SUCCESS,
         items: response.results,
         previous: response.previous,
         next: response.next,
         count: response.count,
         filter,
+        selection,
     };
 }
 
-export function listMessagesFailed(error, filter, new_only = false) {
+export function listMessagesFailed(error, selection) {
     return {
-        type: new_only ? LIST_NEW_MESSAGES_FAILED : LIST_MESSAGES_FAILED,
+        type: LIST_MESSAGES_FAILED,
         error,
-        filter,
+        selection,
     };
 }
 
@@ -161,9 +123,9 @@ export function retrieveMessage(id) {
     return dispatch => {
         dispatch(retrieveMessageStart(id));
         axios
-            .get(ENDPOINT_MESSAGE + id + '/')
+            .get(ENDPOINT_MESSAGES + id + '/')
             .then(function(response) {
-                dispatch(retrieveMessageSuccess(response.data));
+                dispatch(retrieveMessageSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
@@ -182,169 +144,111 @@ export function retrieveMessageStart(id) {
     };
 }
 
-export function retrieveMessageSuccess(message) {
+export function retrieveMessageSuccess(message, id) {
     return {
         type: RETRIEVE_MESSAGE_SUCCESS,
         message,
+        id
     };
 }
 
-export function retrieveMessageFailed(error) {
+export function retrieveMessageFailed(error, id) {
     return {
         type: RETRIEVE_MESSAGE_FAILED,
         error,
+        id
     };
 }
 
-export function updateMessage(id, data) {
+export function updateMessage(id, message) {
     return dispatch => {
-        dispatch(updateMessageStart(id));
+        dispatch(updateMessageStart(id, message, id));
+
+        let headers = {},
+            data = message;
+        if (message.uploads && message.uploads.length) {
+            headers['Content-Type'] = 'multipart/form-data';
+            data = composeFormData(message);
+        }
+
         axios
-            .patch(ENDPOINT_MESSAGE + id + '/', data)
+            .patch(ENDPOINT_MESSAGES + id + '/', data, {
+                headers: {...headers},
+            })
             .then(function(response) {
-                dispatch(updateMessageSuccess(response.data));
+                dispatch(updateMessageSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     updateMessageFailed(
-                        error.response ? error.response.data : null,
+                        (error.response ? error.response.data : null), message, id
                     ),
                 );
             });
     };
 }
 
-export function updateMessageStart(id) {
+export function updateMessageStart(id, message, target) {
     return {
         type: UPDATE_MESSAGE_START,
         id,
+        message,
+        target
     };
 }
 
-export function updateMessageSuccess(message) {
+export function updateMessageSuccess(message, target) {
     return {
         type: UPDATE_MESSAGE_SUCCESS,
         message,
+        target
     };
 }
 
-export function updateMessageFailed(error) {
+export function updateMessageFailed(error, message, target) {
     return {
         type: UPDATE_MESSAGE_FAILED,
         error,
+        message,
+        target
     };
 }
 
-export function deleteMessage(id) {
+export function listMoreMessages(url, selection) {
     return dispatch => {
-        dispatch(deleteMessageStart(id));
-        axios
-            .delete(ENDPOINT_MESSAGE + id + '/')
-            .then(function() {
-                dispatch(deleteMessageSuccess(id));
-            })
-            .catch(function(error) {
-                dispatch(
-                    deleteMessageFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function deleteMessageStart(id) {
-    return {
-        type: DELETE_MESSAGE_START,
-        id,
-    };
-}
-
-export function deleteMessageSuccess(id) {
-    return {
-        type: DELETE_MESSAGE_SUCCESS,
-        id,
-    };
-}
-
-export function deleteMessageFailed(error) {
-    return {
-        type: DELETE_MESSAGE_FAILED,
-        error,
-    };
-}
-
-export function updateMessageRead(id) {
-    return dispatch => {
-        dispatch(updateMessageReadStart(id));
-        axios
-            .post(ENDPOINT_MESSAGE + id + '/read/')
-            .then(function(response) {
-                dispatch(updateMessageReadSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    updateMessageReadFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function updateMessageReadStart(id) {
-    return {
-        type: UPDATE_MESSAGE_READ_START,
-        id,
-    };
-}
-
-export function updateMessageReadSuccess(response) {
-    return {
-        type: UPDATE_MESSAGE_READ_SUCCESS,
-        message: response.message,
-    };
-}
-
-export function updateMessageReadFailed(error) {
-    return {
-        type: UPDATE_MESSAGE_READ_FAILED,
-        error,
-    };
-}
-
-export function listMoreMessages(url) {
-    return dispatch => {
-        dispatch(listMoreMessagesStart(url));
+        dispatch(listMoreMessagesStart(url, selection));
         axios
             .get(url)
             .then(function(response) {
-                dispatch(listMoreMessagesSuccess(response.data));
+                dispatch(listMoreMessagesSuccess(response.data, selection));
             })
             .catch(function(error) {
                 dispatch(
                     listMoreMessagesFailed(
                         error.response ? error.response.data : null,
+                        selection,
                     ),
                 );
             });
     };
 }
 
-export function listMoreMessagesStart(url) {
+export function listMoreMessagesStart(url, selection) {
     return {
         type: LIST_MORE_MESSAGES_START,
         url,
+        selection,
     };
 }
 
-export function listMoreMessagesSuccess(response) {
+export function listMoreMessagesSuccess(response, selection) {
     return {
         type: LIST_MORE_MESSAGES_SUCCESS,
         items: response.results,
         previous: response.previous,
         next: response.next,
         count: response.count,
+        selection,
     };
 }
 
@@ -353,4 +257,38 @@ export function listMoreMessagesFailed(error) {
         type: LIST_MORE_MESSAGES_FAILED,
         error,
     };
+}
+
+export function deleteMessage(id) {
+    return dispatch => {
+        dispatch(deleteMessageStart(id));
+        axios.delete(ENDPOINT_MESSAGES + id + '/')
+            .then(function () {
+                dispatch(deleteMessageSuccess(id));
+            }).catch(function (response) {
+            dispatch(deleteMessageFailed(response.data, id));
+        });
+    }
+}
+
+export function deleteMessageStart(id) {
+    return {
+        type: DELETE_MESSAGE_START,
+        id
+    }
+}
+
+export function deleteMessageSuccess(id) {
+    return {
+        type: DELETE_MESSAGE_SUCCESS,
+        id
+    }
+}
+
+export function deleteMessageFailed(error, id) {
+    return {
+        type: DELETE_MESSAGE_FAILED,
+        error,
+        id
+    }
 }

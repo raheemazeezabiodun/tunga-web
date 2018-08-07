@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ENDPOINT_USER} from '../constants/Api';
+import {ENDPOINT_USERS} from './utils/api';
 
 export const LIST_USERS_START = 'LIST_USERS_START';
 export const LIST_USERS_SUCCESS = 'LIST_USERS_SUCCESS';
@@ -18,7 +18,7 @@ export function listUsers(filter, selection, prev_selection) {
     return dispatch => {
         dispatch(listUsersStart(filter, selection, prev_selection));
         axios
-            .get(ENDPOINT_USER, {params: filter})
+            .get(ENDPOINT_USERS, {params: filter})
             .then(function(response) {
                 dispatch(listUsersSuccess(response.data, filter, selection));
             })
@@ -65,7 +65,7 @@ export function retrieveUser(id) {
     return dispatch => {
         dispatch(retrieveUserStart(id));
         axios
-            .get(ENDPOINT_USER + id + '/')
+            .get(ENDPOINT_USERS + id + '/')
             .then(function(response) {
                 dispatch(retrieveUserSuccess(response.data));
             })
@@ -104,7 +104,7 @@ export function updateUser(id, data) {
     return dispatch => {
         dispatch(updateUserStart(id));
         axios
-            .patch(ENDPOINT_USER + id + '/', data)
+            .patch(ENDPOINT_USERS + id + '/', data)
             .then(function(response) {
                 dispatch(updateUserSuccess(response.data));
             })

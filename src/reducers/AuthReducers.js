@@ -1,23 +1,56 @@
 import {combineReducers} from 'redux';
 import * as AuthActions from '../actions/AuthActions';
 import * as ProfileActions from '../actions/ProfileActions';
-import {running as runningProjects} from './ProjectReducers';
-import {running as runningTasks} from './TaskReducers';
-import {PATH_CHANGE} from '../actions/NavActions';
+import * as SettingsActions from '../actions/SettingsActions';
+import {reduceUser} from './utils';
 
-function user(state = {}, action) {
+function user(state = {profile: {}, company: {}, settings: {visibility: {}, switches: {}}}, action) {
     switch (action.type) {
         case AuthActions.LOGIN_SUCCESS:
         case AuthActions.VERIFY_SUCCESS:
-            return action.user;
         case ProfileActions.UPDATE_ACCOUNT_INFO_SUCCESS:
         case ProfileActions.UPDATE_AUTH_USER_SUCCESS:
         case ProfileActions.RETRIEVE_PROFILE_SUCCESS:
-            var user = action.user;
-            return {...state, ...user};
+            let user = action.user;
+            return reduceUser(state, user);
         case ProfileActions.UPDATE_PROFILE_SUCCESS:
-            user = action.profile.details.user;
-            return {...state, ...user};
+            let profile = action.profile;
+            user = profile.user;
+            delete profile.user;
+            return reduceUser(state, user, profile);
+        case ProfileActions.UPDATE_COMPANY_SUCCESS:
+            return reduceUser(state, user, null, action.company);
+        case ProfileActions.CREATE_WORK_SUCCESS:
+        case ProfileActions.UPDATE_WORK_SUCCESS:
+            let work = action.work;
+            delete work.user;
+            let currentWork = [...(state.work || [])];
+            let currentWorkIdx = currentWork.map(item => {
+                return item.id;
+            }).indexOf(work.id);
+            if(currentWorkIdx === -1) {
+                currentWork.push(work);
+            } else {
+                currentWork[currentWorkIdx] = work;
+            }
+            return {...state, work: currentWork};
+        case ProfileActions.CREATE_EDUCATION_SUCCESS:
+        case ProfileActions.UPDATE_EDUCATION_SUCCESS:
+            let education = action.education;
+            delete education.user;
+            let currentEducation = [...(state.education || [])];
+            let currentEducationIdx = currentEducation.map(item => {
+                return item.id;
+            }).indexOf(education.id);
+            if(currentEducationIdx === -1) {
+                currentEducation.push(education);
+            } else {
+                currentEducation[currentEducationIdx] = education;
+            }
+            return {...state, education: currentEducation};
+        case SettingsActions.RETRIEVE_SETTINGS_SUCCESS:
+        case SettingsActions.UPDATE_SETTINGS_SUCCESS:
+            return {...state, settings: action.settings};
         case AuthActions.LOGOUT_SUCCESS:
             return {};
         default:
@@ -124,7 +157,6 @@ function application(state = {}, action) {
             return action.application;
         case ProfileActions.RETRIEVE_PROFILE_START:
         case ProfileActions.RETRIEVE_PROFILE_FAILED:
-        case PATH_CHANGE:
             return {};
         default:
             return state;
@@ -173,7 +205,6 @@ function invitation(state = {}, action) {
             return action.invite;
         case AuthActions.RETRIEVE_INVITE_START:
         case AuthActions.RETRIEVE_INVITE_FAILED:
-        case PATH_CHANGE:
             return {};
         default:
             return state;
@@ -243,191 +274,13 @@ function isReset(state = false, action) {
     }
 }
 
-function repoItems(state = {}, action) {
-    switch (action.type) {
-        case AuthActions.LIST_REPOS_SUCCESS:
-            var all_repos = {};
-            action.repos.forEach(repo => {
-                all_repos[repo.id] = repo;
-            });
-            return all_repos;
-        case AuthActions.LIST_REPOS_START:
-        case AuthActions.LIST_ISSUES_FAILED:
-            return {};
-        default:
-            return state;
-    }
-}
-
-function repoIds(state = [], action) {
-    switch (action.type) {
-        case AuthActions.LIST_REPOS_SUCCESS:
-            return action.repos.map(repo => {
-                return repo.id;
-            });
-        case AuthActions.LIST_REPOS_START:
-        case AuthActions.LIST_REPOS_FAILED:
-            return [];
-        default:
-            return state;
-    }
-}
-
-function isFetchingRepos(state = false, action) {
-    switch (action.type) {
-        case AuthActions.LIST_REPOS_START:
-            return true;
-        case AuthActions.LIST_REPOS_SUCCESS:
-        case AuthActions.LIST_REPOS_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function issueItems(state = {}, action) {
-    switch (action.type) {
-        case AuthActions.LIST_ISSUES_SUCCESS:
-            var all_issues = {};
-            action.issues.forEach(issue => {
-                all_issues[issue.id] = issue;
-            });
-            return all_issues;
-        case AuthActions.LIST_ISSUES_START:
-        case AuthActions.LIST_ISSUES_FAILED:
-            return {};
-        default:
-            return state;
-    }
-}
-
-function issueIds(state = [], action) {
-    switch (action.type) {
-        case AuthActions.LIST_ISSUES_SUCCESS:
-            return action.issues.map(issue => {
-                return issue.id;
-            });
-        case AuthActions.LIST_ISSUES_START:
-        case AuthActions.LIST_ISSUES_FAILED:
-            return [];
-        default:
-            return state;
-    }
-}
-
-function isFetchingIssues(state = false, action) {
-    switch (action.type) {
-        case AuthActions.LIST_ISSUES_START:
-            return true;
-        case AuthActions.LIST_ISSUES_SUCCESS:
-        case AuthActions.LIST_ISSUES_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isGitHubConnected(state = false, action) {
-    switch (action.type) {
-        case AuthActions.LIST_REPOS_SUCCESS:
-        case AuthActions.LIST_ISSUES_SUCCESS:
-            return true;
-        case AuthActions.LIST_REPOS_FAILED:
-        case AuthActions.LIST_ISSUES_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function slackInfo(state = null, action) {
-    switch (action.type) {
-        case AuthActions.GET_SLACK_APP_SUCCESS:
-            return action.details;
-        case AuthActions.GET_SLACK_APP_FAILED:
-            return null;
-        default:
-            return state;
-    }
-}
-
-function isRetrievingSlackInfo(state = false, action) {
-    switch (action.type) {
-        case AuthActions.GET_SLACK_APP_START:
-            return true;
-        case AuthActions.GET_SLACK_APP_SUCCESS:
-        case AuthActions.GET_SLACK_APP_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function slackChannelItems(state = {}, action) {
-    switch (action.type) {
-        case AuthActions.LIST_SLACK_CHANNELS_SUCCESS:
-            var all_channels = {};
-            action.channels.forEach(slackChannel => {
-                all_channels[slackChannel.id] = slackChannel;
-            });
-            return all_channels;
-        case AuthActions.LIST_SLACK_CHANNELS_START:
-        case AuthActions.LIST_SLACK_CHANNELS_FAILED:
-            return {};
-        default:
-            return state;
-    }
-}
-
-function slackChannelIds(state = [], action) {
-    switch (action.type) {
-        case AuthActions.LIST_SLACK_CHANNELS_SUCCESS:
-            return action.channels.map(channel => {
-                return channel.id;
-            });
-        case AuthActions.LIST_SLACK_CHANNELS_START:
-        case AuthActions.LIST_SLACK_CHANNELS_FAILED:
-            return [];
-        default:
-            return state;
-    }
-}
-
-function isFetchingSlackChannels(state = false, action) {
-    switch (action.type) {
-        case AuthActions.LIST_SLACK_CHANNELS_START:
-            return true;
-        case AuthActions.LIST_SLACK_CHANNELS_SUCCESS:
-        case AuthActions.LIST_SLACK_CHANNELS_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
-function isSlackConnected(state = false, action) {
-    switch (action.type) {
-        case AuthActions.GET_SLACK_APP_SUCCESS:
-            return action.details != null;
-        case AuthActions.GET_SLACK_APP_FAILED:
-            return false;
-        case AuthActions.LIST_SLACK_CHANNELS_SUCCESS:
-            return true;
-        case AuthActions.LIST_SLACK_CHANNELS_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
-
 function error(state = {}, action) {
     switch (action.type) {
         case AuthActions.LOGIN_FAILED:
             var error = action.error;
             if (
                 error &&
-                error.non_field_errors ==
-                    'Unable to log in with provided credentials.'
+                error.non_field_errors === 'Unable to log in with provided credentials.'
             ) {
                 error.non_field_errors = 'Wrong username or password';
             }
@@ -476,47 +329,6 @@ function next(state = null, action) {
     }
 }
 
-const running = combineReducers({
-    projects: runningProjects,
-    tasks: runningTasks,
-});
-
-const repos = combineReducers({
-    ids: repoIds,
-    items: repoItems,
-    isFetching: isFetchingRepos,
-});
-
-const issues = combineReducers({
-    ids: issueIds,
-    items: issueItems,
-    isFetching: isFetchingIssues,
-});
-
-const github = combineReducers({
-    repos,
-    issues,
-    isConnected: isGitHubConnected,
-});
-
-const slack_channels = combineReducers({
-    ids: slackChannelIds,
-    items: slackChannelItems,
-    isFetching: isFetchingSlackChannels,
-});
-
-const slack = combineReducers({
-    details: slackInfo,
-    channels: slack_channels,
-    isRetrieving: isRetrievingSlackInfo,
-    isConnected: isSlackConnected,
-});
-
-const connections = combineReducers({
-    github,
-    slack,
-});
-
 const Auth = combineReducers({
     user,
     visitor,
@@ -537,9 +349,8 @@ const Auth = combineReducers({
     isResetting,
     isReset,
     error,
+    errors: error,
     next,
-    running,
-    connections,
 });
 
 export default Auth;

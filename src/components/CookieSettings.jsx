@@ -1,7 +1,11 @@
 import React from 'react';
-import moment from 'moment';
+import {FormGroup} from 'reactstrap';
 
-import {COOKIE_OPTIONS, getCookieConsentCloseAt, setCookieConsentCloseAt, getCookieConsent, setCookieConsent, parseDefaultConsents} from "../utils/tracking";
+import {
+    COOKIE_OPTIONS, getCookieConsentCloseAt, getCookieConsent, parseDefaultConsents,
+    setCookieConsentCloseAt, setCookieConsent
+} from "./utils/consent";
+import Button from "./core/Button";
 
 export default class CookieSettings extends React.Component {
 
@@ -26,37 +30,52 @@ export default class CookieSettings extends React.Component {
 
         updateConsents = Array.from(new Set(updateConsents));
         this.setState({cookieConsents: updateConsents});
-        if(this.props.onChange) {
-            this.props.onChange(updateConsents);
-        }
     }
+
+    onSave = (e) => {
+        e.preventDefault();
+        setCookieConsent(this.state.cookieConsents);
+        setCookieConsentCloseAt();
+        if(this.props.proceed) {
+            this.props.proceed();
+        }
+        return;
+    };
 
     render() {
         return (
-            <div>
+            <form onSubmit={this.onSave} className="cookie-settings">
                 {COOKIE_OPTIONS.map(category => {
-                    let categoryId = category[0];
+                    let categoryId = category[0], elementId = `consent-${categoryId}`;
                     return (
-                        <div className="form-group">
-                            <div className="checkbox">
-                                <label className="control-label">
-                                    <input
-                                        type="checkbox"
-                                        checked={(category[3] && category[4]) || this.state.cookieConsents.indexOf(categoryId) > -1}
-                                        disabled={category[4]}
-                                        onChange={this.onChangeConsentValue.bind(this, categoryId)}
-                                    />
+                        <FormGroup>
+                            <div className="form-check">
+                                <input className="form-check-input"
+                                       id={elementId}
+                                    type="checkbox"
+                                    checked={(category[3] && category[4]) || this.state.cookieConsents.indexOf(categoryId) > -1}
+                                    disabled={category[4]}
+                                    onChange={this.onChangeConsentValue.bind(this, categoryId)}
+                                />
+                                <label className="form-check-label" for={elementId}>
                                     {category[1]}
                                 </label>
                             </div>
                             <div>
                                 {category[2]}
                             </div>
-                        </div>
+                        </FormGroup>
                     );
                 })}
-                Learn more from the "Cookies" section of our <a href="https://tunga.io/privacy/#cookies">Privacy Policy.</a>
-            </div>
+
+                <FormGroup>
+                    Learn more from the "Cookies" section of our <a href="https://tunga.io/privacy/#cookies">Privacy Policy.</a>
+                </FormGroup>
+
+                <div className="text-right">
+                    <Button type="submit">Save Settings</Button>
+                </div>
+            </form>
         );
     }
 }

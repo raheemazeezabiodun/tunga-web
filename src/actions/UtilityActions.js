@@ -2,15 +2,7 @@ import axios from 'axios';
 import {
     ENDPOINT_CONTACT_REQUEST,
     ENDPOINT_MEDIUM,
-    OFFER_ITEM_NAMES,
-} from '../constants/Api';
-
-import {
-    sendGAEvent,
-    GA_EVENT_CATEGORIES,
-    GA_EVENT_ACTIONS,
-    GA_EVENT_LABELS,
-} from '../utils/tracking';
+} from '../actions/utils/api';
 
 export const CLEAR_VALIDATIONS = 'CLEAR_VALIDATIONS';
 export const SEND_CONTACT_REQUEST_START = 'SEND_CONTACT_REQUEST_START';
@@ -52,14 +44,6 @@ export function sendContactRequestStart(data) {
 }
 
 export function sendContactRequestSuccess(data) {
-    if (data.item) {
-        sendGAEvent(
-            GA_EVENT_CATEGORIES.CONTACT,
-            GA_EVENT_ACTIONS.REQUEST_OFFER,
-            OFFER_ITEM_NAMES[data.item],
-        );
-    }
-
     return {
         type: SEND_CONTACT_REQUEST_SUCCESS,
         data,

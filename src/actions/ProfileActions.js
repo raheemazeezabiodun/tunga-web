@@ -6,24 +6,18 @@ import {
     ENDPOINT_CHANGE_PASSWORD,
     ENDPOINT_USER_EDUCATION,
     ENDPOINT_USER_WORK,
-    ENDPOINT_NOTIFICATION,
     ENDPOINT_COUNTRIES,
-} from '../constants/Api';
+    ENDPOINT_COMPANY,
+    ENDPOINT_NOTIFICATIONS,
+    composeFormData,
+} from './utils/api';
 
-import {
-    sendGAEvent,
-    getGAUserType,
-    GA_EVENT_CATEGORIES,
-    GA_EVENT_ACTIONS,
-} from '../utils/tracking';
-import {getUser} from 'utils/auth';
-
-export const UPDATE_AUTH_USER_START = 'UPDATE_AUTH_USER_START';
-export const UPDATE_AUTH_USER_SUCCESS = 'UPDATE_AUTH_USER_SUCCESS';
-export const UPDATE_AUTH_USER_FAILED = 'UPDATE_AUTH_USER_FAILED';
 export const UPDATE_ACCOUNT_INFO_START = 'UPDATE_ACCOUNT_INFO_START';
 export const UPDATE_ACCOUNT_INFO_SUCCESS = 'UPDATE_ACCOUNT_INFO_SUCCESS';
 export const UPDATE_ACCOUNT_INFO_FAILED = 'UPDATE_ACCOUNT_INFO_FAILED';
+export const UPDATE_AUTH_USER_START = 'UPDATE_AUTH_USER_START';
+export const UPDATE_AUTH_USER_SUCCESS = 'UPDATE_AUTH_USER_SUCCESS';
+export const UPDATE_AUTH_USER_FAILED = 'UPDATE_AUTH_USER_FAILED';
 export const RETRIEVE_PROFILE_START = 'RETRIEVE_PROFILE_START';
 export const RETRIEVE_PROFILE_SUCCESS = 'RETRIEVE_PROFILE_SUCCESS';
 export const RETRIEVE_PROFILE_FAILED = 'RETRIEVE_PROFILE_FAILED';
@@ -48,67 +42,15 @@ export const UPDATE_EDUCATION_FAILED = 'UPDATE_EDUCATION_FAILED';
 export const GET_COUNTRIES_START = 'GET_COUNTRIES_START';
 export const GET_COUNTRIES_SUCCESS = 'GET_COUNTRIES_SUCCESS';
 export const GET_COUNTRIES_FAILED = 'GET_COUNTRIES_FAILED';
-
-export function updateAuthUser(user) {
-    return dispatch => {
-        dispatch(updateAuthUserStart());
-
-        var headers = {},
-            data = user;
-        if (user.image || user.id_document) {
-            headers['Content-Type'] = 'multipart/form-data';
-
-            data = new FormData();
-            Object.keys(user).map((key, idx) => {
-                data.append(key, user[key]);
-            });
-        }
-
-        axios
-            .patch(ENDPOINT_USER_INFO, data, {headers})
-            .then(function(response) {
-                dispatch(updateAuthUserSuccess(response.data));
-            })
-            .catch(function(error) {
-                dispatch(
-                    updateAuthUserFailed(
-                        error.response ? error.response.data : null,
-                    ),
-                );
-            });
-    };
-}
-
-export function updateAuthUserStart() {
-    return {
-        type: UPDATE_AUTH_USER_START,
-    };
-}
-
-export function updateAuthUserSuccess(user) {
-    var current_user = getUser();
-    if (current_user && !current_user.type) {
-        // If current user doesn't have a type, this can be treated as Sign Up
-        sendGAEvent(
-            GA_EVENT_CATEGORIES.REGISTRATION,
-            GA_EVENT_ACTIONS.SIGN_UP,
-            getGAUserType(user),
-        );
-    }
-    return {
-        type: UPDATE_AUTH_USER_SUCCESS,
-        user,
-    };
-}
-
-export function updateAuthUserFailed(error) {
-    return {
-        type: UPDATE_AUTH_USER_FAILED,
-        error,
-    };
-}
+export const UPDATE_COMPANY_START = 'UPDATE_COMPANY_START';
+export const UPDATE_COMPANY_SUCCESS = 'UPDATE_COMPANY_SUCCESS';
+export const UPDATE_COMPANY_FAILED = 'UPDATE_COMPANY_FAILED';
+export const GET_NOTIFICATIONS_START = 'GET_NOTIFICATIONS_START';
+export const GET_NOTIFICATIONS_SUCCESS = 'GET_NOTIFICATIONS_SUCCESS';
+export const GET_NOTIFICATIONS_FAILED = 'GET_NOTIFICATIONS_FAILED';
 
 export function updateAccountInfo(user) {
+    // Requires password and limited to a few account fields
     return dispatch => {
         dispatch(updateAccountInfoStart());
         axios
@@ -133,12 +75,6 @@ export function updateAccountInfoStart() {
 }
 
 export function updateAccountInfoSuccess(user) {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.PROFILE,
-        GA_EVENT_ACTIONS.UPDATE,
-        getGAUserType(getUser()),
-    );
-
     return {
         type: UPDATE_ACCOUNT_INFO_SUCCESS,
         user,
@@ -148,6 +84,53 @@ export function updateAccountInfoSuccess(user) {
 export function updateAccountInfoFailed(error) {
     return {
         type: UPDATE_ACCOUNT_INFO_FAILED,
+        error,
+    };
+}
+
+export function updateAuthUser(user) {
+    // No password required and can update all user fields
+    return dispatch => {
+        dispatch(updateAuthUserStart());
+
+        var headers = {},
+            data = user;
+        if (user.image) {
+            headers['Content-Type'] = 'multipart/form-data';
+            data = composeFormData(user);
+        }
+
+        axios
+            .patch(ENDPOINT_USER_INFO, data, {headers})
+            .then(function(response) {
+                dispatch(updateAuthUserSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    updateAuthUserFailed(
+                        error.response ? error.response.data : null,
+                    ),
+                );
+            });
+    };
+}
+
+export function updateAuthUserStart() {
+    return {
+        type: UPDATE_AUTH_USER_START,
+    };
+}
+
+export function updateAuthUserSuccess(user) {
+    return {
+        type: UPDATE_AUTH_USER_SUCCESS,
+        user,
+    };
+}
+
+export function updateAuthUserFailed(error) {
+    return {
+        type: UPDATE_AUTH_USER_FAILED,
         error,
     };
 }
@@ -179,6 +162,7 @@ export function retrieveProfileStart() {
 export function retrieveProfileSuccess(user) {
     return {
         type: RETRIEVE_PROFILE_SUCCESS,
+        user: user,
         profile: user.profile,
         work: user.work,
         education: user.education,
@@ -194,18 +178,14 @@ export function retrieveProfileFailed(error) {
 
 export function updateProfile(id, profile) {
     return dispatch => {
-        dispatch(updateProfileStart(id));
+        dispatch(updateProfileStart(id, profile));
         let request_method = id ? 'patch' : 'post';
 
         var headers = {},
             data = profile;
-        if (profile && profile.id_document) {
+        if (profile && (profile.id_document || (profile.user && profile.user.image))) {
             headers['Content-Type'] = 'multipart/form-data';
-
-            data = new FormData();
-            Object.keys(profile).map(key => {
-                data.append(key, profile[key]);
-            });
+            data = composeFormData(profile);
         }
 
         axios
@@ -216,42 +196,40 @@ export function updateProfile(id, profile) {
                 headers,
             })
             .then(function(response) {
-                dispatch(updateProfileSuccess(response.data));
+                dispatch(updateProfileSuccess(response.data, id));
             })
             .catch(function(error) {
                 dispatch(
                     updateProfileFailed(
-                        error.response ? error.response.data : null,
+                        error.response ? error.response.data : null, profile, id
                     ),
                 );
             });
     };
 }
 
-export function updateProfileStart(id) {
+export function updateProfileStart(id, profile) {
     return {
         type: UPDATE_PROFILE_START,
         id,
+        profile
     };
 }
 
-export function updateProfileSuccess(profile) {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.PROFILE,
-        GA_EVENT_ACTIONS.UPDATE,
-        getGAUserType(getUser()),
-    );
-
+export function updateProfileSuccess(profile, id) {
     return {
         type: UPDATE_PROFILE_SUCCESS,
+        id,
         profile,
     };
 }
 
-export function updateProfileFailed(error) {
+export function updateProfileFailed(error, profile, id) {
     return {
         type: UPDATE_PROFILE_FAILED,
         error,
+        profile,
+        id,
     };
 }
 
@@ -280,11 +258,6 @@ export function updatePasswordStart() {
 }
 
 export function updatePasswordSuccess() {
-    sendGAEvent(
-        GA_EVENT_CATEGORIES.AUTH,
-        GA_EVENT_ACTIONS.CHANGE_PASSWORD,
-        getGAUserType(getUser()),
-    );
     return {
         type: UPDATE_PASSWORD_SUCCESS,
     };
@@ -487,6 +460,97 @@ export function getCountriesSuccess(countries) {
 export function getCountriesFailed(error) {
     return {
         type: GET_COUNTRIES_FAILED,
+        error,
+    };
+}
+
+export function updateCompany(id, company) {
+    return dispatch => {
+        dispatch(updateCompanyStart(id, company));
+        let request_method = id ? 'patch' : 'post';
+
+        let headers = {},
+            data = company;
+        if (company && company.user && company.user.image) {
+            headers['Content-Type'] = 'multipart/form-data';
+            data = composeFormData(company);
+        }
+
+        axios
+            .request({
+                url: ENDPOINT_COMPANY,
+                method: request_method,
+                data,
+                headers,
+            })
+            .then(function(response) {
+                dispatch(updateCompanySuccess(response.data, id));
+            })
+            .catch(function(error) {
+                dispatch(
+                    updateCompanyFailed(
+                        error.response ? error.response.data : null,
+                        id
+                    ),
+                );
+            });
+    };
+}
+
+export function updateCompanyStart(id, company) {
+    return {
+        type: UPDATE_COMPANY_START,
+        id,
+        company
+    };
+}
+
+export function updateCompanySuccess(company, id) {
+    return {
+        type: UPDATE_COMPANY_SUCCESS,
+        company,
+        id
+    };
+}
+
+export function updateCompanyFailed(error, id) {
+    return {
+        type: UPDATE_COMPANY_FAILED,
+        error,
+        id
+    };
+}
+
+export function getNotifications() {
+    return dispatch => {
+        dispatch(getNotificationsStart());
+        axios
+            .get(ENDPOINT_NOTIFICATIONS)
+            .then(function(response) {
+                dispatch(getNotificationsSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(getNotificationsFailed(error.response?error.response.data:null));
+            });
+    };
+}
+
+export function getNotificationsStart() {
+    return {
+        type: GET_NOTIFICATIONS_START,
+    };
+}
+
+export function getNotificationsSuccess(notifications) {
+    return {
+        type: GET_NOTIFICATIONS_SUCCESS,
+        notifications,
+    };
+}
+
+export function getNotificationsFailed(error) {
+    return {
+        type: GET_NOTIFICATIONS_FAILED,
         error,
     };
 }

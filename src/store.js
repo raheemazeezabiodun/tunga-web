@@ -5,8 +5,8 @@ import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import TungaApp from './reducers/index';
 
-var enabled_middleware = [thunk, routerMiddleware(browserHistory)];
-var compose_args = [];
+let enabled_middleware = [thunk, routerMiddleware(browserHistory)];
+let compose_args = [];
 
 if (!__PRODUCTION__) {
     const logger = createLogger({

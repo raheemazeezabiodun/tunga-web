@@ -1,181 +1,155 @@
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import React from 'react';
+import {Link, NavLink} from 'react-router-dom';
+import _ from 'lodash';
 
-import Avatar from './Avatar';
-import SearchBox from './SearchBox';
+import Avatar from './core/Avatar';
+import Icon from './core/Icon';
+import SearchBox from './core/SearchBox';
+import Button from "./core/Button";
+import {proxySafeUrl} from "./utils/proxy";
 
-import * as AuthActions from '../actions/AuthActions';
-import * as SearchActions from '../actions/SearchActions';
 
-import {SEARCH_PATH} from '../constants/patterns';
-import {initSideBarToggle} from '../utils/ui';
+export default class NavBar extends React.Component {
+    static defaultProps = {
+        variant: 'dashboard',
+        breakpoint: 'md',
+        isLargeDevice: false
+    };
 
-import {isAuthenticated, isAdmin, getUser} from '../utils/auth';
-
-class NavBar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleLogout = this.handleLogout.bind(this);
-    }
+    static propTypes = {
+        variant: PropTypes.string,
+        className: PropTypes.string,
+        user: PropTypes.object,
+        onSignOut: PropTypes.func,
+        breakpoint: PropTypes.string,
+        isLargeDevice: PropTypes.bool,
+    };
 
     componentDidMount() {
-        initSideBarToggle();
+        let updateNavbar = function() {
+            let windowWidth = $(window).innerWidth();
+            if (windowWidth >= 768) {
+                if ($(document).scrollTop() >= 20) {
+                    $('.navbar').addClass('navbar-showcase-fixed');
+                } else {
+                    $('.navbar').removeClass('navbar-showcase-fixed');
+                }
+            }
+        };
+
+        const {variant} = this.props;
+        if(variant === 'showcase') {
+            $(document).ready(updateNavbar);
+            $(document).scroll(updateNavbar);
+            $(window).resize(updateNavbar);
+        }
     }
 
-    handleLogout(e) {
-        e.preventDefault();
-        this.props.AuthActions.logout();
-    }
-
-    onSearch(query) {
-        this.props.SearchActions.searchStart(query.search);
-        if (!SEARCH_PATH.test(this.props.location.pathname)) {
-            const {router} = this.context;
-            router.replace('/search');
+    onSignOut(e) {
+        if(e) {
+            e.preventDefault();
+        }
+        if(this.props.onSignOut) {
+            this.props.onSignOut();
         }
     }
 
     render() {
-        const {Auth} = this.props;
+        let {user, variant, breakpoint, className, isLargeDevice} = this.props;
 
         return (
-            <div className="navbar-wrapper">
-                <nav className="navbar navbar-fixed-top">
-                    <div className="navbar-header">
-                        {isAuthenticated() ? (
-                            <button
-                                type="button"
-                                className="sidebar-toggle navbar-toggle collapsed"
-                                data-toggle="sidebar-collapse"
-                                data-target="#sidebar"
-                                aria-expanded="false"
-                                aria-controls="sidebar">
-                                <span className="sr-only">Toggle side bar</span>
-                                <i className="fa fa-navicon fa-lg" />
-                            </button>
-                        ) : null}
-                        <button
-                            type="button"
-                            className="navbar-toggle collapsed"
-                            data-toggle="collapse"
-                            data-target="#navbar"
-                            aria-expanded="false"
-                            aria-controls="navbar">
-                            <span className="sr-only">Toggle navigation</span>
-                            <i className="fa fa-ellipsis-v fa-lg" />
-                        </button>
-                        <Link to="/" className="navbar-brand">
-                            <img src={require('../images/logo.png')} />
-                        </Link>
-                    </div>
-                    <div id="navbar" className="navbar-collapse collapse">
-                        <ul className="nav navbar-nav navbar-right">
-                            <li id="navbar-search">
-                                <SearchBox
-                                    placeholder="Search"
-                                    query={this.props.location.query.q}
-                                    hide_results={true}
-                                    onSearch={this.onSearch.bind(this)}
-                                />
+            <nav className={`navbar navbar-expand-${breakpoint || 'md'} fixed-top navbar-dark ${className || ''} ${variant?`navbar-${variant}`:''}`} >
+                <Link to={`/${variant === 'dashboard'?'dashboard':''}`} className="navbar-brand">
+                    <img src={require('../assets/images/logo.png')} />
+                </Link>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <i className="tg-ic-bars"/>
+                </button>
+                <div className="collapse navbar-collapse" id="navbar">
+                    {variant === 'showcase'?(
+                        <ul className="navbar-nav navbar-main">
+                            <li>
+                                <NavLink to={proxySafeUrl("/our-story")} activeClassName="active">
+                                    Our Story
+                                </NavLink>
                             </li>
-                            {isAuthenticated() && isAdmin() ? (
-                                <li className="dropdown">
+                            <li>
+                                <NavLink to={proxySafeUrl("/quality")} activeClassName="active">
+                                    Quality
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to={proxySafeUrl("/pricing")} activeClassName="active">
+                                    Pricing
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to={proxySafeUrl("/friends")} activeClassName="active">
+                                    Friends Of Tunga
+                                </NavLink>
+                            </li>
+                            <li>
+                                <a href="https://blog.tunga.io" target="_blank">
+                                    Blog
+                                </a>
+                            </li>
+                        </ul>
+                    ):null}
+                    <ul className="navbar-nav ml-auto">
+                        {user && user.id?(
+                            <React.Fragment>
+                                {variant === 'showcase'?null:(
+                                    <li>
+                                        <SearchBox variant="search"/>
+                                    </li>
+                                )}
+                                <li className="nav-item dropdown">
                                     <a
                                         href="#"
-                                        className="dropdown-toggle account-actions-toggle"
+                                        className="dropdown-toggle"
                                         data-toggle="dropdown"
                                         role="button"
                                         aria-haspopup="true"
                                         aria-expanded="false">
-                                        <i className="nav-icon fa fa-cogs" />{' '}
-                                        Manage{' '}
-                                        <span
-                                            className="caret"
-                                            style={{marginLeft: 5 + 'px'}}
-                                        />
+                                        <span className="user-name">{isLargeDevice?user.display_name:_.truncate(user.display_name, {length: 12})}</span> <span className="caret"/> <Avatar image={user.avatar_url} size={isLargeDevice?null:'xs'}/>
                                     </a>
-                                    <ul className="dropdown-menu">
+                                    <ul className="dropdown-menu dropdown-menu-account">
                                         <li>
-                                            <Link to="/help">
-                                                <i className="nav-icon fa fa-question-circle fa-lg" />{' '}
-                                                Help
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/people/invite">
-                                                <i className="nav-icon fa fa-user-plus" />{' '}
-                                                Invite Users
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/dashboard/updates">
-                                                <i className="nav-icon fa fa-bell" />{' '}
-                                                Updates dashboard
+                                            {variant === 'dashboard'?null:(
+                                                <Link to="/dashboard">
+                                                    <Icon name="meter" size="navbar"/> Dashboard
+                                                </Link>
+                                            )}
+                                            <Link to="#" onClick={this.onSignOut.bind(this)}>
+                                                <Icon name="logout" size="navbar"/> Sign Out
                                             </Link>
                                         </li>
                                     </ul>
                                 </li>
-                            ) : null}
-                            <li className="dropdown" id="navbar-account">
-                                <a
-                                    href="#"
-                                    className="dropdown-toggle account-actions-toggle"
-                                    data-toggle="dropdown"
-                                    role="button"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                    {Auth.user.display_name}{' '}
-                                    <span
-                                        className="caret"
-                                        style={{marginLeft: '5px'}}
-                                    />{' '}
-                                    <Avatar src={Auth.user.avatar_url} />
-                                </a>
-                                <ul className="dropdown-menu">
+                            </React.Fragment>
+                        ):(
+                            <React.Fragment>
+                                {isLargeDevice?(
                                     <li>
-                                        <Link to="/profile">
-                                            <i className="nav-icon tunga-icon-profile" />{' '}
-                                            My Profile
-                                        </Link>
+                                        <Button className="btn-call">
+                                            <Icon name="phone"/> +31 20 220 2157
+                                        </Button>
                                     </li>
-                                    <li>
-                                        <Link to="/settings">
-                                            <i className="nav-icon tunga-icon-settings" />{' '}
-                                            Settings
-                                        </Link>
-                                    </li>
-                                    <li role="separator" className="divider" />
-                                    <li>
-                                        <Link to="" onClick={this.handleLogout}>
-                                            <i className="nav-icon tunga-icon-sign-out" />{' '}
-                                            Sign Out
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
+                                ):null}
+                                <li>
+                                    <Link
+                                        to={proxySafeUrl("/signin")}
+                                        className="btn btn-auth">
+                                        Login
+                                    </Link>
+                                </li>
+                            </React.Fragment>
+                        )}
+                    </ul>
+                </div>
+
+            </nav>
         );
     }
 }
-
-NavBar.contextTypes = {
-    router: React.PropTypes.object.isRequired,
-};
-
-function mapStateToProps(state) {
-    return {Auth: state.Auth};
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        AuthActions: bindActionCreators(AuthActions, dispatch),
-        SearchActions: bindActionCreators(SearchActions, dispatch),
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

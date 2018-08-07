@@ -1,0 +1,91 @@
+@import "tunga";
+
+body {
+    padding-top: 70px;
+}
+
+nav#side-nav {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-normal;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+
+        a {
+            color: $brand-color;
+        }
+    }
+}
+
+@mixin sub-section {
+    margin-bottom: 20px;
+
+    > h4 {
+        border-left: 3px $brand-color solid;
+        padding-left: 5px;
+        margin-bottom: 10px;
+    }
+}
+
+.section {
+    margin-bottom: 30px;
+
+    &.detailed {
+        > div {
+            @include sub-section;
+        }
+
+        .form-control, .input-group:not(.input-search),
+        .rw-widget, .tag-input, .message-widget {
+            max-width: 600px;
+        }
+    }
+
+    > h2 {
+        border-left: 5px $brand-color solid;
+        padding-left: 10px;
+        margin-bottom: 15px;
+    }
+
+    > div {
+        margin-bottom: 10px;
+    }
+
+    .sub-section {
+        @include sub-section;
+
+        > div {
+            margin-bottom: 10px;
+        }
+    }
+
+    .navbar.fixed-top {
+        position: static !important; // undo navbar fixing
+    }
+
+    .sidebar {
+        position: static !important; // undo sidebar fixing
+    }
+}
+
+.color {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+
+    @each $color, $value in $color-palette {
+        &.color-#{$color} {
+            background-color: $value;
+        }
+    }
+}
+
+.hex {
+    display: inline-block;
+    width: 60px;
+}
+

@@ -49,15 +49,15 @@ export default class ShowcaseLayout extends React.Component {
                             );
                         })
                     ):(
-                        <React.Fragment>
-                            <Route exact path='/signin' component={SignIn}/>
-                            <Route exact path='/signup' component={Maintenance}/>
-                            <Route exact path='/reset-password' component={Maintenance}/>
-                            <Route exact path='/start' component={Maintenance}/>
-                            <Route exact path='/start-welcome' component={Maintenance}/>
-                            <Route exact path='/start-outsource' component={Maintenance}/>
-                            <Route exact path='/quiz' component={Maintenance}/>
-                        </React.Fragment>
+                        [
+                            <Route exact path='/signin' component={SignIn}/>,
+                            <Route exact path='/signup' component={Maintenance}/>,
+                            <Route exact path='/reset-password' component={Maintenance}/>,
+                            <Route exact path='/start' component={Maintenance}/>,
+                            <Route exact path='/start-welcome' component={Maintenance}/>,
+                            <Route exact path='/start-outsource' component={Maintenance}/>,
+                            <Route exact path='/quiz' component={Maintenance}/>,
+                        ]
                     )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>

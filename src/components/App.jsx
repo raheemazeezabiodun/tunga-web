@@ -83,11 +83,13 @@ class App extends React.Component {
                     {isLargeDevice => (
                         <div>
                             <Switch>
-                                {user && user.id?'dashboard|projects|network|payments|settings|onboard'.split('|').map(path => {
-                                    return (
+                                {'dashboard|projects|network|payments|settings|onboard'.split('|').map(path => {
+                                    return user && user.id?(
                                         <Route key={`app-path--${path}`} path={`/${path}`} render={props => <DashboardLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>}/>
+                                    ):(
+                                        <Redirect key={`app-path--${path}`} from={`/${path}`} to="/"/>
                                     );
-                                }):null}
+                                })}
                                 <Redirect from="/home" to={{...location, pathname: '/dashboard'}}/>
                                 <Redirect from="/profile" to={{...location, pathname: '/settings'}}/>
                                 <Redirect from="/task" to={{...location, pathname: '/projects'}}/>

@@ -56,8 +56,8 @@ class UserForm extends React.Component {
 
                     <FormGroup>
                         <label>Email: *</label>
-                        {errors && errors.email ? (
-                            <FieldError message={errors.email} />
+                        {errors && errors.invite && errors.invite.email ? (
+                            <FieldError message={errors.invite.email} />
                         ) : null}
                         <CustomInputGroup variant="email"
                                           onChange={this.onChangeField.bind(this, 'email')}
@@ -66,8 +66,8 @@ class UserForm extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <label>First Name: *</label>
-                        {errors && errors.first_name ? (
-                            <FieldError message={errors.first_name} />
+                        {errors && errors.invite && errors.invite.first_name ? (
+                            <FieldError message={errors.invite.first_name} />
                         ) : null}
                         <CustomInputGroup variant="personal"
                                           onChange={this.onChangeField.bind(this, 'first_name')}
@@ -76,8 +76,8 @@ class UserForm extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <label>First Name: *</label>
-                        {errors && errors.last_name ? (
-                            <FieldError message={errors.last_name} />
+                        {errors && errors.invite && errors.invite.last_name ? (
+                            <FieldError message={errors.invite.last_name} />
                         ) : null}
                         <CustomInputGroup variant="personal"
                                           onChange={this.onChangeField.bind(this, 'last_name')}
@@ -86,8 +86,8 @@ class UserForm extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <label>User Type: *</label>
-                        {errors && errors.type ? (
-                            <FieldError message={errors.type} />
+                        {errors && errors.invite && errors.invite.type ? (
+                            <FieldError message={errors.invite.type} />
                         ) : null}
                         <Select options={USER_TYPE_CHOICES.map(item => {return [item.id, item.name]})}
                                 onChange={value => this.onChangeValue('type', value)}
@@ -95,8 +95,8 @@ class UserForm extends React.Component {
                                 required/>
                     </FormGroup>
                     <FormGroup>
-                        {errors && errors.resend ? (
-                            <FieldError message={errors.resend} />
+                        {errors && errors.invite && errors.invite.resend ? (
+                            <FieldError message={errors.invite.resend} />
                         ) : null}
                         <div className="form-check">
                             <input className="form-check-input"

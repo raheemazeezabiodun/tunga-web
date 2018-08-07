@@ -81,7 +81,11 @@ class App extends React.Component {
                                 <Redirect from="/member" to={{...location, pathname: '/network'}}/>
                                 <Redirect from="/estimate" to={{...location, pathname: '/proposal'}}/>
                                 <Route path="/legacy" component={LegacyRedirect} />
-                                <Route path="*" render={props => <ShowcaseLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>} />
+                                {['/tunga', '*'].map(path => {
+                                    return (
+                                        <Route key={`app-path--${path}`} path={path} render={props => <ShowcaseLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>} />
+                                    );
+                                })}
                             </Switch>
 
                             {!user || user.is_admin || user.is_project_manager?null:(

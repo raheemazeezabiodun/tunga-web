@@ -303,32 +303,30 @@ export default ({skill_page, isLoading}) => {
                                 </div>
                             </div>
                         </section>
-                        <section
-                            id="story-interlude-one"
-                            style={
-                                skill_page.story_interlude_one_image
-                                    ? {
-                                        backgroundImage: `url(${
-                                            skill_page.story_interlude_one_image
-                                            })`,
-                                    }
-                                    : {}
-                            }>
-                            <div className="container">
-                                <div
-                                    dangerouslySetInnerHTML={{
-                                        __html: nl_to_br(
-                                            skill_page.story_interlude_one_text,
-                                        ),
-                                    }}
-                                />
-                                {skill_page.story_interlude_one_cta ? (
-                                    <Link to="/start" className="cta">
-                                        {skill_page.story_interlude_one_cta}
-                                    </Link>
-                                ) : null}
-                            </div>
-                        </section>
+                        {skill_page.story_interlude_one_text?(
+                            <section
+                                id="story-interlude-one"
+                                style={
+                                    skill_page.story_interlude_one_image
+                                        ? {
+                                            backgroundImage: `url(${
+                                                skill_page.story_interlude_one_image
+                                                })`,
+                                        }
+                                        : {}
+                                }>
+                                <div className="container">
+                                    <JSXify>
+                                        {skill_page.story_interlude_one_text}
+                                    </JSXify>
+                                    {skill_page.story_interlude_one_cta ? (
+                                        <Link to="/start" className="cta">
+                                            {skill_page.story_interlude_one_cta}
+                                        </Link>
+                                    ) : null}
+                                </div>
+                            </section>
+                        ):null}
                     </React.Fragment>
                 ):null
             ):(

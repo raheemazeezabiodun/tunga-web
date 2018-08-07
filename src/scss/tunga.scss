@@ -50,6 +50,28 @@ i {
     }
 }
 
+// Consent
+#cookie-consent {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: px-to-rem(14);
+    color: get-color('white');
+    background-color: get-color('consent-bg');
+    padding: 20px 25px;
+    z-index: 1050;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+
+    .consent-actions {
+        margin-left: 20px;
+    }
+
+    .learn-more {
+        display: inline-block;
+        margin-left: 10px;
+    }
+}
+
 // Typography
 .font-weight-thin {
     font-weight: $font-weight-thin !important;

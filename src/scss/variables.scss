@@ -24,6 +24,7 @@ $color-palette: (
     'whatsapp': #25d366,
     'harvest': #f66a23,
     'coinbase': #0168bb,
+    'consent-bg': #202020
 );
 
 @function get-color($key) {

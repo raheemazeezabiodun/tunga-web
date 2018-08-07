@@ -1,7 +1,6 @@
 import React from 'react';
-import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {LOCATION_CHANGE} from 'react-router-redux';
-import {withProps} from 'recompose';
 import Media from "react-media";
 
 import connect from '../connectors/AuthConnector';
@@ -13,6 +12,8 @@ import ChatWidget from "./chat/ChatWidget";
 import LegacyRedirect from './showcase/LegacyRedirect';
 import BootLogo from "./core/BootLogo";
 import ShowcaseLayout from "./showcase/ShowcaseLayout";
+import {getCookieConsent, getCookieConsentCloseAt, openCookieConsentPopUp, setCookieConsentCloseAt} from "./utils/consent";
+import Button from "./core/Button";
 
 
 class App extends React.Component {
@@ -24,7 +25,8 @@ class App extends React.Component {
 
         this.state= {
             hasVerified: user && user.id,
-            showProgress: !user || !user.id // Used to prevent flickering
+            showProgress: !user || !user.id, // Used to prevent flickering
+            showConsentAlert: !getCookieConsentCloseAt() && !getCookieConsent()
         };
     }
 
@@ -55,6 +57,18 @@ class App extends React.Component {
         if (this.props.location !== prevProps.location) {
             store.dispatch({type: LOCATION_CHANGE});
         }
+    }
+
+    onCloseCookieConsent() {
+        setCookieConsentCloseAt();
+        this.setState({showConsentAlert: !getCookieConsentCloseAt() && !getCookieConsent()});
+    }
+
+    onCookieSettings() {
+        let self = this;
+        openCookieConsentPopUp(consents => {
+            self.setState({showConsentAlert: !getCookieConsentCloseAt() && !getCookieConsent()});
+        });
     }
 
     render() {
@@ -91,6 +105,20 @@ class App extends React.Component {
                             {!user || user.is_admin || user.is_project_manager?null:(
                                 <ChatWidget/>
                             )}
+
+                            {this.state.showConsentAlert?(
+                                <div id="cookie-consent" className="clearfix">
+                                    <div className="consent-actions float-right">
+                                        <Button variant="link" className="btn" onClick={this.onCookieSettings.bind(this)}>Cookie Settings</Button>
+                                        <Button onClick={this.onCloseCookieConsent.bind(this)}>Got it!</Button>
+                                    </div>
+                                    <div>
+                                        We use cookies to offer you a better browsing experience, analyze site traffic, personalize content, assist with our promotional and marketing efforts and and provide content from third parties.
+                                        Read about how we use cookies and how you can control them by clicking "Cookie Settings."
+                                        If you continue to use this site, you consent to our use of cookies.
+                                    </div>
+                                </div>
+                            ):null}
                         </div>
                     )}
                 </Media>

@@ -18,7 +18,7 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100%;
-    background-color: get-color('lightest-grey');
+    background-color: get-color('white');
     word-break: break-word;
 }
 
@@ -2082,7 +2082,7 @@ textarea {
     #press {
         display: flex;
         align-items: center;
-        background-color: get-color('light-grey');
+        background-color: get-color('showcase-grey');
 
         .press-links {
             margin-top: 20px;
@@ -2352,7 +2352,7 @@ textarea {
         #development-style {
             text-align: center;
             font-size: px-to-rem(14);
-            background-color: get-color('light-grey');
+            background-color: get-color('showcase-grey');
             padding-left: 15px;
             padding-right: 15px;
 
@@ -2402,7 +2402,7 @@ textarea {
             color: get-color('white');
             height: 270px;
             padding: 99px 12px 0;
-            background-color: get-color('light-grey');
+            background-color: get-color('showcase-grey');
             background-image: url(../assets/images/showcase/verification.jpg);
 
             .headline,
@@ -2441,7 +2441,7 @@ textarea {
         }
 
         .what-we-do-best {
-            background-color: get-color('light-grey');
+            background-color: get-color('showcase-grey');
             display: flex;
             padding-bottom: 81px;
 
@@ -2474,7 +2474,7 @@ textarea {
         }
 
         section:nth-child(odd) {
-            background-color: get-color('light-grey');
+            background-color: get-color('showcase-grey');
         }
 
         .section-heading {
@@ -2602,7 +2602,7 @@ textarea {
     }
 
     .pricing-page {
-        background-color: get-color('light-grey');
+        background-color: get-color('showcase-grey');
 
         header {
             background-image: url('../assets/images/showcase/PricingwebTungadevelopersatwork.jpg');
@@ -2691,7 +2691,7 @@ textarea {
     }
 
     .friends-page {
-        background-color: get-color('light-grey');
+        background-color: get-color('showcase-grey');
 
         header {
             a:not(.btn) {
@@ -2701,7 +2701,7 @@ textarea {
         }
 
         section {
-            background-color: get-color('light-grey');
+            background-color: get-color('showcase-grey');
             font-size: px-to-rem(14);
 
             .middle-content-box {

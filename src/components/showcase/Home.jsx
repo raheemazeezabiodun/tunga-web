@@ -109,7 +109,11 @@ export default ({skill_page, isLoading}) => {
     };
 
     let title = getSafeValue('welcome_header'),
-        description = getSafeValue('welcome_sub_header'),
+        description = (
+            <JSXify>
+                {getSafeValue('welcome_sub_header')}
+            </JSXify>
+        ),
         ctaText = getSafeValue('welcome_cta'),
         pitchImage = getSafeValue('pitch_image');
 

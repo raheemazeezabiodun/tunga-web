@@ -3,7 +3,6 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 import * as InvoiceActions from "../actions/InvoiceActions";
-import * as ProgressReportActions from "../actions/ProgressReportActions";
 
 function mapStateToProps(state) {
     return {
@@ -13,10 +12,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        InvoiceActions: {
-            ...bindActionCreators(InvoiceActions, dispatch),
-            ...bindActionCreators(ProgressReportActions, dispatch),
-        }
+        InvoiceActions: bindActionCreators(InvoiceActions, dispatch),
     };
 }
 

@@ -80,7 +80,7 @@ class App extends React.Component {
                                 <Redirect from="/people" to={{...location, pathname: '/network'}}/>
                                 <Redirect from="/member" to={{...location, pathname: '/network'}}/>
                                 <Redirect from="/estimate" to={{...location, pathname: '/proposal'}}/>
-                                <Route path="/tunga" component={LegacyRedirect} />
+                                <Route path="/legacy" component={LegacyRedirect} />
                                 <Route path="*" render={props => <ShowcaseLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>} />
                             </Switch>
 

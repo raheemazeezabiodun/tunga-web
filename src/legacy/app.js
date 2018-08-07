@@ -486,6 +486,7 @@ ReactDOM.render(
             <Route path="/" component={App}>
                 <Route path="welcome">{all_routes}</Route>
                 <Route path="tunga">{all_routes}</Route>
+                <Route path="legacy">{all_routes}</Route>
                 {all_routes}
             </Route>
         </Router>

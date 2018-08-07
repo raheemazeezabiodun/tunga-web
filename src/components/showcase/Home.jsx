@@ -146,12 +146,12 @@ export default () => {
                                     privileged backgrounds.
                                 </p>
 
-                                <Button onClick={() => {openCalendlyWidget()}}>
+                                <Button onClick={() => {openCalendlyWidget()}} size="lg">
                                     Find out what we can do for you
                                 </Button>
 
                                 <Link
-                                    className="btn btn-primary d-block d-sm-none"
+                                    className="btn btn-primary btn-lg d-block d-sm-none"
                                     to="/friends">
                                     Become a friend of Tunga
                                 </Link>
@@ -311,7 +311,7 @@ export default () => {
                         </Row>
                     </div>
                     <div className="text-center">
-                        <Button onClick={() => {openCalendlyWidget()}}>
+                        <Button onClick={() => {openCalendlyWidget()}} size="lg">
                             Find out what we can do for you
                         </Button>
                     </div>

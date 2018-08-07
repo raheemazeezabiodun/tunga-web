@@ -68,7 +68,7 @@ class ContactUs extends React.Component {
                             </a>
                         </div>
                         <div>
-                            <Button onClick={() => {openCalendlyWidget()}}>
+                            <Button onClick={() => {openCalendlyWidget()}} size="lg">
                                 Schedule a call with us
                             </Button>
                         </div>
@@ -141,8 +141,7 @@ class ContactUs extends React.Component {
                                         />
                             </FormGroup>
                             <div className="pull-right">
-                                <Button
-                                    type="submit">
+                                <Button type="submit" size="lg">
                                     Send
                                 </Button>
                             </div>

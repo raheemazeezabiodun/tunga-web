@@ -86,8 +86,8 @@ export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 export const ENDPOINT_CONTACT_REQUEST = getEndpointUrl('contact-request/');
 export const ENDPOINT_MEDIUM = getEndpointUrl('medium/');
 export const ENDPOINT_OEMBED = getEndpointUrl('oembed/');
-export const ENDPOINT_SKILL_PAGE = getEndpointUrl('skill-page/');
-export const ENDPOINT_BLOG = getEndpointUrl('blog/');
+export const ENDPOINT_SKILL_PAGES = getEndpointUrl('skill-pages/');
+export const ENDPOINT_BLOGS = getEndpointUrl('blogs/');
 
 export function flattenJson(jsonData, key) {
     let flattenedData = {};

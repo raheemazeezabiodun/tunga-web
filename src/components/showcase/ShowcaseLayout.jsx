@@ -13,6 +13,7 @@ import Privacy from "./Privacy";
 import Agreement from "./Agreement";
 import CodeOfConduct from "./CodeOfConduct";
 import Maintenance from "./Maintenance";
+import SkillPage from "./SkillPage";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -56,6 +57,7 @@ export default class ShowcaseLayout extends React.Component {
                     <Route path={wrapPath('/agreement')} component={Agreement}/>
                     <Route path={wrapPath('/code-of-conduct')} component={CodeOfConduct}/>
                     <Route exact path='/tunga' component={Home}/>
+                    <Route exact path={wrapPath('/:keyword')} render={(props) => <SkillPage keyword={props.match.params.keyword}/>}/>
                     <Route exact path='/' component={Home}/>
                     <Redirect from="/friends-of-tunga" to='/friends'/>
                     <Redirect from="/friends-of-tunga-rules" to='/friends/rules'/>

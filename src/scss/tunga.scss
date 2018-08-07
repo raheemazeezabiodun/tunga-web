@@ -2535,6 +2535,113 @@ textarea {
                 background-color: get-color('white');
                 padding-bottom: 50px;
             }
+
+            .section-headin {
+                .border {
+                    max-width: 500px;
+                }
+            }
+
+            #pitch {
+                font-size: px-to-rem(14);
+                font-weight: 300;
+                padding-bottom: 80px;
+
+                .section-heading {
+                    text-align: left;
+                }
+
+                .section-heading-hr {
+                    text-align: left;
+                    max-width: 409px;
+                    margin-left: 0;
+                }
+
+                .pitch-text {
+                    padding-bottom: 15px;
+                }
+
+                .pitch-image {
+                    text-align: center;
+
+                    img {
+                        width: 300px;
+                        height: 300px;
+                    }
+                }
+            }
+
+            #story {
+                font-size: px-to-rem(14);
+                text-align: left;
+                background-color: get-color('showcase-bg');
+
+                .section-heading {
+                    margin-top: 90px;
+                }
+
+                .section-heading-hr {
+                    margin-bottom: 40px;
+                }
+
+                h2 {
+                    font-size: px-to-rem(14);
+                }
+
+                img {
+                    display: block;
+                    max-width: 100%;
+                    margin: 30px auto !important;
+                }
+
+                .btn {
+                    margin: 40px auto 50px;
+                }
+            }
+
+            #story-interlude-one,
+            #story-interlude-two {
+                background: #333 no-repeat scroll center;
+                background-size: cover;
+                min-height: 300px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: get-color('white');
+                font-size: px-to-rem(30);
+                font-weight: $font-weight-medium;
+
+                .container {
+                    padding: 0;
+                }
+
+                .cta,
+                a.cta {
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                    font-size: px-to-rem(14);
+                    padding: 5px 45px;
+                    background: transparent none;
+                    color: get-color('white');
+                    border: 1px solid get-color('white');
+                    border-radius: 5px;
+                    font-weight: 300;
+
+                    &:hover,
+                    &:focus {
+                        text-decoration: none;
+                    }
+                }
+            }
+
+            #story-interlude-one {
+                background-image: url('../assets/images/showcase/verification.jpg');
+            }
+
+            #story-interlude-two {
+                background-image: url('../assets/images/showcase/story_interlude_two.png');
+            }
         }
     }
 

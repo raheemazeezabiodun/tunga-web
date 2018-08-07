@@ -86,6 +86,7 @@ export default () => {
                                             </div>
                                             <div className="perks">
                                                 <table>
+                                                    <tbody>
                                                     {offer.perks &&
                                                     offer.perks.map(comp => {
                                                         return <tr>
@@ -96,7 +97,7 @@ export default () => {
                                                                 : null}
                                                         </tr>;
                                                     })}
-
+                                                    </tbody>
                                                 </table>
                                             </div>
                                             <div className="disclaimer">

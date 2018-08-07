@@ -11,6 +11,7 @@ import MetaTags from '../MetaTags';
 
 import {USER_TYPE_DEVELOPER, USER_TYPE_PROJECT_OWNER} from '../../actions/utils/api';
 import PropTypes from "prop-types";
+import Button from "../core/Button";
 
 class SignUp extends React.Component {
 
@@ -304,12 +305,11 @@ class SignUp extends React.Component {
                                     </div>
 
                                     <div className="text-center">
-                                        <button
+                                        <Button
                                             type="submit"
-                                            className="btn"
                                             disabled={Auth.isRegistering}>
                                             Sign up
-                                        </button>
+                                        </Button>
                                     </div>
                                 </form>
                             )}

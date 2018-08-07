@@ -1,11 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Tooltip} from 'reactstrap';
 import PropTypes from 'prop-types';
 import randomstring from 'randomstring';
 
 import Icon from './Icon';
 import IconButton from "./IconButton";
+import OverlayTooltip from "./OverlayTooltip";
 
 export default class Avatar extends React.Component {
     static propTypes = {
@@ -38,12 +38,14 @@ export default class Avatar extends React.Component {
             avatarId = `avatar${randomstring.generate()}`;
         let avatar = (
             <div className={`avatar ${size?`avatar-${size}`:''} ${image?'':'avatar-icon'}`}
-                 style={image?{backgroundImage: `url(${image})`}:{}} title={title || ''}>
+                 style={image?{backgroundImage: `url(${image})`}:{}}>
                 {image ? null : (
                     icon || <Icon name="avatar"/>
                 )}
             </div>
         );
+
+        let linkifiedAvatar = link?(<Link to={link}>{avatar}</Link>):avatar;
 
         return (
             <div id={avatarId} className={`avatar-wrapper ${className || ''}`}>
@@ -59,9 +61,11 @@ export default class Avatar extends React.Component {
                                 className="remove"
                                 onClick={this.onRemove}/>
                 ):null}
-                {link?(
-                    <Link to={link} title={title || ''}>{avatar}</Link>
-                ):avatar}
+                {title?(
+                    <OverlayTooltip placement="top" overlay={title}>
+                        {linkifiedAvatar}
+                    </OverlayTooltip>
+                ):linkifiedAvatar}
             </div>
         );
     }

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Avatar from './core/Avatar';
 import Icon from './core/Icon';
 import SearchBox from './core/SearchBox';
+import Button from "./core/Button";
 
 
 export default class NavBar extends React.Component {
@@ -127,13 +128,20 @@ export default class NavBar extends React.Component {
                                 </li>
                             </React.Fragment>
                         ):(
-                            <li>
-                                <Link
-                                    to="/signin"
-                                    className="btn btn-nav">
-                                    Login
-                                </Link>
-                            </li>
+                            <React.Fragment>
+                                <li>
+                                    <Button className="btn-call">
+                                        <Icon name="phone"/> +31 20 220 2157
+                                    </Button>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/signin"
+                                        className="btn btn-auth">
+                                        Login
+                                    </Link>
+                                </li>
+                            </React.Fragment>
                         )}
                     </ul>
                 </div>

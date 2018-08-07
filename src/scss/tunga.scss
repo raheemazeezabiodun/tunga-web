@@ -981,13 +981,17 @@ table {
             }
         }
 
-        .btn.btn-nav {
+        .btn.btn-auth {
             height: px-to-rem(40);
             line-height: px-to-rem(40);
             @include padding-x(px-to-rem(20));
             color: $brand-color;
             background-color: get-color('light-grey');
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-call {
+            margin-right: 10px;
         }
     }
 }
@@ -2696,7 +2700,7 @@ textarea {
 
         header {
             background-image: url('../assets/images/showcase/friends-of-tunga.jpg');
-            
+
             a:not(.btn) {
                 color: get-color('white');
                 text-decoration: underline;

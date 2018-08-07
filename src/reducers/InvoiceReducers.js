@@ -3,7 +3,6 @@ import {LOCATION_CHANGE} from "react-router-redux";
 
 import {getIds} from './utils';
 import * as InvoiceActions from "../actions/InvoiceActions";
-import * as ProgressReportActions from "../actions/ProgressReportActions";
 
 function created(state = {}, action) {
     let targetKey = action.target || 'new';
@@ -96,45 +95,6 @@ function invoices(state = {}, action) {
                 all_invoices[invoice.id] = invoice;
             });
             return {...state, ...all_invoices};
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_SUCCESS:
-            let progressReport = action.progress_report;
-
-            if(progressReport && progressReport.event && progressReport.event.id) {
-                let progressEventId = progressReport.event.id,
-                    reportInvoice = state[progressEventId] || {};
-                delete progressReport.event;
-
-                let currentProgressReports = [...(reportInvoice.progress_reports || [])];
-                let currentProgressReportIdx = currentProgressReports.map(item => {
-                    return item.id;
-                }).indexOf(progressReport.id);
-
-                if(currentProgressReportIdx === -1) {
-                    currentProgressReports.push(progressReport);
-                } else {
-                    currentProgressReports[currentProgressReportIdx] = progressReport;
-                }
-
-                let newState = {};
-                newState[progressEventId] = {...reportInvoice, progress_reports: currentProgressReports};
-                return {...state, ...newState};
-            }
-            return state;
-        case ProgressReportActions.DELETE_PROGRESS_REPORT_SUCCESS:
-            let newState = {};
-            Object.keys(state).forEach(id => {
-                let progressEvent = state[id],
-                    newProgressReports = [];
-
-                progressEvent.progress_reports.forEach(progressEvent => {
-                    if(progressEvent.id !== action.id) {
-                        newProgressReports.push(progressEvent);
-                    }
-                });
-                newState[progressEvent.id] = {...progressEvent, progress_reports: newProgressReports};
-            });
-            return newState;
         default:
             return state;
     }
@@ -163,16 +123,6 @@ function isSaving(state = {}, action) {
                 newState[action.id] = false;
             }
             return {...state, ...newState};
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_START:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_START:
-            newState['report'] = true;
-            return {...state, ...newState};
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_FAILED:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_SUCCESS:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_FAILED:
-            newState['report'] = false;
-            return {...state, ...newState};
         default:
             return state;
     }
@@ -200,16 +150,6 @@ function isSaved(state = {}, action) {
             if(action.id) {
                 newState[action.id] = false;
             }
-            return {...state, ...newState};
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_SUCCESS:
-            newState['report'] = true;
-            return {...state, ...newState};
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_START:
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_FAILED:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_START:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_FAILED:
-            newState['report'] = false;
             return {...state, ...newState};
         case LOCATION_CHANGE:
             return {};
@@ -356,14 +296,6 @@ function errors(state = {}, action) {
         case InvoiceActions.LIST_MORE_INVOICES_START:
         case InvoiceActions.LIST_MORE_INVOICES_SUCCESS:
             return {...state, list: null};
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_FAILED:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_FAILED:
-            return {...state, report: action.error};
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_START:
-        case ProgressReportActions.CREATE_PROGRESS_REPORT_SUCCESS:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_START:
-        case ProgressReportActions.UPDATE_PROGRESS_REPORT_SUCCESS:
-            return {...state, report: null};
         default:
             return state;
     }

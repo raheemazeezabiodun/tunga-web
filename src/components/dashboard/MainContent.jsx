@@ -12,7 +12,7 @@ import UserForm from "./network/UserForm";
 import {getUser} from "../utils/auth";
 import Info from "../core/Info";
 
-const MainContent = ({isLargeDevice=true, className}) => {
+export default ({isLargeDevice=true, className}) => {
     return (
         <div className={`main-content ${className || ''}`}>
             <Switch>
@@ -47,4 +47,3 @@ const MainContent = ({isLargeDevice=true, className}) => {
     )
 };
 
-export default MainContent;

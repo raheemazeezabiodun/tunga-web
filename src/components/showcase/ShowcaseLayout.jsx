@@ -15,6 +15,7 @@ import CodeOfConduct from "./CodeOfConduct";
 import Maintenance from "./Maintenance";
 import SkillPage from "./SkillPage";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -51,12 +52,22 @@ export default class ShowcaseLayout extends React.Component {
                     ):(
                         [
                             <Route exact path='/signin' component={SignIn}/>,
-                            <Route exact path='/signup' component={Maintenance}/>,
+                            ['/invite/:invitationKey', '/developer/invite/:invitationKey', '/developer/:confirmationKey'].map(path => {
+                                return (
+                                    <Route key={`app-path--${path}`} exact path={`/signup${path}`} render={props =>
+                                        <SignUp {...props}
+                                                confirmationKey={props.match.params.confirmationKey}
+                                                invitationKey={props.match.params.invitationKey}
+                                        />}
+                                    />
+                                );
+                            }),
                             <Route exact path='/reset-password' component={Maintenance}/>,
                             <Route exact path='/start' component={Maintenance}/>,
                             <Route exact path='/start-welcome' component={Maintenance}/>,
                             <Route exact path='/start-outsource' component={Maintenance}/>,
                             <Route exact path='/quiz' component={Maintenance}/>,
+                            <Redirect from="/signup" to='/signin'/>
                         ]
                     )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>

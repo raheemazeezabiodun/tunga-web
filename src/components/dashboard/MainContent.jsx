@@ -10,11 +10,20 @@ import SettingsContainer from './settings/SettingsContainer';
 import ProjectsContainer from "./projects/ProjectsContainer";
 import UserForm from "./network/UserForm";
 import {getUser} from "../utils/auth";
+import Info from "../core/Info";
 
 const MainContent = ({isLargeDevice=true, className}) => {
     return (
         <div className={`main-content ${className || ''}`}>
             <Switch>
+                {'dashboard|projects|payments'.split('|').map(path => {
+                    return (
+                        <Route key={`app-path--${path}`} path={`/${path}`} render={props => <div>
+                            <Info message="Tunga is being updated. Please check back in a bit"/>
+                            <p>For urgent matters, please use the chat function.</p>
+                        </div>}/>
+                    );
+                })}
                 <Route path='/onboard' component={OnboardContainer}/>
                 {getUser().can_contribute?(
                     [

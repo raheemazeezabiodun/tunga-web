@@ -1418,7 +1418,7 @@ table {
 .work-education-wrapper {
     background-color: #888888;
     border: 1px solid #979797;
-    color: #ffffff;
+    color: get-color('white');
     margin-bottom: 20px;
 
     .btn {
@@ -2223,7 +2223,7 @@ textarea {
                             border-radius: 50%;
                             margin: 0 5px;
 
-                            .fa {
+                            [class*="tg-ic"] {
                                 color: get-color('white');
                             }
                         }
@@ -2269,7 +2269,7 @@ textarea {
             padding-left: 0;
         }
 
-        .fa {
+        [class*="tg-ic"] {
             color: $brand-color;
         }
 
@@ -2691,10 +2691,317 @@ textarea {
     }
 
     .friends-page {
+        background-color: get-color('light-grey');
+
         header {
             a:not(.btn) {
                 color: get-color('white');
                 text-decoration: underline;
+            }
+        }
+
+        section {
+            background-color: get-color('light-grey');
+            font-size: px-to-rem(14);
+
+            .middle-content-box {
+                max-width: 730px;
+                margin-bottom: 20px;
+            }
+        }
+
+        #who-we-are {
+            padding-top: 80px;
+
+            p,
+            label {
+                font-size: px-to-rem(14);
+                font-weight: 300;
+                letter-spacing: -0.7px;
+                text-align: left;
+            }
+
+            .who-we-are {
+                text-align: center;
+                font-size: px-to-rem(16);
+                font-weight: 400;
+                margin-bottom: 40px;
+                color: get-color('black');
+            }
+
+            .looking-for-options {
+                text-align: left;
+                @include clearfix();
+                margin-bottom: 31px;
+
+                .option {
+                    position: relative;
+                    margin-bottom: 20px;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    .first-content-box {
+                        background-color: get-color('white');
+                        box-shadow: 0 2px 4px 0 rgba(42, 42, 42, 0.5);
+
+                        .img-container {
+                            display: inline-block;
+                            padding: 20px 20px 30px 20px;
+                            font-size: px-to-rem(50);
+                            line-height: 50px;
+                            color: #777;
+                            text-align: center;
+                            width: 100px;
+                        }
+
+                        .text-container {
+                            position: absolute;
+                            left: 102px;
+                            top: 5px;
+                            padding-top: 20px;
+                            padding-right: 20px;
+                            font-size: px-to-rem(14);
+
+                            strong {
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #referral {
+            text-align: center;
+            padding-bottom: 80px;
+
+            .referral-widgets {
+                @include clearfix();
+                text-align: left;
+
+                .lang-list {
+                    @include clearfix();
+                    float: right;
+
+                    .flags {
+                        float: right;
+
+                        img {
+                            display: none;
+                            width: 26px;
+                            height: 20px;
+                            margin-bottom: 8px;
+                            cursor: pointer;
+                            opacity: 0.63;
+                        }
+                    }
+
+                    .controls {
+                        float: right;
+                        font-size: px-to-rem(14);
+                        margin-left: 7px;
+
+                        [class*="tg-ic"] {
+                            cursor: pointer;
+                        }
+
+                        .open {
+                            display: none;
+                        }
+                    }
+
+                    &.open {
+                        .flags {
+                            img {
+                                display: block;
+                            }
+                        }
+
+                        .controls {
+                            .closed {
+                                display: none;
+                            }
+
+                            .open {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    &.en {
+                        .flags {
+                            img.en {
+                                display: block;
+                                opacity: 1;
+                            }
+                        }
+                    }
+
+                    &.nl {
+                        .flags {
+                            img.nl {
+                                display: block;
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
+
+                .tg-ic-copy {
+                    cursor: pointer;
+                    font-size: px-to-rem(17);
+                    line-height: 20px;
+                    color: get-color('black');
+                    font-weight: $font-weight-bold;
+                }
+
+                .copied {
+                    position: absolute;
+                    right: 0;
+                    top: -20px;
+                    display: inline-block;
+                    min-width: 66px;
+                    height: 30px;
+                    line-height: 30px;
+                    text-align: center;
+                    border-radius: 3px;
+                    background-color: get-color('light-grey');
+                    border: solid 0.5px #777777;
+                    box-shadow: 0 2px 4px 0 rgba(216, 216, 216, 0.5);
+                }
+
+                .cc-email {
+                    min-height: 494px;
+                    box-shadow: 0 2px 4px 0 rgba(42, 42, 42, 0.5);
+                    padding: 30px 20px;
+                    background-color: get-color('white');
+                    margin-bottom: 20px;
+
+                    .cc-email-widget {
+                        @include clearfix();
+                        max-width: 550px;
+
+                        .item {
+                            min-height: 50px;
+                            margin-bottom: 10px;
+                        }
+
+                        .meta {
+                            float: left;
+                            font-weight: 500;
+                            margin-right: 10px;
+
+                            .item {
+                                line-height: 50px;
+                            }
+                        }
+
+                        .values {
+                            float: left;
+
+                            .item {
+                                @include clearfix();
+                                position: relative;
+                                padding: 15px 25px;
+                                line-height: 20px;
+                                box-shadow: 0 2px 4px 0 rgba(191, 191, 191, 0.5);
+
+                                &.body {
+                                    min-height: 305px;
+                                    padding: 24px 25px;
+
+                                    .copied {
+                                        top: -10px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .linkedin-share {
+                    min-height: 494px;
+                    background-color: get-color('white');
+                    box-shadow: 0 2px 4px 0 rgba(42, 42, 42, 0.5);
+                    padding: 30px 20px;
+
+                    .linkedin-share-widget {
+                        margin-bottom: 23px;
+                        @include clearfix();
+
+                        .btn {
+                            width: 240px;
+                            height: 40px;
+                            line-height: 40px;
+                            padding: 0;
+                            color: get-color('white');
+                            background-color: get-color('linkedin');
+                            border-color: get-color('linkedin');
+                            margin: 0;
+
+                            &:hover,
+                            &:focus,
+                            &:active {
+                                color: get-color('white');
+                                background-color: get-color('linkedin');
+                                border-color: get-color('linkedin');
+                                outline-width: 0;
+                            }
+                        }
+
+                        [class*="tg-ic"] {
+                            float: right;
+                            color: get-color('linkedin');
+                            font-size: px-to-rem(45);
+                        }
+                    }
+
+                    .share-title {
+                        height: 50px;
+                        font-size: px-to-rem(16);
+                        font-weight: 500;
+                    }
+
+                    .share-text {
+                        position: relative;
+                        padding: 18px 19px;
+                        box-shadow: 0 2px 4px 0 rgba(191, 191, 191, 0.5);
+                        line-height: 20px;
+                        min-height: 316px;
+                    }
+                }
+            }
+        }
+
+        .last-content-box {
+            position: relative;
+            top: 19px;
+            height: 500px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px 0 rgba(42, 42, 42, 0.5);
+        }
+
+        #cc-widgets {
+            padding-bottom: 80px;
+        }
+    }
+
+    .friends-rule-page {
+        header {
+            background-image: url('../assets/images/showcase/friends-hargabits.jpg');
+        }
+
+        section {
+            .container {
+                max-width: 1000px;
+                text-align: left;
+                @include padding-y(px-to-rem(80));
+
+                strong {
+                    font-weight: $font-weight-bold;
+                }
             }
         }
     }

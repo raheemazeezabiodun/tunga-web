@@ -7,6 +7,7 @@ import Avatar from './core/Avatar';
 import Icon from './core/Icon';
 import SearchBox from './core/SearchBox';
 import Button from "./core/Button";
+import {proxySafeUrl} from "./utils/proxy";
 
 
 export default class NavBar extends React.Component {
@@ -69,22 +70,22 @@ export default class NavBar extends React.Component {
                     {variant === 'showcase'?(
                         <ul className="navbar-nav navbar-main">
                             <li>
-                                <NavLink to="/our-story" activeClassName="active">
+                                <NavLink to={proxySafeUrl("/our-story")} activeClassName="active">
                                     Our Story
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/quality" activeClassName="active">
+                                <NavLink to={proxySafeUrl("/quality")} activeClassName="active">
                                     Quality
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/pricing" activeClassName="active">
+                                <NavLink to={proxySafeUrl("/pricing")} activeClassName="active">
                                     Pricing
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink to="/friends" activeClassName="active">
+                                <NavLink to={proxySafeUrl("/friends")} activeClassName="active">
                                     Friends Of Tunga
                                 </NavLink>
                             </li>
@@ -136,7 +137,7 @@ export default class NavBar extends React.Component {
                                 </li>
                                 <li>
                                     <Link
-                                        to="/signin"
+                                        to={proxySafeUrl("/signin")}
                                         className="btn btn-auth">
                                         Login
                                     </Link>

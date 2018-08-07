@@ -130,11 +130,13 @@ export default class NavBar extends React.Component {
                             </React.Fragment>
                         ):(
                             <React.Fragment>
-                                <li>
-                                    <Button className="btn-call">
-                                        <Icon name="phone"/> +31 20 220 2157
-                                    </Button>
-                                </li>
+                                {isLargeDevice?(
+                                    <li>
+                                        <Button className="btn-call">
+                                            <Icon name="phone"/> +31 20 220 2157
+                                        </Button>
+                                    </li>
+                                ):null}
                                 <li>
                                     <Link
                                         to={proxySafeUrl("/signin")}

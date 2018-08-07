@@ -58,7 +58,7 @@ module.exports = {
             __PRODUCTION__: JSON.stringify(process.env.NODE_ENV === 'production'),
             __BACKEND_ROOT_URL__: JSON.stringify(process.env.BACKEND_ROOT),
             __STRIPE_KEY__: JSON.stringify(process.env.NODE_ENV === 'production' && process.env.STRIPE_ENV !== 'development'?'pk_live_2AjNhLWO1Cg4nby71Vh01a2T':'pk_test_lUZpYKnVWZ5RbdPcmnBqqE8l'),
-            __MAINTENANCE__: true
+            __MAINTENANCE__: false
         }),
         CleanWebpackPlugin: new CleanWebpackPlugin(['build'], {
             root: __dirname,

@@ -298,6 +298,26 @@ i {
     }
 }
 
+
+.btn-group.bubble-action {
+    padding-top: 8px;
+    width: 100%;
+
+    > button,
+    > .btn {
+        font-weight: normal;
+        line-height: 11px;
+        letter-spacing: 0.1px;
+        font-size: px-to-rem(10);
+        padding: 13px 10px;
+        color: inherit;
+        background-color: inherit;
+        border-color: whitesmoke;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 8px !important;
+    }
+}
+
 // Input
 .form-control {
     font-size: $font-size-sm;
@@ -1818,7 +1838,7 @@ table {
 .activity-list {
     overflow-x: hidden;
     overflow-y: auto;
-    height: 350px;
+    min-height: 350px;
 
     .activity-wrapper {
         display: flex;
@@ -1985,6 +2005,15 @@ table {
         .message-widget {
             padding: 15px;
         }
+    }
+}
+
+.got-it {
+    text-align: center;
+
+    .icon {
+        font-size: px-to-rem(28);
+        color: get-color('green');
     }
 }
 

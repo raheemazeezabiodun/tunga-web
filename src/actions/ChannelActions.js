@@ -11,14 +11,14 @@ export const UPDATE_CHANNEL_START = 'UPDATE_CHANNEL_START';
 export const UPDATE_CHANNEL_SUCCESS = 'UPDATE_CHANNEL_SUCCESS';
 export const UPDATE_CHANNEL_FAILED = 'UPDATE_CHANNEL_FAILED';
 
-export function createChannel() {
+export function createChannel(data) {
     return dispatch => {
         dispatch(createChannelStart());
 
         let headers = {};
 
         axios
-            .post(`${ENDPOINT_CHANNELS}support/`, {}, {headers})
+            .post(`${ENDPOINT_CHANNELS}support/`, data, {headers})
             .then(function(response) {
                 dispatch(createChannelSuccess(response.data));
             })

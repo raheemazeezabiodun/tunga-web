@@ -223,6 +223,18 @@ function count(state = {}, action) {
     }
 }
 
+function errors(state = {}, action) {
+    switch (action.type) {
+        case ChannelActions.CREATE_CHANNEL_FAILED:
+            return {...state, channel: action.error};
+        case ChannelActions.CREATE_CHANNEL_START:
+        case ChannelActions.CREATE_CHANNEL_SUCCESS:
+            return {...state, channel: null};
+        default:
+            return state;
+    }
+}
+
 const Activity = combineReducers({
     channel,
     ids,
@@ -233,6 +245,7 @@ const Activity = combineReducers({
     next,
     previous,
     count,
+    errors
 });
 
 export default Activity;

@@ -8,9 +8,14 @@ import connect from "../../connectors/ActivityConnector";
 import ActivityList from "./ActivityList";
 import MessageWidget from "../core/MessageWidget";
 import IconButton from "../core/IconButton";
+import Button from "../core/Button";
+import Icon from "../core/Icon";
+import GuestEmailForm from "./GuestEmailForm";
+
 import {isAuthenticated} from "../utils/auth";
 import {getLastChatAutoOpenAt} from "../utils/chat";
 import {CHANNEL_TYPES} from "../../actions/utils/api";
+import {openCalendlyWidget} from "../utils/calendly";
 
 class ChatWidget extends React.Component {
     static propTypes = {
@@ -31,7 +36,12 @@ class ChatWidget extends React.Component {
             channel: null,
             hasAutoOpenedChat: false,
             new: 0,
-            hasFetched: false
+            hasFetched: false,
+            showEmailForm: false,
+            showOfflineActions: false,
+            lastActivityChannel: null,
+            lastActivityCount: 0,
+            lastActivityAt: null,
         };
     }
 
@@ -100,9 +110,23 @@ class ChatWidget extends React.Component {
             this.getList();
         }
 
-        if (!isAuthenticated() && this.state.open && !prevState.open && !this.state.channel) {
-            const {ActivityActions} = this.props;
-            ActivityActions.createChannel();
+        if (!isAuthenticated()) {
+            if(this.state.open && !prevState.open && !this.state.channel) {
+                const {ActivityActions} = this.props;
+                ActivityActions.createChannel();
+            }
+
+            let selectionKey = this.state.selectionKey;
+
+            if (
+                !isAuthenticated() &&
+                !_.isEqual(
+                    this.props.Activity.ids[selectionKey],
+                    prevProps.Activity.ids[selectionKey],
+                )
+            ) {
+                this.evaluateOfflineOptions();
+            }
         }
 
         if (this.props.closeChat && !prevProps.closeChat && this.state.open) {
@@ -124,7 +148,6 @@ class ChatWidget extends React.Component {
             ? this.state.channel
             : null;
     }
-
 
     getList(filters={}) {
         const {ActivityActions} = this.props,
@@ -161,6 +184,148 @@ class ChatWidget extends React.Component {
                 this.getList({since});
             }
         }
+    }
+
+    evaluateOfflineOptions() {
+        const {Activity, ActivityActions} = this.props,
+            selectionKey = this.state.selectionKey,
+            {channel} = this.state;
+        let activities = (Activity.ids[selectionKey] || []).map(id => {
+            return Activity.activities[id];
+        });
+
+        if (activities.length && channel) {
+            let hasSentEmail = channel.object_id;
+            let lastActivity = activities[activities.length - 1];
+            if (
+                !hasSentEmail &&
+                lastActivity.activity &&
+                lastActivity.activity.sender &&
+                lastActivity.activity.sender.inquirer
+            ) {
+                let lastActivityAt = lastActivity.activity.created_at;
+                let minutesAgo =
+                    (moment.utc() -
+                        moment.utc(lastActivity.activity.created_at)) /
+                    (60 * 1000);
+                let offlineDelay = 5;
+                if (minutesAgo > offlineDelay) {
+                    this.setState({
+                        showOfflineActions: true,
+                        lastActivityCount: activities.length,
+                        lastActivityAt,
+                    });
+                } else {
+                    let cb = this;
+                    setTimeout(function() {
+                        cb.evaluateOfflineOptions();
+                    }, 60 * 1000);
+                }
+            } else {
+                this.setState({
+                    showEmailForm: hasSentEmail,
+                    showOfflineActions: hasSentEmail,
+                    lastActivityCount: this.state.lastActivityCount || 1,
+                });
+            }
+        }
+    }
+
+    getEmailForm() {
+        const {Activity: {errors}, ActivityActions} = this.props,
+            {channel} = this.state;
+
+        const emailForm = {
+            action: 'send',
+            activity_type: 'message',
+            activity: {
+                sender: {
+                    id: 'tunga',
+                    username: null,
+                    short_name: 'Tunga',
+                    display_name: 'Tunga',
+                    avatar_url: 'https://tunga.io/icons/Tunga_squarex150.png',
+                    hide: true,
+                },
+                isForm: true,
+                body: (
+                    <div>
+                        {channel && channel.object_id ? (
+                            <div className="text-center got-it">
+                                <div>We got it! Thanks</div>
+                                <Icon name="check" className="icon"/>
+                            </div>
+                        ) : (
+                            <div>
+                                <div>Where can we reach you to follow up?</div>
+                                <GuestEmailForm channel={channel} errors={errors.channel || null} ActivityActions={ActivityActions}/>
+                            </div>
+                        )}
+                    </div>
+                ),
+            },
+        };
+
+        return emailForm;
+    }
+
+    getInitMessage() {
+        return {
+            action: 'send',
+            activity_type: 'message',
+            activity: {
+                sender: {
+                    id: 'tunga',
+                    username: null,
+                    short_name: 'Elijah',
+                    display_name: 'Elijah',
+                    avatar_url: require('../../assets/images/chat/elijah.jpg'),
+                },
+                body: 'Hi, feel free to ask me anything.',
+            },
+        };
+    }
+
+    getOfflineActionsActivity() {
+        return {
+            action: 'send',
+            activity_type: 'message',
+            activity: {
+                sender: {
+                    id: 'tunga',
+                    username: null,
+                    short_name: 'Tunga',
+                    display_name: 'Tunga',
+                    avatar_url: require('../../assets/images/logo_round.png'),
+                },
+                isForm: true,
+                body: (
+                    <div>
+                        <p>Uh-oh, we are currently not online.</p>
+                        <p>We will reach out to you ASAP!</p>
+                        <div className="btn-group bubble-action" role="group">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    openCalendlyWidget();
+                                    window.tungaCanOpenOverlay = false;
+                                }}
+                                className="float-left">
+                                Schedule call{' '}
+                            </Button>
+                            <Button
+                                type="button"
+                                onClick={() =>
+                                    this.setState({showEmailForm: true})
+                                }
+                                className="float-right">
+                                Contact me via email
+                            </Button>
+                        </div>
+                    </div>
+                ),
+            },
+        };
     }
 
     onSendMessage = (message) => {
@@ -208,6 +373,26 @@ class ChatWidget extends React.Component {
             return Activity.activities[id];
         });
 
+        activities = activities.reverse();
+
+        if (channel && channel.type === CHANNEL_TYPES.support) {
+            activities = [this.getInitMessage(), ...activities];
+            if (
+                this.state.showOfflineActions &&
+                activities.length >= 2 &&
+                !isAuthenticated()
+            ) {
+                let offlineActionInsertIdx = this.state.lastActivityCount + 1;
+                activities = [
+                    ...activities.slice(0, offlineActionInsertIdx),
+                    this.state.showEmailForm
+                        ? this.getEmailForm()
+                        : this.getOfflineActionsActivity(),
+                    ...activities.slice(offlineActionInsertIdx),
+                ];
+            }
+        }
+
         return (
             <div className="chat-widget">
                 {this.state.open?(
@@ -218,7 +403,7 @@ class ChatWidget extends React.Component {
                             <div className="heading">Hi there, we are Tunga. How can we help?</div>
                         </div>
 
-                        <ActivityList activities={activities.reverse()}
+                        <ActivityList activities={activities}
                                       onLoadMore={() => {
                                           ActivityActions.listMoreActivities(Activity.next[selectionKey], selectionKey);
                                       }}

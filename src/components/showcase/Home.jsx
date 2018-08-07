@@ -16,7 +16,6 @@ import JSXify from "../core/JSXify";
 import {proxySafeUrl} from "../utils/proxy";
 import {openCalendlyWidget} from "../utils/calendly";
 import {TESTIMONIALS} from "../utils/testimonials";
-import {nl_to_br} from "../../legacy/utils/html";
 
 const SLIDER_SETTINGS = {
     dots: true,

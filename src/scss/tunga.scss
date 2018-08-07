@@ -26,6 +26,19 @@ i {
     vertical-align: middle;
 }
 
+// Social links
+.facebook {
+    @include brand-link(get-color('facebook'));
+}
+
+.google {
+    @include brand-link(get-color('google'));
+}
+
+.github {
+    @include brand-link(get-color('github'));
+}
+
 // Progress
 
 .loading {
@@ -940,6 +953,28 @@ table {
                     color: $brand-color;
                     text-decoration: none;
                 }
+            }
+        }
+    }
+}
+
+// Social Auth
+
+.social-auth-options {
+    text-align: center;
+    margin: 10px auto;
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style: none;
+            display: inline;
+            margin: 0 2px;
+
+            [class*="tg-ic"] {
+                font-size: px-to-rem(40);
             }
         }
     }
@@ -2642,6 +2677,55 @@ textarea {
             #story-interlude-two {
                 background-image: url('../assets/images/showcase/story_interlude_two.png');
             }
+        }
+    }
+
+    .auth-page {
+        h2 {
+            font-weight: 400;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        form {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 30px;
+            padding: 30px;
+            color: get-color('black');
+            background-color: get-color('white');
+            border-radius: 8px;
+        }
+
+        form[name='signin'],
+        form[name='reset-confirm'] {
+            margin-top: 50px;
+        }
+
+        form[name='reset-form'] {
+            margin-top: 100px;
+        }
+
+        .account-choices {
+            h2 {
+                font-size: 28px;
+            }
+
+            .btn {
+                display: inline-block;
+                width: 100%;
+                max-width: 280px;
+                opacity: 0.8;
+            }
+
+            .btn:hover,
+            .btn:active {
+                opacity: 0.9;
+            }
+        }
+
+        .email-widget {
+            margin: 0 auto;
         }
     }
 

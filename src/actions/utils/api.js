@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -274,3 +275,16 @@ export const CHANNEL_TYPES = {
     support: 3,
     developer: 4,
 };
+
+export function objectToQueryString(obj) {
+    let qs = _.reduce(
+        obj,
+        function(result, value, key) {
+            return !_.isNull(value) && !_.isUndefined(value)
+                ? (result += key + '=' + value + '&')
+                : result;
+        },
+        '',
+    ).slice(0, -1);
+    return qs;
+}

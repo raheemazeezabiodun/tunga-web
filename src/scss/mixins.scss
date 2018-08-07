@@ -31,3 +31,12 @@
     }
 }
 
+@mixin brand-link($color) {
+    color: $color;
+
+    &:hover, &:focus, &:active {
+        color: $color;
+        text-decoration: none;
+    }
+}
+

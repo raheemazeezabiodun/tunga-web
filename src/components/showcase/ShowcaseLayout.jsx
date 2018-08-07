@@ -14,6 +14,7 @@ import Agreement from "./Agreement";
 import CodeOfConduct from "./CodeOfConduct";
 import Maintenance from "./Maintenance";
 import SkillPage from "./SkillPage";
+import SignIn from "./SignIn";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -41,7 +42,7 @@ export default class ShowcaseLayout extends React.Component {
 
                 <Switch>
                     <Route exact path='/maintenance' component={Maintenance}/>
-                    <Route exact path='/signin' component={Maintenance}/>
+                    <Route exact path='/signin' component={SignIn}/>
                     <Route exact path='/signup' component={Maintenance}/>
                     <Route exact path='/reset-password' component={Maintenance}/>
                     <Route exact path='/start' component={Maintenance}/>

@@ -42,13 +42,23 @@ export default class ShowcaseLayout extends React.Component {
 
                 <Switch>
                     <Route exact path='/maintenance' component={Maintenance}/>
-                    <Route exact path='/signin' component={SignIn}/>
-                    <Route exact path='/signup' component={Maintenance}/>
-                    <Route exact path='/reset-password' component={Maintenance}/>
-                    <Route exact path='/start' component={Maintenance}/>
-                    <Route exact path='/start-welcome' component={Maintenance}/>
-                    <Route exact path='/start-outsource' component={Maintenance}/>
-                    <Route exact path='/quiz' component={Maintenance}/>
+                    {user && user.id?(
+                        'signin|signup|reset-password|start|start-welcome|start-outsource|quiz'.split('|').map(path => {
+                            return (
+                                <Redirect key={`app-path--${path}`} from={`/${path}`} to="/dashboard"/>
+                            );
+                        })
+                    ):(
+                        <React.Fragment>
+                            <Route exact path='/signin' component={SignIn}/>
+                            <Route exact path='/signup' component={Maintenance}/>
+                            <Route exact path='/reset-password' component={Maintenance}/>
+                            <Route exact path='/start' component={Maintenance}/>
+                            <Route exact path='/start-welcome' component={Maintenance}/>
+                            <Route exact path='/start-outsource' component={Maintenance}/>
+                            <Route exact path='/quiz' component={Maintenance}/>
+                        </React.Fragment>
+                    )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>
                     <Route path={wrapPath('/pricing')} component={Pricing}/>

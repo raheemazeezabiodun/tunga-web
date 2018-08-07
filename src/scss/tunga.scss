@@ -2047,12 +2047,20 @@ textarea {
         padding-top: 170px;
         padding-bottom: 80px;
 
-        &.height-100 {
-            min-height: 100vh;
-        }
-
         &.height-50 {
             min-height: 50vh;
+        }
+
+        &.height-70 {
+            min-height: 70vh;
+        }
+
+        &.height-80 {
+            min-height: 80vh;
+        }
+
+        &.height-100 {
+            min-height: 100vh;
         }
 
         .container {
@@ -2289,9 +2297,20 @@ textarea {
         }
     }
 
+    .maintenance-page {
+        header {
+            padding-top: 240px;
+            background-image: url('../assets/images/maintenance.jpg');
+        }
+    }
+
     .landing-page {
         header {
             padding-bottom: 0;
+
+            .showcase-desc {
+                max-width: 466px;
+            }
         }
 
         #services {

@@ -12,6 +12,7 @@ import FriendsRules from "./FriendsRules";
 import Privacy from "./Privacy";
 import Agreement from "./Agreement";
 import CodeOfConduct from "./CodeOfConduct";
+import Maintenance from "./Maintenance";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -38,6 +39,7 @@ export default class ShowcaseLayout extends React.Component {
                         className={isAgreementPage?'navbar-showcase-always-fixed':''}/>
 
                 <Switch>
+                    <Route exact path='/maintenance' component={Maintenance}/>
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>
                     <Route path={wrapPath('/pricing')} component={Pricing}/>

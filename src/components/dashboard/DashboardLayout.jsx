@@ -25,7 +25,7 @@ export default class DashboardLayout extends React.Component {
             isProjectsRoute = match.url === '/projects';
 
         return (
-            user && user.id?(
+            user && user.id && !__MAINTENANCE__?(
                 <React.Fragment>
                     <NavBar variant="dashboard" user={user} onSignOut={logout} isLargeDevice={isLargeDevice}/>
                     {isLargeDevice?(
@@ -35,7 +35,7 @@ export default class DashboardLayout extends React.Component {
                     <MainContent isLargeDevice={isLargeDevice} className={isProjectsRoute && !isLargeDevice?'has-breadcrumbs':''}/>
                 </React.Fragment>
             ):(
-                <Redirect from="*" to="/"/>
+                <Redirect from="*" to={`/${__MAINTENANCE__?'maintenance':''}`}/>
             )
         )
     }

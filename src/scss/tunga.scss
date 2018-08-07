@@ -1930,6 +1930,7 @@ table {
             padding: 10px;
             margin-bottom: 10px;
             background: #ccc url(../assets/images/chatheader.jpg);
+            border-radius: 8px 8px 0 0;
 
             .heading {
                 text-align: center;
@@ -2694,6 +2695,8 @@ textarea {
         background-color: get-color('showcase-grey');
 
         header {
+            background-image: url('../assets/images/showcase/friends-of-tunga.jpg');
+            
             a:not(.btn) {
                 color: get-color('white');
                 text-decoration: underline;

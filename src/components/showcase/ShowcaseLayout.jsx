@@ -40,14 +40,14 @@ export default class ShowcaseLayout extends React.Component {
                     {['/tunga', '/'].map(prefix => {
                         return (
                             <React.Fragment key={prefix}>
-                                <Route path={wrapPath(prefix, '/our-story')} component={OurStory}/>
-                                <Route path={wrapPath(prefix, '/quality')} component={Quality}/>
-                                <Route path={wrapPath(prefix, '/pricing')} component={Pricing}/>
-                                <Route path={wrapPath(prefix, '/friends/rules')} component={FriendsRules}/>
-                                <Route path={wrapPath(prefix, '/friends')} component={Friends}/>
-                                <Route path={wrapPath(prefix, '/privacy')} component={Privacy}/>
-                                <Route path={wrapPath(prefix, '/agreement')} component={Agreement}/>
-                                <Route path={wrapPath(prefix, '/code-of-conduct')} component={CodeOfConduct}/>
+                                <Route path={wrapPath(prefix, 'our-story')} component={OurStory}/>
+                                <Route path={wrapPath(prefix, 'quality')} component={Quality}/>
+                                <Route path={wrapPath(prefix, 'pricing')} component={Pricing}/>
+                                <Route path={wrapPath(prefix, 'friends/rules')} component={FriendsRules}/>
+                                <Route path={wrapPath(prefix, 'friends')} component={Friends}/>
+                                <Route path={wrapPath(prefix, 'privacy')} component={Privacy}/>
+                                <Route path={wrapPath(prefix, 'agreement')} component={Agreement}/>
+                                <Route path={wrapPath(prefix, 'code-of-conduct')} component={CodeOfConduct}/>
                                 <Route exact path={wrapPath(prefix)} component={Home}/>
                             </React.Fragment>
                         );

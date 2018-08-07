@@ -12,8 +12,9 @@ import ChatWidget from "./chat/ChatWidget";
 import LegacyRedirect from './showcase/LegacyRedirect';
 import BootLogo from "./core/BootLogo";
 import ShowcaseLayout from "./showcase/ShowcaseLayout";
-import {getCookieConsent, getCookieConsentCloseAt, openCookieConsentPopUp, setCookieConsentCloseAt} from "./utils/consent";
 import Button from "./core/Button";
+
+import {getCookieConsent, getCookieConsentCloseAt, openCookieConsentPopUp, setCookieConsentCloseAt} from "./utils/consent";
 
 
 class App extends React.Component {

@@ -155,6 +155,14 @@ export const USER_TYPE_CHOICES = [
     {id: USER_TYPE_PROJECT_MANAGER, name: 'Project Manager'},
 ];
 
+export const PROJECT_TYPE_WEB = 'web';
+export const PROJECT_TYPE_MOBILE = 'mobile';
+export const PROJECT_TYPE_OTHER = 'other';
+
+export const PROJECT_DURATION_2_WEEKS = '2w';
+export const PROJECT_DURATION_6_MONTHS = '6m';
+export const PROJECT_DURATION_PERMANENT = 'permanent';
+
 export const DOC_TYPE_REQUIREMENTS = 'requirements';
 export const DOC_TYPE_WIREFRAMES = 'wireframes';
 export const DOC_TYPE_ESTIMATE = 'estimate';

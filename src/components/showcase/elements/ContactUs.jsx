@@ -1,6 +1,4 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 import {FormGroup} from 'reactstrap';
 
 import Title from './Title';
@@ -9,7 +7,7 @@ import Error from '../../core/Error';
 import FieldError from '../../core/FieldError';
 import Button from '../../core/Button';
 
-import * as UtilityActions from '../../../actions/UtilityActions';
+import connect from '../../../connectors/UtilityConnector';
 
 import {openCalendlyWidget} from '../../utils/calendly';
 
@@ -153,14 +151,4 @@ class ContactUs extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {Utility: state.Utility};
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        UtilityActions: bindActionCreators(UtilityActions, dispatch),
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactUs);
+export default connect(ContactUs);

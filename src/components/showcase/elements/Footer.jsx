@@ -1,11 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 
 import Icon from "../../core/Icon";
 
-import * as UtilityActions from '../../../actions/UtilityActions';
+import connect from '../../../connectors/UtilityConnector';
 
 import {openCalendlyWidget} from '../../utils/calendly';
 import {proxySafeUrl} from '../../utils/proxy';
@@ -184,14 +182,4 @@ class Footer extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {Utility: state.Utility};
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        UtilityActions: bindActionCreators(UtilityActions, dispatch),
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+export default connect(Footer);

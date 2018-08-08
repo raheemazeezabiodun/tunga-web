@@ -1,15 +1,20 @@
 import React from 'react';
 import querystring from "querystring";
 
-import Progress from '../core/Progress';
 import Error from '../core/Error';
 import Success from '../core/Success';
 import Button from "../core/Button";
 
 import connect from '../../connectors/AuthConnector';
 import FieldError from "../core/FieldError";
+import PropTypes from "prop-types";
 
 class PasswordResetConfirm extends React.Component {
+
+    static propTypes = {
+        uid: PropTypes.string.required,
+        token: PropTypes.string.required,
+    };
 
     componentDidUpdate(prevProps, prevState, snapShot) {
         if (this.props.Auth.isReset && !prevProps.Auth.isReset) {
@@ -27,8 +32,7 @@ class PasswordResetConfirm extends React.Component {
 
     onConfirm = e => {
         e.preventDefault();
-        let uid = this.props.params.uid,
-            token = this.props.params.token,
+        let {uid, token} = this.props,
             new_password1 = this.refs.new_password1.value.trim(),
             new_password2 = this.refs.new_password2.value.trim();
 

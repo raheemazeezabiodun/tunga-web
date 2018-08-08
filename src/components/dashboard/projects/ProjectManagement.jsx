@@ -17,6 +17,7 @@ import Warning from "../../core/Warning";
 
 import {openConfirm} from "../../core/utils/modals";
 import {getMyParticipation, hasProjectAccess, isDev, isPendingProjectParticipant} from "../../utils/auth";
+import Info from "../../core/Info";
 
 export default class ProjectManagement extends React.Component {
 
@@ -86,6 +87,14 @@ export default class ProjectManagement extends React.Component {
                                     {hasProjectAccess(project)?(
                                         <Switch>
                                             <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
+                                            {'plan|pay|settings|events'.split('|').map(path => {
+                                                return (
+                                                    <Route key={`app-path--${path}`} path={`${match.url}/${path}`} render={props => <div>
+                                                        <Info message="This part of Tunga is being updated. Please check back in a bit."/>
+                                                        <p>For urgent matters, please use the chat function.</p>
+                                                    </div>}/>
+                                                );
+                                            })}
                                             {[
                                                 ['activity', Activity],
                                                 ...(isLargeDevice?[

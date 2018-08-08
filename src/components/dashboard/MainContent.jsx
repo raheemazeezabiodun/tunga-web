@@ -16,10 +16,10 @@ export default ({isLargeDevice=true, className}) => {
     return (
         <div className={`main-content ${className || ''}`}>
             <Switch>
-                {'projects|payments|work|proposal'.split('|').map(path => {
+                {'payments|work|proposal'.split('|').map(path => {
                     return (
                         <Route key={`app-path--${path}`} path={`/${path}`} render={props => <div>
-                            <Info message="Tunga is being updated. Please check back in a bit"/>
+                            <Info message="This part of Tunga is being updated. Please check back in a bit."/>
                             <p>For urgent matters, please use the chat function.</p>
                         </div>}/>
                     );

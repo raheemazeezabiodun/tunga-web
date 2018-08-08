@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import moment from "moment";
+import _ from 'lodash';
 
 import Icon from "../../core/Icon";
 
@@ -37,7 +38,7 @@ export default class ProjectCard extends React.Component {
             project?(
                 <Link to={`/projects/${project.id}`} className="project-card">
                     <Icon name="circle" size="card" className={`status-icon ${project.archived?'red':'green'}`}/>
-                    <div className="card-title">{project.title}</div>
+                    <div className="card-title">{_.truncate(project.title, {length: 30})}</div>
                     {nextDeadline?(
                         <div>Next deadline: {moment.utc(nextDeadline).local().format('DD/MMM/YYYY')}</div>
                     ):null}

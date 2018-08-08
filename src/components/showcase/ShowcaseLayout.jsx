@@ -16,6 +16,8 @@ import Maintenance from "./Maintenance";
 import SkillPage from "./SkillPage";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import PasswordReset from "./PasswordReset";
+import PasswordResetConfirm from "./PasswordResetConfirm";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -62,7 +64,8 @@ export default class ShowcaseLayout extends React.Component {
                                     />
                                 );
                             }),
-                            <Route exact path='/reset-password' component={Maintenance}/>,
+                            <Route exact path='/reset-password/confirm/:uid/:token' component={PasswordResetConfirm}/>,
+                            <Route exact path='/reset-password' component={PasswordReset}/>,
                             <Route exact path='/start' component={Maintenance}/>,
                             <Route exact path='/start-welcome' component={Maintenance}/>,
                             <Route exact path='/start-outsource' component={Maintenance}/>,

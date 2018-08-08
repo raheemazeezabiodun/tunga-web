@@ -82,6 +82,7 @@ export default class ShowcaseLayout extends React.Component {
                     <Route path={wrapPath('/privacy')} component={Privacy}/>
                     <Route path={wrapPath('/agreement')} component={Agreement}/>
                     <Route path={wrapPath('/code-of-conduct')} component={CodeOfConduct}/>
+                    <Route exact path='/call' render={props => <Home showCall={true}/>}/>
                     <Route exact path='/tunga' component={Home}/>
                     <Route exact path={wrapPath('/:keyword')} render={(props) => <SkillPage keyword={props.match.params.keyword}/>}/>
                     <Route exact path='/' component={Home}/>

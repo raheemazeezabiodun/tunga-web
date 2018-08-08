@@ -102,323 +102,340 @@ const HOME_DEFAULTS = {
     ),
 };
 
-export default ({skill_page, isLoading}) => {
-    const getSafeValue = (key) => {
-        return isLoading?'...':(skill_page && skill_page[key] || HOME_DEFAULTS[key] || null);
-    };
+export default class Home extends React.Component {
 
-    let title = getSafeValue('welcome_header'),
-        description = (
-            <JSXify>
-                {getSafeValue('welcome_sub_header')}
-            </JSXify>
-        ),
-        ctaText = getSafeValue('welcome_cta'),
-        pitchImage = getSafeValue('pitch_image');
+    componentDidMount() {
+        const {showCall} = this.props;
+        if(showCall) {
+            openCalendlyWidget();
+        }
+    }
 
-    return (
-        <div className={`landing-page ${skill_page?'skill-page':''}`}>
-            <Header className={`height-${skill_page?'80':'100'}`} title={title} description={description} ctaText={ctaText} ctaSize={'xxl'}>
-                {isLoading || skill_page?null:(
-                    <section id="services">
-                        <div className="service">
-                            <div className="wrapper">
-                                <div className="headline">
-                                    Effortless software projects
-                                </div>
-                                <div>
-                                    Need an app or website? We can build software for
-                                    you on-demand and turn-key.
-                                    <Link
-                                        to={proxySafeUrl('/effortless-software-projects')}>
-                                        find out more
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
+    componentDidUpdate(prevProps, prevState, snapShot) {
+        if(this.props.showCall && !prevProps.showCall) {
+            openCalendlyWidget();
+        }
+    }
 
-                        <div className="service">
-                            <div className="wrapper">
-                                <div className="headline">Dedicated developers</div>
-                                <div>
-                                    Use Tunga to quickly mobilize developers. Parttime
-                                    or fulltime. Individuals or entire teams.
-                                    <Link
-                                        to={proxySafeUrl('/dedicated-developers')}>
-                                        find out more
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
+    render() {
+        const {skill_page, isLoading} = this.props;
+        const getSafeValue = (key) => {
+            return isLoading?'...':(skill_page && skill_page[key] || HOME_DEFAULTS[key] || null);
+        };
 
-                        <div className="service">
-                            <div className="wrapper">
-                                <div className="headline">Recruitment services</div>
-                                <div>
-                                    Tap into our network of top African software
-                                    programmers to reinforce your own tech team.
-                                    <Link
-                                        to={proxySafeUrl('/it-recruitment')}>
-                                        find out more
-                                    </Link>
+        let title = getSafeValue('welcome_header'),
+            description = (
+                <JSXify>
+                    {getSafeValue('welcome_sub_header')}
+                </JSXify>
+            ),
+            ctaText = getSafeValue('welcome_cta'),
+            pitchImage = getSafeValue('pitch_image');
+
+        return (
+            <div className={`landing-page ${skill_page?'skill-page':''}`}>
+                <Header className={`height-${skill_page?'80':'100'}`} title={title} description={description} ctaText={ctaText} ctaSize={'xxl'}>
+                    {isLoading || skill_page?null:(
+                        <section id="services">
+                            <div className="service">
+                                <div className="wrapper">
+                                    <div className="headline">
+                                        Effortless software projects
+                                    </div>
+                                    <div>
+                                        Need an app or website? We can build software for
+                                        you on-demand and turn-key.
+                                        <Link
+                                            to={proxySafeUrl('/effortless-software-projects')}>
+                                            find out more
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                )}
-            </Header>
 
-            <section id="unique-approach" className="clearfix">
-                <Row>
-                    <Col lg={8}>
-                        <div className="approach-body">
-                            <Title>
-                                {getSafeValue('pitch_header')}
-                            </Title>
-
-                            <div>
-                                {getSafeValue('pitch_body')}
-                            </div>
-                        </div>
-                    </Col>
-                    <Col className="side-pic" style={pitchImage?{backgroundImage: `url(${pitchImage})`}:{}}/>
-                </Row>
-            </section>
-
-            {isLoading || skill_page?null:(
-                <React.Fragment>
-                    <section id="development-style">
-                        <div>
-                            <Title>
-                                Software development Tunga-style
-                            </Title>
-
-                            <div className="development-style-pitch">
-                                We have built a large pool of top African
-                                tech talent that can be deployed flexibly
-                                and rapidly to help you meet your specific
-                                software development needs.
-                            </div>
-
-                            <div className="development-style-cases">
-                                <div className="case">
-                                    <Icon name="file-search" className="icon"/>
-
-                                    <p>
-                                        <div className="title">
-                                            Result-oriented
-                                        </div>
-                                        We pay a lot of attention to scoping
-                                        your project and working out the
-                                        technical details. Then we go all
-                                        the way to deliver them.
-                                    </p>
-                                </div>
-                                <div className="case">
-                                    <Icon name="team" className="icon"/>
-
-                                    <p>
-                                        <div className="title">
-                                            Quality assured
-                                        </div>
-                                        We have developed a unique, highly
-                                        professional and effective way of
-                                        working that enables clients and
-                                        developers from any part of the
-                                        world to collaborate efficiently.
-                                    </p>
-                                </div>
-                                <div className="case">
-                                    <Icon name="money-loop" className="icon"/>
-                                    <p>
-                                        <div className="title">
-                                            Affordable
-                                        </div>
-                                        Our developers are for hire at a
-                                        flat rate. We
-                                        calculate projects transparently and
-                                        stick with that. No excuses, no
-                                        discussions, no additional costs.
-                                    </p>
+                            <div className="service">
+                                <div className="wrapper">
+                                    <div className="headline">Dedicated developers</div>
+                                    <div>
+                                        Use Tunga to quickly mobilize developers. Parttime
+                                        or fulltime. Individuals or entire teams.
+                                        <Link
+                                            to={proxySafeUrl('/dedicated-developers')}>
+                                            find out more
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
 
-                    <section id="meet-developers">
-                        <div>
-                            <Link to="/quality" className="headline">
-                                Meet our thriving community of developers
-                            </Link>
-                            <p>
-                                Find out how we select our developers and meet some
-                                of our talented experts.
-                            </p>
-                        </div>
-                    </section>
-                </React.Fragment>
-            )}
+                            <div className="service">
+                                <div className="wrapper">
+                                    <div className="headline">Recruitment services</div>
+                                    <div>
+                                        Tap into our network of top African software
+                                        programmers to reinforce your own tech team.
+                                        <Link
+                                            to={proxySafeUrl('/it-recruitment')}>
+                                            find out more
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    )}
+                </Header>
 
-            <Press/>
-
-            {isLoading || skill_page?(
-                skill_page?(
-                    <React.Fragment>
-                        <section id="story">
-                            <div className="container">
+                <section id="unique-approach" className="clearfix">
+                    <Row>
+                        <Col lg={8}>
+                            <div className="approach-body">
                                 <Title>
-                                    <JSXify>
-                                        {skill_page.content_header}
-                                    </JSXify>
+                                    {getSafeValue('pitch_header')}
                                 </Title>
 
-                                <div className="readable">
-                                    <JSXify>
-                                        {getSafeValue('content')}
-                                    </JSXify>
+                                <div>
+                                    {getSafeValue('pitch_body')}
+                                </div>
+                            </div>
+                        </Col>
+                        <Col className="side-pic" style={pitchImage?{backgroundImage: `url(${pitchImage})`}:{}}/>
+                    </Row>
+                </section>
+
+                {isLoading || skill_page?null:(
+                    <React.Fragment>
+                        <section id="development-style">
+                            <div>
+                                <Title>
+                                    Software development Tunga-style
+                                </Title>
+
+                                <div className="development-style-pitch">
+                                    We have built a large pool of top African
+                                    tech talent that can be deployed flexibly
+                                    and rapidly to help you meet your specific
+                                    software development needs.
                                 </div>
 
-                                {skill_page.content_image ? (
-                                    <img src={skill_page.content_image} />
-                                ) : null}
+                                <div className="development-style-cases">
+                                    <div className="case">
+                                        <Icon name="file-search" className="icon"/>
 
-                                <div className="readable">
-                                    <JSXify>
-                                        {skill_page.story_body_two}
-                                    </JSXify>
+                                        <p>
+                                            <div className="title">
+                                                Result-oriented
+                                            </div>
+                                            We pay a lot of attention to scoping
+                                            your project and working out the
+                                            technical details. Then we go all
+                                            the way to deliver them.
+                                        </p>
+                                    </div>
+                                    <div className="case">
+                                        <Icon name="team" className="icon"/>
+
+                                        <p>
+                                            <div className="title">
+                                                Quality assured
+                                            </div>
+                                            We have developed a unique, highly
+                                            professional and effective way of
+                                            working that enables clients and
+                                            developers from any part of the
+                                            world to collaborate efficiently.
+                                        </p>
+                                    </div>
+                                    <div className="case">
+                                        <Icon name="money-loop" className="icon"/>
+                                        <p>
+                                            <div className="title">
+                                                Affordable
+                                            </div>
+                                            Our developers are for hire at a
+                                            flat rate. We
+                                            calculate projects transparently and
+                                            stick with that. No excuses, no
+                                            discussions, no additional costs.
+                                        </p>
+                                    </div>
                                 </div>
+                            </div>
+                        </section>
 
-                                <div className="readable">
-                                    <JSXify>
-                                        {skill_page.story_body_three}
-                                    </JSXify>
+                        <section id="meet-developers">
+                            <div>
+                                <Link to="/quality" className="headline">
+                                    Meet our thriving community of developers
+                                </Link>
+                                <p>
+                                    Find out how we select our developers and meet some
+                                    of our talented experts.
+                                </p>
+                            </div>
+                        </section>
+                    </React.Fragment>
+                )}
+
+                <Press/>
+
+                {isLoading || skill_page?(
+                    skill_page?(
+                        <React.Fragment>
+                            <section id="story">
+                                <div className="container">
+                                    <Title>
+                                        <JSXify>
+                                            {skill_page.content_header}
+                                        </JSXify>
+                                    </Title>
+
+                                    <div className="readable">
+                                        <JSXify>
+                                            {getSafeValue('content')}
+                                        </JSXify>
+                                    </div>
+
+                                    {skill_page.content_image ? (
+                                        <img src={skill_page.content_image} />
+                                    ) : null}
+
+                                    <div className="readable">
+                                        <JSXify>
+                                            {skill_page.story_body_two}
+                                        </JSXify>
+                                    </div>
+
+                                    <div className="readable">
+                                        <JSXify>
+                                            {skill_page.story_body_three}
+                                        </JSXify>
+                                    </div>
+
+                                    <div className="text-center">
+                                        <Button size="lg"
+                                                onClick={() => {openCalendlyWidget()}}>
+                                            Schedule a call with us
+                                        </Button>
+                                    </div>
                                 </div>
+                            </section>
+                            {skill_page.story_interlude_one_text?(
+                                <section
+                                    id="story-interlude-one"
+                                    style={
+                                        skill_page.story_interlude_one_image
+                                            ? {
+                                                backgroundImage: `url(${
+                                                    skill_page.story_interlude_one_image
+                                                    })`,
+                                            }
+                                            : {}
+                                    }>
+                                    <div className="container">
+                                        <JSXify>
+                                            {skill_page.story_interlude_one_text}
+                                        </JSXify>
+                                        {skill_page.story_interlude_one_cta ? (
+                                            <Link to="/start" className="cta">
+                                                {skill_page.story_interlude_one_cta}
+                                            </Link>
+                                        ) : null}
+                                    </div>
+                                </section>
+                            ):null}
+                        </React.Fragment>
+                    ):null
+                ):(
+                    <React.Fragment>
+                        <section id="case-studies">
+                            <div className="container">
+                                <Title>Case Studies</Title>
+                                <div id="clients-testmonial-landing-page">
+                                    <Slider
+                                        className="testimonials-slider text-center"
+                                        {...SLIDER_SETTINGS}>
+                                        {TESTIMONIALS.map(testimonial => {
+                                            return (
+                                                <div className="testimonial-landing-page">
+                                                    <div className="body">
+                                                        <div>
+                                                            <i className="fa fa-quote-left pull-left"/>
+                                                            <span
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html:
+                                                                    testimonial.message,
+                                                                }}
+                                                            />
+                                                            <i className="fa fa-quote-right pull-right"/>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className="image"
+                                                        style={{
+                                                            backgroundImage: `url(${
+                                                                testimonial.image
+                                                                })`,
+                                                        }}
+                                                    />
+                                                    <div className="author">
+                                                        {testimonial.name}
+                                                    </div>
+                                                    <div className="company">
+                                                        <p>
+                                                            {testimonial.position}{' '}
+                                                            {testimonial.company}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </Slider>
+                                </div>
+                            </div>
+                        </section>
 
+                        <Partners title={
+                            <div className="supported-by">
+                                Supported By:
+                            </div>
+                        }>
+                        </Partners>
+
+                        <section className="what-we-do-best">
+                            <div className="container ">
+                                <div>
+                                    <Title>What we do best</Title>
+                                    <Row>
+                                        <Col md={4} className="skill">
+                                            <img
+                                                src={require('../../assets/images/showcase/TungaMobileSkills.png')}
+                                            />
+                                        </Col>
+                                        <Col md={4} className="skill">
+                                            <img
+                                                src={require('../../assets/images/showcase/TungaWebSkills.png')}
+                                            />
+                                        </Col>
+                                        <Col md={4} className="skill">
+                                            <img
+                                                src={require('../../assets/images/showcase/TungaOtherSkills.png')}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </div>
                                 <div className="text-center">
-                                    <Button size="lg"
-                                            onClick={() => {openCalendlyWidget()}}>
-                                        Schedule a call with us
+                                    <Button onClick={() => {openCalendlyWidget()}} size="lg">
+                                        Find out what we can do for you
                                     </Button>
                                 </div>
                             </div>
                         </section>
-                        {skill_page.story_interlude_one_text?(
-                            <section
-                                id="story-interlude-one"
-                                style={
-                                    skill_page.story_interlude_one_image
-                                        ? {
-                                            backgroundImage: `url(${
-                                                skill_page.story_interlude_one_image
-                                                })`,
-                                        }
-                                        : {}
-                                }>
-                                <div className="container">
-                                    <JSXify>
-                                        {skill_page.story_interlude_one_text}
-                                    </JSXify>
-                                    {skill_page.story_interlude_one_cta ? (
-                                        <Link to="/start" className="cta">
-                                            {skill_page.story_interlude_one_cta}
-                                        </Link>
-                                    ) : null}
-                                </div>
-                            </section>
-                        ):null}
                     </React.Fragment>
-                ):null
-            ):(
-                <React.Fragment>
-                    <section id="case-studies">
-                        <div className="container">
-                            <Title>Case Studies</Title>
-                            <div id="clients-testmonial-landing-page">
-                                <Slider
-                                    className="testimonials-slider text-center"
-                                    {...SLIDER_SETTINGS}>
-                                    {TESTIMONIALS.map(testimonial => {
-                                        return (
-                                            <div className="testimonial-landing-page">
-                                                <div className="body">
-                                                    <div>
-                                                        <i className="fa fa-quote-left pull-left"/>
-                                                        <span
-                                                            dangerouslySetInnerHTML={{
-                                                                __html:
-                                                                testimonial.message,
-                                                            }}
-                                                        />
-                                                        <i className="fa fa-quote-right pull-right"/>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    className="image"
-                                                    style={{
-                                                        backgroundImage: `url(${
-                                                            testimonial.image
-                                                            })`,
-                                                    }}
-                                                />
-                                                <div className="author">
-                                                    {testimonial.name}
-                                                </div>
-                                                <div className="company">
-                                                    <p>
-                                                        {testimonial.position}{' '}
-                                                        {testimonial.company}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </Slider>
-                            </div>
-                        </div>
-                    </section>
+                )}
 
-                    <Partners title={
-                        <div className="supported-by">
-                            Supported By:
-                        </div>
-                    }>
-                    </Partners>
+                <ContactUs/>
 
-                    <section className="what-we-do-best">
-                        <div className="container ">
-                            <div>
-                                <Title>What we do best</Title>
-                                <Row>
-                                    <Col md={4} className="skill">
-                                        <img
-                                            src={require('../../assets/images/showcase/TungaMobileSkills.png')}
-                                        />
-                                    </Col>
-                                    <Col md={4} className="skill">
-                                        <img
-                                            src={require('../../assets/images/showcase/TungaWebSkills.png')}
-                                        />
-                                    </Col>
-                                    <Col md={4} className="skill">
-                                        <img
-                                            src={require('../../assets/images/showcase/TungaOtherSkills.png')}
-                                        />
-                                    </Col>
-                                </Row>
-                            </div>
-                            <div className="text-center">
-                                <Button onClick={() => {openCalendlyWidget()}} size="lg">
-                                    Find out what we can do for you
-                                </Button>
-                            </div>
-                        </div>
-                    </section>
-                </React.Fragment>
-            )}
-
-            <ContactUs/>
-
-            <Footer/>
-        </div>
-    );
+                <Footer/>
+            </div>
+        );
+    }
 }

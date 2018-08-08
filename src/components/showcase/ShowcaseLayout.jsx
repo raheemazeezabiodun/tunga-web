@@ -64,7 +64,10 @@ export default class ShowcaseLayout extends React.Component {
                                     />
                                 );
                             }),
-                            <Route exact path='/reset-password/confirm/:uid/:token' component={PasswordResetConfirm}/>,
+                            <Route exact path='/reset-password/confirm/:uid/:token' render={props =>
+                                <PasswordResetConfirm uid={props.match.params.uid}
+                                                      token={props.match.params.token}/>}
+                            />,
                             <Route exact path='/reset-password' component={PasswordReset}/>,
                             <Route exact path='/start' component={Maintenance}/>,
                             <Route exact path='/start-welcome' component={Maintenance}/>,

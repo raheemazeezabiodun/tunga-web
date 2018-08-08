@@ -20,6 +20,10 @@ export default class DashboardLayout extends React.Component {
         isLargeDevice: PropTypes.bool,
     };
 
+    componentDidMount() {
+        $('body').addClass('is-dashboard');
+    }
+
     render() {
         const {user, logout, match, isLargeDevice} = this.props,
             isProjectsRoute = match.url === '/projects';

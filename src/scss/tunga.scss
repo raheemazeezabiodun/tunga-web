@@ -20,6 +20,10 @@ body {
     min-height: 100%;
     background-color: get-color('white');
     word-break: break-word;
+
+    &.is-dashboard {
+        background-color: get-color('light-grey');
+    }
 }
 
 i {

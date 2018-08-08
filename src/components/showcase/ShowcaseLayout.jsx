@@ -27,6 +27,10 @@ export default class ShowcaseLayout extends React.Component {
         match: PropTypes.object,
     };
 
+    componentDidMount() {
+        $('body').removeClass('is-dashboard');
+    }
+
     render() {
         const {user, logout, match, isLargeDevice} = this.props,
             isAgreementPage = /^\/(privacy|agreement|code-of-conduct)(\/|$)/ig.test(window.location.pathname);

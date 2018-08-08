@@ -87,7 +87,7 @@ export default class ProjectManagement extends React.Component {
                                     {hasProjectAccess(project)?(
                                         <Switch>
                                             <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
-                                            {'plan|pay|settings|events'.split('|').map(path => {
+                                            {'plan|pay|settings'.split('|').map(path => {
                                                 return (
                                                     <Route key={`app-path--${path}`} path={`${match.url}/${path}`} render={props => <div>
                                                         <Info message="This part of Tunga is being updated. Please check back in a bit."/>

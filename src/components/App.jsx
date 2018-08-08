@@ -104,7 +104,7 @@ class App extends React.Component {
                                 })}
                             </Switch>
 
-                            {!user || user.is_admin || user.is_project_manager?null:(
+                            {user && (user.is_admin || user.is_project_manager)?null:(
                                 <ChatWidget/>
                             )}
 

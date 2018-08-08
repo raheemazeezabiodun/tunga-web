@@ -2,7 +2,9 @@ import axios from 'axios';
 import {
     ENDPOINT_CONTACT_REQUEST,
     ENDPOINT_MEDIUM,
+    ENDPOINT_MIGRATE
 } from '../actions/utils/api';
+
 
 export const CLEAR_VALIDATIONS = 'CLEAR_VALIDATIONS';
 export const SEND_CONTACT_REQUEST_START = 'SEND_CONTACT_REQUEST_START';
@@ -11,6 +13,9 @@ export const SEND_CONTACT_REQUEST_FAILED = 'SEND_CONTACT_REQUEST_FAILED';
 export const GET_MEDIUM_POSTS_START = 'GET_MEDIUM_POSTS_START';
 export const GET_MEDIUM_POSTS_SUCCESS = 'GET_MEDIUM_POSTS_SUCCESS';
 export const GET_MEDIUM_POSTS_FAILED = 'GET_MEDIUM_POSTS_FAILED';
+export const FIND_REPLACEMENT_START = 'FIND_REPLACEMENT_START';
+export const FIND_REPLACEMENT_SUCCESS = 'FIND_REPLACEMENT_SUCCESS';
+export const FIND_REPLACEMENT_FAILED = 'FIND_REPLACEMENT_FAILED';
 
 export function clearValidations() {
     return {
@@ -92,5 +97,49 @@ export function getMediumPostsFailed(error) {
     return {
         type: GET_MEDIUM_POSTS_FAILED,
         error,
+    };
+}
+
+export function findReplacement(model, id) {
+    return dispatch => {
+        dispatch(findReplacementStart(model, id));
+        axios
+            .get(ENDPOINT_MIGRATE + `${model}/${id}/`)
+            .then(function(response) {
+                dispatch(findReplacementSuccess(response.data, model, id));
+            })
+            .catch(function(error) {
+                dispatch(
+                    findReplacementFailed(
+                        error.response ? error.response.data : null, model, id
+                    ),
+                );
+            });
+    };
+}
+
+export function findReplacementStart(model, id) {
+    return {
+        type: FIND_REPLACEMENT_START,
+        model,
+        id,
+    };
+}
+
+export function findReplacementSuccess(replacement, model, id) {
+    return {
+        type: FIND_REPLACEMENT_SUCCESS,
+        replacement,
+        model,
+        id
+    };
+}
+
+export function findReplacementFailed(error, model, id) {
+    return {
+        type: FIND_REPLACEMENT_FAILED,
+        error,
+        model,
+        id
     };
 }

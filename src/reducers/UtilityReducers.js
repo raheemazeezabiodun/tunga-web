@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 import {LOCATION_CHANGE} from "react-router-redux";
 
 import * as UtilityActions from '../actions/UtilityActions';
+import {getMapKey} from "../utils/migration";
 
 function posts(state = [], action) {
     switch (action.type) {
@@ -52,15 +53,48 @@ function error(state = null, action) {
     }
 }
 
+function replacements(state = {}, action) {
+    let newState = {};
+    switch (action.type) {
+        case UtilityActions.FIND_REPLACEMENT_SUCCESS:
+            newState[getMapKey(action.model, action.id)] = action.replacement;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function isRetrieving(state = {}, action) {
+    let newState = {};
+    switch (action.type) {
+        case UtilityActions.FIND_REPLACEMENT_START:
+            newState[getMapKey(action.model, action.id)] = true;
+            return {...state, ...newState};
+        case UtilityActions.FIND_REPLACEMENT_SUCCESS:
+        case UtilityActions.FIND_REPLACEMENT_FAILED:
+            newState[getMapKey(action.model, action.id)] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
 const contact = combineReducers({
     isSending,
     isSent,
     error,
 });
 
+const migrate = combineReducers({
+    items: replacements,
+    isRetrieving,
+    error,
+});
+
 const Utility = combineReducers({
     posts,
     contact,
+    migrate,
 });
 
 export default Utility;

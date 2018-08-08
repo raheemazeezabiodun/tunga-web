@@ -91,15 +91,15 @@ export default class ProjectForm extends React.Component {
                                 <Label for="projectExpectedDuration">
                                     What is the expected duration of the project?*
                                 </Label>
-                                {errors.duration ? (
-                                    <FieldError message={errors.duration} />
+                                {errors.expected_duration ? (
+                                    <FieldError message={errors.expected_duration} />
                                 ) : null}
                                 <div className="text text-sm font-weight-thin">
                                     Please select one of the options below
                                 </div>
                                 <ChoiceGroup
                                     id="projectExpectedDuration"
-                                    onChange={(duration) => { this.onChangeValue('duration', duration) }}
+                                    onChange={(expected_duration) => { this.onChangeValue('expected_duration', expected_duration) }}
                                     choices={[
                                         ["2w", "Less than 2 weeks"],
                                         ["6m", "Less than 6 months"],

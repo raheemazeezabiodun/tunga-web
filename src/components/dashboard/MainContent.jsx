@@ -16,7 +16,7 @@ export default ({isLargeDevice=true, className}) => {
     return (
         <div className={`main-content ${className || ''}`}>
             <Switch>
-                {'dashboard|projects|payments'.split('|').map(path => {
+                {'dashboard|projects|payments|work|proposal'.split('|').map(path => {
                     return (
                         <Route key={`app-path--${path}`} path={`/${path}`} render={props => <div>
                             <Info message="Tunga is being updated. Please check back in a bit"/>
@@ -24,6 +24,7 @@ export default ({isLargeDevice=true, className}) => {
                         </div>}/>
                     );
                 })}
+
                 <Route path='/onboard' component={OnboardContainer}/>
                 {getUser().can_contribute?(
                     [

@@ -83,20 +83,19 @@ class App extends React.Component {
                     {isLargeDevice => (
                         <div>
                             <Switch>
-                                {'dashboard|projects|network|payments|settings|onboard'.split('|').map(path => {
+                                {'dashboard|projects|network|payments|settings|onboard|work|proposal'.split('|').map(path => {
                                     return user && user.id?(
                                         <Route key={`app-path--${path}`} path={`/${path}`} render={props => <DashboardLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>}/>
                                     ):(
                                         <Redirect key={`app-path--${path}`} from={`/${path}`} to="/"/>
                                     );
                                 })}
-                                <Redirect from="/home" to={{...location, pathname: '/dashboard'}}/>
-                                <Redirect from="/profile" to={{...location, pathname: '/settings'}}/>
-                                <Redirect from="/task" to={{...location, pathname: '/projects'}}/>
-                                <Redirect from="/work" to={{...location, pathname: '/projects'}}/>
-                                <Redirect from="/people" to={{...location, pathname: '/network'}}/>
-                                <Redirect from="/member" to={{...location, pathname: '/network'}}/>
-                                <Redirect from="/estimate" to={{...location, pathname: '/proposal'}}/>
+                                <Redirect from="/home" to="'/dashboard'"/>
+                                <Redirect from="/profile" to="/settings"/>
+                                <Redirect from="/people*" to="/network*"/>
+                                <Redirect from="/member*" to="/network*"/>
+                                <Redirect from="/task*" to="/work*"/>
+                                <Redirect from="/estimate*" to="/proposal*"/>
                                 <Route path="/legacy" component={LegacyRedirect} />
                                 {['/tunga', '*'].map(path => {
                                     return (

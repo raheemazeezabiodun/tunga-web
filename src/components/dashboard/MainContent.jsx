@@ -18,7 +18,7 @@ export default ({isLargeDevice=true, className}) => {
     return (
         <div className={`main-content ${className || ''}`}>
             <Switch>
-                {'payments|proposal'.split('|').map(path => {
+                {'proposal'.split('|').map(path => {
                     return (
                         <Route key={`app-path--${path}`} path={`/${path}`} render={props => <div>
                             <Info message="This part of Tunga is being updated. Please check back in a bit."/>

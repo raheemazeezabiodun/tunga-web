@@ -1441,6 +1441,10 @@ table {
         text-align: center;
         line-height: 1;
 
+        &.negative {
+            color: get-color('red');
+        }
+
         .number {
             display: inline-block;
             font-size: px-to-rem(86);

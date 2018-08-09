@@ -8,7 +8,11 @@ import Icon from "../../core/Icon";
 import ProgressReportForm from "./ProgressReportForm";
 import ProgressReport from "./ProgressReport";
 
-import {isDev, isClient, getUser} from "../../utils/auth";
+import {isDev, isClient, getUser, isPM} from "../../utils/auth";
+import {
+    PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_MILESTONE, PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL,
+    PROGRESS_EVENT_TYPE_PM
+} from "../../../actions/utils/api";
 
 
 export default class ProgressEventDetails extends React.Component {
@@ -93,7 +97,25 @@ export default class ProgressEventDetails extends React.Component {
                     />
                     <Route path={`${match.url}`} exact render={props => (
                         <div>
-                            {isMissed || myReport || project.archived?null:(
+                            {(isMissed && false) || myReport || project.archived || (
+                                (
+                                    // Dev and not dev report
+                                    isDev() && progress_event &&
+                                    [PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_PM, PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL].includes(
+                                        progress_event.type,
+                                    )
+                                ) || (
+                                    // PM and not PM report
+                                    isPM() && progress_event && ![
+                                        PROGRESS_EVENT_TYPE_PM, PROGRESS_EVENT_TYPE_MILESTONE, PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL
+                                    ].includes(progress_event.type)
+                                ) || (
+                                    // Client and not client report
+                                    isClient() && progress_event && ![
+                                        PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_MILESTONE
+                                    ].includes(progress_event.type)
+                                )
+                            )?null:(
                                 <div className="section">
                                     <Link to={`/projects/${progress_event.project.id}/events/${progress_event.id}/report`}
                                           className="btn btn-primary">

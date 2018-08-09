@@ -108,9 +108,9 @@ export default class PaymentList extends React.Component {
                     <Table striped>
                         <thead>
                         <tr>
-                            <th>Client</th>
-                            <th>Project</th>
-                            <th>Invoice</th>
+                            <th>
+                                {isClient() && !isAdmin()?'':'Client/'} Project/ Invoice
+                            </th>
                             {[PENDING_OUT, PAID_OUT].includes(filter)?(
                                 <th>Developer</th>
                             ):null}
@@ -145,9 +145,13 @@ export default class PaymentList extends React.Component {
                             const owner = invoice.project.owner || invoice.project.user;
                             return (
                                 <tr key={invoice.id}>
-                                    <td>{owner.company?owner.company.name:'' || owner.display_name}</td>
-                                    <td><a href={`/projects/${invoice.project.id}`} target="_blank">{invoice.project.title}</a></td>
-                                    <td>{invoice.title}</td>
+                                    <td>
+                                        {isClient() && !isAdmin()?null:(
+                                            <div>{(owner.company?owner.company.name:'') || owner.display_name}</div>
+                                        )}
+                                        <a href={`/projects/${invoice.project.id}`} target="_blank">{invoice.project.title}</a><br/>
+                                        {invoice.title}
+                                    </td>
                                     {[PENDING_OUT, PAID_OUT].includes(filter)?(
                                         <td>{invoice.invoices.map(item => {
                                             return (

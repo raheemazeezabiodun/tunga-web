@@ -34,7 +34,7 @@ import {
     LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
     LEGACY_PROGRESS_EVENT_TYPE_PM,
     LEGACY_PROGRESS_EVENT_TYPE_CLIENT,
-    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+    LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT, PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL,
 } from "../../actions/utils/api";
 
 export function scrollList(listId) {
@@ -268,7 +268,6 @@ export default class ActivityList extends React.Component {
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.type)
                 ) {
                     break;
@@ -277,7 +276,6 @@ export default class ActivityList extends React.Component {
                     isPM() &&
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.type)
                 ) {
                     break;
@@ -285,7 +283,10 @@ export default class ActivityList extends React.Component {
                 if (
                     isClient() &&
                     !isAdmin() &&
-                    activity.type === PROGRESS_EVENT_TYPE_PM
+                    [
+                        PROGRESS_EVENT_TYPE_PM,
+                        PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL
+                    ].includes(activity.type)
                 ) {
                     break;
                 }
@@ -303,17 +304,11 @@ export default class ActivityList extends React.Component {
                         <div>
                             {[
                                 PROGRESS_EVENT_TYPE_MILESTONE,
-                                LEGACY_PROGRESS_EVENT_TYPE_SUBMIT,
-                                LEGACY_PROGRESS_EVENT_TYPE_COMPLETE,
+                                PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL,
                             ].includes(activity.type) ? (
                                 <div>
                                     <Icon
-                                        name={
-                                            'flag' +
-                                            ([PROGRESS_EVENT_TYPE_MILESTONE, LEGACY_PROGRESS_EVENT_TYPE_SUBMIT].includes(activity.type)
-                                                ? '-checkered'
-                                                : '-o')
-                                        }
+                                        name="flag-checkered"
                                     />{' '}
                                     Created a milestone:
                                 </div>
@@ -324,8 +319,7 @@ export default class ActivityList extends React.Component {
                                     <span>
                                         <Icon name="flag-o" /> Scheduled{' '}
                                         {[
-                                            PROGRESS_EVENT_TYPE_CLIENT,
-                                            LEGACY_PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
+                                            PROGRESS_EVENT_TYPE_CLIENT
                                         ].includes(activity.type) ||
                                         (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_owner)
                                             ? 'a progress survey'
@@ -350,7 +344,6 @@ export default class ActivityList extends React.Component {
                     [
                         PROGRESS_EVENT_TYPE_PM,
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.event.type) ||
                     (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && !activity.user.is_developer))
                 ) {
@@ -360,7 +353,6 @@ export default class ActivityList extends React.Component {
                     isPM() && (
                     [
                         PROGRESS_EVENT_TYPE_CLIENT,
-                        PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                     ].includes(activity.event.type) ||
                     (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_owner))
                 ) {
@@ -369,7 +361,7 @@ export default class ActivityList extends React.Component {
                 if (
                     isClient() &&
                     !isAdmin() &&
-                    (activity.event.type === PROGRESS_EVENT_TYPE_PM ||
+                    ([PROGRESS_EVENT_TYPE_PM, PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL].includes(activity.event.type) ||
                         (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_manager))
                 ) {
                     break;
@@ -391,7 +383,6 @@ export default class ActivityList extends React.Component {
                                 <Icon name="newspaper-o" />{' '}
                                 {[
                                     PROGRESS_EVENT_TYPE_CLIENT,
-                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                                 ].includes(activity.event.type) ||
                                 (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_owner)
                                     ? 'Progress survey'
@@ -403,7 +394,6 @@ export default class ActivityList extends React.Component {
                                 }/`}>
                                 {[
                                     PROGRESS_EVENT_TYPE_CLIENT,
-                                    PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                                 ].includes(activity.event.type) ||
                                 (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_owner)
                                     ? 'Progress survey'
@@ -412,7 +402,6 @@ export default class ActivityList extends React.Component {
                             </Link>
                             {[
                                 PROGRESS_EVENT_TYPE_CLIENT,
-                                PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
                             ].includes(activity.event.type) ||
                             (PROGRESS_EVENT_TYPE_MILESTONE === activity.event.type && activity.user.is_project_owner) ? null : (
                                 <div>

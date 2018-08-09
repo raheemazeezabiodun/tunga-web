@@ -20,6 +20,7 @@ import {
     PROGRESS_EVENT_TYPE_PM,
     PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT,
     REPORT_STUCK_REASONS, PROGRESS_EVENT_TYPE_MILESTONE,
+    PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL,
 } from '../../../actions/utils/api';
 import {getUser, isClient, isDev, isPM} from "../../utils/auth";
 import {openConfirm} from "../../core/utils/modals";
@@ -79,7 +80,7 @@ export default class ProgressReportForm extends React.Component {
         const {progress_event} = this.props;
         return (
             isDev() && progress_event &&
-            ![PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_CLIENT_MID_SPRINT, PROGRESS_EVENT_TYPE_PM].includes(
+            ![PROGRESS_EVENT_TYPE_CLIENT, PROGRESS_EVENT_TYPE_PM, PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL].includes(
                 progress_event.type,
             )
         );
@@ -87,7 +88,7 @@ export default class ProgressReportForm extends React.Component {
 
     isPMReport() {
         const {progress_event} = this.props;
-        return isPM() && progress_event && [PROGRESS_EVENT_TYPE_PM, PROGRESS_EVENT_TYPE_MILESTONE].includes(progress_event.type);
+        return isPM() && progress_event && [PROGRESS_EVENT_TYPE_PM, PROGRESS_EVENT_TYPE_MILESTONE, PROGRESS_EVENT_TYPE_MILESTONE_INTERNAL].includes(progress_event.type);
     }
 
     isClientReport() {

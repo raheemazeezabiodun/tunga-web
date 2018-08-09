@@ -165,7 +165,7 @@ class Dashboard extends React.Component {
                         {invoices.length?(
                             <div>
                                 <div>
-                                    Next payment for <Link to={`/projects/${invoices[0].project.id}/pay/`}>{invoices[0].project.title}: {invoices[0].title}</Link> is {moment.utc() > moment.utc(invoices[0].due_at)?<strong>overdue by</strong>:'due in'}:
+                                    Next payment for <Link to={`/projects/${invoices[0].project.id}/pay/`}>{invoices[0].full_title}</Link> is {moment.utc() > moment.utc(invoices[0].due_at)?<strong>overdue by</strong>:'due in'}:
                                 </div>
                                 <div className={`countdown ${moment.utc() > moment.utc(invoices[0].due_at)?'negative':''}`}>
                                     <span className="number">{this.getDays(invoices[0].due_at).number}</span>

@@ -6,7 +6,7 @@ export function sumInvoices(invoices) {
     return invoices.map(invoice => {
         return invoice.amount || 0;
     }).reduce((total, number) => {
-        return total + Math.round(number);
+        return total + Math.round(number*100)/100;
     }, 0);
 }
 

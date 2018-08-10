@@ -100,6 +100,7 @@ export default class InvoiceForm extends React.Component {
                         <Input type="number"
                                value={payout.amount || null}
                                onChange={e => this.onPayoutUpdate(idx, 'amount', e.target.value)}
+                               step="0.01"
                                required/>
                     </FormGroup>
                 </Col>
@@ -134,7 +135,7 @@ export default class InvoiceForm extends React.Component {
                         <label>Amount in EUR</label>
                         <Input type="number"
                                value={this.state.invoice.amount}
-                               onChange={this.onChangeField.bind(this, 'amount')}
+                               onChange={this.onChangeField.bind(this, 'amount')} step="0.01"
                                required/>
                     </FormGroup>
                 ):(

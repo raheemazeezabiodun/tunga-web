@@ -157,21 +157,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isDevReport() || this.isPMReport() ? (
                         <div>
-                            {errors.create &&
-                            errors.create.status ? (
+                            {errors &&
+                            errors.status ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .status
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update.status ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .status
+                                        errors.status
                                     }
                                 />
                             ) : null}
@@ -191,21 +181,11 @@ export default class ProgressReportForm extends React.Component {
                                 <div>
                                     {/* check status if stuck and is developer for this */}
 
-                                    {errors.create &&
-                                    errors.create.stuck_reason ? (
+                                    {errors &&
+                                    errors.stuck_reason ? (
                                         <FieldError
                                             message={
-                                                errors.create
-                                                    .stuck_reason
-                                            }
-                                        />
-                                    ) : null}
-                                    {errors.update &&
-                                    errors.update.stuck_reason ? (
-                                        <FieldError
-                                            message={
-                                                errors.update
-                                                    .stuck_reason
+                                                errors.stuck_reason
                                             }
                                         />
                                     ) : null}
@@ -218,21 +198,11 @@ export default class ProgressReportForm extends React.Component {
                                                 onChange={value => this.onChangeValue('stuck_reason', value)}/>
                                     </div>
 
-                                    {errors.create &&
-                                    errors.create.stuck_details ? (
+                                    {errors &&
+                                    errors.stuck_details ? (
                                         <FieldError
                                             message={
-                                                errors.create
-                                                    .stuck_details
-                                            }
-                                        />
-                                    ) : null}
-                                    {errors.update &&
-                                    errors.update.stuck_details ? (
-                                        <FieldError
-                                            message={
-                                                errors.update
-                                                    .stuck_details
+                                                errors.stuck_details
                                             }
                                         />
                                     ) : null}
@@ -274,23 +244,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isPMReport() || this.isClientReport()? (
                         <div>
-                            {errors.create &&
-                            errors.create
-                                .last_deadline_met ? (
+                            {errors &&
+                            errors.last_deadline_met ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .last_deadline_met
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update
-                                .last_deadline_met ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .last_deadline_met
+                                        errors.last_deadline_met
                                     }
                                 />
                             ) : null}
@@ -308,23 +266,11 @@ export default class ProgressReportForm extends React.Component {
                             {this.isPMReport() && typeof this.state.report.last_deadline_met === 'boolean' &&
                             !this.state.report.last_deadline_met ? (
                                 <div>
-                                    {errors.create &&
-                                    errors.create
-                                        .deadline_report ? (
+                                    {errors &&
+                                    errors.deadline_report ? (
                                         <FieldError
                                             message={
-                                                errors
-                                                    .create.deadline_report
-                                            }
-                                        />
-                                    ) : null}
-                                    {errors.update &&
-                                    errors.update
-                                        .deadline_report ? (
-                                        <FieldError
-                                            message={
-                                                errors
-                                                    .update.deadline_report
+                                                errors.deadline_report
                                             }
                                         />
                                     ) : null}
@@ -350,25 +296,11 @@ export default class ProgressReportForm extends React.Component {
                             {typeof this.state.last_deadline_met === 'boolean' &&
                             !this.state.last_deadline_met ? (
                                 <div>
-                                    {errors.create &&
-                                    errors.create
-                                        .deadline_miss_communicated ? (
+                                    {errors &&
+                                    errors.deadline_miss_communicated ? (
                                         <FieldError
                                             message={
-                                                errors
-                                                    .create
-                                                    .deadline_miss_communicated
-                                            }
-                                        />
-                                    ) : null}
-                                    {errors.update &&
-                                    errors.update
-                                        .deadline_miss_communicated ? (
-                                        <FieldError
-                                            message={
-                                                errors
-                                                    .update
-                                                    .deadline_miss_communicated
+                                                errors.deadline_miss_communicated
                                             }
                                         />
                                     ) : null}
@@ -395,21 +327,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isDevReport() || this.isPMReport() ? (
                         <div>
-                            {errors.create &&
-                            errors.create.percentage ? (
+                            {errors &&
+                            errors.percentage ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .percentage
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update.percentage ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .percentage
+                                        errors.percentage
                                     }
                                 />
                             ) : null}
@@ -430,21 +352,11 @@ export default class ProgressReportForm extends React.Component {
                                 </div>
                             </div>
 
-                            {errors.create &&
-                            errors.create.accomplished ? (
+                            {errors &&
+                            errors.accomplished ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .accomplished
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update.accomplished ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .accomplished
+                                        errors.accomplished
                                     }
                                 />
                             ) : null}
@@ -465,21 +377,11 @@ export default class ProgressReportForm extends React.Component {
                                 </TextArea>
                             </div>
 
-                            {errors.create &&
-                            errors.create.uploads ? (
+                            {errors &&
+                            errors.uploads ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .uploads
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update.uploads ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .uploads
+                                        errors.uploads
                                     }
                                 />
                             ) : null}
@@ -492,23 +394,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isClientReport() ? (
                         <div>
-                            {errors.create &&
-                            errors.create
-                                .deliverable_satisfaction ? (
+                            {errors &&
+                            errors.deliverable_satisfaction ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .deliverable_satisfaction
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update
-                                .deliverable_satisfaction ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .deliverable_satisfaction
+                                        errors.deliverable_satisfaction
                                     }
                                 />
                             ) : null}
@@ -527,23 +417,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isDevReport() || this.isClientReport() ? (
                         <div>
-                            {errors.create &&
-                            errors.create
-                                .rate_deliverables ? (
+                            {errors &&
+                            errors.rate_deliverables ? (
                                 <FieldError
                                     message={
-                                        errors
-                                            .create.rate_deliverables
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update
-                                .rate_deliverables ? (
-                                <FieldError
-                                    message={
-                                        errors
-                                            .update.rate_deliverables
+                                        errors.rate_deliverables
                                     }
                                 />
                             ) : null}
@@ -562,19 +440,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isDevReport() || this.isPMReport() ? (
                         <div>
-                            {errors.create &&
-                            errors.create.todo ? (
+                            {errors &&
+                            errors.todo ? (
                                 <FieldError
                                     message={
-                                        errors.create.todo
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update.todo ? (
-                                <FieldError
-                                    message={
-                                        errors.update.todo
+                                        errors.todo
                                     }
                                 />
                             ) : null}
@@ -602,19 +472,11 @@ export default class ProgressReportForm extends React.Component {
                                 </TextArea>
                             </div>
 
-                            {errors.create &&
-                            errors.create.next_deadline ? (
+                            {errors &&
+                            errors.next_deadline ? (
                                 <FieldError
                                     message={
-                                        errors.create.next_deadline
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update.next_deadline ? (
-                                <FieldError
-                                    message={
-                                        errors.update.next_deadline
+                                        errors.next_deadline
                                     }
                                 />
                             ) : null}
@@ -635,23 +497,11 @@ export default class ProgressReportForm extends React.Component {
                             </div>
 
                             <div>
-                                {errors.create &&
-                                errors.create
-                                    .next_deadline_meet ? (
+                                {errors &&
+                                errors.next_deadline_meet ? (
                                     <FieldError
                                         message={
-                                            errors.create
-                                                .next_deadline_meet
-                                        }
-                                    />
-                                ) : null}
-                                {errors.update &&
-                                errors.update
-                                    .next_deadline_meet ? (
-                                    <FieldError
-                                        message={
-                                            errors.update
-                                                .next_deadline_meet
+                                            errors.next_deadline_meet
                                         }
                                     />
                                 ) : null}
@@ -670,25 +520,11 @@ export default class ProgressReportForm extends React.Component {
                                     'boolean' &&
                                 !this.state.report.next_deadline_meet ? (
                                     <div>
-                                        {errors.create &&
-                                        errors.create
-                                            .next_deadline_fail_reason ? (
+                                        {errors &&
+                                        errors.next_deadline_fail_reason ? (
                                             <FieldError
                                                 message={
-                                                    errors
-                                                        .create
-                                                        .next_deadline_fail_reason
-                                                }
-                                            />
-                                        ) : null}
-                                        {errors.update &&
-                                        errors.update
-                                            .next_deadline_fail_reason ? (
-                                            <FieldError
-                                                message={
-                                                    errors
-                                                        .update
-                                                        .next_deadline_fail_reason
+                                                    errors.next_deadline_fail_reason
                                                 }
                                             />
                                         ) : null}
@@ -712,23 +548,12 @@ export default class ProgressReportForm extends React.Component {
                                     </div>
                                 ) : (
                                     <div>
-                                        {errors.create &&
-                                        errors.create
+                                        {errors &&
+                                        errors
                                             .obstacles ? (
                                             <FieldError
                                                 message={
-                                                    errors
-                                                        .create.obstacles
-                                                }
-                                            />
-                                        ) : null}
-                                        {errors.update &&
-                                        errors.update
-                                            .obstacles ? (
-                                            <FieldError
-                                                message={
-                                                    errors
-                                                        .update.obstacles
+                                                    errors.obstacles
                                                 }
                                             />
                                         ) : null}
@@ -778,23 +603,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isPMReport() ? (
                         <div>
-                            {errors.create &&
-                            errors.create
-                                .team_appraisal ? (
+                            {errors &&
+                            errors.team_appraisal ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .team_appraisal
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update
-                                .team_appraisal ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .team_appraisal
+                                        errors.team_appraisal
                                     }
                                 />
                             ) : null}
@@ -820,23 +633,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isClientMidSprintReport() ? (
                         <div>
-                            {errors.create &&
-                            errors.create
-                                .progress_satisfaction ? (
+                            {errors &&
+                            errors.progress_satisfaction ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .progress_satisfaction
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update
-                                .progress_satisfaction ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .progress_satisfaction
+                                        errors.progress_satisfaction
                                     }
                                 />
                             ) : null}
@@ -852,21 +653,11 @@ export default class ProgressReportForm extends React.Component {
                                 </div>
                             </div>
 
-                            {errors.create &&
-                            errors.create.rate_workflow ? (
+                            {errors &&
+                            errors.rate_workflow ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .rate_workflow
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update.rate_workflow ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .rate_workflow
+                                        errors.rate_workflow
                                     }
                                 />
                             ) : null}
@@ -885,23 +676,11 @@ export default class ProgressReportForm extends React.Component {
 
                     {this.isClientReport() || this.isClientMidSprintReport()?(
                         <div>
-                            {errors.create &&
-                            errors.create
-                                .pm_communication ? (
+                            {errors &&
+                            errors.pm_communication ? (
                                 <FieldError
                                     message={
-                                        errors.create
-                                            .pm_communication
-                                    }
-                                />
-                            ) : null}
-                            {errors.update &&
-                            errors.update
-                                .pm_communication ? (
-                                <FieldError
-                                    message={
-                                        errors.update
-                                            .pm_communication
+                                        errors.pm_communication
                                     }
                                 />
                             ) : null}
@@ -920,19 +699,11 @@ export default class ProgressReportForm extends React.Component {
                     ):null}
 
                     <div>
-                        {errors.create &&
-                        errors.create.remarks ? (
+                        {errors &&
+                        errors.remarks ? (
                             <FieldError
                                 message={
-                                    errors.create.remarks
-                                }
-                            />
-                        ) : null}
-                        {errors.update &&
-                        errors.update.remarks ? (
-                            <FieldError
-                                message={
-                                    errors.update.remarks
+                                    errors.remarks
                                 }
                             />
                         ) : null}

@@ -2551,6 +2551,125 @@ textarea {
             }
         }
 
+        #case-studies {
+            .testimonials-slider {
+                .testimonial-slide {
+                    font-size: px-to-rem(12);
+                    padding: 20px 15px 0;
+
+                    .body {
+                        position: relative;
+                        color: get-color('black');
+                        font-size: px-to-rem(11);
+                        font-weight: 300;
+                        text-align: left;
+                        padding: 10px 10px;
+                        height: 160px;
+                        background: get-color('showcase-grey');
+                        margin: 4px;
+                        border-radius: 5px;
+
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+                        [class*='quote'] {
+                            font-size: px-to-rem(18);
+                            color: get-color('darker-grey');
+                        }
+
+                        [class*='quote-left'] {
+                            margin-right: 5px;
+                        }
+
+                        [class*='quote-right'] {
+                            margin-left: 5px;
+                        }
+                    }
+
+                    .body::after {
+                        border: 20px solid transparent;
+                        border-top-color: get-color('showcase-grey');
+                        content: '';
+                        position: absolute;
+                        bottom: -30px;
+                        left: 44%;
+                    }
+
+                    .image {
+                        position: relative;
+                        width: 80px;
+                        height: 80px;
+                        margin: 20px auto 10px;
+                        overflow: hidden;
+                        border-radius: 50%;
+                        background-size: cover;
+                        background-position: center;
+                    }
+
+                    .author {
+                        font-weight: 400;
+                    }
+
+                    .company {
+                        font-weight: 100;
+                    }
+
+                    &.slick-center {
+                        font-size: px-to-rem(14);
+                        padding-top: 0;
+
+                        .body {
+                            font-size: px-to-rem(14);
+                            padding: 15px 15px;
+                            height: 240px;
+                        }
+
+                        .image {
+                            width: 100px;
+                            height: 100px;
+                        }
+                    }
+                }
+
+                .slick-next,
+                .slick-prev {
+                    height: 50px;
+                }
+
+                .slick-prev {
+                    left: -30px;
+                }
+
+                .slick-next {
+                    right: -5px;
+                }
+
+                .slick-prev:before,
+                .slick-next:before {
+                    font-family: 'Tunga-Icons';
+                    font-size: px-to-rem(48);
+                    color: get-color('darker-grey');
+                }
+
+                .slick-prev:before {
+                    content: '\e968';
+                }
+
+                .slick-next:before {
+                    content: '\e966';
+                }
+
+                .slick-dots li button::before {
+                    color: get-color('white');
+                }
+
+                .slick-slide.animated {
+                    animation-duration: 1.5s;
+                }
+            }
+        }
+
         #partners {
             padding-top: 68px;
             padding-bottom: 84px;

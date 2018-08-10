@@ -349,23 +349,23 @@ export default class Home extends React.Component {
                         <section id="case-studies">
                             <div className="container">
                                 <Title>Case Studies</Title>
-                                <div id="clients-testmonial-landing-page">
+                                <div>
                                     <Slider
                                         className="testimonials-slider text-center"
                                         {...SLIDER_SETTINGS}>
                                         {TESTIMONIALS.map(testimonial => {
                                             return (
-                                                <div className="testimonial-landing-page">
+                                                <div className="testimonial-slide">
                                                     <div className="body">
                                                         <div>
-                                                            <i className="fa fa-quote-left pull-left"/>
+                                                            <Icon name="quote-left" className="float-left"/>
                                                             <span
                                                                 dangerouslySetInnerHTML={{
                                                                     __html:
                                                                     testimonial.message,
                                                                 }}
                                                             />
-                                                            <i className="fa fa-quote-right pull-right"/>
+                                                            <Icon name="quote-right" className="float-right"/>
                                                         </div>
                                                     </div>
                                                     <div

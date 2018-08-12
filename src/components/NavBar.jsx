@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import _ from 'lodash';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 import Avatar from './core/Avatar';
 import Icon from './core/Icon';
 import SearchBox from './core/SearchBox';
 import Button from "./core/Button";
 import {proxySafeUrl} from "./utils/proxy";
+import OverlayTooltip from "./core/OverlayTooltip";
 
 
 export default class NavBar extends React.Component {
@@ -25,6 +27,11 @@ export default class NavBar extends React.Component {
         breakpoint: PropTypes.string,
         isLargeDevice: PropTypes.bool,
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {copied: false};
+    }
 
     componentDidMount() {
         let updateNavbar = function() {
@@ -54,6 +61,20 @@ export default class NavBar extends React.Component {
             this.props.onSignOut();
         }
     }
+
+    setCopied = () => {
+        this.setState({copied: true});
+    };
+
+    clearCopied = () => {
+        let self = this;
+        // user timer to prevent flicker
+        setTimeout(() => {
+            if (self.state.copied) {
+                this.setState({copied: false});
+            }
+        }, 1000);
+    };
 
     render() {
         let {user, variant, breakpoint, className, isLargeDevice} = this.props;
@@ -132,9 +153,16 @@ export default class NavBar extends React.Component {
                             <React.Fragment>
                                 {isLargeDevice?(
                                     <li>
-                                        <Button className="btn-call">
-                                            <Icon name="phone"/> +31 20 220 2157
-                                        </Button>
+                                        <CopyToClipboard text="+31 20 220 2157">
+                                            <OverlayTooltip placement="left"
+                                                            overlay={
+                                                                <strong>Cop{this.state.copied?'ied':'y'}</strong>
+                                                            }>
+                                                <Button className="btn-call" onClick={this.setCopied} onMouseOut={this.clearCopied}>
+                                                    <Icon name="phone"/> +31 20 220 2157
+                                                </Button>
+                                            </OverlayTooltip>
+                                        </CopyToClipboard>
                                     </li>
                                 ):null}
                                 <li>

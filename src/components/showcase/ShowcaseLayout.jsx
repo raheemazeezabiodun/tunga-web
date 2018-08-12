@@ -74,6 +74,7 @@ export default class ShowcaseLayout extends React.Component {
                                                       token={props.match.params.token}/>}
                             />,
                             <Route exact path='/reset-password' component={PasswordReset}/>,
+                            <Redirect from="/start*" to='/'/>,
                             <Route exact path='/start' component={Maintenance}/>,
                             <Route exact path='/start-welcome' component={Maintenance}/>,
                             <Route exact path='/start-outsource' component={Maintenance}/>,

@@ -20,6 +20,7 @@ import {openCalendlyWidget} from "../utils/calendly";
 class ChatWidget extends React.Component {
     static propTypes = {
         channelId: PropTypes.number,
+        autoOpen: PropTypes.bool,
         Activity: PropTypes.object,
         ProjectActions: PropTypes.object,
         ActivityActions: PropTypes.object,

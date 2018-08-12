@@ -105,7 +105,11 @@ class App extends React.Component {
                             </Switch>
 
                             {user && (user.is_admin || user.is_project_manager)?null:(
-                                <ChatWidget/>
+                                <Switch>
+                                    <Route exact path='/customer/help/:channelId' render={props =>
+                                        <ChatWidget channelId={props.match.params.channelId} autoOpen={true}/>}/>
+                                    <Route path="*" component={ChatWidget} />
+                                </Switch>
                             )}
 
                             {this.state.showConsentAlert?(

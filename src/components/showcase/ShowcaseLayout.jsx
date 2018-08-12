@@ -51,7 +51,7 @@ export default class ShowcaseLayout extends React.Component {
                 <Switch>
                     <Route exact path='/maintenance' component={Maintenance}/>
                     {user && user.id?(
-                        'signin|signup|reset-password|start|start-welcome|start-outsource|quiz'.split('|').map(path => {
+                        'signin|signup|reset-password|start|start-welcome|start-outsource|quiz|customer'.split('|').map(path => {
                             return (
                                 <Redirect key={`app-path--${path}`} from={`/${path}`} to="/dashboard"/>
                             );
@@ -79,6 +79,7 @@ export default class ShowcaseLayout extends React.Component {
                             <Route exact path='/start-welcome' component={Maintenance}/>,
                             <Route exact path='/start-outsource' component={Maintenance}/>,
                             <Route exact path='/quiz' component={Maintenance}/>,
+                            <Route exact path='/customer/help/:chatId' component={Home}/>,
                             <Redirect from="/signup" to='/signin'/>
                         ]
                     )}

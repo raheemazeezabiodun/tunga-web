@@ -4,7 +4,9 @@ import * as ProfileActions from '../actions/ProfileActions';
 import * as SettingsActions from '../actions/SettingsActions';
 import {reduceUser} from './utils';
 
-function user(state = {profile: {}, company: {}, settings: {visibility: {}, switches: {}}}, action) {
+const defaultUser = {profile: {}, company: {}, settings: {visibility: {}, switches: {}}};
+
+function user(state = defaultUser, action) {
     switch (action.type) {
         case AuthActions.LOGIN_SUCCESS:
         case AuthActions.VERIFY_SUCCESS:
@@ -52,7 +54,7 @@ function user(state = {profile: {}, company: {}, settings: {visibility: {}, swit
         case SettingsActions.UPDATE_SETTINGS_SUCCESS:
             return {...state, settings: action.settings};
         case AuthActions.LOGOUT_SUCCESS:
-            return {};
+            return defaultUser;
         default:
             return state;
     }

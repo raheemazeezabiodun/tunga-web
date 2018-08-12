@@ -3,6 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 import * as AuthActions from "../actions/AuthActions";
+import * as ProfileActions from "../actions/ProfileActions";
 
 function mapStateToProps(state) {
     return {
@@ -12,7 +13,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        AuthActions: bindActionCreators(AuthActions, dispatch),
+        AuthActions: {
+            ...bindActionCreators(AuthActions, dispatch),
+            ...bindActionCreators(ProfileActions, dispatch),
+        },
     };
 }
 

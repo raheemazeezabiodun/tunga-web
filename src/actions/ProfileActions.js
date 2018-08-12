@@ -12,6 +12,8 @@ import {
     composeFormData,
 } from './utils/api';
 
+import * as AuthActions from './AuthActions';
+
 export const UPDATE_ACCOUNT_INFO_START = 'UPDATE_ACCOUNT_INFO_START';
 export const UPDATE_ACCOUNT_INFO_SUCCESS = 'UPDATE_ACCOUNT_INFO_SUCCESS';
 export const UPDATE_ACCOUNT_INFO_FAILED = 'UPDATE_ACCOUNT_INFO_FAILED';
@@ -104,6 +106,9 @@ export function updateAuthUser(user) {
             .patch(ENDPOINT_USER_INFO, data, {headers})
             .then(function(response) {
                 dispatch(updateAuthUserSuccess(response.data));
+                if(user.disagree_version) {
+                    dispatch(AuthActions.logout());
+                }
             })
             .catch(function(error) {
                 dispatch(

@@ -73,7 +73,8 @@ class App extends React.Component {
     }
 
     render() {
-        const {Auth: {user}, AuthActions: {logout}, match} = this.props;
+        const {Auth: {user}, AuthActions, match} = this.props,
+            {logout} = AuthActions;
 
         return (
             !this.state.isVerified || this.state.showProgress?(
@@ -85,7 +86,7 @@ class App extends React.Component {
                             <Switch>
                                 {'dashboard|projects|network|payments|settings|onboard|work|proposal'.split('|').map(path => {
                                     return user && user.id?(
-                                        <Route key={`app-path--${path}`} path={`/${path}`} render={props => <DashboardLayout {...props} user={user} logout={logout} isLargeDevice={isLargeDevice}/>}/>
+                                        <Route key={`app-path--${path}`} path={`/${path}`} render={props => <DashboardLayout {...props} user={user} logout={logout} AuthActions={AuthActions} isLargeDevice={isLargeDevice}/>}/>
                                     ):(
                                         <Redirect key={`app-path--${path}`} from={`/${path}`} to="/"/>
                                     );

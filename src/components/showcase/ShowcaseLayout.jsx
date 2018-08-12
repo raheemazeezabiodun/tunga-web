@@ -18,6 +18,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import PasswordReset from "./PasswordReset";
 import PasswordResetConfirm from "./PasswordResetConfirm";
+import Developer from "./Developer";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -50,7 +51,7 @@ export default class ShowcaseLayout extends React.Component {
                 <Switch>
                     <Route exact path='/maintenance' component={Maintenance}/>
                     {user && user.id?(
-                        'signin|signup|reset-password|start|start-welcome|start-outsource|quiz|developer'.split('|').map(path => {
+                        'signin|signup|reset-password|start|start-welcome|start-outsource|quiz'.split('|').map(path => {
                             return (
                                 <Redirect key={`app-path--${path}`} from={`/${path}`} to="/dashboard"/>
                             );
@@ -77,9 +78,13 @@ export default class ShowcaseLayout extends React.Component {
                             <Route exact path='/start-welcome' component={Maintenance}/>,
                             <Route exact path='/start-outsource' component={Maintenance}/>,
                             <Route exact path='/quiz' component={Maintenance}/>,
-                            <Route exact path='/developer/:username' component={Maintenance}/>,
                             <Redirect from="/signup" to='/signin'/>
                         ]
+                    )}
+                    {user && user.id?(
+                        <Redirect from="/developer*" to="/network*"/>
+                    ):(
+                        <Route exact path='/developer/:username' render={props => <Developer username={props.match.params.username} {...props}/>}/>
                     )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>

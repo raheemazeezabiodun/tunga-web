@@ -8,8 +8,13 @@ import Avatar from "../../core/Avatar";
 import Button from "../../core/Button";
 
 export default class UserProfile extends React.Component {
+    static defaultProps = {
+        showHeader: true,
+    };
+
     static propTypes = {
-        user: PropTypes.object
+        user: PropTypes.object,
+        showHeader: PropTypes.bool,
     };
 
     componentDidMount(){
@@ -61,17 +66,21 @@ export default class UserProfile extends React.Component {
     }
 
     render() {
-        const {user} = this.props, {profile} = user;
+        const {user, showHeader} = this.props, {profile} = user;
 
         return (
             user?(
                 <div className="user-profile">
-                    <Link to="/network" className="btn btn-primary back-link">Go back to overview</Link>
-                    <div className="basic-profile">
-                        <Avatar image={user.avatar_url} size="xl"/>
-                        <div className="font-weight-medium">{user.display_name}</div>
-                        <div className="text text-sm">{user.profile.location}</div>
-                    </div>
+                    {showHeader?(
+                        <div>
+                            <Link to="/network" className="btn btn-primary back-link">Go back to overview</Link>
+                            <div className="basic-profile">
+                                <Avatar image={user.avatar_url} size="xl"/>
+                                <div className="font-weight-medium">{user.display_name}</div>
+                                <div className="text text-sm">{user.profile.location}</div>
+                            </div>
+                        </div>
+                    ):null}
 
                     <Row>
                         <Col>

@@ -452,6 +452,8 @@ table {
     position: relative;
     display: inline-block;
     margin-right: 5px;
+    background-color: $brand-color;
+    border-radius: 100%;
 
     .badge {
         position: absolute;
@@ -554,6 +556,24 @@ table {
 
         &.avatar-icon {
             font-size: 120px;
+        }
+    }
+
+    &.avatar-xxxl {
+        width: 140px;
+        height: 140px;
+
+        &.avatar-icon {
+            font-size: 140px;
+        }
+    }
+
+    &.avatar-xxxl {
+        width: 160px;
+        height: 160px;
+
+        &.avatar-icon {
+            font-size: 160px;
         }
     }
 }
@@ -1073,6 +1093,16 @@ table {
 
         .btn-call {
             margin-right: 10px;
+        }
+
+        .avatar-wrapper {
+            background-color: get-color('white');
+            line-height: 1;
+
+            .avatar {
+                color: get-color('white');
+                background-color: $brand-color;
+            }
         }
     }
 }
@@ -2146,6 +2176,10 @@ textarea {
         background-size: cover;
         padding-top: 170px;
         padding-bottom: 80px;
+
+        &.height-30 {
+            min-height: 30vh;
+        }
 
         &.height-50 {
             min-height: 50vh;
@@ -3432,6 +3466,39 @@ textarea {
                 padding: 5px 8px;
                 margin: 2px;
             }
+        }
+    }
+
+    .developer-page {
+        header {
+            background-image: url('../assets/images/showcase/developers.jpg');
+            padding-bottom: 100px;
+
+            .name {
+                font-size: px-to-rem(36);
+                font-weight: 600;
+            }
+
+            .location {
+                font-size: px-to-rem(18);
+                font-weight: $font-weight-normal;
+            }
+        }
+
+        .developer-avatar {
+            text-align: center;
+            position: relative;
+            top: -80px;
+        }
+
+        .user-profile {
+            margin-top: -40px;
+            max-width: 1000px;
+        }
+
+        .cta {
+            min-width: 220px;
+            margin: 20px auto;
         }
     }
 }

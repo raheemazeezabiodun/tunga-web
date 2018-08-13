@@ -82,7 +82,7 @@ export default class StepThree extends React.Component {
                 company_reg_no: this.state.reg_no
             };
             if(this.state.image) {
-                profileData.image = this.state.image;
+                profileData.user = {image: this.state.image};
             }
             ProfileActions.updateProfile(user.profile.id, profileData);
         }

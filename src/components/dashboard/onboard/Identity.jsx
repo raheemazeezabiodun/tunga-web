@@ -56,7 +56,7 @@ export default class StepThree extends React.Component {
         const {user, ProfileActions} = this.props;
 
         if(this.state.image) {
-            ProfileActions.updateProfile(user.profile.id, {image: this.state.image});
+            ProfileActions.updateProfile(user.profile.id, {id_document: this.state.image});
         } else {
             this.nextSection();
         }
@@ -81,17 +81,19 @@ export default class StepThree extends React.Component {
                             type='image'
                             className='upload-id-doc'
                             placeholder={user.profile.id_document?<img src={user.profile.id_document} height="130px" title="ID document"/>:<Icon name='id' size='xl' />}
-                            onChange={this.onChangeFile.bind(this, 'id_document')}
+                            onChange={this.onChangeFile.bind(this)}
                         />
                     </FormGroup>
                     <div className="clearfix">
                         <IconButton name='arrow-left' size='main'
                                     className="float-left onboard-action"
                                     onClick={() => this.props.history.push('/onboard/step-three')} />
-                        <IconButton type="submit"
-                                    name={isDevOrPM()?'arrow-right':'check2'}
-                                    size='main'
-                                    className="btn float-right onboard-action"/>
+                        {user.profile.id_document || this.state.image?(
+                            <IconButton type="submit"
+                                        name={isDevOrPM()?'arrow-right':'check2'}
+                                        size='main'
+                                        className="btn float-right onboard-action"/>
+                        ):null}
                     </div>
                 </form>
             </div>

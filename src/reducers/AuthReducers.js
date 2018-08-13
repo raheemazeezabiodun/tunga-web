@@ -21,7 +21,10 @@ function user(state = defaultUser, action) {
             delete profile.user;
             return reduceUser(state, user, profile);
         case ProfileActions.UPDATE_COMPANY_SUCCESS:
-            return reduceUser(state, user, null, action.company);
+            let company = action.company;
+            user = company.user;
+            delete company.user;
+            return reduceUser(state, user, null, company);
         case ProfileActions.CREATE_WORK_SUCCESS:
         case ProfileActions.UPDATE_WORK_SUCCESS:
             let work = action.work;

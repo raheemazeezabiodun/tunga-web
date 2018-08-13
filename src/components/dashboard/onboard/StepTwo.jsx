@@ -47,6 +47,12 @@ export default class StepTwo extends React.Component {
         this.setState({profile: {...this.state.profile, ...newState}});
     }
 
+    onChangeValue(key, value) {
+        let newState = {};
+        newState[key] = value;
+        this.setState({profile: {...this.state.profile, ...newState}});
+    }
+
     onSave(e) {
         e.preventDefault();
         const {user, ProfileActions} = this.props;
@@ -143,7 +149,7 @@ export default class StepTwo extends React.Component {
                             <FormGroup>
                                 <label>Country *</label>
                                 <CountrySelector value={this.state.profile.country}
-                                                 onChange={this.onChangeField.bind(this, 'country')}
+                                                 onChange={(country) => {this.onChangeValue('country', country)}}
                                                  required/>
                             </FormGroup>
                         </Col>

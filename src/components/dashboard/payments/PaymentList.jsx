@@ -220,8 +220,8 @@ export default class PaymentList extends React.Component {
                                     </td>
                                     {filter === PENDING_IN?(
                                         <React.Fragment>
+                                            <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
                                             <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
-                                            <td>{moment.utc(invoice.due_at).add('days', 14).format('DD/MMM/YYYY')}</td>
                                             <td>
                                                 {(isClient() || isAdmin()) && !invoice.project.archived?(
                                                     <div>
@@ -260,7 +260,7 @@ export default class PaymentList extends React.Component {
                                         <React.Fragment>
                                             <td>{invoice.invoices.map(item => {
                                                 return (
-                                                    <div key={item.id}>{moment.utc(item.due_at).format('DD/MMM/YYYY')}</div>
+                                                    <div key={item.id}>{moment.utc(item.issued_at).format('DD/MMM/YYYY')}</div>
                                                 );
                                             })}</td>
                                             <td>

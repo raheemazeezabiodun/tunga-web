@@ -76,7 +76,7 @@ export default class Pay extends React.Component {
     onUpdateInvoice(invoice) {
         this.onToggleActions(invoice.id);
         let cleanInvoice = {};
-        ['id', 'type', 'title', 'due_at', 'amount', 'milestone'].forEach(key => {
+        ['id', 'type', 'title', 'issued_at', 'amount', 'milestone'].forEach(key => {
             cleanInvoice[key] = invoice[key];
         });
         const {project, InvoiceActions} = this.props;
@@ -123,7 +123,7 @@ export default class Pay extends React.Component {
         this.onToggleActions(ref);
         let invoice = invoices[0];
         let cleanInvoice = {};
-        ['type', 'title', 'due_at', 'milestone'].forEach(key => {
+        ['type', 'title', 'issued_at', 'milestone'].forEach(key => {
             cleanInvoice[key] = invoice[key];
         });
 
@@ -289,7 +289,7 @@ export default class Pay extends React.Component {
                                                 return (
                                                     <tr key={invoice.id}>
                                                         <td>{invoice.title}</td>
-                                                        <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
+                                                        <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
                                                         <td>
                                                             <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
                                                                 {invoice.number}
@@ -428,7 +428,7 @@ export default class Pay extends React.Component {
                                                         <td>
                                                             {batch.invoices.map(item => {
                                                                 return (
-                                                                    <div key={item.id}>{moment.utc(item.due_at).format('DD/MMM/YYYY')}</div>
+                                                                    <div key={item.id}>{moment.utc(item.issued_at).format('DD/MMM/YYYY')}</div>
                                                                 );
                                                             })}
                                                         </td>

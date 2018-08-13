@@ -3507,15 +3507,16 @@ textarea {
     }
 
     .developer-invite-page {
-        .section-heading {
-            margin-bottom: 80px;
-
-            .border {
-                max-width: 410px;
-            }
-        }
 
         #contact-us {
+            .section-heading {
+                margin-bottom: 80px;
+
+                .border {
+                    max-width: 410px;
+                }
+            }
+
             p {
                 margin-bottom: 20px;
             }

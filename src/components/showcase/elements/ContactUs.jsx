@@ -138,7 +138,7 @@ class ContactUs extends React.Component {
                                             required
                                         />
                             </FormGroup>
-                            <div className="pull-right">
+                            <div className="float-right">
                                 <Button type="submit" size="lg">
                                     Send
                                 </Button>

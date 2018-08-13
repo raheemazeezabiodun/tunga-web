@@ -15,8 +15,8 @@ class ContactUs extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapShot) {
         if (
-            this.props.Utility.contact.isSent &&
-            !prevProps.Utility.contact.isSent
+            this.props.Utility.contact.isSent.contact &&
+            !prevProps.Utility.contact.isSent.contact
         ) {
             this.refs.contact_form.reset();
         }
@@ -75,24 +75,26 @@ class ContactUs extends React.Component {
                         <form
                             ref="contact_form"
                             onSubmit={this.sendEmail.bind(this)}>
-                            {Utility.contact.isSent ? (
+                            {Utility.contact.isSent.contact ? (
                                 <Success message="We've received your message and we'll get back to you shortly." />
                             ) : null}
                             {Utility.contact &&
-                            Utility.contact.error ? (
+                            Utility.contact.error &&
+                            Utility.contact.error.contact ? (
                                 <Error
                                     message={
-                                        Utility.contact.error.message ||
+                                        Utility.contact.error.contact.message ||
                                         'Please fix the errors below and try again.'
                                     }
                                 />
                             ) : null}
 
                             {Utility.contact.error &&
-                            Utility.contact.error.fullname ? (
+                            Utility.contact.error.contact &&
+                            Utility.contact.error.contact.fullname ? (
                                 <FieldError
                                     message={
-                                        Utility.contact.error.fullname
+                                        Utility.contact.error.contact.fullname
                                     }
                                 />
                             ) : null}
@@ -107,10 +109,11 @@ class ContactUs extends React.Component {
                             </FormGroup>
 
                             {Utility.contact.error &&
-                            Utility.contact.error.email ? (
+                            Utility.contact.error.contact &&
+                            Utility.contact.error.contact.email ? (
                                 <FieldError
                                     message={
-                                        Utility.contact.error.email
+                                        Utility.contact.error.contact.email
                                     }
                                 />
                             ) : null}
@@ -125,9 +128,10 @@ class ContactUs extends React.Component {
                             </FormGroup>
 
                             {Utility.contact.error &&
-                            Utility.contact.error.body ? (
+                            Utility.contact.error.contact &&
+                            Utility.contact.error.contact.body ? (
                                 <FieldError
-                                    message={Utility.contact.error.body}
+                                    message={Utility.contact.error.contact.body}
                                 />
                             ) : null}
                             <FormGroup>

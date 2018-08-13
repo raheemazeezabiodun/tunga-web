@@ -23,8 +23,8 @@ export default class DocumentPicker extends React.Component {
 
     static defaultProps = {
         variant: 'icon',
-        showSelected: true
-
+        showSelected: true,
+        instruction: ''
     };
 
     static propTypes = {
@@ -35,6 +35,7 @@ export default class DocumentPicker extends React.Component {
         documentTypes: PropTypes.array,
         showSelected: PropTypes.bool,
         size: PropTypes.string,
+        instruction: PropTypes.string,
     };
 
     constructor(props) {
@@ -96,9 +97,11 @@ export default class DocumentPicker extends React.Component {
                 ):null}
 
                 {this.props.variant === 'button'?(
-                    <Button onClick={this.onSelectType}><Icon name="upload" size={this.props.size}/> Add documents</Button>
+                    <Button onClick={this.onSelectType}><Icon name="upload" size={this.props.size}/> {this.props.instruction || 'Add documents'}</Button>
                 ):(
-                    <IconButton name="add" size={this.props.size} onClick={this.onSelectType}/>
+                    <React.Fragment>
+                        <IconButton name="add" size={this.props.size} onClick={this.onSelectType}/> {this.props.instruction}
+                    </React.Fragment>
                 )}
             </div>
         );

@@ -85,6 +85,7 @@ export const ENDPOINT_INVOICES = getEndpointUrl('invoices/');
 export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 
 export const ENDPOINT_CONTACT_REQUEST = getEndpointUrl('contact-request/');
+export const ENDPOINT_INVITE_REQUEST = getEndpointUrl('invite-request/');
 export const ENDPOINT_MEDIUM = getEndpointUrl('medium/');
 export const ENDPOINT_OEMBED = getEndpointUrl('oembed/');
 export const ENDPOINT_SKILL_PAGES = getEndpointUrl('skill-pages/');

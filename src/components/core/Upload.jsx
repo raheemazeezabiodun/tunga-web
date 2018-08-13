@@ -19,7 +19,8 @@ export default class Upload extends React.Component {
         type: 'file',
         multiple: false,
         max: 0,
-        showSelected: true
+        showSelected: true,
+        actionText: ''
     };
 
     static propTypes = {
@@ -34,6 +35,7 @@ export default class Upload extends React.Component {
         max: PropTypes.number,
         icon: PropTypes.string,
         showSelected: PropTypes.bool,
+        actionText: PropTypes.string
     };
 
     constructor(props) {
@@ -118,13 +120,13 @@ export default class Upload extends React.Component {
                     </div>
                 </Dropzone>
 
-                {['button', 'icon'].indexOf(this.props.variant) > -1?(
+                {['button', 'icon'].includes(this.props.variant) && (this.props.multiple || !this.state.files.length)?(
                     <Button variant={this.props.variant === 'icon'?'icon':'primary'}
                             size={this.props.variant === 'button'?(this.props.size || 'md'):null}
                             onClick={this.onUpload.bind(this)}>
                         <Icon name={this.props.icon || (this.props.variant === 'icon'?'add':'upload')}
                               size={this.props.variant === 'icon'?(this.props.size || 'md'):null}/>
-                        {this.props.variant === 'button'?' Upload':''}
+                        <span className="action-text">{this.props.actionText || (this.props.variant === 'button'?' Upload':'')}</span>
                     </Button>
 
                 ):null}

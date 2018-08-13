@@ -4,12 +4,16 @@ import {
     ENDPOINT_MEDIUM,
     ENDPOINT_MIGRATE
 } from '../actions/utils/api';
+import {composeFormData, ENDPOINT_INVITE_REQUEST} from "./utils/api";
 
 
 export const CLEAR_VALIDATIONS = 'CLEAR_VALIDATIONS';
 export const SEND_CONTACT_REQUEST_START = 'SEND_CONTACT_REQUEST_START';
 export const SEND_CONTACT_REQUEST_SUCCESS = 'SEND_CONTACT_REQUEST_SUCCESS';
 export const SEND_CONTACT_REQUEST_FAILED = 'SEND_CONTACT_REQUEST_FAILED';
+export const SEND_INVITE_REQUEST_START = 'SEND_INVITE_REQUEST_START';
+export const SEND_INVITE_REQUEST_SUCCESS = 'SEND_INVITE_REQUEST_SUCCESS';
+export const SEND_INVITE_REQUEST_FAILED = 'SEND_INVITE_REQUEST_FAILED';
 export const GET_MEDIUM_POSTS_START = 'GET_MEDIUM_POSTS_START';
 export const GET_MEDIUM_POSTS_SUCCESS = 'GET_MEDIUM_POSTS_SUCCESS';
 export const GET_MEDIUM_POSTS_FAILED = 'GET_MEDIUM_POSTS_FAILED';
@@ -58,6 +62,53 @@ export function sendContactRequestSuccess(data) {
 export function sendContactRequestFailed(error) {
     return {
         type: SEND_CONTACT_REQUEST_FAILED,
+        error,
+    };
+}
+
+export function sendInviteRequest(data) {
+    return dispatch => {
+        dispatch(sendInviteRequestStart(data));
+
+        let headers = {};
+
+        if (data.cv) {
+            headers['Content-Type'] = 'multipart/form-data';
+            data = composeFormData(data);
+        }
+
+        axios
+            .post(ENDPOINT_INVITE_REQUEST, data, {headers})
+            .then(function(response) {
+                dispatch(sendInviteRequestSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    sendInviteRequestFailed(
+                        error.response ? error.response.data : null,
+                    ),
+                );
+            });
+    };
+}
+
+export function sendInviteRequestStart(data) {
+    return {
+        type: SEND_INVITE_REQUEST_START,
+        data,
+    };
+}
+
+export function sendInviteRequestSuccess(data) {
+    return {
+        type: SEND_INVITE_REQUEST_SUCCESS,
+        data,
+    };
+}
+
+export function sendInviteRequestFailed(error) {
+    return {
+        type: SEND_INVITE_REQUEST_FAILED,
         error,
     };
 }

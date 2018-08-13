@@ -19,6 +19,7 @@ import SignUp from "./SignUp";
 import PasswordReset from "./PasswordReset";
 import PasswordResetConfirm from "./PasswordResetConfirm";
 import Developer from "./Developer";
+import Join from "./Join";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -86,7 +87,10 @@ export default class ShowcaseLayout extends React.Component {
                     {user && user.id?(
                         <Redirect from="/developer*" to="/network*"/>
                     ):(
-                        <Route exact path='/developer/:username' render={props => <Developer username={props.match.params.username} {...props}/>}/>
+                        [
+                            <Route exact path='/developer/join' component={Join}/>,
+                            <Route exact path='/developer/:username' render={props => <Developer username={props.match.params.username} {...props}/>}/>
+                        ]
                     )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>

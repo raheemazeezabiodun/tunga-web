@@ -236,11 +236,6 @@ export default () => {
                         and ultimately their lives. And that’s exactly
                         what we aim for..
                     </p>
-                    {/* <p className="text-center">
-                <Link to="/start/" className="btn btn-callout">
-                  Schedule a call now
-                </Link>
-              </p> */}
                 </div>
             </section>
 

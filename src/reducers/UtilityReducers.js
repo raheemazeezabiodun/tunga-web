@@ -16,38 +16,58 @@ function posts(state = [], action) {
     }
 }
 
-function isSending(state = false, action) {
-    switch (action.type) {
-        case UtilityActions.SEND_CONTACT_REQUEST_START:
-            return true;
-        case UtilityActions.SEND_CONTACT_REQUEST_SUCCESS:
-        case UtilityActions.SEND_CONTACT_REQUEST_FAILED:
-            return false;
-        default:
-            return state;
-    }
-}
+const defaultSendingState = {contact: false, invite: false};
 
-function isSent(state = false, action) {
+function isSending(state = defaultSendingState, action) {
     switch (action.type) {
-        case UtilityActions.SEND_CONTACT_REQUEST_SUCCESS:
-            return true;
         case UtilityActions.SEND_CONTACT_REQUEST_START:
+            return {...state, contact: true};
+        case UtilityActions.SEND_CONTACT_REQUEST_SUCCESS:
         case UtilityActions.SEND_CONTACT_REQUEST_FAILED:
+            return {...state, contact: false};
+        case UtilityActions.SEND_INVITE_REQUEST_START:
+            return {...state, invite: true};
+        case UtilityActions.SEND_INVITE_REQUEST_SUCCESS:
+        case UtilityActions.SEND_INVITE_REQUEST_FAILED:
+            return {...state, invite: false};
         case LOCATION_CHANGE:
-            return false;
+            return defaultSendingState;
         default:
             return state;
     }
 }
 
-function error(state = null, action) {
+function isSent(state = defaultSendingState, action) {
+    switch (action.type) {
+        case UtilityActions.SEND_CONTACT_REQUEST_SUCCESS:
+            return {...state, contact: true};
+        case UtilityActions.SEND_INVITE_REQUEST_SUCCESS:
+            return {...state, invite: true};
+        case UtilityActions.SEND_CONTACT_REQUEST_START:
+        case UtilityActions.SEND_CONTACT_REQUEST_FAILED:
+            return {...state, contact: false};
+        case UtilityActions.SEND_INVITE_REQUEST_START:
+        case UtilityActions.SEND_INVITE_REQUEST_FAILED:
+            return {...state, invite: false};
+        case LOCATION_CHANGE:
+            return defaultSendingState;
+        default:
+            return state;
+    }
+}
+
+function error(state = {contact: null, invite: null}, action) {
     switch (action.type) {
         case UtilityActions.SEND_CONTACT_REQUEST_FAILED:
-            return action.error;
+            return {...state, contact: action.error};
         case UtilityActions.SEND_CONTACT_REQUEST_START:
         case UtilityActions.SEND_CONTACT_REQUEST_SUCCESS:
-            return null;
+            return {...state, contact: null};
+        case UtilityActions.SEND_INVITE_REQUEST_FAILED:
+            return {...state, invite: action.error};
+        case UtilityActions.SEND_INVITE_REQUEST_START:
+        case UtilityActions.SEND_INVITE_REQUEST_SUCCESS:
+            return {...state, invite: null};
         default:
             return state;
     }

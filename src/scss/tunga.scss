@@ -30,6 +30,10 @@ i {
     vertical-align: middle;
 }
 
+b, strong {
+    font-weight: $font-weight-medium;
+}
+
 // Social links
 .facebook {
     @include brand-link(get-color('facebook'));
@@ -3499,6 +3503,30 @@ textarea {
         .cta {
             min-width: 220px;
             margin: 20px auto;
+        }
+    }
+
+    .developer-invite-page {
+        .section-heading {
+            margin-bottom: 80px;
+
+            .border {
+                max-width: 410px;
+            }
+        }
+
+        #contact-us {
+            p {
+                margin-bottom: 20px;
+            }
+
+            .btn-icon {
+                .action-text {
+                    display: inline-block;
+                    color: get-color('black');
+                    margin-left: 20px;
+                }
+            }
         }
     }
 }

@@ -101,6 +101,7 @@ export default class InvoiceForm extends React.Component {
                                value={payout.amount || null}
                                onChange={e => this.onPayoutUpdate(idx, 'amount', e.target.value)}
                                step="0.01"
+                               placeholder="Amount in Euros"
                                required/>
                     </FormGroup>
                 </Col>
@@ -113,6 +114,7 @@ export default class InvoiceForm extends React.Component {
             <form onSubmit={this.onSave.bind(this)} className="invoice-form">
                 <FormGroup>
                     <label>{this.props.invoice.type === INVOICE_TYPE_SALE?'Payment':'Payout'} title</label>
+                    <div className="text text-sm">Don't include the project title in this title</div>
                     <Input value={this.state.invoice.title}
                            onChange={this.onChangeField.bind(this, 'title')}
                            required/>
@@ -135,7 +137,7 @@ export default class InvoiceForm extends React.Component {
                         <label>Amount in EUR</label>
                         <Input type="number"
                                value={this.state.invoice.amount}
-                               onChange={this.onChangeField.bind(this, 'amount')} step="0.01"
+                               onChange={this.onChangeField.bind(this, 'amount')} step="0.01" placeholder="Amount in Euros"
                                required/>
                     </FormGroup>
                 ):(

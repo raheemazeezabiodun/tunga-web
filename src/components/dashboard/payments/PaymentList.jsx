@@ -223,7 +223,7 @@ export default class PaymentList extends React.Component {
                                             <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
                                             <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
                                             <td>
-                                                {(isClient() || isAdmin()) && !invoice.project.archived?(
+                                                {(isClient() || isAdmin())?(
                                                     <div>
                                                         {invoice.paid?(
                                                             <div>
@@ -264,7 +264,7 @@ export default class PaymentList extends React.Component {
                                                 );
                                             })}</td>
                                             <td>
-                                                {isAdmin() && !invoice.paid && invoice.status !== 'approved' && !invoice.project.archived?(
+                                                {isAdmin() && !invoice.paid && invoice.status !== 'approved'?(
                                                     <Button size="sm"
                                                             onClick={this.onApprovePayout.bind(this, invoice.invoices)}>
                                                         Approve payout

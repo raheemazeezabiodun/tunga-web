@@ -837,11 +837,15 @@ table {
     text-align: center;
     margin: 5px auto;
 
-    .success-icon {
+    .status-icon {
         display: block;
         color: get-color('green');
         margin-bottom: 5px;
     }
+}
+
+.alert-success-light {
+    @include alert-light-variant(get-color('green'));
 }
 
 .green {
@@ -3515,6 +3519,14 @@ textarea {
 
                 .border {
                     max-width: 410px;
+                }
+            }
+
+            .statuses {
+                .alert {
+                    position: relative;
+                    top: -63px;
+                    margin-bottom: -47px;
                 }
             }
 

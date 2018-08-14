@@ -10,7 +10,7 @@ const Success = ({message, variant, size}) => {
                 <div>{message || 'Changes saved succesfully!'}</div>
             </div>
         ):(
-            <div className="alert alert-success"><Icon name="check"/> {message || ''}</div>
+            <div className={`alert alert-success${variant === 'light'?'-light':''}`}><Icon name="check" className="status-icon"/> {message || ''}</div>
         )
     );
 };

@@ -52,7 +52,7 @@ export default class ShowcaseLayout extends React.Component {
                 <Switch>
                     <Route exact path='/maintenance' component={Maintenance}/>
                     {user && user.id?(
-                        'signin|signup|reset-password|start|start-welcome|start-outsource|quiz|customer'.split('|').map(path => {
+                        'signin|signup|reset-password|start|start-welcome|start-outsource|quiz|customer|join'.split('|').map(path => {
                             return (
                                 <Redirect key={`app-path--${path}`} from={`/${path}`} to="/dashboard"/>
                             );
@@ -81,16 +81,14 @@ export default class ShowcaseLayout extends React.Component {
                             <Route exact path='/start-outsource' component={Maintenance}/>,
                             <Route exact path='/quiz' component={Maintenance}/>,
                             <Route exact path='/customer/help/:chatId' component={Home}/>,
-                            <Redirect from="/signup" to='/signin'/>
+                            <Redirect from="/signup" to='/signin'/>,
+                            <Route exact path='/join' component={Join}/>
                         ]
                     )}
                     {user && user.id?(
                         <Redirect from="/developer*" to="/network*"/>
                     ):(
-                        [
-                            <Route exact path='/developer/join' component={Join}/>,
-                            <Route exact path='/developer/:username' render={props => <Developer username={props.match.params.username} {...props}/>}/>
-                        ]
+                        <Route exact path='/developer/:username' render={props => <Developer username={props.match.params.username} {...props}/>}/>
                     )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>

@@ -89,19 +89,23 @@ class Join extends React.Component {
                             <form
                                 ref="contact_form"
                                 onSubmit={this.sendEmail.bind(this)}>
-                                {Utility.contact.isSent.invite ? (
-                                    <Success message="Your details have been successfully sent. Thank you!" />
-                                ) : null}
-                                {Utility.contact &&
-                                Utility.contact.error &&
-                                Utility.contact.error.invite ? (
-                                    <Error
-                                        message={
-                                            Utility.contact.error.invite.message ||
-                                            'Please fix the errors below and try again.'
-                                        }
-                                    />
-                                ) : null}
+                                <div className="statuses">
+                                    {Utility.contact &&
+                                        Utility.contact.isSent &&
+                                        Utility.contact.isSent.invite ? (
+                                        <Success variant='light' message="Your details have been sent successfully. Thank you!" />
+                                    ) : null}
+                                    {Utility.contact &&
+                                    Utility.contact.error &&
+                                    Utility.contact.error.invite ? (
+                                        <Error
+                                            message={
+                                                Utility.contact.error.invite.message ||
+                                                'Please fix the errors below and try again.'
+                                            }
+                                        />
+                                    ) : null}
+                                </div>
 
                                 {Utility.contact.error &&
                                 Utility.contact.error.invite &&
@@ -149,7 +153,7 @@ class Join extends React.Component {
                                     />
                                 ) : null}
                                 <FormGroup>
-                                    <CountrySelector onChange={(country) => {this.setState({country})}}
+                                    <CountrySelector selected={this.state.country} onChange={(country) => {this.setState({country})}}
                                                      required/>
                                 </FormGroup>
 
@@ -176,7 +180,11 @@ class Join extends React.Component {
                                     />
                                 ) : null}
                                 <FormGroup>
-                                    <Upload variant="icon" size="icon" actionText="Add CV" onChange={(files) => {this.setState({cv: files[0]})}}/>
+                                    <Upload variant="icon" size="icon"
+                                            actionText="Add CV"
+                                            onChange={(files) => {this.setState({cv: files[0]})}}
+                                            showSelected={!!this.state.cv}
+                                            showSelector={!this.state.cv}/>
                                 </FormGroup>
                                 <div className="float-right">
                                     <Button type="submit" size="lg">

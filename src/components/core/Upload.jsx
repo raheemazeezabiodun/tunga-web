@@ -20,6 +20,7 @@ export default class Upload extends React.Component {
         multiple: false,
         max: 0,
         showSelected: true,
+        showSelector: false,
         actionText: ''
     };
 
@@ -35,6 +36,7 @@ export default class Upload extends React.Component {
         max: PropTypes.number,
         icon: PropTypes.string,
         showSelected: PropTypes.bool,
+        showSelector: PropTypes.bool,
         actionText: PropTypes.string
     };
 
@@ -120,7 +122,7 @@ export default class Upload extends React.Component {
                     </div>
                 </Dropzone>
 
-                {['button', 'icon'].includes(this.props.variant) && (this.props.multiple || !this.state.files.length)?(
+                {['button', 'icon'].includes(this.props.variant) && (this.props.showSelector || this.props.multiple || !this.state.files.length)?(
                     <Button variant={this.props.variant === 'icon'?'icon':'primary'}
                             size={this.props.variant === 'button'?(this.props.size || 'md'):null}
                             onClick={this.onUpload.bind(this)}>

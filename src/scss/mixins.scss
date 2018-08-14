@@ -40,3 +40,14 @@
     }
 }
 
+@mixin alert-light-variant($color) {
+    background-color: transparent;
+    @include padding-x(0);
+
+    .status-icon {
+        color: $color;
+        display: inline-block;
+        font-size: 20px;
+        margin-right: 15px;
+    }
+}

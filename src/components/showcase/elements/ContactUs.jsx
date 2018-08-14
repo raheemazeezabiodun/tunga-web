@@ -75,7 +75,9 @@ class ContactUs extends React.Component {
                         <form
                             ref="contact_form"
                             onSubmit={this.sendEmail.bind(this)}>
-                            {Utility.contact.isSent.contact ? (
+                            {Utility.contact &&
+                            Utility.contact.isSent &&
+                            Utility.contact.isSent.contact ? (
                                 <Success message="We've received your message and we'll get back to you shortly." />
                             ) : null}
                             {Utility.contact &&

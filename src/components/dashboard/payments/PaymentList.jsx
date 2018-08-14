@@ -15,6 +15,7 @@ import {getUser, isAdmin, isClient, isDev} from "../../utils/auth";
 import {batchInvoices} from "../../utils/payments";
 import {ENDPOINT_INVOICES} from "../../../actions/utils/api";
 import {parsePaymentObject} from "../../utils/stripe";
+import LoadMore from "../../core/LoadMore";
 
 const PAID_IN = 'paid-in';
 const PENDING_IN = 'pending-in';
@@ -34,6 +35,10 @@ export default class PaymentList extends React.Component {
         filter: PropTypes.string,
         isSaving: PropTypes.object,
         history: PropTypes.object,
+        onLoadMore: PropTypes.func,
+        isLoading: PropTypes.bool,
+        isLoadingMore: PropTypes.bool,
+        hasMore: PropTypes.bool,
     };
 
 
@@ -91,7 +96,7 @@ export default class PaymentList extends React.Component {
     }
 
     render() {
-        const {filter, invoices, isSaving} = this.props;
+        const {filter, invoices, isSaving, onLoadMore, hasMore, isLoading, isLoadingMore} = this.props;
 
         if(![...(isDev()?[]:[PENDING_IN, PAID_IN]), PENDING_OUT, PAID_OUT].includes(filter)) {
             return null;
@@ -103,194 +108,198 @@ export default class PaymentList extends React.Component {
         }
 
         return (
-            <div className="content-card payments-list-card">
-                {invoiceList.length?(
-                    <Table striped>
-                        <thead>
-                        <tr>
-                            <th>
-                                {isClient() && !isAdmin()?'':'Client/'} Project/ Invoice
-                            </th>
-                            {[PENDING_OUT, PAID_OUT].includes(filter)?(
-                                <th>Developer</th>
-                            ):null}
-                            <th>Invoice Number</th>
-                            {[PENDING_IN, PAID_IN].includes(filter)?(
-                                <th>Sum</th>
-                            ):null}
-                            <th>Payout</th>
-                            {filter === PENDING_IN?(
-                                <React.Fragment>
-                                    <th>Invoice Date</th>
-                                    <th>Due Date</th>
-                                    <th>Status</th>
-                                </React.Fragment>
-                            ):null}
-                            {filter === PAID_IN?(
-                                <th>Payment Date</th>
-                            ):null}
-                            {filter === PENDING_OUT?(
-                                <React.Fragment>
-                                    <th>Payout Date</th>
-                                    <th></th>
-                                </React.Fragment>
-                            ):null}
-                            {filter === PAID_OUT?(
-                                <th>Payment Date</th>
-                            ):null}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {invoiceList.map(invoice => {
-                            const owner = invoice.project.owner || invoice.project.user;
-                            return (
-                                <tr key={invoice.id}>
-                                    <td>
-                                        {isClient() && !isAdmin()?null:(
-                                            <div>{(owner.company?owner.company.name:'') || owner.display_name}</div>
-                                        )}
-                                        <a href={`/projects/${invoice.project.id}`} target="_blank">{invoice.project.title}</a><br/>
-                                        {invoice.title}
-                                    </td>
-                                    {[PENDING_OUT, PAID_OUT].includes(filter)?(
-                                        <td>{invoice.invoices.map(item => {
-                                            return (
-                                                <div key={item.id}>{item.user.display_name}</div>
-                                            );
-                                        })}</td>
-                                    ):null}
-                                    <td>{[PENDING_OUT, PAID_OUT].includes(filter)?(
-                                        invoice.invoices.map(item => {
-                                            return (
-                                                <div key={item.id}>
-                                                    <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`} target="_blank">
-                                                        {item.number}
-                                                    </a>
-                                                </div>
-                                            );
-                                        })
-                                    ):(
-                                        <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
-                                            {invoice.number}
-                                        </a>
-                                    )}</td>
-                                    {[PENDING_IN, PAID_IN].includes(filter)?(
+            <React.Fragment>
+                <div className="content-card payments-list-card">
+                    {invoiceList.length?(
+                        <Table striped>
+                            <thead>
+                            <tr>
+                                <th>
+                                    {isClient() && !isAdmin()?'':'Client/'} Project/ Invoice
+                                </th>
+                                {[PENDING_OUT, PAID_OUT].includes(filter)?(
+                                    <th>Developer</th>
+                                ):null}
+                                <th>Invoice Number</th>
+                                {[PENDING_IN, PAID_IN].includes(filter)?(
+                                    <th>Sum</th>
+                                ):null}
+                                <th>Payout</th>
+                                {filter === PENDING_IN?(
+                                    <React.Fragment>
+                                        <th>Invoice Date</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                    </React.Fragment>
+                                ):null}
+                                {filter === PAID_IN?(
+                                    <th>Payment Date</th>
+                                ):null}
+                                {filter === PENDING_OUT?(
+                                    <React.Fragment>
+                                        <th>Payout Date</th>
+                                        <th></th>
+                                    </React.Fragment>
+                                ):null}
+                                {filter === PAID_OUT?(
+                                    <th>Payment Date</th>
+                                ):null}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {invoiceList.map(invoice => {
+                                const owner = invoice.project.owner || invoice.project.user;
+                                return (
+                                    <tr key={invoice.id}>
                                         <td>
-                                            {invoice.total_amount === invoice.amount?(
-                                                <div>€{invoice.amount}</div>
-                                            ):(
-                                                <div>
-                                                    <div className="clearfix">
-                                                        <div className="float-left">Fee:</div>
-                                                        <div className="float-right">€{invoice.amount}</div>
-                                                    </div>
-                                                    {Math.round(invoice.processing_fee)?(
-                                                        <div className="clearfix">
-                                                            <div className="float-left">Processing:</div>
-                                                            <div className="float-right">€{invoice.processing_fee}</div>
-                                                        </div>
-                                                    ):null}
-                                                    {Math.round(invoice.tax_amount)?(
-                                                        <div className="clearfix">
-                                                            <div className="float-left">VAT:</div>
-                                                            <div className="float-right">€{invoice.tax_amount}</div>
-                                                        </div>
-                                                    ):null}
-                                                    <div className="subtotal">
-                                                        <div className="float-left">Total:</div>
-                                                        <div className="float-right">€{invoice.total_amount}</div>
-                                                    </div>
-                                                </div>
+                                            {isClient() && !isAdmin()?null:(
+                                                <div>{(owner.company?owner.company.name:'') || owner.display_name}</div>
                                             )}
+                                            <a href={`/projects/${invoice.project.id}`} target="_blank">{invoice.project.title}</a><br/>
+                                            {invoice.title}
                                         </td>
-                                    ):null}
-                                    <td>
                                         {[PENDING_OUT, PAID_OUT].includes(filter)?(
-                                            <div>
-                                                {invoice.invoices.map(item => {
-                                                    return (
-                                                        <div>€{item.amount}</div>
-                                                    );
-                                                })}
-                                                {isDev()?null:(
-                                                    <div className="subtotal">€{invoice.amount}</div>
-                                                )}
-                                            </div>
-                                        ):null}
-                                    </td>
-                                    {filter === PENDING_IN?(
-                                        <React.Fragment>
-                                            <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
-                                            <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
-                                            <td>
-                                                {(isClient() || isAdmin())?(
-                                                    <div>
-                                                        {invoice.paid?(
-                                                            <div>
-                                                                <Icon name="check" className="green"/> Paid
-                                                            </div>
-                                                        ):isSaving[invoice.id]?(
-                                                            <Progress message="Processing"/>
-                                                        ):(
-                                                            <div>
-                                                                <StripeButton size="sm"
-                                                                              amount={invoice.total_amount}
-                                                                              email={getUser().email}
-                                                                              description={invoice.title}
-                                                                              onPay={this.onPay.bind(this, invoice)}
-                                                                              className={`pay_stripe_${invoice.id}`}/>
-                                                                <Button size="sm" onClick={this.openPay.bind(this, invoice)}><Icon name="cash"/> Pay</Button>
-                                                                {isAdmin()?(
-                                                                    <Button size="sm"
-                                                                            onClick={this.onMarkPaid.bind(this, invoice.id)}>
-                                                                        Mark as paid
-                                                                    </Button>
-                                                                ):null}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                ):null}
-                                            </td>
-                                        </React.Fragment>
-                                    ):null}
-                                    {filter === PAID_IN?(
-                                        <td>{moment.utc(invoice.paid_at).format('DD/MMM/YYYY')}</td>
-                                    ):null}
-                                    {filter === PENDING_OUT?(
-                                        <React.Fragment>
                                             <td>{invoice.invoices.map(item => {
                                                 return (
-                                                    <div key={item.id}>{moment.utc(item.issued_at).format('DD/MMM/YYYY')}</div>
+                                                    <div key={item.id}>{item.user.display_name}</div>
                                                 );
                                             })}</td>
+                                        ):null}
+                                        <td>{[PENDING_OUT, PAID_OUT].includes(filter)?(
+                                            invoice.invoices.map(item => {
+                                                return (
+                                                    <div key={item.id}>
+                                                        <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`} target="_blank">
+                                                            {item.number}
+                                                        </a>
+                                                    </div>
+                                                );
+                                            })
+                                        ):(
+                                            <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
+                                                {invoice.number}
+                                            </a>
+                                        )}</td>
+                                        {[PENDING_IN, PAID_IN].includes(filter)?(
                                             <td>
-                                                {isAdmin() && !invoice.paid && invoice.status !== 'approved'?(
-                                                    <Button size="sm"
-                                                            onClick={this.onApprovePayout.bind(this, invoice.invoices)}>
-                                                        Approve payout
-                                                    </Button>
-                                                ):invoice.status === 'approved' && !invoice.paid?(
-                                                    <div>Processing</div>
-                                                ):null}
+                                                {invoice.total_amount === invoice.amount?(
+                                                    <div>€{invoice.amount}</div>
+                                                ):(
+                                                    <div>
+                                                        <div className="clearfix">
+                                                            <div className="float-left">Fee:</div>
+                                                            <div className="float-right">€{invoice.amount}</div>
+                                                        </div>
+                                                        {Math.round(invoice.processing_fee)?(
+                                                            <div className="clearfix">
+                                                                <div className="float-left">Processing:</div>
+                                                                <div className="float-right">€{invoice.processing_fee}</div>
+                                                            </div>
+                                                        ):null}
+                                                        {Math.round(invoice.tax_amount)?(
+                                                            <div className="clearfix">
+                                                                <div className="float-left">VAT:</div>
+                                                                <div className="float-right">€{invoice.tax_amount}</div>
+                                                            </div>
+                                                        ):null}
+                                                        <div className="subtotal">
+                                                            <div className="float-left">Total:</div>
+                                                            <div className="float-right">€{invoice.total_amount}</div>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </td>
-                                        </React.Fragment>
-                                    ):null}
-                                    {filter === PAID_OUT?(
-                                        <td>{invoice.invoices.map(item => {
-                                            return (
-                                                <div key={item.id}>{moment.utc(item.paid_at).format('DD/MMM/YYYY')}</div>
-                                            );
-                                        })}</td>
-                                    ):null}
-                                </tr>
-                            );
-                        })}
-                        </tbody>
-                    </Table>
-                ):(
-                    <div className="empty-list">You have no payments yet.</div>
-                )}
-            </div>
+                                        ):null}
+                                        <td>
+                                            {[PENDING_OUT, PAID_OUT].includes(filter)?(
+                                                <div>
+                                                    {invoice.invoices.map(item => {
+                                                        return (
+                                                            <div>€{item.amount}</div>
+                                                        );
+                                                    })}
+                                                    {isDev()?null:(
+                                                        <div className="subtotal">€{invoice.amount}</div>
+                                                    )}
+                                                </div>
+                                            ):null}
+                                        </td>
+                                        {filter === PENDING_IN?(
+                                            <React.Fragment>
+                                                <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
+                                                <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
+                                                <td>
+                                                    {(isClient() || isAdmin())?(
+                                                        <div>
+                                                            {invoice.paid?(
+                                                                <div>
+                                                                    <Icon name="check" className="green"/> Paid
+                                                                </div>
+                                                            ):isSaving[invoice.id]?(
+                                                                <Progress message="Processing"/>
+                                                            ):(
+                                                                <div>
+                                                                    <StripeButton size="sm"
+                                                                                  amount={invoice.total_amount}
+                                                                                  email={getUser().email}
+                                                                                  description={invoice.title}
+                                                                                  onPay={this.onPay.bind(this, invoice)}
+                                                                                  className={`pay_stripe_${invoice.id}`}/>
+                                                                    <Button size="sm" onClick={this.openPay.bind(this, invoice)}><Icon name="cash"/> Pay</Button>
+                                                                    {isAdmin()?(
+                                                                        <Button size="sm"
+                                                                                onClick={this.onMarkPaid.bind(this, invoice.id)}>
+                                                                            Mark as paid
+                                                                        </Button>
+                                                                    ):null}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ):null}
+                                                </td>
+                                            </React.Fragment>
+                                        ):null}
+                                        {filter === PAID_IN?(
+                                            <td>{moment.utc(invoice.paid_at).format('DD/MMM/YYYY')}</td>
+                                        ):null}
+                                        {filter === PENDING_OUT?(
+                                            <React.Fragment>
+                                                <td>{invoice.invoices.map(item => {
+                                                    return (
+                                                        <div key={item.id}>{moment.utc(item.issued_at).format('DD/MMM/YYYY')}</div>
+                                                    );
+                                                })}</td>
+                                                <td>
+                                                    {isAdmin() && !invoice.paid && invoice.status !== 'approved'?(
+                                                        <Button size="sm"
+                                                                onClick={this.onApprovePayout.bind(this, invoice.invoices)}>
+                                                            Approve payout
+                                                        </Button>
+                                                    ):invoice.status === 'approved' && !invoice.paid?(
+                                                        <div>Processing</div>
+                                                    ):null}
+                                                </td>
+                                            </React.Fragment>
+                                        ):null}
+                                        {filter === PAID_OUT?(
+                                            <td>{invoice.invoices.map(item => {
+                                                return (
+                                                    <div key={item.id}>{moment.utc(item.paid_at).format('DD/MMM/YYYY')}</div>
+                                                );
+                                            })}</td>
+                                        ):null}
+                                    </tr>
+                                );
+                            })}
+                            </tbody>
+                        </Table>
+                    ):(
+                        <div className="empty-list">You have no payments yet.</div>
+                    )}
+                </div>
+
+                <LoadMore hasMore={hasMore} isLoadingMore={isLoadingMore} onLoadMore={onLoadMore}/>
+            </React.Fragment>
         );
     }
 }

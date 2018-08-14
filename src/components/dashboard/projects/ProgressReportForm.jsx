@@ -293,8 +293,8 @@ export default class ProgressReportForm extends React.Component {
                                 </div>
                             ) : null}
 
-                            {typeof this.state.last_deadline_met === 'boolean' &&
-                            !this.state.last_deadline_met ? (
+                            {typeof this.state.report.last_deadline_met === 'boolean' &&
+                            !this.state.report.last_deadline_met ? (
                                 <div>
                                     {errors &&
                                     errors.deadline_miss_communicated ? (

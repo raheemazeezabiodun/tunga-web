@@ -6,7 +6,7 @@ const Success = ({message, variant, size}) => {
     return (
         variant === 'icon'?(
             <div className="success">
-                <Icon name="check" size={size || "lg"} className='success-icon'/>
+                <Icon name="check" size={size || "lg"} className='status-icon'/>
                 <div>{message || 'Changes saved succesfully!'}</div>
             </div>
         ):(

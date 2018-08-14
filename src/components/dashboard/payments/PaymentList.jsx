@@ -227,7 +227,10 @@ export default class PaymentList extends React.Component {
                                         {filter === PENDING_IN?(
                                             <React.Fragment>
                                                 <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
-                                                <td>{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}</td>
+                                                <td className={invoice.is_overdue?'font-weight-medium':''}>
+                                                    {invoice.is_overdue?(<Icon name="warning" size="icon"/>):null}
+                                                    {' '}{moment.utc(invoice.due_at).format('DD/MMM/YYYY')}
+                                                </td>
                                                 <td>
                                                     {(isClient() || isAdmin())?(
                                                         <div>

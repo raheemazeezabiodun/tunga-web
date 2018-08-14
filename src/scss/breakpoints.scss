@@ -38,6 +38,12 @@
                 background-image: url('../assets/images/showcase/QualityTungadevelopersmeetingmobile.jpg');
             }
         }
+
+        .developer-invite-page {
+            header {
+                background-image: url('../assets/images/showcase/QualityTungadevelopersmeetingmobile.jpg');
+            }
+        }
     }
 }
 
@@ -488,6 +494,18 @@
             section {
                 .container {
                     max-width: 970px;
+                }
+            }
+        }
+
+        .developer-invite-page {
+            #contact-us {
+                .statuses {
+                    .alert {
+                        position: relative;
+                        top: -63px;
+                        margin-bottom: -47px;
+                    }
                 }
             }
         }

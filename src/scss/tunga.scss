@@ -3513,20 +3513,16 @@ textarea {
 
     .developer-invite-page {
 
+        header {
+            background-image: url('../assets/images/showcase/QualityTungadevelopersmeeting.jpg');
+        }
+
         #contact-us {
             .section-heading {
                 margin-bottom: 80px;
 
                 .border {
                     max-width: 410px;
-                }
-            }
-
-            .statuses {
-                .alert {
-                    position: relative;
-                    top: -63px;
-                    margin-bottom: -47px;
                 }
             }
 

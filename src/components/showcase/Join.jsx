@@ -181,10 +181,10 @@ class Join extends React.Component {
                                 ) : null}
                                 <FormGroup>
                                     <Upload variant="icon" size="icon"
-                                            actionText="Add CV"
+                                            actionText="Add CV (pdf format)"
                                             onChange={(files) => {this.setState({cv: files[0]})}}
                                             showSelected={!!this.state.cv}
-                                            showSelector={!this.state.cv}/>
+                                            showSelector={!this.state.cv} accept="application/pdf"/>
                                 </FormGroup>
                                 <div className="float-right">
                                     <Button type="submit" size="lg">

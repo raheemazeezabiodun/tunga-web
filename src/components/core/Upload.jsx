@@ -21,7 +21,8 @@ export default class Upload extends React.Component {
         max: 0,
         showSelected: true,
         showSelector: false,
-        actionText: ''
+        actionText: '',
+        accept: ''
     };
 
     static propTypes = {
@@ -37,7 +38,8 @@ export default class Upload extends React.Component {
         icon: PropTypes.string,
         showSelected: PropTypes.bool,
         showSelector: PropTypes.bool,
-        actionText: PropTypes.string
+        actionText: PropTypes.string,
+        accept: PropTypes.string
     };
 
     constructor(props) {
@@ -97,6 +99,7 @@ export default class Upload extends React.Component {
                     className={`dropzone ${this.props.variant === 'dropzone'?'':'hidden'}`}
                     multiple={this.props.multiple}
                     {...this.getProperties()}
+                    {...this.props.accept?{accept: this.props.accept}:{}}
                     onDrop={this.onDrop.bind(this)}>
                     <div>
                         {this.state.files.length?this.state.files.map((file, index) => {

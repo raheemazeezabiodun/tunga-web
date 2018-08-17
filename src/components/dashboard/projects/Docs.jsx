@@ -9,7 +9,7 @@ import {
     DOCUMENT_TYPES_MAP
 } from "../../../actions/utils/api";
 
-import {isAdminOrPMOrClient} from '../../utils/auth';
+import {isAdminOrPMOrClient, isDev} from '../../utils/auth';
 
 export default class Docs extends React.Component {
     static propTypes = {
@@ -64,7 +64,7 @@ export default class Docs extends React.Component {
         return (
             <div className="project-docs">
                 {[
-                    DOC_TYPE_ESTIMATE, DOC_TYPE_PROPOSAL,
+                    ...(isDev()?[]:[DOC_TYPE_ESTIMATE, DOC_TYPE_PROPOSAL]),
                     DOC_TYPE_REQUIREMENTS, DOC_TYPE_OTHER
                 ].map(docType => {
                     return (

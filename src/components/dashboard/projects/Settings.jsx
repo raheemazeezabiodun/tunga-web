@@ -132,9 +132,7 @@ export default class Settings extends React.Component {
             <div className="project-settings">
                 <div className="section">
                     <div className="font-weight-normal">Integrations</div>
-                    {isDev()?null:(
-                        <div className="text text-sm font-weight-thin">Add an integration by clicking on the icons</div>
-                    )}
+                    <div className="text text-sm font-weight-thin">Add an integration by clicking on the icons</div>
 
                     <div className="clearfix">
                         <ul className="integration-options pull-right">
@@ -190,7 +188,7 @@ export default class Settings extends React.Component {
                         <div className="section">
                             <div className="font-weight-normal">Slack</div>
 
-                            {isAdminOrPMOrClient() && !project.archived?(
+                            {!project.archived?(
                                 <div>
                                     <p>Connect your project to your Slack team to send task activity to Slack.</p>
 
@@ -281,7 +279,7 @@ export default class Settings extends React.Component {
                     {['trello', 'google-drive'].indexOf(section) > -1?(
                         <div className="clearfix">
                             <div className="font-weight-normal">{section === 'trello'?'Trello':'Google Drive'}</div>
-                            {isAdminOrPMOrClient() && !project.archived?(
+                            {!project.archived?(
                                 <form onSubmit={this.onSaveMeta}>
                                     {isSaved[project.id]?(
                                         <Success message="Changes saved successfully!"/>
@@ -318,7 +316,7 @@ export default class Settings extends React.Component {
                     {section === 'github'?(
                         <div>
                             <div className="font-weight-normal">GitHub</div>
-                            {isAdminOrPMOrClient() && !project.archived?(
+                            {!project.archived?(
                                 <form onSubmit={this.onSaveMeta}>
                                     {isSaved[project.id]?(
                                         <Success message="Changes saved successfully!"/>

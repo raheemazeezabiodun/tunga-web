@@ -415,7 +415,7 @@ b, strong {
             height: px-to-rem(30);
 
             &::placeholder {
-                color: #ccc;
+                color: get-color('darker-grey');
             }
 
             &:focus {
@@ -603,6 +603,10 @@ table {
     input {
         background-color: get-color('light-grey');
         height: 40px;
+
+        &::placeholder {
+            color: get-color('darker-grey');
+        }
     }
 
     > .rw-select {
@@ -2032,7 +2036,7 @@ table {
         font-size: px-to-rem(25);
         line-height: 50px;
         color: get-color('white');
-        background: #ccc url(../assets/images/chatheader.jpg);
+        background: get-color('darker-grey') url(../assets/images/chatheader.jpg);
         background-size: cover;
         border-radius: 50%;
         box-shadow: 0 0 10px #777;
@@ -2058,7 +2062,7 @@ table {
             height: 162px;
             padding: 10px;
             margin-bottom: 10px;
-            background: #ccc url(../assets/images/chatheader.jpg);
+            background: get-color('darker-grey') url(../assets/images/chatheader.jpg);
             border-radius: 8px 8px 0 0;
 
             .heading {
@@ -2182,7 +2186,7 @@ textarea {
         justify-content: space-between;
         min-height: 50vh;
         color: get-color('white');
-        background: url('../assets/images/showcase/welcome-header-mobile.jpg') no-repeat center;
+        background: get-color('dark-grey') url('../assets/images/showcase/welcome-header-mobile.jpg') no-repeat center;
         background-size: cover;
         padding-top: 170px;
         padding-bottom: 80px;

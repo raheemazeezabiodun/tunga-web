@@ -119,9 +119,9 @@ export default class StepThree extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label>VAT No{user.is_project_owner?'*':''}</label>
+                                <label>VAT No{user.is_project_owner && user.tax_location === 'europe'?'*':''}</label>
                                 <Input value={this.state.vat_number}
-                                       onChange={this.onChangeField.bind(this, 'vat_number')} required={user.is_project_owner}/>
+                                       onChange={this.onChangeField.bind(this, 'vat_number')} required={user.is_project_owner && user.tax_location === 'europe'}/>
                             </FormGroup>
 
                             {errorSource &&

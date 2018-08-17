@@ -112,9 +112,9 @@ export default class StepOne extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label>Your company name</label>
+                                <label>Your company name{user.is_project_owner?'*':''}</label>
                                 <Input value={this.state.company}
-                                       onChange={this.onChangeField.bind(this, 'company')} />
+                                       onChange={this.onChangeField.bind(this, 'company')} required={user.is_project_owner}/>
                             </FormGroup>
                         </Col>
                     </Row>

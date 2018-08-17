@@ -64,7 +64,7 @@ export default class MilestoneForm extends React.Component {
                            required/>
                 </FormGroup>
                 <FormGroup>
-                    <DateTimePicker calendar={true} time={false} placeholder="Due date"
+                    <DateTimePicker calendar={true} time={false} placeholder="Deadline"
                                     value={this.state.milestone.due_at?new Date(this.state.milestone.due_at):null}
                                     onChange={(date) => { this.onChangeValue('due_at', moment.utc(date).format())}}
                                     required/>

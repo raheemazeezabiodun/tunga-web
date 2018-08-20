@@ -58,11 +58,11 @@ export const SWITCH_SETTINGS = [
     },
     {
         name: TASK_SURVEY_REMINDER_EMAIL,
-        label: 'Email reminders about project progress surveys.'
+        label: 'Email reminders about client progress surveys.'
     },
     {
         name: NEW_TASK_PROGRESS_REPORT_EMAIL,
-        label: 'Email notifications about new progress reports.'
+        label: 'Email notifications about new developer progress reports.'
     },
     {
         name: NEW_TASK_INVITATION_EMAIL,

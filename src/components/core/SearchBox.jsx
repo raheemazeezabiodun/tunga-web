@@ -5,6 +5,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import querystring from 'querystring';
 import randomstring from 'randomstring';
+import _ from 'lodash';
 
 import CustomInputGroup from './CustomInputGroup';
 import Avatar from "./Avatar";
@@ -36,6 +37,7 @@ class SearchBox extends React.Component {
 
         const queryParams = querystring.parse((window.location.search || '').replace('?', ''));
         let query = queryParams.search || '';
+        this.search = _.debounce(this.search, 250);
 
         this.state = {search: query};
         if(query) {
@@ -62,10 +64,13 @@ class SearchBox extends React.Component {
     };
 
     search(query) {
-        const {SearchActions} = this.props;
-        SearchActions.listUsers({search: query}, this.getSearchKey(query));
-        SearchActions.listProjects({search: query}, this.getSearchKey(query));
-        SearchActions.listInvoices({search: query}, this.getSearchKey(query));
+        if(query) {
+            let searchKey = this.getSearchKey(query);
+            const {SearchActions} = this.props;
+            SearchActions.listUsers({search: query}, searchKey);
+            SearchActions.listProjects({search: query}, searchKey);
+            SearchActions.listInvoices({search: query}, searchKey);
+        }
     }
 
     render() {
@@ -167,11 +172,11 @@ class SearchBox extends React.Component {
                                     null
                                 ):invoices.length?(
                                     <div className="result-category">
-                                        <div className="category-title"><Icon name="cash"/> Invoices</div>
+                                        <div className="category-title"><Icon name="cash"/> Payments</div>
                                         {invoices.slice(0, 5).map(invoice => {
                                             return (
                                                 <div>
-                                                    <Link to={`/projects/${invoice.project.id}/pay/${invoice.id}`} className="result-item">
+                                                    <Link to={`/projects/${invoice.project.id}/pay`} className="result-item">
                                                         {invoice.full_title}
                                                     </Link>
                                                 </div>

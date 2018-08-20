@@ -8,7 +8,7 @@ const LoadMore = ({children, onLoadMore, hasMore=true, isLoadingMore=false}) => 
         <Progress/>
     ):(hasMore?(
         <div className="text-center">
-            <Button size="sm" onClick={onLoadMore}>{children ||'Load More'}</Button>
+            <Button size="sm" onClick={onLoadMore}>{children || 'Load More'}</Button>
         </div>
     ):null);
 };

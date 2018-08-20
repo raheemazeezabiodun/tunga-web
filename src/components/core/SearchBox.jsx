@@ -18,6 +18,8 @@ import {filterInputProps} from "./utils/forms";
 import * as UserActions from "../../actions/UserActions";
 import * as ProjectActions from "../../actions/ProjectActions";
 import * as InvoiceActions from "../../actions/InvoiceActions";
+import LoadMore from "./LoadMore";
+
 
 class SearchBox extends React.Component {
     static defaultProps = {
@@ -67,42 +69,38 @@ class SearchBox extends React.Component {
         if(query) {
             let searchKey = this.getSearchKey(query);
             const {SearchActions} = this.props;
-            SearchActions.listUsers({search: query}, searchKey);
-            SearchActions.listProjects({search: query}, searchKey);
-            SearchActions.listInvoices({search: query}, searchKey);
+            SearchActions.listUsers({search: query, page_size: 5}, searchKey);
+            SearchActions.listProjects({search: query, page_size: 5}, searchKey);
+            SearchActions.listInvoices({search: query, page_size: 5}, searchKey);
+        }
+    }
+
+    parseSearchEntity(Source, itemsKey, searchKey) {
+        const {SearchActions} = this.props;
+
+        return {
+            items: (Source.ids[searchKey] || []).map(id => {
+                return Source[itemsKey][id];
+            }),
+            onLoadMore: () => {
+                SearchActions[`listMore${_.upperFirst(itemsKey)}`](Source.next[searchKey], searchKey);
+            },
+            isLoading: Source.isFetching[searchKey],
+            isLoadingMore: Source.isFetchingMore[searchKey],
+            hasMore: !!Source.next[searchKey],
+            count: !!Source.count[searchKey]
         }
     }
 
     render() {
         const {User, Project, Invoice} = this.props;
-        let userIds = User.ids[this.searchKey()],
-            projectIds = Project.ids[this.searchKey()],
-            invoiceIds = Invoice.ids[this.searchKey()],
-            isRetrievingUsers = User.isFetching[this.searchKey()],
-            isRetrievingProjects = Project.isFetching[this.searchKey()],
-            isRetrievingInvoices = Invoice.isFetching[this.searchKey()];
 
-        let users = [],
-            projects = [],
-            invoices = [];
+        let searchKey = this.searchKey(),
+            users = this.parseSearchEntity(User, 'users', searchKey),
+            projects = this.parseSearchEntity(Project, 'projects', searchKey),
+            invoices = this.parseSearchEntity(Invoice, 'invoices', searchKey);
 
-        if(userIds) {
-            userIds.forEach(id => {
-                users.push(User.users[id]);
-            });
-        }
-
-        if(projectIds) {
-            projectIds.forEach(id => {
-                projects.push(Project.projects[id]);
-            });
-        }
-
-        if(invoiceIds) {
-            invoiceIds.forEach(id => {
-                invoices.push(Invoice.invoices[id]);
-            });
-        }
+        console.log('users: => ', users);
 
         return (
             <div className="search-widget">
@@ -120,70 +118,83 @@ class SearchBox extends React.Component {
 
                 {this.state.search?(
                     <div className="search-results">
-                        {isRetrievingUsers && isRetrievingProjects && isRetrievingInvoices?(
+                        {users.isLoading && projects.isLoading && invoices.isLoading?(
                             <Progress/>
                         ):(
                             <div>
                                 <div className="search-header">
-                                    {isRetrievingUsers || isRetrievingProjects || isRetrievingInvoices?(
+                                    {users.isLoading || projects.isLoading || invoices.isLoading?(
                                         <Progress/>
                                     ):(
                                         <div>
-                                            <strong>{(User.count[this.searchKey()] + Project.count[this.searchKey()] + Invoice.count[this.searchKey()]) || 'No'}</strong> results for: <strong>{this.state.search}</strong>
+                                            <strong>{(users.count + projects.count + invoices.count) || 'No'}</strong> results for: <strong>{this.state.search}</strong>
                                         </div>
                                     )}
                                 </div>
 
-                                {isRetrievingUsers?(
-                                    null
-                                ):users.length?(
-                                    <div className="result-category">
-                                        <div className="category-title"><Icon name="avatar"/> People</div>
-                                        {users.slice(0, 5).map(user => {
-                                            return (
-                                                <div>
-                                                    <Link to={`/network/${user.username}`} className="result-item">
-                                                        <Avatar image={user.avatar_url} size="sm"/> {user.display_name}
-                                                    </Link>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                ):null}
+                                <div className="results-wrapper">
+                                    {users.isLoading?(
+                                        null
+                                    ):users.items.length?(
+                                        <div className="result-category">
+                                            <div className="category-title"><Icon name="avatar"/> People</div>
+                                            {users.items.map(user => {
+                                                return (
+                                                    <div>
+                                                        <Link to={`/network/${user.username}`} className="result-item">
+                                                            <Avatar image={user.avatar_url} size="sm"/> {user.display_name}
+                                                        </Link>
+                                                    </div>
+                                                );
+                                            })}
+                                            <LoadMore hasMore={users.hasMore}
+                                                      isLoadingMore={users.isLoadingMore}
+                                                      onLoadMore={users.onLoadMore}/>
+                                        </div>
+                                    ):null}
 
-                                {isRetrievingProjects?(
-                                    null
-                                ):projects.length?(
-                                    <div className="result-category">
-                                        <div className="category-title"><Icon name="projects"/> Projects</div>
-                                        {projects.slice(0, 5).map(project => {
-                                            return (
-                                                <div>
-                                                    <Link to={`/projects/${project.id}`} className="result-item">
-                                                        {project.title}
-                                                    </Link>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                ):null}
+                                    {projects.isLoading?(
+                                        null
+                                    ):projects.items.length?(
+                                        <div className="result-category">
+                                            <div className="category-title"><Icon name="projects"/> Projects</div>
+                                            {projects.items.map(project => {
+                                                return (
+                                                    <div>
+                                                        <Link to={`/projects/${project.id}`} className="result-item">
+                                                            {project.title}
+                                                        </Link>
+                                                    </div>
+                                                );
+                                            })}
 
-                                {isRetrievingInvoices?(
-                                    null
-                                ):invoices.length?(
-                                    <div className="result-category">
-                                        <div className="category-title"><Icon name="cash"/> Payments</div>
-                                        {invoices.slice(0, 5).map(invoice => {
-                                            return (
-                                                <div>
-                                                    <Link to={`/projects/${invoice.project.id}/pay`} className="result-item">
-                                                        {invoice.full_title}
-                                                    </Link>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                ):null}
+                                            <LoadMore hasMore={projects.hasMore}
+                                                      isLoadingMore={projects.isLoadingMore}
+                                                      onLoadMore={projects.onLoadMore}/>
+                                        </div>
+                                    ):null}
+
+                                    {invoices.isLoading?(
+                                        null
+                                    ):invoices.items.length?(
+                                        <div className="result-category">
+                                            <div className="category-title"><Icon name="cash"/> Payments</div>
+                                            {invoices.items.map(invoice => {
+                                                return (
+                                                    <div>
+                                                        <Link to={`/projects/${invoice.project.id}/pay`} className="result-item">
+                                                            {invoice.full_title}
+                                                        </Link>
+                                                    </div>
+                                                );
+                                            })}
+
+                                            <LoadMore hasMore={invoices.hasMore}
+                                                      isLoadingMore={invoices.isLoadingMore}
+                                                      onLoadMore={invoices.onLoadMore}/>
+                                        </div>
+                                    ):null}
+                                </div>
                             </div>
                         )}
                     </div>

@@ -9,7 +9,8 @@ import {
     ENDPOINT_COUNTRIES,
     ENDPOINT_COMPANY,
     ENDPOINT_NOTIFICATIONS,
-    composeFormData,
+    ENDPOINT_NOTIFICATION_LOG,
+    composeFormData
 } from './utils/api';
 
 import * as AuthActions from './AuthActions';
@@ -50,6 +51,9 @@ export const UPDATE_COMPANY_FAILED = 'UPDATE_COMPANY_FAILED';
 export const GET_NOTIFICATIONS_START = 'GET_NOTIFICATIONS_START';
 export const GET_NOTIFICATIONS_SUCCESS = 'GET_NOTIFICATIONS_SUCCESS';
 export const GET_NOTIFICATIONS_FAILED = 'GET_NOTIFICATIONS_FAILED';
+export const CREATE_NOTIFICATION_LOG_START = 'CREATE_NOTIFICATION_LOG_START';
+export const CREATE_NOTIFICATION_LOG_SUCCESS = 'CREATE_NOTIFICATION_LOG_SUCCESS';
+export const CREATE_NOTIFICATION_LOG_FAILED = 'CREATE_NOTIFICATION_LOG_FAILED';
 
 export function updateAccountInfo(user) {
     // Requires password and limited to a few account fields
@@ -556,6 +560,45 @@ export function getNotificationsSuccess(notifications) {
 export function getNotificationsFailed(error) {
     return {
         type: GET_NOTIFICATIONS_FAILED,
+        error,
+    };
+}
+
+export function createNotificationLog(notification_log) {
+    return dispatch => {
+        dispatch(createNotificationLogStart(notification_log));
+        axios
+            .post(ENDPOINT_NOTIFICATION_LOG, notification_log)
+            .then(function(response) {
+                dispatch(createNotificationLogSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    createNotificationLogFailed(
+                        error.response ? error.response.data : null,
+                    ),
+                );
+            });
+    };
+}
+
+export function createNotificationLogStart(notification_log) {
+    return {
+        type: CREATE_NOTIFICATION_LOG_START,
+        notification_log,
+    };
+}
+
+export function createNotificationLogSuccess(notification_log) {
+    return {
+        type: CREATE_NOTIFICATION_LOG_SUCCESS,
+        notification_log,
+    };
+}
+
+export function createNotificationLogFailed(error) {
+    return {
+        type: CREATE_NOTIFICATION_LOG_FAILED,
         error,
     };
 }

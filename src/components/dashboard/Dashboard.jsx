@@ -28,7 +28,10 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {targetKey: randomstring.generate()};
+        this.state = {
+            targetKey: randomstring.generate(),
+            cleared: []
+        };
     }
 
     componentDidMount() {
@@ -41,14 +44,24 @@ class Dashboard extends React.Component {
         return {number: period[0], name: period[1]};
     }
 
-    renderNotification(text, linkText, linkUrl) {
+    onCloseNotification(readLog) {
+        console.log('readLog: ', readLog);
+        const {ProfileActions} = this.props;
+        ProfileActions.createNotificationLog(readLog);
+        this.setState({cleared: [...this.state.cleared, `${readLog.type}_${readLog.notification_id}`]});
+    }
+
+    renderNotification(text, linkText, linkUrl, type, id) {
+        if(this.state.cleared.includes(`${type}_${id}`)) {
+            return null;
+        }
         const {isLargeDevice} = this.props,
             actionLink = linkUrl?(<Link to={linkUrl}>{linkText}</Link>):null;
 
         return (
             <div className="notification clearfix">
                 <div className="float-right">
-                    {isLargeDevice && actionLink?actionLink:null} <IconButton name="close" size="sm" disabled={true}/>
+                    {isLargeDevice && actionLink?actionLink:null} <IconButton name="close" size="sm" disabled={!type && !id} onClick={this.onCloseNotification.bind(this, {type, notification_id: id})}/>
                 </div>
                 {text}
                 {isLargeDevice || !actionLink?null:(
@@ -61,19 +74,20 @@ class Dashboard extends React.Component {
     }
 
     renderNotificationType(item) {
+        let notificationType = 'activity';
         switch (item.activity_type)  {
             case 'participation':
                 return this.renderNotification(
                     <div key={item.id}>
                         {getUser().id === item.activity.user.id?'You have':(<span><Link to={`/network/${item.activity.user.username}`}>{item.activity.user.display_name}</Link> has</span>)} been added to {isDev()?'the':'your'} team for {item.activity.project.title}
                     </div>,
-                    'Go to project', `/projects/${item.activity.project.id}/team`);
+                    'Go to project', `/projects/${item.activity.project.id}/team`, notificationType, item.id);
             case 'document':
                 return this.renderNotification(
                     <div key={item.id}>
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} added a {item.activity.type !== DOC_TYPE_OTHER?item.activity.type:''} document to project {item.activity.project.title}
                     </div>,
-                    'Go to project', `/projects/${item.activity.project.id}/docs`);
+                    'Go to project', `/projects/${item.activity.project.id}/docs`, notificationType, item.id);
             case 'invoice':
                 if(isDev() && item.activity.user.id !== getUser().id) {
                     // Devs only see their own invoices
@@ -88,7 +102,7 @@ class Dashboard extends React.Component {
                     <div key={item.id}>
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} generated an invoice for {item.activity.project.title}: {item.activity.title}
                     </div>,
-                    'Go to project', `/projects/${item.activity.project.id}/pay`);
+                    'Go to project', `/projects/${item.activity.project.id}/pay`, notificationType, item.id);
             case 'field_change_log':
                 if(!['start_date', 'deadline', 'due_at'].includes(item.activity.field)) {
                     // On date changes
@@ -103,14 +117,17 @@ class Dashboard extends React.Component {
                     <div key={item.id}>
                         {getUser().id === item.activity.created_by.id?'You':(<span><Link to={`/network/${item.activity.created_by.username}`}>{item.activity.created_by.display_name}</Link></span>)} changed {item.activity.target_type === 'progress_event'?<span>due date for <Link to={`/projects/${item.activity.target.project.id}/events/${item.activity.target.id}`}>{item.activity.target.title}</Link></span>:<span>project {fieldDisplayMap[item.activity.field] || 'planning'}</span>} to {moment.utc(item.activity.new_value).local().format('Do, MMMM YYYY')} for {item.activity.target.project?item.activity.target.project.title:item.activity.target.title}
                     </div>,
-                    'Go to project', `/projects/${item.activity.target.project?item.activity.target.project.id:item.activity.target.id}/plan`);
+                    'Go to project',
+                    `/projects/${item.activity.target.project?item.activity.target.project.id:item.activity.target.id}/plan`,
+                    notificationType, item.id
+                );
             default:
                 return null;
         }
     }
 
     renderReportSection(colProps) {
-        const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}, isLargeDevice} = this.props;
+        const {Profile: {notifications: {invoices, reports, events}}} = this.props;
 
         return (
             <Row>
@@ -183,10 +200,10 @@ class Dashboard extends React.Component {
 
     render() {
 
-        const {Profile: {notifications: {profile, projects, invoices, reports, events, activities}, isRetrieving}, isLargeDevice} = this.props;
+        const {Profile: {notifications: {profile, projects, activities}, isRetrieving}} = this.props;
 
-        let shouldUpdateProfile = profile.required.length || profile.optional.length,
-            shouldConnectPayoneer = isDev() && ![STATUS_APPROVED, STATUS_PENDING].includes(getUser().payoneer_status),
+        let shouldUpdateProfile = (profile.required.length || profile.optional.length) && !(profile.cleared || []).includes('complete'),
+            shouldConnectPayoneer = isDev() && ![STATUS_APPROVED, STATUS_PENDING].includes(getUser().payoneer_status)  && !(profile.cleared || []).includes('payoneer'),
             hasActivities = activities.length;
 
         return (
@@ -208,12 +225,15 @@ class Dashboard extends React.Component {
                                                         {shouldUpdateProfile?(
                                                             this.renderNotification(
                                                                 <div>Please complete your profile {profile.required.length?<span>to be able to {isDev()?'accept':'create'} projects</span>:''}</div>,
-                                                                'Go to profile', '/settings/'
+                                                                'Go to profile', '/settings/', 'profile', 'complete'
                                                             )
                                                         ):null}
 
                                                         {shouldConnectPayoneer?(
-                                                            this.renderNotification('Please connect your account with Payoneer to receive payments', 'Set up Payoneer', '/settings/payment/')
+                                                            this.renderNotification(
+                                                                'Please connect your account with Payoneer to receive payments',
+                                                                'Set up Payoneer', '/settings/payment/', 'profile', 'payoneer'
+                                                            )
                                                         ):null}
 
                                                         {activities.length?(

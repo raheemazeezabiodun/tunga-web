@@ -1214,8 +1214,8 @@ table {
             font-weight: $font-weight-normal;
             text-align: center;
             color: get-color('black');
+            //min-width: px-to-rem(160);
             padding-bottom: px-to-rem(8);
-            /*min-width: px-to-rem(160);*/
 
             &.active {
                 border-bottom: 3px $brand-color solid;
@@ -1673,7 +1673,8 @@ table {
     }
 
     .project-filters {
-        border-bottom: solid 1px #dbdbdb;
+        //border-bottom: solid 1px #dbdbdb;
+        box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
 
         a {
             position: relative;

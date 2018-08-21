@@ -124,7 +124,9 @@ export default class PaymentList extends React.Component {
                                 {[PENDING_IN, PAID_IN].includes(filter)?(
                                     <th>Sum</th>
                                 ):null}
-                                <th>Payout</th>
+                                {isClient() && !isAdmin()?null:(
+                                    <th>Payout</th>
+                                )}
                                 {filter === PENDING_IN?(
                                     <React.Fragment>
                                         <th>Invoice Date</th>
@@ -210,20 +212,22 @@ export default class PaymentList extends React.Component {
                                                 )}
                                             </td>
                                         ):null}
-                                        <td>
-                                            {[PENDING_OUT, PAID_OUT].includes(filter)?(
-                                                <div>
-                                                    {invoice.invoices.map(item => {
-                                                        return (
-                                                            <div>€{item.amount}</div>
-                                                        );
-                                                    })}
-                                                    {isDev()?null:(
-                                                        <div className="subtotal">€{invoice.amount}</div>
-                                                    )}
-                                                </div>
-                                            ):null}
-                                        </td>
+                                        {isClient() && !isAdmin()?null:(
+                                            <td>
+                                                {[PENDING_OUT, PAID_OUT].includes(filter)?(
+                                                    <div>
+                                                        {invoice.invoices.map(item => {
+                                                            return (
+                                                                <div>€{item.amount}</div>
+                                                            );
+                                                        })}
+                                                        {isDev()?null:(
+                                                            <div className="subtotal">€{invoice.amount}</div>
+                                                        )}
+                                                    </div>
+                                                ):null}
+                                            </td>
+                                        )}
                                         {filter === PENDING_IN?(
                                             <React.Fragment>
                                                 <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>

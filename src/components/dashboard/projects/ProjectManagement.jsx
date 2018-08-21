@@ -88,7 +88,7 @@ export default class ProjectManagement extends React.Component {
                                         <Switch>
                                             <Redirect exact from={`${match.url}`} to={`${match.url}/activity`}/>
                                             {[
-                                                ['activity', Activity],
+                                                ['activity', <Activity {...projectProps}/>],
                                                 ...(isLargeDevice?[
                                                     ['docs', <Docs {...projectProps}/>],
                                                     ['team', <Team {...projectProps}/>],

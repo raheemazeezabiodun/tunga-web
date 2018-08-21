@@ -90,14 +90,14 @@ export default class ProjectManagement extends React.Component {
                                             {[
                                                 ['activity', Activity],
                                                 ...(isLargeDevice?[
-                                                    ['docs', Docs],
-                                                    ['team', Team],
-                                                    ['plan', Plan],
-                                                    ['pay', PayContainer],
+                                                    ['docs', <Docs {...projectProps}/>],
+                                                    ['team', <Team {...projectProps}/>],
+                                                    ['plan', <Plan {...projectProps}/>],
+                                                    ['pay', <PayContainer {...projectProps}/>],
                                                 ]:[])
                                             ].map(path => {
                                                 return (
-                                                    <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} component={withProps(projectProps)(path[1])}/>
+                                                    <Route key={`project-management-path--${path}`} path={`${match.url}/${path[0]}`} render={props => path[1]}/>
                                                 );
                                             })}
                                             <Route key={`project-management-path--settings`}

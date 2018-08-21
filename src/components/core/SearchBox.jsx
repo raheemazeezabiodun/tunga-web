@@ -69,11 +69,15 @@ class SearchBox extends React.Component {
         if(query) {
             let searchKey = this.getSearchKey(query);
             const {SearchActions} = this.props;
-            SearchActions.listUsers({search: query, page_size: 5}, searchKey);
-            SearchActions.listProjects({search: query, page_size: 5}, searchKey);
-            SearchActions.listInvoices({search: query, page_size: 5}, searchKey);
+            SearchActions.listUsers({search: query, page_size: 3}, searchKey);
+            SearchActions.listProjects({search: query, page_size: 3}, searchKey);
+            SearchActions.listInvoices({search: query, page_size: 3}, searchKey);
         }
     }
+
+    clearSearch = () => {
+        this.setState({search: ''})
+    };
 
     parseSearchEntity(Source, itemsKey, searchKey) {
         const {SearchActions} = this.props;
@@ -88,7 +92,7 @@ class SearchBox extends React.Component {
             isLoading: Source.isFetching[searchKey],
             isLoadingMore: Source.isFetchingMore[searchKey],
             hasMore: !!Source.next[searchKey],
-            count: !!Source.count[searchKey]
+            count: Source.count[searchKey]
         }
     }
 
@@ -99,8 +103,6 @@ class SearchBox extends React.Component {
             users = this.parseSearchEntity(User, 'users', searchKey),
             projects = this.parseSearchEntity(Project, 'projects', searchKey),
             invoices = this.parseSearchEntity(Invoice, 'invoices', searchKey);
-
-        console.log('users: => ', users);
 
         return (
             <div className="search-widget">
@@ -141,7 +143,9 @@ class SearchBox extends React.Component {
                                             {users.items.map(user => {
                                                 return (
                                                     <div>
-                                                        <Link to={`/network/${user.username}`} className="result-item">
+                                                        <Link to={`/network/${user.username}`}
+                                                              className="result-item"
+                                                              onClick={this.clearSearch}>
                                                             <Avatar image={user.avatar_url} size="sm"/> {user.display_name}
                                                         </Link>
                                                     </div>
@@ -149,7 +153,8 @@ class SearchBox extends React.Component {
                                             })}
                                             <LoadMore hasMore={users.hasMore}
                                                       isLoadingMore={users.isLoadingMore}
-                                                      onLoadMore={users.onLoadMore}/>
+                                                      onLoadMore={users.onLoadMore}
+                                                      variant="outline-primary"/>
                                         </div>
                                     ):null}
 
@@ -161,7 +166,9 @@ class SearchBox extends React.Component {
                                             {projects.items.map(project => {
                                                 return (
                                                     <div>
-                                                        <Link to={`/projects/${project.id}`} className="result-item">
+                                                        <Link to={`/projects/${project.id}`}
+                                                              className="result-item"
+                                                              onClick={this.clearSearch}>
                                                             {project.title}
                                                         </Link>
                                                     </div>
@@ -170,7 +177,8 @@ class SearchBox extends React.Component {
 
                                             <LoadMore hasMore={projects.hasMore}
                                                       isLoadingMore={projects.isLoadingMore}
-                                                      onLoadMore={projects.onLoadMore}/>
+                                                      onLoadMore={projects.onLoadMore}
+                                                      variant="outline-primary"/>
                                         </div>
                                     ):null}
 
@@ -182,7 +190,9 @@ class SearchBox extends React.Component {
                                             {invoices.items.map(invoice => {
                                                 return (
                                                     <div>
-                                                        <Link to={`/projects/${invoice.project.id}/pay`} className="result-item">
+                                                        <Link to={`/projects/${invoice.project.id}/pay`}
+                                                              className="result-item"
+                                                              onClick={this.clearSearch}>
                                                             {invoice.full_title}
                                                         </Link>
                                                     </div>
@@ -191,7 +201,8 @@ class SearchBox extends React.Component {
 
                                             <LoadMore hasMore={invoices.hasMore}
                                                       isLoadingMore={invoices.isLoadingMore}
-                                                      onLoadMore={invoices.onLoadMore}/>
+                                                      onLoadMore={invoices.onLoadMore}
+                                                      variant="outline-primary"/>
                                         </div>
                                     ):null}
                                 </div>

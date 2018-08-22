@@ -169,20 +169,23 @@ class ChatWidget extends React.Component {
 
         if (!Activity.isFetching[selectionKey]) {
             let since = 0,
-                activityIds = [];
+                realActivityIds = [],
+                allActivityIds = Activity.ids[selectionKey] || [];
 
-            (Activity.ids[selectionKey] || []).forEach(id => {
+            allActivityIds.forEach(id => {
                 if(typeof id === 'number') {
-                    activityIds.push(id);
+                    realActivityIds.push(id);
                 }
             });
 
-            if (activityIds.length) {
-                since = activityIds[0];
+            if (realActivityIds.length) {
+                since = realActivityIds[0];
             }
 
             if(since) {
                 this.getList({since});
+            } else if(allActivityIds.length){
+                this.getList({since: 0});
             }
         }
     }

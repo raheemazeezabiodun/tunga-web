@@ -108,7 +108,7 @@ function activities(state = {}, action) {
         case MessageActions.CREATE_MESSAGE_SUCCESS:
             let activityId = `message_${action.message.id}`;
             newActivity[activityId] = {
-                id: activityId, action: 'create', activity_type: 'message', activity: action.message
+                id: activityId, action: 'send', activity_type: 'message', activity: action.message
             };
             return {...state, ...newActivity};
         case CommentActions.CREATE_COMMENT_SUCCESS:

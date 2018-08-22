@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {FormGroup, Row, Col} from 'reactstrap';
-import {NavLink} from 'react-router-dom';
+import {NavLink, Link} from 'react-router-dom';
+
 import Avatar from "../../core/Avatar";
 import ChoiceGroup from "../../core/ChoiceGroup";
 import Icon from "../../core/Icon";
@@ -10,6 +11,9 @@ import Select from "../../core/Select";
 import CustomInputGroup from "../../core/CustomInputGroup";
 import Button from "../../core/Button";
 import Success from "../../core/Success";
+import Input from "../../core/Input";
+import FieldError from "../../core/FieldError";
+import TextArea from "../../core/TextArea";
 
 import {isAdminOrPMOrClient, isDev} from "../../utils/auth";
 import {
@@ -31,7 +35,14 @@ export default class Settings extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {trello_board_url: '', google_drive_url: '', github_repo_url: '', github_issue_url: '', ...this.parseMetaMap(props.project.meta)}
+
+        const {project} = props;
+        this.state = {
+            trello_board_url: '', google_drive_url: '', github_repo_url: '', github_issue_url: '',
+            ...this.parseMetaMap(props.project.meta),
+            title: project.title,
+            description: project.description
+        }
     }
 
     onToggleUpdates(participation) {
@@ -125,8 +136,13 @@ export default class Settings extends React.Component {
         });
     };
 
+    onSaveProject = () => {
+        const {project, ProjectActions} = this.props;
+        ProjectActions.updateProject(project.id, {title: this.state.title, description: this.state.description});
+    };
+
     render() {
-        const { project, section, isSaved } = this.props;
+        const { project, section, isSaved, errors } = this.props;
 
         return (
             <div className="project-settings">
@@ -380,6 +396,52 @@ export default class Settings extends React.Component {
 
                 {isAdminOrPMOrClient()?(
                     <div>
+                        <div className="section section-project-details">
+                            <div className="font-weight-normal">Project details</div>
+                            <p className="text text-sm font-weight-thin">Update project details</p>
+                            {section === 'details'?(
+                                <div>
+                                    {isSaved[project.id]?(
+                                        <FormGroup>
+                                            <Success message="Changes saved successfully!"/>
+                                        </FormGroup>
+                                    ):null}
+
+                                    <FormGroup>
+                                        <label className="font-weight-light">Title</label>
+                                        {errors && errors.title ? (
+                                            <FieldError message={errors.title} />
+                                        ) : null}
+                                        <Input placeholder="Project title"
+                                               onChange={this.onChangeInput.bind(this, 'title')}
+                                               value={this.state.title}/>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <label className="font-weight-light">Description</label>
+                                        {errors && errors.description ? (
+                                            <FieldError message={errors.description} />
+                                        ) : null}
+                                        <TextArea placeholder="Project description"
+                                                  onChange={this.onChangeInput.bind(this, 'description')}>
+                                            {this.state.description}
+                                        </TextArea>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Button onClick={this.onSaveProject}>Save</Button>
+                                        <Link to={`/projects/${project.id}/settings`} className="btn btn-outline-primary float-right">
+                                            Cancel
+                                        </Link>
+                                    </FormGroup>
+                                </div>
+                            ):(
+                                <div>
+                                    <Link to={`/projects/${project.id}/settings/details`} className="btn btn-primary">
+                                        <Icon name="pencil"/> Edit project
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+
                         <div className="section">
                             <div className="font-weight-normal">Progress reports</div>
                             <div className="text text-sm font-weight-thin">Turn progress reports on and off for specific developers</div>

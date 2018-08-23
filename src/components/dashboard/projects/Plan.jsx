@@ -63,10 +63,10 @@ export default class Plan extends React.Component {
 
         openModal(<ProjectDateForm project={cleanedDateData}/>, title).then(data => {
             if(data) {
-                if(data.reason) {
-                    data[dateField] = data.date;
-                    delete data['date'];
+                data[dateField] = data.date;
+                delete data['date'];
 
+                if(data.reason) {
                     let changes = this.parseChangeLog([dateField], data.reason, data, project);
                     delete data['reason'];
 

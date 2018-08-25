@@ -301,6 +301,10 @@ b, strong {
             }
 
             &.btn-card, &.btn-dotted-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
                 min-width: 130px;
                 min-height: 130px;
                 margin-right: px-to-rem(20);

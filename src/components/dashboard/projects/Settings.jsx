@@ -66,6 +66,33 @@ export default class Settings extends React.Component {
         }
     }
 
+    getAllSlackChannels() {
+        let publicChannels = this.parseJSON(this.state.slack_channels) || [],
+            privateChannels = this.parseJSON(this.state.slack_groups) || [];
+        return [...publicChannels, ...privateChannels];
+    }
+
+    getSlackOptions(grouped=false) {
+        const optionize = function (options) {
+            return options.map(option => {
+                return [option.id, option.name];
+            });
+        };
+
+        let publicChannels = optionize(this.parseJSON(this.state.slack_channels) || []),
+            privateChannels = optionize(this.parseJSON(this.state.slack_groups) || []);
+
+        if(grouped) {
+            return [
+                ['Public', publicChannels],
+                ...(privateChannels.length?[
+                    ['Private', privateChannels]
+                ]:[])
+            ];
+        }
+        return [...publicChannels, ...privateChannels];
+    }
+
     onChangeValue(key, value) {
         let newState = {};
         newState[key] = value;
@@ -79,7 +106,7 @@ export default class Settings extends React.Component {
     onChangeChannel(channelId) {
         let newState = {};
         newState['slack_channel_id'] = channelId;
-        (this.parseJSON(this.state.slack_channels) || []).forEach(channel => {
+        this.getAllSlackChannels().forEach(channel => {
             if(channel.id === channelId) {
                 newState['slack_channel_name'] = channel.name;
             }
@@ -212,7 +239,7 @@ export default class Settings extends React.Component {
                                         {isSaved[project.id]?(
                                             <Success message="Changes saved successfully!"/>
                                         ):null}
-                                        {this.state.slack_channels?(
+                                        {this.state.slack_channels || this.state.slack_groups?(
                                             <div>
                                                 <FormGroup>
                                                     Team: <strong>{this.state.slack_team_name}</strong>
@@ -220,9 +247,8 @@ export default class Settings extends React.Component {
                                                 <FormGroup>
                                                     <div>Channel: </div>
                                                     <Select placeholder="-- Select channel --"
-                                                            options={(this.parseJSON(this.state.slack_channels) || []).map(channel => {
-                                                                return [channel.id, channel.name];
-                                                            })}
+                                                            options={this.getSlackOptions(true)}
+                                                            grouped={true}
                                                             selected={this.state.slack_channel_id}
                                                             onChange={value => this.onChangeChannel(value)}/>
                                                 </FormGroup>
@@ -253,7 +279,7 @@ export default class Settings extends React.Component {
                                         ):null}
 
                                         <div>
-                                            {this.state.slack_channels?(
+                                            {this.state.slack_channels || this.state.slack_groups?(
                                                 <Button type="submit">Save</Button>
                                             ):null}
 

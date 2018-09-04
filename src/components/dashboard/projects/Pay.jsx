@@ -34,12 +34,13 @@ export default class Pay extends React.Component {
 
     onCreateInvoice(type) {
         const {project, InvoiceActions} = this.props;
-        openModal(<InvoiceForm invoice={{type}} project={project}/>, `Add ${type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
+        openModal(<InvoiceForm invoice={{type}}
+                               project={project}/>, `Add ${type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
             if (data.type === INVOICE_TYPE_SALE) {
                 InvoiceActions.createInvoice(
                     {
                         ...data,
-                        milestone: data.milestone?{id: data.milestone.id}:null,
+                        milestone: data.milestone ? {id: data.milestone.id} : null,
                         user: {id: project.owner ? project.owner.id : project.user.id},
                         project: {id: project.id}
                     },
@@ -53,7 +54,7 @@ export default class Pay extends React.Component {
                         if (payout.user && payout.amount) {
                             cleanData.push({
                                 ...invoice,
-                                milestone: invoice.milestone?{id: invoice.milestone.id}:null,
+                                milestone: invoice.milestone ? {id: invoice.milestone.id} : null,
                                 amount: payout.amount,
                                 user: {id: payout.user.id},
                                 project: {id: project.id}
@@ -80,11 +81,12 @@ export default class Pay extends React.Component {
             cleanInvoice[key] = invoice[key];
         });
         const {project, InvoiceActions} = this.props;
-        openModal(<InvoiceForm invoice={cleanInvoice} project={project}/>, `Edit ${invoice.type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
+        openModal(<InvoiceForm invoice={cleanInvoice}
+                               project={project}/>, `Edit ${invoice.type === INVOICE_TYPE_SALE ? 'Payment' : 'Payout'}`).then(data => {
             if (invoice.type === INVOICE_TYPE_SALE) {
                 InvoiceActions.updateInvoice(
                     invoice.id,
-                    {...data, milestone: data.milestone?{id: data.milestone.id}:null},
+                    {...data, milestone: data.milestone ? {id: data.milestone.id} : null},
                     this.props.selectionKey
                 );
             }
@@ -148,7 +150,7 @@ export default class Pay extends React.Component {
                         if (payout.user && payout.amount) {
                             let payObj = {
                                 ...invoice,
-                                milestone: invoice.milestone?{id: invoice.milestone.id}:null,
+                                milestone: invoice.milestone ? {id: invoice.milestone.id} : null,
                                 amount: payout.amount,
                                 user: {id: payout.user.id},
                                 project: {id: project.id}
@@ -228,7 +230,7 @@ export default class Pay extends React.Component {
 
     openPay(invoice) {
         openModal(<PaymentOptions/>, 'Payment options', true, {className: 'modal-pay'}).then(type => {
-            if(type === 'card') {
+            if (type === 'card') {
                 $(`.pay_stripe_${invoice.id}`).click();
             } else {
                 openModal(
@@ -236,7 +238,7 @@ export default class Pay extends React.Component {
                     'Download Invoice', true, {className: 'modal-pay'}
                 );
             }
-        }).catch(error=> {
+        }).catch(error => {
 
         });
     }
@@ -264,7 +266,7 @@ export default class Pay extends React.Component {
                                 <div className="section-title">Payments</div>
 
                                 {isAdminOrPM() && !project.archived ? (
-                                    <div  className="section-action">
+                                    <div className="section-action">
                                         <Button size="sm"
                                                 onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_SALE)}>
                                             <Icon name="add"/> Add payment
@@ -272,7 +274,7 @@ export default class Pay extends React.Component {
                                     </div>
                                 ) : null}
 
-                                {payments.length?(
+                                {payments.length ? (
                                     <div className="payment-list">
                                         <Table striped>
                                             <thead>
@@ -291,50 +293,56 @@ export default class Pay extends React.Component {
                                                         <td>{invoice.title}</td>
                                                         <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
                                                         <td>
-                                                            <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`} target="_blank">
+                                                            <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`}
+                                                               target="_blank">
                                                                 {invoice.number}
                                                             </a>
                                                         </td>
                                                         <td>
-                                                            {invoice.total_amount === invoice.amount?(
+                                                            {invoice.total_amount === invoice.amount ? (
                                                                 <div>€{invoice.amount}</div>
-                                                            ):(
+                                                            ) : (
                                                                 <div>
                                                                     <div className="clearfix">
                                                                         <div className="float-left">Fee:</div>
-                                                                        <div className="float-right">€{invoice.amount}</div>
+                                                                        <div
+                                                                            className="float-right">€{invoice.amount}</div>
                                                                     </div>
-                                                                    {Math.round(invoice.processing_fee)?(
+                                                                    {Math.round(invoice.processing_fee) ? (
                                                                         <div className="clearfix">
-                                                                            <div className="float-left">Processing:</div>
-                                                                            <div className="float-right">€{invoice.processing_fee}</div>
+                                                                            <div className="float-left">Processing:
+                                                                            </div>
+                                                                            <div
+                                                                                className="float-right">€{invoice.processing_fee}</div>
                                                                         </div>
-                                                                    ):null}
-                                                                    {Math.round(invoice.tax_amount)?(
+                                                                    ) : null}
+                                                                    {Math.round(invoice.tax_amount) ? (
                                                                         <div className="clearfix">
                                                                             <div className="float-left">VAT:</div>
-                                                                            <div className="float-right">€{invoice.tax_amount}</div>
+                                                                            <div
+                                                                                className="float-right">€{invoice.tax_amount}</div>
                                                                         </div>
-                                                                    ):null}
+                                                                    ) : null}
                                                                     <div className="subtotal">
                                                                         <div className="float-left">Total:</div>
-                                                                        <div className="float-right">€{invoice.total_amount}</div>
+                                                                        <div
+                                                                            className="float-right">€{invoice.total_amount}</div>
                                                                     </div>
                                                                 </div>
                                                             )}
                                                         </td>
                                                         <td>
-                                                            {invoice.paid?(
+                                                            {invoice.paid ? (
                                                                 <div>
                                                                     <Icon name="check" className="green"/> Paid
                                                                 </div>
-                                                            ):isSaving[invoice.id]?(
+                                                            ) : isSaving[invoice.id] ? (
                                                                 <div>
                                                                     <Progress message="Processing"/>
                                                                 </div>
-                                                            ):(
+                                                            ) : (
                                                                 <div className="clearfix">
-                                                                    {isClient()?(
+                                                                    {isClient() ? (
                                                                         <React.Fragment>
                                                                             <StripeButton size="sm"
                                                                                           amount={invoice.total_amount}
@@ -342,9 +350,11 @@ export default class Pay extends React.Component {
                                                                                           description={invoice.title}
                                                                                           onPay={this.onPay.bind(this, invoice)}
                                                                                           className={`pay_stripe_${invoice.id}`}/>
-                                                                            <Button size="sm" onClick={this.openPay.bind(this, invoice)}><Icon name="cash"/> Pay</Button>
+                                                                            <Button size="sm"
+                                                                                    onClick={this.openPay.bind(this, invoice)}><Icon
+                                                                                name="cash"/> Pay</Button>
                                                                         </React.Fragment>
-                                                                    ):null}
+                                                                    ) : null}
                                                                     {isAdminOrPM() && !project.archived ? (
                                                                         <div className="float-right">
                                                                             <div className="actions">
@@ -375,13 +385,13 @@ export default class Pay extends React.Component {
                                                             )}
                                                         </td>
                                                     </tr>
-                                                )
+                                                );
                                             })}
                                             </tbody>
                                             {payments.length ? (
                                                 <thead className="payment-footer">
                                                 <tr>
-                                                    <td >Total</td>
+                                                    <td>Total</td>
                                                     <td/>
                                                     <td/>
                                                     <td>€{sumInvoices(payments)}</td>
@@ -391,7 +401,7 @@ export default class Pay extends React.Component {
                                             ) : null}
                                         </Table>
                                     </div>
-                                ):null}
+                                ) : null}
                             </div>
                         )}
 
@@ -407,7 +417,7 @@ export default class Pay extends React.Component {
                                     </div>
                                 ) : null}
 
-                                {batchPayouts.length?(
+                                {batchPayouts.length ? (
                                     <div className="payment-list">
                                         <Table striped>
                                             <thead>
@@ -428,7 +438,8 @@ export default class Pay extends React.Component {
                                                         <td>
                                                             {batch.invoices.map(item => {
                                                                 return (
-                                                                    <div key={item.id}>{moment.utc(item.issued_at).format('DD/MMM/YYYY')}</div>
+                                                                    <div
+                                                                        key={item.id}>{moment.utc(item.issued_at).format('DD/MMM/YYYY')}</div>
                                                                 );
                                                             })}
                                                         </td>
@@ -443,7 +454,8 @@ export default class Pay extends React.Component {
                                                             {batch.invoices.map(item => {
                                                                 return (
                                                                     <div key={item.id}>
-                                                                        <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`} target="_blank">
+                                                                        <a href={`${ENDPOINT_INVOICES}${item.id}/download/?format=pdf`}
+                                                                           target="_blank">
                                                                             {item.number}
                                                                         </a>
                                                                     </div>
@@ -456,12 +468,12 @@ export default class Pay extends React.Component {
                                                                     <div key={item.id}>€{item.amount}</div>
                                                                 );
                                                             })}
-                                                            {isDev()?null:(
+                                                            {isDev() ? null : (
                                                                 <div className="subtotal">€{batch.amount}</div>
                                                             )}
                                                         </td>
                                                         <td>
-                                                            {isAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved'? (
+                                                            {isAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved' ? (
                                                                 <div className="actions text-right">
                                                                     <IconButton name="colon" size={null}
                                                                                 onClick={this.onToggleActions.bind(this, batch.ref)}/>
@@ -484,16 +496,16 @@ export default class Pay extends React.Component {
                                                                         </div>
                                                                     ) : null}
                                                                 </div>
-                                                            ) : batch.paid?(
+                                                            ) : batch.paid ? (
                                                                 <div>
                                                                     <Icon name="check" className="green"/> Paid
                                                                 </div>
-                                                            ): batch.status === 'approved'?(
+                                                            ) : batch.status === 'approved' ? (
                                                                 <div>Processing</div>
-                                                            ):null}
+                                                            ) : null}
                                                         </td>
                                                     </tr>
-                                                )
+                                                );
                                             })}
                                             </tbody>
                                             {batchPayouts.length ? (
@@ -510,9 +522,18 @@ export default class Pay extends React.Component {
                                             ) : null}
                                         </Table>
                                     </div>
-                                ):null}
+                                ) : null}
                             </div>
                         )}
+                        {isAdminOrPM() && !project.archived ? (
+                            <div className="section">
+                                <div className="section-title">Margin</div>
+                                <p>€{project.margin}</p>
+                            </div>
+
+                        ) : null}
+
+
                     </div>
                 )}
             </div>

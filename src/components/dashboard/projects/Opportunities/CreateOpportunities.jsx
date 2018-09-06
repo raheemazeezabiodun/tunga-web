@@ -36,8 +36,8 @@ export default class CreateOpportunities extends React.Component {
     onSend = (e) => {
         e.preventDefault();
         const {ProjectActions} = this.props;
-        ProjectActions.createProject(this.state.opportunity)
-    }
+        ProjectActions.createProject(this.state.opportunity);
+    };
 
     render() {
         const { errors } = this.props;

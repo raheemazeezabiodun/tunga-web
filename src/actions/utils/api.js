@@ -272,6 +272,8 @@ export const STATUS_ACCEPTED = 'accepted';
 export const STATUS_REJECTED = 'rejected';
 export const STATUS_APPROVED = 'approved';
 export const STATUS_DECLINED = 'declined';
+export const STATUS_INTERESTED = 'interested';
+export const STATUS_UNINTERESTED = 'uninterested';
 
 export const CHANNEL_TYPES = {
     direct: 1,

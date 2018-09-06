@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -8,6 +7,7 @@ import { displayExpectedReturn } from '../../../utils/helpers';
 import { isDev, getUser, isAdminOrPM } from '../../../utils/auth';
 import Success from '../../../core/Success';
 import { openConfirm } from '../../../core/utils/modals';
+import {STATUS_INTERESTED, STATUS_UNINTERESTED} from "../../../../actions/utils/api";
 
 
 export default class OpportunityDetails extends Component {
@@ -18,116 +18,66 @@ export default class OpportunityDetails extends Component {
         ProjectActions: PropTypes.func.isRequired
     };
 
-    handleInterestUpdate(status, interest_id) {
-        const { ProjectActions, project } = this.props;
-        ProjectActions.updateInterest(interest_id, {
-            status,
-            user: {
-                id: getUser().id
-            },
-            project: {
-                id: project.id
-            }
-        })
+    onInterestUpdate(interest, status) {
+        const { ProjectActions, } = this.props;
+        ProjectActions.updateInterest(interest.id, {status})
     }
 
-    renderUserAvailability = () => {
-        const {project} = this.props;
-        let content = null;
-        if (isDev()) {
-            const authUserResponse = project.interest_polls.filter(interest => interest.user.id === getUser().id);
-            content = (
-                <div className="float-right interests-btn-wrapper">
-                    <Button onClick={() => this.handleInterestUpdate('interested', authUserResponse[0].id)}>
-                        I'm available and interested
-                    </Button>
-                    <Button variant='secondary' onClick={() => his.handleInterestUpdate('uninterested', authUserResponse[0].id)}>
-                        I'm not available for this project
-                    </Button>
-                </div>
-            );
-            
-            if (authUserResponse[0].status === 'interested') {
-                content = (
-                    <div className="float-right interests-btn-wrapper">
-                        <Button variant='secondary' onClick={() => this.handleInterestUpdate('uninterested', authUserResponse[0].id)}>
-                            I'm not available anymore
-                        </Button>
-                    </div>
-                )
-            } else if (authUserResponse[0].status === 'uninterested') {
-                content = (
-                    <div className="float-right interests-btn-wrapper">
-                        <Button onClick={() => this.handleInterest('interested', authUserResponse[0].id)}>
-                            I'm available again
-                        </Button>
-                    </div>
-                )
+    getMyInterest() {
+        if(isDev()) {
+            const {project} = this.props,
+                filteredList  = project.interest_polls.filter(interest => interest.user.id === getUser().id);
+            if(filteredList && filteredList.length) {
+                return filteredList[0];
             }
         }
-        
-        return content;
+        return null;
     }
 
-    updateOpportunityToProject() {
+    activateProject() {
         const { ProjectActions, project } = this.props;
-        openConfirm('Are you sure you want to make this opportunity an active project?').then((result) => { 
+        openConfirm('Are you sure you want to make this opportunity an active project?').then((result) => {
             ProjectActions.updateProject(project.id, { stage: 'active' })
         })
     }
 
-    renderAdminOrPmButton() {
-        let content = null;
-        if (isAdminOrPM()) {
-            content = (
-                <div className="float-right interests-btn-wrapper">
-                    <Button onClick={() => this.updateOpportunityToProject()}>
-                        Active as project
-                    </Button>
-                </div>
-            )
-        }
-        return content;
-    }
-
     render() {
-        const { project, isSaved } = this.props;
+        const { project, isSaved } = this.props,
+            myInterest = this.getMyInterest();
         return (
-            <Container className="opportunity">
+            <div className="opportunity">
                 {isSaved && isSaved.interest ? <Success message="Successfully submitted your availability"/> : null}
                 <div className="button-wrapper">
-                    <Link to={'/projects/filter/opportuntiy'}>
+                    <Link to={'/projects/filter/opportunity'}>
                         <Button>Go back to overview</Button>
                     </Link>
                 </div>
                 <div className="content-card">
                     <div>
-                        <h6>Opportunity title</h6>
+                        <div className="font-weight-medium">Opportunity title</div>
                         <p>{project.title}</p>
                     </div>
                     <div>
-                        <h6>Expected duration of the project</h6>
+                        <div className="font-weight-medium">Expected duration of the project</div>
                         <p>{displayExpectedReturn(project.expected_duration)}</p>
                     </div>
                     <div>
-                        <h6>Skills required for this project</h6>
+                        <div className="font-weight-medium">Skills required for this project</div>
                         {project.skills && project.skills.length ? (
-                            <div>
+                            <p>
                                 {project.skills.map(skill => {
-                                    return (
-                                        <p key={`skills-${skill.name}`}>{skill.name}</p>
-                                    );
-                                })}
-                            </div>
+                                    return skill.name;
+                                }).join(', ')}
+                            </p>
                         ): null}
                     </div>
                     <div>
-                        <h6>Short Description of the project *</h6>
+                        <div className="font-weight-medium">Short Description of the project *</div>
                         <p>{project.description}</p>
                     </div>
-                    <div>
-                        <h6>Files</h6>
-                        {project.documents && project.documents.length ? (
+                    {project.documents && project.documents.length ? (
+                        <div>
+                            <div className="font-weight-medium">Files</div>
                             <ul className="opportunity-files">
                                 {project.documents.map(doc => {
                                     return (
@@ -135,12 +85,33 @@ export default class OpportunityDetails extends Component {
                                     );
                                 })}
                             </ul>
-                        ): null}
-                    </div>
+                        </div>
+                    ): null}
                 </div>
-                {this.renderUserAvailability()}
-                {this.renderAdminOrPmButton()}
-            </Container>
+
+                {isDev()?(
+                    <div className="float-right interests-btn-wrapper">
+                        {myInterest.status !== STATUS_INTERESTED?(
+                            <Button onClick={() => this.onInterestUpdate(myInterest, STATUS_INTERESTED)}>
+                                I'm available {myInterest.status === STATUS_UNINTERESTED?'again':'and interested'}
+                            </Button>
+                        ):null}
+                        {myInterest.status !== STATUS_UNINTERESTED?(
+                            <Button variant='secondary' onClick={() => this.onInterestUpdate(myInterest, STATUS_UNINTERESTED)}>
+                                I'm not available {myInterest.status === STATUS_INTERESTED?'anymore':'for this project'}
+                            </Button>
+                        ):null}
+                    </div>
+                ):null}
+
+                {isAdminOrPM()?(
+                    <div className="float-right interests-btn-wrapper">
+                        <Button onClick={() => this.activateProject()}>
+                            Active as project
+                        </Button>
+                    </div>
+                ):null}
+            </div>
         );
     }
 }

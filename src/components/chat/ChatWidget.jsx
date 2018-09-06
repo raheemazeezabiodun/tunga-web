@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import randomstring from "randomstring";
-import moment from "moment/moment";
+import moment from "moment";
 
 import connect from "../../connectors/ActivityConnector";
 
@@ -16,6 +17,10 @@ import {isAuthenticated} from "../utils/auth";
 import {getLastChatAutoOpenAt} from "../utils/chat";
 import {CHANNEL_TYPES} from "../../actions/utils/api";
 import {openCalendlyWidget} from "../utils/calendly";
+
+const CHAT_SCREEN_CHOOSE = 'choose',
+    CHAT_SCREEN_DEVELOPER = 'developer',
+    CHAT_SCREEN_CHAT = 'chat';
 
 class ChatWidget extends React.Component {
     static propTypes = {
@@ -43,6 +48,7 @@ class ChatWidget extends React.Component {
             lastActivityChannel: null,
             lastActivityCount: 0,
             lastActivityAt: null,
+            step: isAuthenticated()?CHAT_SCREEN_CHAT:CHAT_SCREEN_CHOOSE,
         };
     }
 
@@ -305,8 +311,18 @@ class ChatWidget extends React.Component {
                 isForm: true,
                 body: (
                     <div>
+                        {/*
                         <p>Uh-oh, we are currently not online.</p>
                         <p>We will reach out to you ASAP!</p>
+                        */}
+                        <p>Oops ... seems like we are currently not online. Please book a meeting with us.</p>
+                        <div className="text-center">
+                            <Button onClick={() => {
+                                openCalendlyWidget();
+                                window.tungaCanOpenOverlay = false;
+                            }}>Talk with Tunga</Button>
+                        </div>
+                        {/*
                         <div className="btn-group bubble-action" role="group">
                             <Button
                                 type="button"
@@ -326,6 +342,7 @@ class ChatWidget extends React.Component {
                                 Contact me via email
                             </Button>
                         </div>
+                        */}
                     </div>
                 ),
             },
@@ -369,6 +386,10 @@ class ChatWidget extends React.Component {
         }
     }
 
+    changeStep(step) {
+        this.setState({step});
+    }
+
     render() {
         const {Activity, ActivityActions} = this.props,
             selectionKey = this.state.selectionKey,
@@ -407,19 +428,49 @@ class ChatWidget extends React.Component {
                             <div className="heading">Hi there, we are Tunga. How can we help?</div>
                         </div>
 
-                        <ActivityList activities={activities}
-                                      onLoadMore={() => {
-                                          ActivityActions.listMoreActivities(Activity.next[selectionKey], selectionKey);
-                                      }}
-                                      isLoading={Activity.isFetching[selectionKey]}
-                                      isLoadingMore={Activity.isFetchingMore[selectionKey]}
-                                      hasMore={!!Activity.next[selectionKey]}
-                                      contentSelector=".chat-widget"
-                                      heightOffset={160}/>
+                        {!isAuthenticated() && this.state.step !== CHAT_SCREEN_CHAT?(
+                            <div className="chat-options">
+                                {this.state.step === CHAT_SCREEN_DEVELOPER?(
+                                    <React.Fragment>
+                                        <Link to="/join" className="btn btn-primary btn-xl btn-block">
+                                            I want to join Tunga as a developer
+                                        </Link>
+                                        <a href="mailto:hello@tunga.io" className="btn btn-primary btn-xl btn-block">
+                                            I would like to email Tunga
+                                        </a>
+                                    </React.Fragment>
+                                ):(
+                                    <React.Fragment>
+                                        <Button size="xl"
+                                                block={true}
+                                                onClick={this.changeStep.bind(this, CHAT_SCREEN_CHAT)}>
+                                            I have a software need
+                                        </Button>
+                                        <Button size="xl"
+                                                block={true}
+                                                onClick={this.changeStep.bind(this, CHAT_SCREEN_DEVELOPER)}>
+                                            I am a developer
+                                        </Button>
+                                    </React.Fragment>
+                                )}
+                            </div>
+                        ):(
+                            <React.Fragment>
+                                <ActivityList activities={activities}
+                                              onLoadMore={() => {
+                                                  ActivityActions.listMoreActivities(Activity.next[selectionKey], selectionKey);
+                                              }}
+                                              isLoading={Activity.isFetching[selectionKey]}
+                                              isLoadingMore={Activity.isFetchingMore[selectionKey]}
+                                              hasMore={!!Activity.next[selectionKey]}
+                                              contentSelector=".chat-widget"
+                                              heightOffset={160}/>
 
-                        {channel && channel.id?(
-                            <MessageWidget onSendMessage={this.onSendMessage} canUpload={false}/>
-                        ):null}
+                                {channel && channel.id?(
+                                    <MessageWidget onSendMessage={this.onSendMessage} canUpload={false}/>
+                                ):null}
+                            </React.Fragment>
+                        )}
                     </div>
                 ):null}
 

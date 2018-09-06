@@ -58,6 +58,12 @@
         width: 75%;
         min-width: 300px;
     }
+
+    .chat-widget {
+        .message {
+            width: 100%;
+        }
+    }
 }
 
 // >= 768px

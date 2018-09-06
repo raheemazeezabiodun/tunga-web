@@ -1955,6 +1955,24 @@ table {
     }
 }
 
+.chat-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 350px;
+    padding: 20px;
+
+    .btn {
+        margin-bottom: 10px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
 .message {
     font-size: $font-size-sm;
     width: 100%;
@@ -2027,6 +2045,10 @@ table {
 
     p {
         margin-bottom: 5px;
+    }
+
+    .btn {
+        margin-bottom: 8px;
     }
 }
 

@@ -25,7 +25,13 @@ export default class TitleBar extends React.Component {
 
         let projectsSections = [
                 ['/projects', 'Active Projects'],
-                ['/projects/filter/archived', 'Archived Projects']
+                ['/projects/filter/archived', 'Archived Projects'],
+                ['/projects/filter/opportunity', 'Opportunities']
+            ],
+            projectCreateSections = [
+                ['/projects/new', `Create ${isAdminOrPM()?'active':'new'} project`],
+                ...(isAdminOrPM()?[['/projects/new/opportunity', 'Create opportunity']]:[])
+
             ],
             projectCreateSections = [
                 ['/projects/new', `Create ${isAdminOrPM()?'active':'new'} project`],

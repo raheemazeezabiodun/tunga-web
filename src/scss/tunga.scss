@@ -3591,4 +3591,54 @@ textarea {
     }
 }
 
+.opportunity {
+
+    display: block;
+
+    .button-wrapper {
+        margin-bottom: 10px;
+    }
+
+    .opportunity-files {
+        list-style-type: none;
+    }
+
+    .interests-btn-wrapper {
+        margin: 25px 0px 25px 0px
+    }
+
+    .interest-poll-card {
+        color: get-color('white');
+        background-color: get-color('dark-grey');
+        border: 1px #e1e1e1 solid;
+        border-radius: 0;
+        box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
+        padding: 12px;
+
+        .interest-poll-card-details {
+            display: inline;
+
+            p {
+                margin: -20px 0px 0px 45px
+            }
+        }
+    }
+}
+
+.opportunity-nav-link {
+    width: 23.66% !important
+}
+
+.opportunity-approval-accepted {
+    color: get-color('green')
+}
+
+.opportunity-approval-initial {
+    color: get-color('dark-grey')
+}
+
+.opportunity-approval-icon-spacing {
+    padding-right: 15px;
+}
+
 @import "breakpoints";

@@ -6,6 +6,7 @@ import * as ProjectActions from "../actions/ProjectActions";
 import * as ParticipationActions from "../actions/ParticipationActions";
 import * as DocumentActions from "../actions/DocumentActions";
 import * as ProgressEventActions from "../actions/ProgressEventActions";
+import * as InterestActions from '../actions/InterestPollActions';
 
 function created(state = {}, action) {
     let targetKey = action.target || 'new';
@@ -71,6 +72,11 @@ function projects(state = {}, action) {
             let new_project = {};
             new_project[action.project.id] = action.project;
             return {...state, ...new_project};
+        case InterestActions.CREATE_INTEREST_POLL_SUCCESS:
+        case InterestActions.UPDATE_INTEREST_POLL_SUCCESS:
+            let new_interest = {};
+            new_interest[action.interest.id] = action.interest;
+            return {...state, ...new_interest};
         case ParticipationActions.CREATE_PARTICIPATION_SUCCESS:
         case ParticipationActions.UPDATE_PARTICIPATION_SUCCESS:
             let participation = action.participation;
@@ -225,6 +231,16 @@ function isSaved(state = {}, action) {
         case ProjectActions.UPDATE_PROJECT_START:
         case ProjectActions.UPDATE_PROJECT_FAILED:
             newState[targetKey] = false;
+            return {...state, ...newState};
+        case InterestActions.CREATE_INTEREST_POLL_SUCCESS:
+        case InterestActions.UPDATE_INTEREST_POLL_SUCCESS:
+            newState['interest'] = true;
+            return {...state, ...newState};
+        case InterestActions.CREATE_INTEREST_POLL_START:
+        case InterestActions.CREATE_INTEREST_POLL_FAILED:
+        case InterestActions.UPDATE_INTEREST_POLL_START:
+        case InterestActions.UPDATE_INTEREST_POLL_FAILED:
+            newState['interest'] = false;
             return {...state, ...newState};
         case ParticipationActions.CREATE_PARTICIPATION_SUCCESS:
         case ParticipationActions.UPDATE_PARTICIPATION_SUCCESS:

@@ -3,11 +3,10 @@ import { Switch, Route } from 'react-router-dom';
 import randomstring from 'randomstring';
 
 import ProjectListContainer from './ProjectListContainer';
-import ProjectList from './ProjectList';
 import ProjectDetailContainer from './ProjectDetailContainer';
-import ProjectManagement from "./ProjectManagement";
-import ProjectForm from "./ProjectForm";
-import NewStage from "./NewStage";
+import NewStage from "./Stage/NewStage";
+import StageRouter from './Stage/StageRouter';
+import CreateOpportunities from './Opportunities/CreateOpportunities';
 
 import connect from '../../../connectors/ProjectConnector';
 
@@ -25,12 +24,32 @@ class ProjectsContainer extends React.Component {
     }
 
     render() {
-        const {Project, ProjectActions} = this.props, targetKey = this.state.targetKey;
-
+        let filters = null;
+        switch(this.props.location.pathname) {
+            case '/projects':
+                filters = {stage: 'active'}
+                break;
+            case '/projects/filter/archived':
+                filters = {archived: 'True'};
+                break;
+            case '/projects/filter/opportunity':
+                filters = {stage: 'opportunity'}
+                break;
+            default:
+                break;
+        }
+        const {Project, ProjectActions, InterestActions} = this.props, targetKey = this.state.targetKey;
         return (
             <React.Fragment>
                 <Switch>
                     <Route exact path="/projects/new/stage" component={NewStage}/>
+                    <Route exact path="/projects/new/opportunity"
+                        render={props => <CreateOpportunities {...props}
+                                                              errors={Project.errors.create || {}}
+                                                              ProjectActions={ProjectActions}
+                                                              isSaving={Project.isSaving[targetKey] || false}
+                                                              isSaved={Project.isSaved[targetKey] || false} />}
+                    />
                     <Route exact path="/projects/new"
                            render={props => <ProjectForm {...props}
                                                          project={Project.created[targetKey] || null}
@@ -49,9 +68,9 @@ class ProjectsContainer extends React.Component {
                                    exact={true}
                                    render={props => <ProjectListContainer {...props}
                                                                           Project={Project}
-                                                                          filters={{archived: props.match.params.filter === 'archived'?'True':'False'}}
+                                                                          filters={{...filters}}
                                                                           ProjectActions={ProjectActions}>
-                                       <ProjectList/>
+                                       <StageRouter project={Project} projectFilter={true} />
                                    </ProjectListContainer>}
                             />
                         );
@@ -59,8 +78,11 @@ class ProjectsContainer extends React.Component {
                     <Route path="/projects/:projectId"
                            render={props => <ProjectDetailContainer {...props}
                                                                     projectId={props.match.params.projectId}
-                                                                    Project={Project} ProjectActions={ProjectActions}>
-                               <ProjectManagement {...props}/>
+                                                                    Project={Project} ProjectActions={ProjectActions}
+                                                                    isSaving={Project.isSaving[targetKey] || false}
+                                                                    isSaved={Project.isSaved[targetKey] || false}
+                                                                    InterestActions={InterestActions}>
+                               <StageRouter {...props} />
                            </ProjectDetailContainer>}
                     />
                 </Switch>

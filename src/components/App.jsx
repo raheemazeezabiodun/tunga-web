@@ -109,6 +109,7 @@ class App extends React.Component {
                                 <Switch>
                                     <Route exact path='/customer/help/:channelId' render={props =>
                                         <ChatWidget channelId={props.match.params.channelId} autoOpen={true}/>}/>
+                                    <Route path="/join" render={props => {return null}} />
                                     <Route path="*" component={ChatWidget} />
                                 </Switch>
                             )}

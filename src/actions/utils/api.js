@@ -81,6 +81,7 @@ export const ENDPOINT_CHANNELS = getEndpointUrl('channels/');
 export const ENDPOINT_MESSAGES = getEndpointUrl('messages/');
 export const ENDPOINT_UPLOADS = getEndpointUrl('uploads/');
 export const ENDPOINT_INVOICES = getEndpointUrl('invoices/');
+export const ENDPOINT_INTEREST_POLL = getEndpointUrl('interest-poll/');
 
 export const ENDPOINT_COUNTRIES = getEndpointUrl('countries/');
 

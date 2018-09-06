@@ -5,6 +5,7 @@ import moment from "moment";
 import _ from 'lodash';
 
 import Icon from "../../core/Icon";
+import { isDev } from '../../utils/auth';
 
 export default class ProjectCard extends React.Component {
     static propTypes = {
@@ -15,7 +16,30 @@ export default class ProjectCard extends React.Component {
         return newDate && (!currentDeadline || currentDeadline && moment.utc(newDate) < moment.utc(currentDeadline));
     }
 
-    render() {
+    renderOpportunity() {
+        const { project } = this.props;
+        const interestPolls = project.interest_polls;
+        const interestedDevs = interestPolls.filter(interest => interest.status == 'interested').length
+        return (
+            <Link to={`/projects/${project.id}`} className="project-card">
+                <div className="card-title">{_.truncate(project.title, {length: 30})}</div>
+                {isDev() ? (
+                    <div>
+                        <div>Skills required: {project.skills.map(skill => {
+                            return `${skill.name} `
+                        })}</div>
+                    </div>
+                ) : (
+                <div>
+                    <div>Send out to {interestPolls.length} developer{interestPolls.length === 1 ? '' : 's'}</div>
+                    <div>{interestedDevs} developer{interestedDevs === 1 ? '' : 's'} are interested</div>
+                </div>
+                )}
+            </Link>
+        )   
+    }
+
+    renderProjects() {
         const {project} = this.props;
         let nextDeadline = '',
             nextEvent = '';
@@ -33,7 +57,6 @@ export default class ProjectCard extends React.Component {
                 }
             });
         }
-
         return (
             project?(
                 <Link to={`/projects/${project.id}`} className="project-card">
@@ -48,5 +71,11 @@ export default class ProjectCard extends React.Component {
                 </Link>
             ):null
         );
+    }
+
+    render() {
+        const {project} = this.props;
+        const renderCard = project.stage === 'opportunity' ? this.renderOpportunity() : this.renderProjects()
+        return renderCard;
     }
 }

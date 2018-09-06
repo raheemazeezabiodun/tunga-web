@@ -525,15 +525,14 @@ export default class Pay extends React.Component {
                                 ) : null}
                             </div>
                         )}
-                        {isAdminOrPM() && !project.archived ? (
+
+                        {isAdmin()? (
                             <div className="section">
                                 <div className="section-title">Margin</div>
                                 <p>€{project.margin}</p>
                             </div>
 
                         ) : null}
-
-
                     </div>
                 )}
             </div>

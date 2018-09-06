@@ -1336,6 +1336,10 @@ table {
         .rw-widget, .tag-input, .message-widget {
             max-width: 420px;
         }
+
+        .col-main {
+            max-width: 450px;
+        }
     }
 
     &.payments-list-card {

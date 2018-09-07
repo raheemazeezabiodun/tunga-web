@@ -5,7 +5,7 @@ import Button from "../../core/Button";
 
 import {openCalendlyWidget} from "../../utils/calendly";
 
-export default ({title, description, className, showCTA=true, ctaText='Schedule a call', ctaSize='xl', ctaCallback, children, addMeta=true}) => {
+export default ({title, description, className, showCTA=true, ctaText='Schedule a call', ctaSize='xxl', ctaCallback, children, addMeta=true}) => {
     return (
         <React.Fragment>
             {addMeta?(

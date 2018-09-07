@@ -36,7 +36,7 @@ export default class ProjectCard extends React.Component {
                 </div>
                 )}
             </Link>
-        )   
+        )
     }
 
     renderProjects() {
@@ -75,7 +75,6 @@ export default class ProjectCard extends React.Component {
 
     render() {
         const {project} = this.props;
-        const renderCard = project.stage === 'opportunity' ? this.renderOpportunity() : this.renderProjects()
-        return renderCard;
+        return project.stage === 'opportunity' ? this.renderOpportunity() : this.renderProjects()
     }
 }

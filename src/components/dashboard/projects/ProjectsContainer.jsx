@@ -4,8 +4,10 @@ import randomstring from 'randomstring';
 
 import ProjectListContainer from './ProjectListContainer';
 import ProjectDetailContainer from './ProjectDetailContainer';
+import ProjectForm from "./ProjectForm";
+import ProjectList from './ProjectList';
 import NewStage from "./Stage/NewStage";
-import StageRouter from './Stage/StageRouter';
+import ProjectStageContainer from './ProjectStageContainer';
 import CreateOpportunities from './Opportunities/CreateOpportunities';
 
 import connect from '../../../connectors/ProjectConnector';
@@ -23,21 +25,18 @@ class ProjectsContainer extends React.Component {
         ProjectActions.createProject(project, this.state.targetKey);
     }
 
-    render() {
-        let filters = null;
-        switch(this.props.location.pathname) {
-            case '/projects':
-                filters = {stage: 'active'}
-                break;
-            case '/projects/filter/archived':
-                filters = {archived: 'True'};
-                break;
-            case '/projects/filter/opportunity':
-                filters = {stage: 'opportunity'}
-                break;
+    getProjectFilters(filter) {
+        switch(filter) {
+            case 'archived':
+                return {stage: 'active', archived: 'True'};
+            case 'opportunity':
+                return {stage: 'opportunity'};
             default:
-                break;
+                return {stage: 'active', archived: 'False'};
         }
+    }
+
+    render() {
         const {Project, ProjectActions, InterestActions} = this.props, targetKey = this.state.targetKey;
         return (
             <React.Fragment>
@@ -68,9 +67,9 @@ class ProjectsContainer extends React.Component {
                                    exact={true}
                                    render={props => <ProjectListContainer {...props}
                                                                           Project={Project}
-                                                                          filters={{...filters}}
+                                                                          filters={this.getProjectFilters(props.match.params.filter)}
                                                                           ProjectActions={ProjectActions}>
-                                       <StageRouter project={Project} projectFilter={true} />
+                                       <ProjectList/>
                                    </ProjectListContainer>}
                             />
                         );
@@ -82,7 +81,7 @@ class ProjectsContainer extends React.Component {
                                                                     isSaving={Project.isSaving[targetKey] || false}
                                                                     isSaved={Project.isSaved[targetKey] || false}
                                                                     InterestActions={InterestActions}>
-                               <StageRouter {...props} />
+                               <ProjectStageContainer {...props} />
                            </ProjectDetailContainer>}
                     />
                 </Switch>

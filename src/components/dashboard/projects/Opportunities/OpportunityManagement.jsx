@@ -21,19 +21,19 @@ export default class OpportunityManagement extends React.Component {
     render() {
         const {project, isSaving, isSaved, ProjectActions, match} = this.props;
         const interestPolls = project.interest_polls;
-        const interestedDevs = interestPolls.filter(interest => interest.status == 'interested').length
-        const uninterestedDevs = interestPolls.filter(interest => interest.status == 'uninterested').length
-        const pendingDevs = interestPolls.filter(interest => interest.status == 'initial').length
+        const interestedDevs = interestPolls.filter(interest => interest.status === 'interested').length
+        const uninterestedDevs = interestPolls.filter(interest => interest.status === 'uninterested').length
+        const pendingDevs = interestPolls.filter(interest => interest.status === 'initial').length
         const projectProps = {project, isSaving, isSaved, ProjectActions};
         const devTab = [
             ['opportunity-details', 'Opportunity details', <OpportunityDetails {...projectProps} />]
-        ]
+        ];
         const adminTabs = [
             ['opportunity-details', 'Opportunity details', <OpportunityDetails {...projectProps} />],
             ['opportunity-interested', `Interested developers (${interestedDevs})`, <OpportunityList {...projectProps} status={'interested'} />],
             ['opportunity-uninterested', `Uninterested developers (${uninterestedDevs})`, <OpportunityList {...projectProps} status={'uninterested'} />],
             ['opportunity-pending', `Pending invitations (${pendingDevs})`, <OpportunityList {...projectProps} status={'initial'} />],
-        ]
+        ];
         const showTabs = isDev() ? devTab : adminTabs;
         return (
             project?(
@@ -72,7 +72,7 @@ export default class OpportunityManagement extends React.Component {
                                 <Warning message="You don't have permission to access this project's resources"/>
                             )}
                         </div>
-                    </div>    
+                    </div>
                 </div>
             ):null
         );

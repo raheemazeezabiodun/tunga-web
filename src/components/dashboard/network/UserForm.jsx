@@ -75,7 +75,7 @@ class UserForm extends React.Component {
                                           required/>
                     </FormGroup>
                     <FormGroup>
-                        <label>First Name: *</label>
+                        <label>Last Name: *</label>
                         {errors && errors.invite && errors.invite.last_name ? (
                             <FieldError message={errors.invite.last_name} />
                         ) : null}

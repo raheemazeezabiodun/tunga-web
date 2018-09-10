@@ -97,10 +97,10 @@
         "jest": "^22.4.3",
         "json-loader": "^0.5.7",
         "jsx-to-string": "^1.4.0",
-        "less": "davidsemakula/less.js#2.7.3-request-2.82.0",
+        "less": "^2.7.3",
         "less-loader": "^2.2.1",
         "node-sass": "^4.9.0",
-        "nodemon": "davidsemakula/nodemon#1.17.4-chokidar-2.0.2-fsevents-1.2.3",
+        "nodemon": "^1.17.4",
         "npm-run-all": "^4.1.2",
         "open-browser-webpack-plugin": "0.0.3",
         "prettier": "^1.5.2",
@@ -109,7 +109,7 @@
         "script-loader": "^0.7.0",
         "style-loader": "^0.13.0",
         "url-loader": "^0.5.6",
-        "webpack": "davidsemakula/webpack#1.15.0-watchpack-0.2.9-chokidar-1.7.0-fsevents-1.2.3",
+        "webpack": "^1.15.0",
         "webpack-dev-server": "^1.12.1"
     }
 }

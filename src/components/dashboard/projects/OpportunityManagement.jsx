@@ -3,9 +3,10 @@ import React from 'react';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 
 import OpportunityDetails from './OpportunityDetails';
-import OpportunityList from './OpportunityList';
-import Warning from "../../../core/Warning";
-import {hasProjectAccess, isDev} from "../../../utils/auth";
+import InterestList from './InterestList';
+import Warning from "../../core/Warning";
+import {hasProjectAccess, isDev} from "../../utils/auth";
+import {STATUS_INITIAL, STATUS_INTERESTED, STATUS_UNINTERESTED} from "../../../actions/utils/api";
 
 
 export default class OpportunityManagement extends React.Component {
@@ -19,37 +20,37 @@ export default class OpportunityManagement extends React.Component {
     };
 
     render() {
-        const {project, isSaving, isSaved, ProjectActions, match} = this.props;
-        const interestPolls = project.interest_polls;
-        const interestedDevs = interestPolls.filter(interest => interest.status === 'interested').length
-        const uninterestedDevs = interestPolls.filter(interest => interest.status === 'uninterested').length
-        const pendingDevs = interestPolls.filter(interest => interest.status === 'initial').length
+        const {project, isSaving, isSaved, ProjectActions, match} = this.props,
+            interestPolls = project.interest_polls,
+            interestedDevs = interestPolls.filter(interest => interest.status === STATUS_INTERESTED).length,
+            uninterestedDevs = interestPolls.filter(interest => interest.status === STATUS_UNINTERESTED).length,
+            pendingDevs = interestPolls.filter(interest => interest.status === STATUS_INITIAL).length;
         const projectProps = {project, isSaving, isSaved, ProjectActions};
-        const devTab = [
-            ['opportunity-details', 'Opportunity details', <OpportunityDetails {...projectProps} />]
+
+        const sections = isDev()?[]:[
+            ['network/interested', `Interested developers (${interestedDevs})`, <InterestList {...projectProps} status={STATUS_INTERESTED} />],
+            ['network/uninterested', `Uninterested developers (${uninterestedDevs})`, <InterestList {...projectProps} status={STATUS_UNINTERESTED} />],
+            ['network/pending', `Pending invitations (${pendingDevs})`, <InterestList {...projectProps} status={STATUS_INITIAL} />],
         ];
-        const adminTabs = [
-            ['opportunity-details', 'Opportunity details', <OpportunityDetails {...projectProps} />],
-            ['opportunity-interested', `Interested developers (${interestedDevs})`, <OpportunityList {...projectProps} status={'interested'} />],
-            ['opportunity-uninterested', `Uninterested developers (${uninterestedDevs})`, <OpportunityList {...projectProps} status={'uninterested'} />],
-            ['opportunity-pending', `Pending invitations (${pendingDevs})`, <OpportunityList {...projectProps} status={'initial'} />],
-        ];
-        const showTabs = isDev() ? devTab : adminTabs;
+
         return (
             project?(
                 <div className="project-page clearfix">
                     <div className="project-activity">
                         <div className="project-filters">
-                            {showTabs.map((link, index) => {
+                            <NavLink to={match.url} exact
+                                     activeClassName="active"
+                                     className="opportunity-nav-link">
+                                Opportunity details
+                            </NavLink>
+                            {sections.map((link, index) => {
                                 let url = link[0];
                                 return (
                                     <NavLink key={`opportunity-filters-link--${url}-${index}`}
                                         exact
                                         to={`${match.url}/${url}`}
                                         activeClassName="active"
-                                        className="opportunity-nav-link"
-                                        {...link[2]}
-                                    >
+                                        className="opportunity-nav-link">
                                         {link[1]}
                                     </NavLink>
                                 )
@@ -59,14 +60,15 @@ export default class OpportunityManagement extends React.Component {
                         <div className="project-activity-wrapper">
                             {hasProjectAccess(project) || isDev()?(
                                 <Switch>
-                                    <Redirect exact from={`${match.url}`} to={`${match.url}/opportunity-details`}/>
-                                    {showTabs.map(path => {
+                                    {sections.map(path => {
                                         return (
                                             <Route key={`opportunity-management-path--${path[0]}`}
                                                     path={`${match.url}/${path[0]}`}
                                                     render={props => path[2]}/>
                                         );
                                     })}
+                                    <Route path={match.url}
+                                           render={props => <OpportunityDetails {...projectProps} />}/>
                                 </Switch>
                             ):(
                                 <Warning message="You don't have permission to access this project's resources"/>

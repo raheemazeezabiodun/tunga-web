@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ProjectManagement from './ProjectManagement';
-import OpportunityManagement from './Opportunities/OpportunityManagement';
+import OpportunityManagement from './OpportunityManagement';
 
 
 export default (props) => {

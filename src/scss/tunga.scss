@@ -1807,6 +1807,10 @@ table {
             }
         }
     }
+
+    .content-card {
+        padding: 30px;
+    }
 }
 
 .integration-options {
@@ -1850,6 +1854,43 @@ table {
     .table {
         margin-bottom: 20px;
     }
+}
+
+.opportunity {
+    .opportunity-files {
+        list-style-type: none;
+    }
+
+    .interest-user {
+        padding: px-to-rem(10);
+        margin-bottom: 10px;
+        color: get-color('white');
+        background-color: get-color('dark-grey');
+        border: 1px solid rgba(0, 0, 0, 0.125);
+
+        .avatar {
+            margin-right: 5px;
+        }
+    }
+
+    .interest-actions {
+        .btn {
+            color: get-color('dark-grey');
+            margin-right: 5px;
+        }
+
+        .btn-accepted {
+            color: get-color('green');
+        }
+
+        .btn-rejected {
+            color: get-color('red');
+        }
+    }
+}
+
+.opportunity-nav-link {
+    width: 25% !important
 }
 
 // Reports
@@ -3589,56 +3630,6 @@ textarea {
             }
         }
     }
-}
-
-.opportunity {
-
-    display: block;
-
-    .button-wrapper {
-        margin-bottom: 10px;
-    }
-
-    .opportunity-files {
-        list-style-type: none;
-    }
-
-    .interests-btn-wrapper {
-        margin: 25px 0px 25px 0px
-    }
-
-    .interest-poll-card {
-        color: get-color('white');
-        background-color: get-color('dark-grey');
-        border: 1px #e1e1e1 solid;
-        border-radius: 0;
-        box-shadow: 0 2px 4px 0 rgba(204, 204, 204, 0.5);
-        padding: 12px;
-
-        .interest-poll-card-details {
-            display: inline;
-
-            p {
-                margin: -20px 0px 0px 45px
-            }
-        }
-    }
-}
-
-.opportunity-nav-link {
-    width: 23.66% !important
-}
-
-.opportunity-approval-accepted {
-    color: get-color('green')
-}
-
-.opportunity-approval-initial {
-    color: get-color('dark-grey')
-}
-
-.opportunity-approval-icon-spacing {
-    padding-right: 15px;
 }
 
 @import "breakpoints";

@@ -20,7 +20,12 @@ export default class OpportunityDetails extends Component {
 
     onInterestUpdate(interest, status) {
         const { ProjectActions, } = this.props;
-        ProjectActions.updateInterest(interest.id, {status})
+        if(interest && interest.id) {
+            ProjectActions.updateInterest(interest.id, {status})
+        } else {
+            const {project} = this.props;
+            ProjectActions.createInterest({project: {id: project.id}, user: {id: getUser().id}, status})
+        }
     }
 
     getMyInterest() {

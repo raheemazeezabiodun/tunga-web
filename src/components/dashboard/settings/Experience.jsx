@@ -175,6 +175,18 @@ export default class Experience extends React.Component {
                         })}
                         </div>
                     </div>
+
+                    <FormGroup>
+                        <div className="clearfix">
+                            <Button
+                                type="submit"
+                                className="float-right"
+                                disabled={this.props.isSaving.profile}>
+                                Save
+                            </Button>
+                        </div>
+                    </FormGroup>
+
                     <div className="row">
                         <div className="col-sm-8">
                             <FormGroup>
@@ -189,7 +201,7 @@ export default class Experience extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-sm-8">
-                            {user.work.length ? user.work.map((work) => {
+                            {user.work && user.work.length ? user.work.map((work) => {
                                 return (
                                     <div className="card work-education-wrapper">
                                         <div className="card-body">
@@ -227,12 +239,12 @@ export default class Experience extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-sm-8">
-                            {user.education.length ? user.education.map((education) => {
+                            {user.education && user.education.length ? user.education.map((education) => {
                                 return (
                                     <div className="card work-education-wrapper">
                                         <div className="card-body">
-                                            <div>Educational Institute: {education.institution}</div>
-                                            <div>Degree: {education.award}</div>
+                                            <div>Institution: {education.institution}</div>
+                                            <div>Award: {education.award}</div>
                                             <div>Period: {education.start_month_display}/{education.start_year} - {education.end_year?`${education.end_month_display}/${education.end_year}`:'Present'}</div>
                                             <br />
                                             <p>{education.details}</p>
@@ -249,12 +261,6 @@ export default class Experience extends React.Component {
                             }): ''}
                         </div>
                     </div>
-                    <Button
-                        type="submit"
-                        className="float-right"
-                        disabled={this.props.isSaving.profile}>
-                        Save
-                    </Button>
                 </form>
             </div>
         );

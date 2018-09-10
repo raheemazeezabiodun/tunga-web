@@ -7,12 +7,14 @@ import UserListContainer from './UserListContainer';
 import UserList from './UserList';
 import UserDetailContainer from './UserDetailContainer';
 import UserProfile from "./UserProfile";
+import UserForm from "./UserForm";
 
 
 const NetworkContainer = ({User, UserActions}) => {
     return (
         <React.Fragment>
             <Switch>
+                <Route path='/network/invite' render={props => <UserForm User={User} UserActions={UserActions}/>}/>,
                 <Route exact path="/network/:username" render={props => <UserDetailContainer {...props} username={props.match.params.username} User={User} UserActions={UserActions}><UserProfile/></UserDetailContainer>}/>
                 {[
                     '/network/filter/:filter',

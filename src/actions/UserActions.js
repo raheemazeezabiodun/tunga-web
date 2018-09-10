@@ -1,6 +1,14 @@
 import axios from 'axios';
-import {ENDPOINT_USERS} from './utils/api';
+import {ENDPOINT_INVITE, ENDPOINT_USERS} from './utils/api';
+import {GA_EVENT_ACTIONS, GA_EVENT_CATEGORIES, getGAUserType, sendGAEvent} from "./utils/tracking";
+import {getUser} from "../components/utils/auth";
 
+export const CREATE_USER_START = 'CREATE_USER_START';
+export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
+export const CREATE_USER_FAILED = 'CREATE_USER_FAILED';
+export const INVITE_START = 'INVITE_START';
+export const INVITE_SUCCESS = 'INVITE_SUCCESS';
+export const INVITE_FAILED = 'INVITE_FAILED';
 export const LIST_USERS_START = 'LIST_USERS_START';
 export const LIST_USERS_SUCCESS = 'LIST_USERS_SUCCESS';
 export const LIST_USERS_FAILED = 'LIST_USERS_FAILED';
@@ -13,6 +21,87 @@ export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
 export const LIST_MORE_USERS_START = 'LIST_MORE_USERS_START';
 export const LIST_MORE_USERS_SUCCESS = 'LIST_MORE_USERS_SUCCESS';
 export const LIST_MORE_USERS_FAILED = 'LIST_MORE_USERS_FAILED';
+
+export function createUser(data) {
+    return dispatch => {
+        dispatch(createUserStart(data));
+        axios
+            .post(ENDPOINT_USERS, data)
+            .then(function(response) {
+                dispatch(createUserSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    createUserFailed(
+                        error.response ? error.response.data : null,
+                    ),
+                );
+            });
+    };
+}
+
+export function createUserStart(data) {
+    return {
+        type: CREATE_USER_START,
+        data,
+    };
+}
+
+export function createUserSuccess(user) {
+    return {
+        type: CREATE_USER_SUCCESS,
+        user,
+    };
+}
+
+export function createUserFailed(error) {
+    return {
+        type: CREATE_USER_FAILED,
+        error,
+    };
+}
+
+export function invite(details) {
+    return dispatch => {
+        dispatch(inviteStart(details));
+        axios
+            .post(ENDPOINT_INVITE, details)
+            .then(function(response) {
+                dispatch(inviteSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    inviteFailed(error.response ? error.response.data : null),
+                );
+            });
+    };
+}
+
+export function inviteStart(details) {
+    return {
+        type: INVITE_START,
+        details,
+    };
+}
+
+export function inviteSuccess(invite) {
+    sendGAEvent(
+        GA_EVENT_CATEGORIES.AUTH,
+        GA_EVENT_ACTIONS.DEV_INVITE,
+        getGAUserType(getUser()),
+    );
+    return {
+        type: INVITE_SUCCESS,
+        invite,
+    };
+}
+
+export function inviteFailed(error) {
+    return {
+        type: INVITE_FAILED,
+        error,
+    };
+}
 
 export function listUsers(filter, selection, prev_selection) {
     return dispatch => {

@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 
 import * as UserActions from '../actions/UserActions';
 import {getIds, reduceUser} from './utils';
+import * as AuthActions from "../actions/AuthActions";
 
 function ids(state = {}, action) {
     let selection_key = action.selection || 'default';
@@ -62,6 +63,36 @@ function usernameToId(state = {}, action) {
             let new_user = {};
             new_user[action.user.username] = action.user.id;
             return {...state, ...new_user};
+        default:
+            return state;
+    }
+}
+
+function isInviting(state = false, action) {
+    switch (action.type) {
+        case UserActions.CREATE_USER_START:
+        case UserActions.INVITE_START:
+            return true;
+        case UserActions.CREATE_USER_SUCCESS:
+        case UserActions.CREATE_USER_FAILED:
+        case UserActions.INVITE_SUCCESS:
+        case UserActions.INVITE_FAILED:
+            return false;
+        default:
+            return state;
+    }
+}
+
+function hasInvited(state = false, action) {
+    switch (action.type) {
+        case UserActions.CREATE_USER_SUCCESS:
+        case UserActions.INVITE_SUCCESS:
+            return true;
+        case UserActions.CREATE_USER_START:
+        case UserActions.CREATE_USER_FAILED:
+        case UserActions.INVITE_START:
+        case UserActions.INVITE_FAILED:
+            return false;
         default:
             return state;
     }
@@ -157,16 +188,34 @@ function count(state = {}, action) {
     }
 }
 
+function errors(state = {}, action) {
+    switch (action.type) {
+        case UserActions.CREATE_USER_FAILED:
+        case UserActions.INVITE_FAILED:
+            return {...state, invite: action.error};
+        case UserActions.CREATE_USER_START:
+        case UserActions.CREATE_USER_SUCCESS:
+        case UserActions.INVITE_START:
+        case UserActions.INVITE_SUCCESS:
+            return {...state, invite: null};
+        default:
+            return state;
+    }
+}
+
 const User = combineReducers({
     ids,
     users,
     usernameToId,
+    isInviting,
+    hasInvited,
     isRetrieving,
     isFetching,
     isFetchingMore,
     next,
     previous,
     count,
+    errors,
 });
 
 export default User;

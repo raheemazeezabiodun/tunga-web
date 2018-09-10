@@ -12,8 +12,8 @@ import InputGroup from "../../core/InputGroup";
 import Icon from "../../core/Icon";
 import Input from "../../core/Input";
 
-import {USER_TYPE_CHOICES} from "../../../actions/utils/api";
-import connect from "../../../connectors/AuthConnector";
+import {USER_TYPE_CHOICES, USER_TYPE_PROJECT_OWNER} from "../../../actions/utils/api";
+import connect from "../../../connectors/UserConnector";
 
 const TYPE_INVITE = 'invite';
 const TYPE_CLIENT = 'client';
@@ -26,7 +26,7 @@ class UserForm extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.Auth.hasInvited && !prevProps.Auth.hasInvited) {
+        if (this.props.User.hasInvited && !prevProps.User.hasInvited) {
             this.setState({user: {}});
         }
     }
@@ -44,16 +44,28 @@ class UserForm extends React.Component {
     onSave = (e) => {
         e.preventDefault();
 
-        const {AuthActions} = this.props;
-        if(this.state.type === TYPE_INVITE) {
-            AuthActions.invite(this.state.user);
+        const {UserActions} = this.props;
+        if(this.state.type === TYPE_CLIENT) {
+            let user = {
+                type: USER_TYPE_PROJECT_OWNER,
+                company: {...this.state.user},
+            };
+            ['first_name', 'last_name', 'email'].forEach(key => {
+                user[key] = this.state.user[key];
+                delete user.company[key];
+            });
+            if(user.company && user.company.company) {
+                user.company.name = user.company.company;
+                delete user.company['company'];
+            }
+            UserActions.createUser(user);
         } else {
-            // TODO: Create client
+            UserActions.invite(this.state.user);
         }
     };
 
     render() {
-        const {Auth: {errors, hasInvited, isInviting}} = this.props;
+        const {User: {errors, hasInvited, isInviting}} = this.props;
 
         return (
             <div className="content-card invite-user-card">
@@ -144,8 +156,8 @@ class UserForm extends React.Component {
                         <React.Fragment>
                             <FormGroup>
                                 <label>Company: *</label>
-                                {errors && errors.invite && errors.invite.company ? (
-                                    <FieldError message={errors.invite.company} />
+                                {errors && errors.invite && errors.invite.company && errors.invite.company.name ? (
+                                    <FieldError message={errors.invite.company.name} />
                                 ) : null}
                                 <Input onChange={this.onChangeField.bind(this, 'company')}
                                        value={this.state.user.company}
@@ -156,8 +168,8 @@ class UserForm extends React.Component {
                                 <Col className="col-main">
                                     <FormGroup>
                                         <label>Street: *</label>
-                                        {errors && errors.invite && errors.invite.street ? (
-                                            <FieldError message={errors.invite.street} />
+                                        {errors && errors.invite && errors.invite.company && errors.invite.company.street ? (
+                                            <FieldError message={errors.invite.company.street} />
                                         ) : null}
                                         <InputGroup prepend={(<Icon name="map-marker"/>)}
                                                     onChange={this.onChangeField.bind(this, 'street')}
@@ -169,8 +181,8 @@ class UserForm extends React.Component {
                                 <Col md={3}>
                                     <FormGroup>
                                         <label>Number/Plot: *</label>
-                                        {errors && errors.invite && errors.invite.plot_number ? (
-                                            <FieldError message={errors.invite.plot_number} />
+                                        {errors && errors.invite && errors.invite.company && errors.invite.company.plot_number ? (
+                                            <FieldError message={errors.invite.company.plot_number} />
                                         ) : null}
                                         <Input onChange={this.onChangeField.bind(this, 'plot_number')}
                                                value={this.state.user.plot_number}
@@ -184,8 +196,8 @@ class UserForm extends React.Component {
                                 <Col className="col-main">
                                     <FormGroup>
                                         <label>City: *</label>
-                                        {errors && errors.invite && errors.invite.city ? (
-                                            <FieldError message={errors.invite.city} />
+                                        {errors && errors.invite && errors.invite.company && errors.invite.company.city ? (
+                                            <FieldError message={errors.invite.company.city} />
                                         ) : null}
                                         <InputGroup prepend={(<Icon name="map-marker"/>)}
                                                     onChange={this.onChangeField.bind(this, 'city')}
@@ -197,8 +209,8 @@ class UserForm extends React.Component {
                                 <Col md={3}>
                                     <FormGroup>
                                         <label>Zip code: *</label>
-                                        {errors && errors.invite && errors.invite.postal_code ? (
-                                            <FieldError message={errors.invite.postal_code} />
+                                        {errors && errors.invite && errors.invite.company && errors.invite.company.postal_code ? (
+                                            <FieldError message={errors.invite.company.postal_code} />
                                         ) : null}
                                         <Input onChange={this.onChangeField.bind(this, 'postal_code')}
                                                value={this.state.user.postal_code}
@@ -209,8 +221,8 @@ class UserForm extends React.Component {
                             </Row>
                             <FormGroup>
                                 <label className="control-label">Country: *</label>
-                                {errors && errors.invite && errors.invite.country ? (
-                                    <FieldError message={errors.invite.country} />
+                                {errors && errors.invite && errors.invite.company && errors.invite.company.country ? (
+                                    <FieldError message={errors.invite.company.country} />
                                 ) : null}
                                 <CountrySelector
                                     onChange={(country) => {this.onChangeValue('country', country)}}
@@ -219,13 +231,12 @@ class UserForm extends React.Component {
                             </FormGroup>
                             <FormGroup>
                                 <label>VAT Number: </label>
-                                {errors && errors.invite && errors.invite.vat_number ? (
-                                    <FieldError message={errors.invite.vat_number} />
+                                {errors && errors.invite && errors.invite.company && errors.invite.company.vat_number ? (
+                                    <FieldError message={errors.invite.company.vat_number} />
                                 ) : null}
                                 <Input onChange={this.onChangeField.bind(this, 'vat_number')}
                                        value={this.state.user.vat_number}
-                                       placeholder="VAT Number"
-                                       required/>
+                                       placeholder="VAT Number"/>
                             </FormGroup>
                             <FormGroup>
                                 <Button type="submit">Create Client</Button>

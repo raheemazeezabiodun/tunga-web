@@ -8,7 +8,6 @@ import PaymentListContainer from './payments/PaymentListContainer';
 import NetworkContainer from './network/NetworkContainer';
 import SettingsContainer from './settings/SettingsContainer';
 import ProjectsContainer from "./projects/ProjectsContainer";
-import UserForm from "./network/UserForm";
 import Info from "../core/Info";
 import WorkRedirect from "./projects/WorkRedirect";
 
@@ -44,7 +43,6 @@ export default ({isLargeDevice=true, className}) => {
                         <Redirect from="work" to="projects"/>,
                         ...(isLargeDevice?(
                             [
-                                <Route key='network-invite' path='/network/invite' component={UserForm}/>,
                                 <Route key='network' path='/network' component={NetworkContainer}/>,
                                 <Route key='payments' path='/payments' component={PaymentListContainer}/>,
                                 <Route key='settings' path='/settings' component={SettingsContainer}/>

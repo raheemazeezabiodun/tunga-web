@@ -168,6 +168,11 @@ export const PROJECT_DURATION_2_WEEKS = '2w';
 export const PROJECT_DURATION_6_MONTHS = '6m';
 export const PROJECT_DURATION_PERMANENT = 'permanent';
 
+export const PROJECT_STAGE_OPPORTUNITY = 'opportunity';
+export const PROJECT_STAGE_ACTIVE = 'active';
+
+
+
 export const DOC_TYPE_REQUIREMENTS = 'requirements';
 export const DOC_TYPE_WIREFRAMES = 'wireframes';
 export const DOC_TYPE_ESTIMATE = 'estimate';

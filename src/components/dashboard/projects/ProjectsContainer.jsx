@@ -6,9 +6,7 @@ import ProjectListContainer from './ProjectListContainer';
 import ProjectDetailContainer from './ProjectDetailContainer';
 import ProjectForm from "./ProjectForm";
 import ProjectList from './ProjectList';
-import NewStage from "./Stage/NewStage";
 import ProjectStageContainer from './ProjectStageContainer';
-import CreateOpportunities from './Opportunities/CreateOpportunities';
 
 import connect from '../../../connectors/ProjectConnector';
 
@@ -41,14 +39,6 @@ class ProjectsContainer extends React.Component {
         return (
             <React.Fragment>
                 <Switch>
-                    <Route exact path="/projects/new/stage" component={NewStage}/>
-                    <Route exact path="/projects/new/opportunity"
-                        render={props => <CreateOpportunities {...props}
-                                                              errors={Project.errors.create || {}}
-                                                              ProjectActions={ProjectActions}
-                                                              isSaving={Project.isSaving[targetKey] || false}
-                                                              isSaved={Project.isSaved[targetKey] || false} />}
-                    />
                     <Route exact path="/projects/new"
                            render={props => <ProjectForm {...props}
                                                          project={Project.created[targetKey] || null}

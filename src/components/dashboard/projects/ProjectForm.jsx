@@ -11,7 +11,11 @@ import Button from "../../core/Button";
 import DocumentPicker from "../../core/DocumentPicker";
 import FieldError from '../../core/FieldError';
 
-import {cleanSkills, DOCUMENT_TYPES_CLIENTS} from "../../../actions/utils/api";
+import {
+    cleanSkills, DOCUMENT_TYPES_CLIENTS, PROJECT_STAGE_ACTIVE,
+    PROJECT_STAGE_OPPORTUNITY
+} from "../../../actions/utils/api";
+import {isAdminOrPM} from "../../utils/auth";
 
 export default class ProjectForm extends React.Component {
     static propTypes = {
@@ -19,13 +23,16 @@ export default class ProjectForm extends React.Component {
         onCreate: PropTypes.func,
         isSaving: PropTypes.bool,
         isSaved: PropTypes.bool,
-        errors: PropTypes.object
+        errors: PropTypes.object,
+        stage: PropTypes.string,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            project: {}
+            project: {
+                stage: isAdminOrPM()?(props.stage || PROJECT_STAGE_ACTIVE):PROJECT_STAGE_ACTIVE
+            }
         };
     }
 
@@ -47,45 +54,60 @@ export default class ProjectForm extends React.Component {
     };
 
     render() {
-        const {errors} = this.props;
+        const {errors} = this.props,
+            isOpportunity = this.state.project.stage === PROJECT_STAGE_OPPORTUNITY;
 
         return (
             <div className="content-card project-form-card">
                 <form onSubmit={this.onSave}>
+                    {isAdminOrPM()?(
+                        <FormGroup>
+                            <ChoiceGroup variant="outline-primary"
+                                         selected={this.state.project.stage}
+                                         choices={[
+                                             [PROJECT_STAGE_ACTIVE, 'Active Project'],
+                                             [PROJECT_STAGE_OPPORTUNITY, 'Opportunity']
+                                         ]}
+                                         onChange={(stage) => { this.onChangeValue('stage', stage); }}/>
+                        </FormGroup>
+                    ):null}
+
                     <Row>
                         <Col lg={6}>
                             <FormGroup>
                                 <Label for="projectTitle">
-                                    Project Title*
+                                    {isOpportunity?'Opportunity':'Project'} Title*
                                 </Label>
                                 {errors.title ? (
                                     <FieldError message={errors.title} />
                                 ) : null}
-                                <Input placeholder="Project title" id="projectTitle"
+                                <Input placeholder={`${isOpportunity?'Opportunity':'Project'} title`} id="projectTitle"
                                        onChange={(e) => { this.onChangeValue('title', e.target.value)}}
                                        required/>
                             </FormGroup>
-                            <FormGroup>
-                                <Label for="projectType">
-                                    Which type of project do you have?*
-                                </Label>
-                                {errors.type ? (
-                                    <FieldError message={errors.type} />
-                                ) : null}
-                                <div className="text text-sm font-weight-thin">
-                                    Please select one of the options below
-                                </div>
-                                <ChoiceGroup
-                                    id="projectType"
-                                    onChange={(type) => { this.onChangeValue('type', type) }}
-                                    choices={[
-                                        ["web", "Web"],
-                                        ["mobile", "Mobile"],
-                                        ["other", "Other"]
-                                    ]}
-                                    size="sm"
-                                />
-                            </FormGroup>
+                            {isOpportunity?null:(
+                                <FormGroup>
+                                    <Label for="projectType">
+                                        Which type of project do you have?*
+                                    </Label>
+                                    {errors.type ? (
+                                        <FieldError message={errors.type} />
+                                    ) : null}
+                                    <div className="text text-sm font-weight-thin">
+                                        Please select one of the options below
+                                    </div>
+                                    <ChoiceGroup
+                                        id="projectType"
+                                        onChange={(type) => { this.onChangeValue('type', type) }}
+                                        choices={[
+                                            ["web", "Web"],
+                                            ["mobile", "Mobile"],
+                                            ["other", "Other"]
+                                        ]}
+                                        size="sm"
+                                    />
+                                </FormGroup>
+                            )}
 
                             <FormGroup>
                                 <Label for="projectExpectedDuration">
@@ -109,9 +131,8 @@ export default class ProjectForm extends React.Component {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label
-                                    for="projectTechnology">
-                                    Which technology do you want to use? (Optional)
+                                <Label for="projectTechnology">
+                                    {isOpportunity?'Which skill tags are relevant for this opportunity?':'Which technology do you want to use? (Optional)'}
                                 </Label>
                                 {errors.skills ? (
                                     <FieldError message={errors.skills} />
@@ -136,20 +157,22 @@ export default class ProjectForm extends React.Component {
                                           required
                                 />
                             </FormGroup>
-                            <FormGroup>
-                                <Label for="projectDeadline">
-                                    Add a preferred deadline (optional)
-                                </Label>
-                                {errors.deadline ? (
-                                    <FieldError message={errors.deadline} />
-                                ) : null}
-                                <DateTimePicker
-                                    calendar={true}
-                                    time={false}
-                                    id="projectDeadline"
-                                    onChange={(deadline) => { this.onChangeValue('deadline', deadline) }}
-                                />
-                            </FormGroup>
+                            {isOpportunity?null:(
+                                <FormGroup>
+                                    <Label for="projectDeadline">
+                                        Add a preferred deadline (optional)
+                                    </Label>
+                                    {errors.deadline ? (
+                                        <FieldError message={errors.deadline} />
+                                    ) : null}
+                                    <DateTimePicker
+                                        calendar={true}
+                                        time={false}
+                                        id="projectDeadline"
+                                        onChange={(deadline) => { this.onChangeValue('deadline', deadline) }}
+                                    />
+                                </FormGroup>
+                            )}
                             <FormGroup>
                                 <Label for="projectDocuments">
                                     Add documents
@@ -166,7 +189,7 @@ export default class ProjectForm extends React.Component {
                         <Col>
                             <Button type="submit"
                                     className="float-right">
-                                Submit
+                                {isOpportunity?'Send':'Submit'}
                             </Button>
                         </Col>
                     </Row>

@@ -29,9 +29,7 @@ export default class TitleBar extends React.Component {
                 ['/projects/filter/opportunity', 'Opportunities']
             ],
             projectCreateSections = [
-                ['/projects/new', `Create ${isAdminOrPM()?'active':'new'} project`],
-                ...(isAdminOrPM()?[['/projects/new/opportunity', 'Create opportunity']]:[])
-
+                ['/projects/new', 'Create new project'],
             ],
             networkSections = [
             ['/network', 'Developers'],
@@ -63,7 +61,7 @@ export default class TitleBar extends React.Component {
 
         let projectLists = [
             'Projects',
-            isAdminOrPMOrClient()?`/projects/new${isAdminOrPM()?`/stage`:''}`:null,
+            isAdminOrPMOrClient()?'/projects/new':null,
             projectsSections
         ];
 
@@ -103,11 +101,9 @@ export default class TitleBar extends React.Component {
                             }),
                             ...(isLargeDevice?
                                 [
-                                    ['/projects/new/stage', 'Projects', null, [...projectsSections, ['/projects/new/stage', 'Create project']]],
-                                    ['/projects/new/opportunity', 'Projects', null, [...projectsSections, ...projectCreateSections]],
                                     ['/projects/new', 'Projects', null, [...projectsSections, ...projectCreateSections]],
                                     ['/projects/filter/:filter', ...projectLists],
-                                    ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?`/projects/new${isAdminOrPM()?`/stage`:''}`:null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
+                                    ['/projects/:projectId', 'Projects', isAdminOrPMOrClient()?'/projects/new':null, [[(match) => { return match.url }, (match) => { return match.params.projectId?<ProjectOutput id={match.params.projectId} field="title"/>:'Project title' }, {exact: false}]]],
                                     ['/projects', ...projectLists],
                                     ['/network/invite', 'Network', null, [...networkSections, ['/network/invite', 'Invite User']]],
                                     ['/network', 'Network', isAdminOrPM()?'/network/invite':null, networkSections],

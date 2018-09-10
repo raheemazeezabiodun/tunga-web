@@ -10,6 +10,7 @@ import MainContent from './MainContent';
 import {openConfirm} from "../core/utils/modals";
 
 const AGREEMENT_VERSION = 1.2;
+window.isAgreementOpen = false;
 
 export default class DashboardLayout extends React.Component {
 
@@ -29,7 +30,8 @@ export default class DashboardLayout extends React.Component {
 
         const {user, AuthActions} = this.props;
 
-        if (user && user.id && parseFloat(user.agree_version || 0) < AGREEMENT_VERSION) {
+        if (user && user.id && parseFloat(user.agree_version || 0) < AGREEMENT_VERSION && !window.isAgreementOpen) {
+            window.isAgreementOpen = true;
             openConfirm(
                 <div>
                     <p>Hi {user.first_name},</p>

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import {FormGroup} from 'reactstrap';
 import moment from 'moment';
@@ -15,80 +14,40 @@ export default class EducationForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            details: props.education.details,
-            institution: props.education.institution,
-            award: props.education.award,
-            start_year: props.education.start_year,
-            end_year: props.education.end_year,
-            start_month: props.education.start_month,
-            end_month: props.education.end_month,
             education: props.education || {}
         };
         this.onSave = this.onSave.bind(this);
     }
 
-    componentDidMount() {
-        const education = this.props.education || {};
-        if (education.id) {
-            const details = education.details || '';
-            this.setState({details});
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (
-            this.props.isSaved.education &&
-            !prevProps.isSaved.education
-        ) {
-            if (!this.props.education) {
-                this.refs.education_form.reset();
-                this.setState({details: ''});
-            }
-        }
-    }
-
     onInputChange(key, e) {
-        const new_state = {};
-        new_state[key] = e.target.value;
-        this.setState(new_state);
+        let newState = {};
+        newState[key] = e.target.value;
+        this.setState({education: {...this.state.education, ...newState}});
     }
 
     onDateChange(from = true, dateSelected) {
         const momentDate = moment(dateSelected);
-        const month = momentDate.month();
+        const month = momentDate.month() + 1;
         const year = momentDate.year();
+        let newState = {};
         if (from) {
-            this.setState({start_year: year, start_month: month});
+            newState = {start_year: year, start_month: month};
         } else {
-            this.setState({end_year: year, end_month: month});
+            newState = {end_year: year, end_month: month};
         }
+        this.setState({education: {...this.state.education, ...newState}});
     }
 
     onSave(e) {
         e.preventDefault();
-        const institution = this.state.institution;
-        const award = this.state.award;
-        const start_year = this.state.start_year;
-        const start_month = this.state.start_month;
-        const end_year = this.state.end_year || null;
-        const end_month = this.state.end_month || null;
-        const details = this.state.details;
 
         const {ProfileActions} = this.props;
         const education = this.props.education || {};
-        const education_info = {
-            institution,
-            details,
-            award,
-            start_year,
-            start_month,
-            end_year,
-            end_month,
-        };
+
         if (education.id) {
-            ProfileActions.updateEducation(education.id, education_info);
+            ProfileActions.updateEducation(education.id, this.state.education);
         } else {
-            ProfileActions.createEducation(education_info);
+            ProfileActions.createEducation(this.state.education);
         }
         if(this.props.dismiss) {
             this.props.dismiss();
@@ -120,7 +79,7 @@ export default class EducationForm extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label className="control-label">Educational Institute</label>
+                                <label className="control-label">Institution</label>
                                 <CustomInputGroup onChange={this.onInputChange.bind(this, 'institution')}
                                                   value={this.state.education.institution} required/>
                             </FormGroup>
@@ -133,7 +92,7 @@ export default class EducationForm extends React.Component {
                                 />
                             ) : null}
                             <FormGroup>
-                                <label className="control-label">Degree</label>
+                                <label className="control-label">Award</label>
                                 <CustomInputGroup onChange={this.onInputChange.bind(this, 'award')}
                                                   value={this.state.education.award} required/>
                             </FormGroup>
@@ -152,7 +111,9 @@ export default class EducationForm extends React.Component {
                                 <div>From</div>
                                 <DateTimePicker onChange={this.onDateChange.bind(this, true)}
                                                 calendar={true} time={false}
-                                                value={this.state.education.start_year ? new Date(moment.utc(start_date).format()) : null} required/>
+                                                value={this.state.education.start_year ? new Date(moment.utc(start_date).format()) : null}
+                                                format="MMM/YYYY"
+                                                required/>
                             </FormGroup>
                         </div>
                         <div className="col-sm-6">
@@ -167,6 +128,7 @@ export default class EducationForm extends React.Component {
                                 <DateTimePicker onChange={this.onDateChange.bind(this, false)}
                                                 calendar={true} time={false}
                                                 value={this.state.education.end_year ? new Date(moment.utc(end_date).format()) : null}
+                                                format="MMM/YYYY"
                                 />
                             </FormGroup>
                         </div>
@@ -174,7 +136,7 @@ export default class EducationForm extends React.Component {
                             <FormGroup>
                                 <label className="control-label">Details (optional)</label>
                                 <TextArea onChange={this.onInputChange.bind(this, 'details')}
-                                          value={this.state.education.details} required/>
+                                          value={this.state.education.details}/>
                             </FormGroup>
                         </div>
                     </div>

@@ -97,9 +97,9 @@ export default class OpportunityDetails extends Component {
                     </div>
                 </div>
 
-                <div className="clearfix">
+                <div className="clearfix opportunity-actions">
                     {isDev()?(
-                        <div className="float-right interests-btn-wrapper">
+                        <div className="float-right">
                             {myInterest.status !== STATUS_INTERESTED?(
                                 <Button onClick={() => this.onInterestUpdate(myInterest, STATUS_INTERESTED)}>
                                     I'm available {myInterest.status === STATUS_UNINTERESTED?'again':'and interested'}

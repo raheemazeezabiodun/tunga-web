@@ -1887,6 +1887,12 @@ table {
             color: get-color('red');
         }
     }
+
+    .opportunity-actions {
+        .btn {
+            margin-right: 10px;
+        }
+    }
 }
 
 .opportunity-nav-link {

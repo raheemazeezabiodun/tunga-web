@@ -15,3 +15,11 @@ export function getLastChatAutoOpenAt() {
     }
     return updatedchatAutoOpenAt;
 }
+
+export function setChatStep(step) {
+    Cookies.set('chatStep', step, { expires: 365 });
+}
+
+export function getChatStep() {
+    return Cookies.get('chatStep');
+}

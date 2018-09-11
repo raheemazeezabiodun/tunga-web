@@ -14,7 +14,7 @@ import Icon from "../core/Icon";
 import GuestEmailForm from "./GuestEmailForm";
 
 import {isAuthenticated} from "../utils/auth";
-import {getLastChatAutoOpenAt} from "../utils/chat";
+import {getChatStep, getLastChatAutoOpenAt, setChatStep} from "../utils/chat";
 import {CHANNEL_TYPES} from "../../actions/utils/api";
 import {openCalendlyWidget} from "../utils/calendly";
 
@@ -48,7 +48,7 @@ class ChatWidget extends React.Component {
             lastActivityChannel: null,
             lastActivityCount: 0,
             lastActivityAt: null,
-            step: isAuthenticated()?CHAT_SCREEN_CHAT:CHAT_SCREEN_CHOOSE,
+            step: isAuthenticated()?CHAT_SCREEN_CHAT:(getChatStep() || CHAT_SCREEN_CHOOSE),
         };
     }
 
@@ -387,6 +387,7 @@ class ChatWidget extends React.Component {
     }
 
     changeStep(step) {
+        setChatStep(step);
         this.setState({step});
     }
 

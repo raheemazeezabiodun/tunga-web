@@ -21,6 +21,9 @@ export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
 export const LIST_MORE_USERS_START = 'LIST_MORE_USERS_START';
 export const LIST_MORE_USERS_SUCCESS = 'LIST_MORE_USERS_SUCCESS';
 export const LIST_MORE_USERS_FAILED = 'LIST_MORE_USERS_FAILED';
+export const REQUEST_USER_START = 'REQUEST_USER_START';
+export const REQUEST_USER_SUCCESS = 'REQUEST_USER_SUCCESS';
+export const REQUEST_USER_FAILED = 'REQUEST_USER_FAILED';
 
 export function createUser(data) {
     return dispatch => {
@@ -269,6 +272,48 @@ export function listMoreUsersSuccess(response, selection) {
 export function listMoreUsersFailed(error) {
     return {
         type: LIST_MORE_USERS_FAILED,
+        error,
+    };
+}
+
+export function requestUser(id) {
+    return dispatch => {
+        dispatch(requestUserStart(id));
+
+        axios
+            .post(`${ENDPOINT_USERS}${id}/request/`, {})
+            .then(function(response) {
+                dispatch(requestUserSuccess(response.data, id));
+            })
+            .catch(function(error) {
+                dispatch(
+                    requestUserFailed(
+                        error.response ? error.response.data : null, id
+                    ),
+                );
+            });
+    };
+}
+
+export function requestUserStart(id) {
+    return {
+        type: REQUEST_USER_START,
+        id,
+    };
+}
+
+export function requestUserSuccess(data, id) {
+    return {
+        type: REQUEST_USER_SUCCESS,
+        data,
+        id,
+    };
+}
+
+export function requestUserFailed(error, id) {
+    return {
+        type: REQUEST_USER_FAILED,
+        id,
         error,
     };
 }

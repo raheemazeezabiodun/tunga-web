@@ -198,6 +198,35 @@ function errors(state = {}, action) {
         case UserActions.INVITE_START:
         case UserActions.INVITE_SUCCESS:
             return {...state, invite: null};
+        case UserActions.REQUEST_USER_FAILED:
+            return {...state, request: action.error};
+        case UserActions.REQUEST_USER_START:
+        case UserActions.REQUEST_USER_SUCCESS:
+            return {...state, request: null};
+        default:
+            return state;
+    }
+}
+
+function isRequesting(state = false, action) {
+    switch (action.type) {
+        case UserActions.REQUEST_USER_START:
+            return true;
+        case UserActions.REQUEST_USER_SUCCESS:
+        case UserActions.REQUEST_USER_FAILED:
+            return false;
+        default:
+            return state;
+    }
+}
+
+function hasRequested(state = false, action) {
+    switch (action.type) {
+        case UserActions.REQUEST_USER_SUCCESS:
+            return true;
+        case UserActions.REQUEST_USER_START:
+        case UserActions.REQUEST_USER_FAILED:
+            return false;
         default:
             return state;
     }
@@ -212,6 +241,8 @@ const User = combineReducers({
     isRetrieving,
     isFetching,
     isFetchingMore,
+    isRequesting,
+    hasRequested,
     next,
     previous,
     count,

@@ -6,15 +6,23 @@ import Linkify from '../../core/Linkify';
 
 import Avatar from "../../core/Avatar";
 import Button from "../../core/Button";
+import Success from "../../core/Success";
+import {isAuthenticated, isClient} from "../../utils/auth";
+import Progress from "../../core/Progress";
+import Error from "../../core/Error";
 
 export default class UserProfile extends React.Component {
     static defaultProps = {
         showHeader: true,
+        canRequest: false,
     };
 
     static propTypes = {
         user: PropTypes.object,
+        User: PropTypes.object,
+        UserActions: PropTypes.object,
         showHeader: PropTypes.bool,
+        canRequest: PropTypes.bool,
     };
 
     componentDidMount(){
@@ -33,18 +41,18 @@ export default class UserProfile extends React.Component {
                     geocoder.geocode({
                         'address': user.profile.location
                     }, function (results, status) {
-
                         if (status === google.maps.GeocoderStatus.OK) {
 
-                            let latLng = results[0].geometry.location;
-                            let map = new google.maps.Map(document.getElementById('map'), {
+                            let latLng = results[0].geometry.location,
+                                map = new google.maps.Map(document.getElementById('map'), {
                                 zoom: 12,
                                 center: latLng
-                            });
-                            let marker = new google.maps.Marker({
+                            }),
+                                marker = new google.maps.Marker({
                                 position: latLng,
                                 map: map
                             });
+
                             if(mapTimer) {
                                 clearTimeout(mapTimer);
                             }
@@ -65,20 +73,43 @@ export default class UserProfile extends React.Component {
         }
     }
 
+    sendRequest = () => {
+        window.scrollTo(0, 0);
+
+        const { user, UserActions } = this.props;
+        UserActions.requestUser(user.id);
+    };
+
     render() {
-        const {user, showHeader} = this.props, {profile} = user;
+        const {user, showHeader, User: {isRequesting, hasRequested, errors}, canRequest} = this.props,
+            {profile} = user;
 
         return (
             user?(
                 <div className="user-profile">
                     {showHeader?(
+                        <Link to="/network" className="btn btn-primary back-link">Go back to overview</Link>
+                    ):null}
+
+                    {canRequest && isClient() && user.is_developer?(
                         <div>
-                            <Link to="/network" className="btn btn-primary back-link">Go back to overview</Link>
-                            <div className="basic-profile">
-                                <Avatar image={user.avatar_url} size="xl"/>
-                                <div className="font-weight-medium">{user.display_name}</div>
-                                <div className="text text-sm">{user.profile.location}</div>
-                            </div>
+                            {isRequesting?(
+                                <Progress message="Requesting developer ..."/>
+                            ):null}
+                            {hasRequested?(
+                                <Success message="Your request has been successfully sent to Tunga. We will get back to you shortly."/>
+                            ):null}
+                            {errors && errors.request?(
+                                <Error message="Something went wrong! Please try again."/>
+                            ):null}
+                        </div>
+                    ):null}
+
+                    {showHeader?(
+                        <div className="basic-profile">
+                            <Avatar image={user.avatar_url} size="xl"/>
+                            <div className="font-weight-medium">{user.display_name}</div>
+                            <div className="text text-sm">{user.profile.location}</div>
                         </div>
                     ):null}
 
@@ -163,6 +194,12 @@ export default class UserProfile extends React.Component {
                             </div>
                         </Col>
                     </Row>
+
+                    {canRequest && isClient() && user.is_developer?(
+                        <div className="text-center">
+                            <Button size="xl" onClick={this.sendRequest} disabled={isRequesting}>Work with {user.first_name}</Button>
+                        </div>
+                    ):null}
                 </div>
             ):null
         );

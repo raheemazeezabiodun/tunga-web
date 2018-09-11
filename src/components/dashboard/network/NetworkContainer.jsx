@@ -14,8 +14,17 @@ const NetworkContainer = ({User, UserActions}) => {
     return (
         <React.Fragment>
             <Switch>
-                <Route path='/network/invite' render={props => <UserForm User={User} UserActions={UserActions}/>}/>,
-                <Route exact path="/network/:username" render={props => <UserDetailContainer {...props} username={props.match.params.username} User={User} UserActions={UserActions}><UserProfile/></UserDetailContainer>}/>
+                <Route path='/network/invite' render={props =>
+                    <UserForm User={User} UserActions={UserActions}/>}
+                />,
+                <Route exact path="/network/:username" render={props =>
+                    <UserDetailContainer {...props}
+                                         username={props.match.params.username}
+                                         User={User}
+                                         UserActions={UserActions}>
+                        <UserProfile User={User} canRequest={true} showHeader={true}/>
+                    </UserDetailContainer>}
+                />
                 {[
                     '/network/filter/:filter',
                     '/network',

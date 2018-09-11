@@ -19,18 +19,24 @@ export default class OpportunityManagement extends React.Component {
         match: PropTypes.object
     };
 
+    numberByStatus(status) {
+        const {project} = this.props;
+        return project.interest_polls.filter(interest => interest.status === status).length
+    }
+
     render() {
-        const {project, isSaving, isSaved, ProjectActions, match} = this.props,
-            interestPolls = project.interest_polls,
-            interestedDevs = interestPolls.filter(interest => interest.status === STATUS_INTERESTED).length,
-            uninterestedDevs = interestPolls.filter(interest => interest.status === STATUS_UNINTERESTED).length,
-            pendingDevs = interestPolls.filter(interest => interest.status === STATUS_INITIAL).length;
-        const projectProps = {project, isSaving, isSaved, ProjectActions};
+        const {project, isSaving, isSaved, errors, ProjectActions, match} = this.props;
+        const projectProps = {
+            project,
+            interest_polls: project.interest_polls,
+            isSaving, isSaved, errors,
+            ProjectActions
+        };
 
         const sections = isDev()?[]:[
-            ['network/interested', `Interested developers (${interestedDevs})`, <InterestList {...projectProps} status={STATUS_INTERESTED} />],
-            ['network/uninterested', `Uninterested developers (${uninterestedDevs})`, <InterestList {...projectProps} status={STATUS_UNINTERESTED} />],
-            ['network/pending', `Pending invitations (${pendingDevs})`, <InterestList {...projectProps} status={STATUS_INITIAL} />],
+            ['network/interested', `Interested developers (${this.numberByStatus(STATUS_INTERESTED)})`, <InterestList {...projectProps} status={STATUS_INTERESTED} />],
+            ['network/uninterested', `Uninterested developers (${this.numberByStatus(STATUS_UNINTERESTED)})`, <InterestList {...projectProps} status={STATUS_UNINTERESTED} />],
+            ['network/pending', `Pending invitations (${this.numberByStatus(STATUS_INITIAL)})`, <InterestList {...projectProps} status={STATUS_INITIAL} />],
         ];
 
         return (

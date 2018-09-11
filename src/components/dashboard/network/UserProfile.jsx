@@ -197,7 +197,7 @@ export default class UserProfile extends React.Component {
 
                     {canRequest && isClient() && user.is_developer?(
                         <div className="text-center">
-                            <Button size="xl" onClick={this.sendRequest} disabled={isRequesting}>Work with {user.first_name}</Button>
+                            <Button size="xl" onClick={this.sendRequest} disabled={isRequesting || hasRequested}>Work with {user.first_name}</Button>
                         </div>
                     ):null}
                 </div>

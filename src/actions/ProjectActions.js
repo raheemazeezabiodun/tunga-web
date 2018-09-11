@@ -19,6 +19,9 @@ export const LIST_MORE_PROJECTS_FAILED = 'LIST_MORE_PROJECTS_FAILED';
 export const DELETE_PROJECT_START = 'DELETE_PROJECT_START';
 export const DELETE_PROJECT_SUCCESS = 'DELETE_PROJECT_SUCCESS';
 export const DELETE_PROJECT_FAILED = 'DELETE_PROJECT_FAILED';
+export const SEND_REMINDER_START = 'SEND_REMINDER_START';
+export const SEND_REMINDER_SUCCESS = 'SEND_REMINDER_SUCCESS';
+export const SEND_REMINDER_FAILED = 'SEND_REMINDER_FAILED';
 
 export function createProject(project, target) {
     return dispatch => {
@@ -172,7 +175,7 @@ export function updateProject(id, project) {
         }
 
         axios
-            .patch(ENDPOINT_PROJECTS + id + '/', data, {
+            .patch(`${ENDPOINT_PROJECTS}${id}/`, data, {
                 headers: {...headers},
             })
             .then(function(response) {
@@ -291,4 +294,49 @@ export function deleteProjectFailed(error, id) {
         error,
         id
     }
+}
+
+export function sendReminder(id, target) {
+    return dispatch => {
+        dispatch(sendReminderStart(id, target));
+
+        axios
+            .post(`${ENDPOINT_PROJECTS}${id}/remind/`, {})
+            .then(function(response) {
+                dispatch(sendReminderSuccess(response.data, id, target));
+            })
+            .catch(function(error) {
+                dispatch(
+                    sendReminderFailed(
+                        (error.response ? error.response.data : null), id, target
+                    ),
+                );
+            });
+    };
+}
+
+export function sendReminderStart(id, target) {
+    return {
+        type: SEND_REMINDER_START,
+        id,
+        target
+    };
+}
+
+export function sendReminderSuccess(data, id, target) {
+    return {
+        type: SEND_REMINDER_SUCCESS,
+        data,
+        id,
+        target
+    };
+}
+
+export function sendReminderFailed(error, id, target) {
+    return {
+        type: SEND_REMINDER_FAILED,
+        error,
+        id,
+        target
+    };
 }

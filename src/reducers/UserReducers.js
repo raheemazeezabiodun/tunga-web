@@ -2,7 +2,6 @@ import {combineReducers} from 'redux';
 
 import * as UserActions from '../actions/UserActions';
 import {getIds, reduceUser} from './utils';
-import * as AuthActions from "../actions/AuthActions";
 
 function ids(state = {}, action) {
     let selection_key = action.selection || 'default';

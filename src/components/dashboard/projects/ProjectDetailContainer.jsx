@@ -52,6 +52,7 @@ export default class ProjectDetailContainer extends React.Component  {
             isRetrieving: Project.isRetrieving[projectId],
             isSaving: Project.isSaving,
             isSaved: Project.isSaved,
+            errors: Project.errors,
             ProjectActions
         });
     }

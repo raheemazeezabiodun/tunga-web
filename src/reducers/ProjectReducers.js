@@ -213,6 +213,15 @@ function isSaving(state = {}, action) {
         case ProjectActions.UPDATE_PROJECT_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
+        case ProjectActions.SEND_REMINDER_START:
+            newState['remind'] = true;
+            return {...state, ...newState};
+        case ProjectActions.SEND_REMINDER_SUCCESS:
+        case ProjectActions.SEND_REMINDER_FAILED:
+            newState['remind'] = false;
+            return {...state, ...newState};
+        case LOCATION_CHANGE:
+            return {};
         default:
             return state;
     }
@@ -261,6 +270,13 @@ function isSaved(state = {}, action) {
         case DocumentActions.UPDATE_DOCUMENT_START:
         case DocumentActions.UPDATE_DOCUMENT_FAILED:
             newState['docs'] = false;
+            return {...state, ...newState};
+        case ProjectActions.SEND_REMINDER_SUCCESS:
+            newState['remind'] = true;
+            return {...state, ...newState};
+        case ProjectActions.SEND_REMINDER_START:
+        case ProjectActions.SEND_REMINDER_FAILED:
+            newState['remind'] = false;
             return {...state, ...newState};
         case LOCATION_CHANGE:
             return {};
@@ -407,6 +423,13 @@ function errors(state = {}, action) {
         case ProjectActions.LIST_MORE_PROJECTS_START:
         case ProjectActions.LIST_MORE_PROJECTS_SUCCESS:
             return {...state, list: null};
+        case ProjectActions.SEND_REMINDER_FAILED:
+            return {...state, remind: action.error};
+        case ProjectActions.SEND_REMINDER_START:
+        case ProjectActions.SEND_REMINDER_SUCCESS:
+            return {...state, remind: null};
+        case LOCATION_CHANGE:
+            return {};
         default:
             return state;
     }

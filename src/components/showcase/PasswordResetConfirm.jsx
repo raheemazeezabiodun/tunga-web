@@ -27,7 +27,7 @@ class PasswordResetConfirm extends React.Component {
 
             const {location} = this.props,
                 queryParams = querystring.parse((location.search || '').replace('?', ''));
-            let next = '/';
+            let next = '/dashboard';
             if (queryParams && queryParams.next) {
                 next = queryParams.next;
             }

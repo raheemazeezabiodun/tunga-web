@@ -20,6 +20,8 @@ import PasswordReset from "./PasswordReset";
 import PasswordResetConfirm from "./PasswordResetConfirm";
 import Developer from "./Developer";
 import Join from "./Join";
+import InterestPollDetailContainer from "../dashboard/projects/InterestPollDetailContainer";
+import InterestPoll from "./InterestPoll";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -102,6 +104,11 @@ export default class ShowcaseLayout extends React.Component {
                     <Route path={wrapPath('/privacy')} component={Privacy}/>
                     <Route path={wrapPath('/agreement')} component={Agreement}/>
                     <Route path={wrapPath('/code-of-conduct')} component={CodeOfConduct}/>
+                    <Route exact path='/poll/:id/:token' render={props =>
+                        <InterestPollDetailContainer pollId={props.match.params.id} >
+                            <InterestPoll {...props}/>
+                        </InterestPollDetailContainer>}
+                    />
                     <Route exact path='/call' render={props => <Home showCall={true}/>}/>
                     <Route exact path='/tunga' component={Home}/>
                     <Route exact path={wrapPath('/:keyword')} render={(props) => <SkillPage keyword={props.match.params.keyword}/>}/>

@@ -3000,6 +3000,25 @@ textarea {
         }
     }
 
+    .action-page {
+        .content-card {
+            color: get-color('black');
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .alert {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .interest-actions {
+            .btn {
+                margin-left: 5px;
+            }
+        }
+    }
+
     .our-story-page {
 
         header {

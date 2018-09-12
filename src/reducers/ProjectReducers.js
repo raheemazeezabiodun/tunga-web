@@ -74,7 +74,7 @@ function projects(state = {}, action) {
             return {...state, ...new_project};
         case ParticipationActions.CREATE_PARTICIPATION_SUCCESS:
         case ParticipationActions.UPDATE_PARTICIPATION_SUCCESS:
-            let participation = action.participation;
+            let participation = {...action.participation};
             if(participation && participation.project && participation.project.id) {
                 let projectId = participation.project.id,
                     participationProject = state[projectId] || {};
@@ -99,7 +99,7 @@ function projects(state = {}, action) {
             return state;
         case DocumentActions.CREATE_DOCUMENT_SUCCESS:
         case DocumentActions.UPDATE_DOCUMENT_SUCCESS:
-            let document = action.document;
+            let document = {...action.document};
 
             if(document && document.project && document.project.id) {
                 let projectId = document.project.id,
@@ -124,7 +124,7 @@ function projects(state = {}, action) {
             return state;
         case ProgressEventActions.CREATE_PROGRESS_EVENT_SUCCESS:
         case ProgressEventActions.UPDATE_PROGRESS_EVENT_SUCCESS:
-            let progress_event = action.progress_event;
+            let progress_event = {...action.progress_event};
 
             if(progress_event && progress_event.project && progress_event.project.id) {
                 let projectId = progress_event.project.id,
@@ -149,7 +149,7 @@ function projects(state = {}, action) {
             return state;
         case InterestActions.CREATE_INTEREST_POLL_SUCCESS:
         case InterestActions.UPDATE_INTEREST_POLL_SUCCESS:
-            let interest_poll = action.interest_poll;
+            let interest_poll = {...action.interest_poll};
 
             if(interest_poll && interest_poll.project && interest_poll.project.id) {
                 let projectId = interest_poll.project.id,

@@ -72,11 +72,6 @@ function projects(state = {}, action) {
             let new_project = {};
             new_project[action.project.id] = action.project;
             return {...state, ...new_project};
-        case InterestActions.CREATE_INTEREST_POLL_SUCCESS:
-        case InterestActions.UPDATE_INTEREST_POLL_SUCCESS:
-            let new_interest = {};
-            new_interest[action.interest.id] = action.interest;
-            return {...state, ...new_interest};
         case ParticipationActions.CREATE_PARTICIPATION_SUCCESS:
         case ParticipationActions.UPDATE_PARTICIPATION_SUCCESS:
             let participation = action.participation;
@@ -152,6 +147,31 @@ function projects(state = {}, action) {
                 return {...state, ...newState};
             }
             return state;
+        case InterestActions.CREATE_INTEREST_POLL_SUCCESS:
+        case InterestActions.UPDATE_INTEREST_POLL_SUCCESS:
+            let interest_poll = action.interest_poll;
+
+            if(interest_poll && interest_poll.project && interest_poll.project.id) {
+                let projectId = interest_poll.project.id,
+                    interestPollProject = state[projectId] || {};
+                delete interest_poll.project;
+
+                let currentInterestPolls = [...(interestPollProject.interest_polls || [])];
+                let currentInterestPollIdx = currentInterestPolls.map(item => {
+                    return item.id;
+                }).indexOf(interest_poll.id);
+
+                if(currentInterestPollIdx === -1) {
+                    currentInterestPolls.push(interest_poll);
+                } else {
+                    currentInterestPolls[currentInterestPollIdx] = interest_poll;
+                }
+
+                let newState = {};
+                newState[projectId] = {...interestPollProject, interest_polls: currentInterestPolls};
+                return {...state, ...newState};
+            }
+            return state;
         case ParticipationActions.DELETE_PARTICIPATION_SUCCESS:
             let newState = {};
             Object.keys(state).forEach(id => {
@@ -194,6 +214,26 @@ function projects(state = {}, action) {
                 newState[project.id] = {...project, progress_events: newProgressEvents};
             });
             return newState;
+        default:
+            return state;
+    }
+}
+
+function interest_polls(state = {}, action) {
+    switch (action.type) {
+        case InterestActions.LIST_INTEREST_POLL_SUCCESS:
+        case InterestActions.LIST_MORE_INTEREST_POLL_SUCCESS:
+            let all_interest_polls = {};
+            action.items.forEach(interest_poll => {
+                all_interest_polls[interest_poll.id] = interest_poll;
+            });
+            return {...state, ...all_interest_polls};
+        case InterestActions.CREATE_INTEREST_POLL_SUCCESS:
+        case InterestActions.RETRIEVE_INTEREST_POLL_SUCCESS:
+        case InterestActions.UPDATE_INTEREST_POLL_SUCCESS:
+            let new_interest_poll = {};
+            new_interest_poll[action.interest_poll.id] = action.interest_poll;
+            return {...state, ...new_interest_poll};
         default:
             return state;
     }
@@ -295,6 +335,13 @@ function isRetrieving(state = {}, action) {
         case ProjectActions.RETRIEVE_PROJECT_SUCCESS:
         case ProjectActions.RETRIEVE_PROJECT_FAILED:
             newState[targetKey] = false;
+            return {...state, ...newState};
+        case InterestActions.RETRIEVE_INTEREST_POLL_START:
+            newState['interest'] = true;
+            return {...state, ...newState};
+        case InterestActions.RETRIEVE_INTEREST_POLL_SUCCESS:
+        case InterestActions.RETRIEVE_INTEREST_POLL_FAILED:
+            newState['interest'] = false;
             return {...state, ...newState};
         default:
             return state;
@@ -440,6 +487,7 @@ const Project = combineReducers({
     deleted,
     ids,
     projects,
+    interest_polls,
     isSaving,
     isSaved,
     isRetrieving,

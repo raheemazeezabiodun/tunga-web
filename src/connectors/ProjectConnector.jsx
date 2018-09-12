@@ -6,7 +6,7 @@ import * as ProjectActions from "../actions/ProjectActions";
 import * as ParticipationActions from "../actions/ParticipationActions";
 import * as DocumentActions from "../actions/DocumentActions";
 import * as ProgressEventActions from "../actions/ProgressEventActions";
-import * as InterstActions from '../actions/InterestPollActions';
+import * as InterestActions from '../actions/InterestPollActions';
 
 function mapStateToProps(state) {
     return {
@@ -21,7 +21,7 @@ function mapDispatchToProps(dispatch) {
             ...bindActionCreators(ParticipationActions, dispatch),
             ...bindActionCreators(DocumentActions, dispatch),
             ...bindActionCreators(ProgressEventActions, dispatch),
-            ...bindActionCreators(InterstActions, dispatch)
+            ...bindActionCreators(InterestActions, dispatch)
         },
     };
 }

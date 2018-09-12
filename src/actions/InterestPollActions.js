@@ -17,60 +17,60 @@ export const LIST_MORE_INTEREST_POLL_START = 'LIST_MORE_INTEREST_POLL_START';
 export const LIST_MORE_INTEREST_POLL_SUCCESS = 'LIST_MORE_INTEREST_POLL_SUCCESS';
 export const LIST_MORE_INTEREST_POLL_FAILED = 'LIST_MORE_INTEREST_POLL_FAILED';
 
-export function createInterest(interest, target) {
+export function createInterest(interest_poll, target) {
     return dispatch => {
-        dispatch(createInterestStart(interest, target));
+        dispatch(createInterestStart(interest_poll, target));
 
         let headers = {};
 
         axios
-            .post(ENDPOINT_INTEREST_POLL, interest, {headers})
+            .post(ENDPOINT_INTEREST_POLL, interest_poll, {headers})
             .then(function(response) {
                 dispatch(createInterestSuccess(response.data, target));
             })
             .catch(function(error) {
                 dispatch(
                     createInterestFailure(
-                        (error.response ? error.response.data : null), interest, target
+                        (error.response ? error.response.data : null), interest_poll, target
                     ),
                 );
             });
     };
 }
 
-export function createInterestStart(interest, target) {
+export function createInterestStart(interest_poll, target) {
     return {
         type: CREATE_INTEREST_POLL_START,
-        interest,
+        interest_poll,
         target
     };
 }
 
-export function createInterestSuccess(interest, target) {
+export function createInterestSuccess(interest_poll, target) {
     return {
         type: CREATE_INTEREST_POLL_SUCCESS,
-        interest,
+        interest_poll,
         target
     };
 }
 
-export function createInterestFailure(error, interest, target) {
+export function createInterestFailure(error, interest_poll, target) {
     return {
         type: CREATE_INTEREST_POLL_FAILED,
         error,
-        interest,
+        interest_poll,
         target
     };
 }
 
-export function updateInterest(id, interest) {
+export function updateInterest(id, interest_poll) {
     return dispatch => {
-        dispatch(updateInterestStart(id, interest, id));
+        dispatch(updateInterestStart(id, interest_poll, id));
 
         let headers = {};
 
         axios
-            .patch(ENDPOINT_INTEREST_POLL + id + '/', interest, {
+            .patch(ENDPOINT_INTEREST_POLL + id + '/', interest_poll, {
                 headers: {...headers},
             })
             .then(function(response) {
@@ -79,35 +79,35 @@ export function updateInterest(id, interest) {
             .catch(function(error) {
                 dispatch(
                     updateInterestFailure(
-                        (error.response ? error.response.data : null), interest, id
+                        (error.response ? error.response.data : null), interest_poll, id
                     ),
                 );
             });
     };
 }
 
-export function updateInterestStart(id, interest, target) {
+export function updateInterestStart(id, interest_poll, target) {
     return {
         type: UPDATE_INTEREST_POLL_START,
         id,
-        interest,
+        interest_poll,
         target
     };
 }
 
-export function updateInterestSuccess(interest, target) {
+export function updateInterestSuccess(interest_poll, target) {
     return {
         type: UPDATE_INTEREST_POLL_SUCCESS,
-        interest,
+        interest_poll,
         target
     };
 }
 
-export function updateInterestFailure(error, interest, target) {
+export function updateInterestFailure(error, interest_poll, target) {
     return {
         type: UPDATE_INTEREST_POLL_FAILED,
         error,
-        interest,
+        interest_poll,
         target
     };
 }
@@ -184,10 +184,10 @@ export function retrieveInterestStart(id) {
     };
 }
 
-export function retrieveInterestSuccess(interest, id) {
+export function retrieveInterestSuccess(interest_poll, id) {
     return {
         type: RETRIEVE_INTEREST_POLL_SUCCESS,
-        interest,
+        interest_poll,
         id
     };
 }

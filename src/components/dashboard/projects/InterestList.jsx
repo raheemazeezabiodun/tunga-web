@@ -7,6 +7,7 @@ import Button from '../../core/Button';
 import {STATUS_INITIAL} from "../../../actions/utils/api";
 import Success from "../../core/Success";
 import Error from "../../core/Error";
+import {openConfirm} from "../../core/utils/modals";
 
 
 export default class InterestList extends React.Component {
@@ -21,7 +22,18 @@ export default class InterestList extends React.Component {
 
     sendReminder = () => {
         const { project, ProjectActions } = this.props;
-        ProjectActions.sendReminder(project.id);
+
+        openConfirm(
+            'Are you sure you want to send a reminder?',
+            '', false,
+            {ok: 'Yes', cancel: 'No'}
+        ).then(response => {
+            ProjectActions.sendReminder(project.id);
+        }, error => {
+            // nothing
+        });
+
+
     };
 
     render() {

@@ -48,6 +48,7 @@ class UserForm extends React.Component {
         if(this.state.type === TYPE_CLIENT) {
             let user = {
                 type: USER_TYPE_PROJECT_OWNER,
+                source: 3,
                 company: {...this.state.user},
             };
             ['first_name', 'last_name', 'email'].forEach(key => {

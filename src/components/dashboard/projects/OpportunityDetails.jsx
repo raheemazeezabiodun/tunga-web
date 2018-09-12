@@ -7,7 +7,7 @@ import { displayExpectedReturn } from '../../utils/helpers';
 import { isDev, getUser, isAdminOrPM } from '../../utils/auth';
 import Success from '../../core/Success';
 import { openConfirm } from '../../core/utils/modals';
-import {STATUS_INTERESTED, STATUS_UNINTERESTED} from "../../../actions/utils/api";
+import {PROJECT_STAGE_ACTIVE, STATUS_INTERESTED, STATUS_UNINTERESTED} from "../../../actions/utils/api";
 
 
 export default class OpportunityDetails extends Component {
@@ -42,7 +42,7 @@ export default class OpportunityDetails extends Component {
     activateProject() {
         const { ProjectActions, project } = this.props;
         openConfirm('Are you sure you want to make this opportunity an active project?').then((result) => {
-            ProjectActions.updateProject(project.id, { stage: 'active' })
+            ProjectActions.updateProject(project.id, { stage: PROJECT_STAGE_ACTIVE })
         })
     }
 

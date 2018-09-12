@@ -11,9 +11,14 @@ import PropTypes from "prop-types";
 
 class PasswordResetConfirm extends React.Component {
 
+    static defaultProps = {
+        newUser: false
+    };
+
     static propTypes = {
         uid: PropTypes.string.required,
         token: PropTypes.string.required,
+        newUser: PropTypes.bool,
     };
 
     componentDidUpdate(prevProps, prevState, snapShot) {
@@ -49,9 +54,9 @@ class PasswordResetConfirm extends React.Component {
     };
 
     render() {
-        const {Auth} = this.props,
+        const {Auth, newUser} = this.props,
             queryParams = querystring.parse((location.search || '').replace('?', ''));
-        let is_new = queryParams.new_user;
+        let isNew = newUser || queryParams.new_user;
 
         return (
             <div className="auth-page">
@@ -63,7 +68,7 @@ class PasswordResetConfirm extends React.Component {
                             role="form"
                             ref="reset_confirm_form">
                             <h3>
-                                {is_new ? 'Create' : 'Reset'} Password
+                                {isNew ? 'Create' : 'Reset'} Password
                             </h3>
 
                             {Auth.error.reset_confirm && Auth.error.reset_confirm.token ? (
@@ -71,7 +76,7 @@ class PasswordResetConfirm extends React.Component {
                             ):null}
 
                             {Auth.isReset?(
-                                <Success message={`Password ${is_new?'set':'changed'} successfully`}/>
+                                <Success message={`Password ${isNew?'set':'changed'} successfully`}/>
                             ):null}
 
                             {Auth.error.reset_confirm &&
@@ -84,7 +89,7 @@ class PasswordResetConfirm extends React.Component {
                             )}
                             <div className="form-group">
                                 <label className="control-label">
-                                    {is_new ? null : 'New '}Password
+                                    {isNew ? null : 'New '}Password
                                 </label>
                                 <div>
                                     <input
@@ -92,7 +97,7 @@ class PasswordResetConfirm extends React.Component {
                                         className="form-control"
                                         ref="new_password1"
                                         required
-                                        placeholder={`${is_new ? '' : 'New '}Password`}
+                                        placeholder={`${isNew ? '' : 'New '}Password`}
                                     />
                                 </div>
                             </div>
@@ -107,7 +112,7 @@ class PasswordResetConfirm extends React.Component {
                             )}
                             <div className="form-group">
                                 <label className="control-label">
-                                    Confirm {is_new ? null : 'New '}Password
+                                    Confirm {isNew ? null : 'New '}Password
                                 </label>
                                 <div>
                                     <input
@@ -116,7 +121,7 @@ class PasswordResetConfirm extends React.Component {
                                         ref="new_password2"
                                         required
                                         placeholder={`Confirm ${
-                                            is_new ? '' : 'New '
+                                            isNew ? '' : 'New '
                                             }Password`}
                                     />
                                 </div>
@@ -126,7 +131,7 @@ class PasswordResetConfirm extends React.Component {
                                 <Button
                                     type="submit"
                                     disabled={Auth.isResetting}>
-                                    {is_new ? 'Set' : 'Change'} Password
+                                    {isNew ? 'Set' : 'Change'} Password
                                 </Button>
                             </div>
                         </form>

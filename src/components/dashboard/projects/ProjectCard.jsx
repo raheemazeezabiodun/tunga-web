@@ -31,7 +31,7 @@ export default class ProjectCard extends React.Component {
                     </div>
                 ) : (
                 <div>
-                    <div>Send out to {interestPolls.length} developer{interestPolls.length === 1 ? '' : 's'}</div>
+                    <div>Sent out to {interestPolls.length} developer{interestPolls.length === 1 ? '' : 's'}</div>
                     <div>{interestedDevs} developer{interestedDevs === 1 ? '' : 's'} are interested</div>
                 </div>
                 )}

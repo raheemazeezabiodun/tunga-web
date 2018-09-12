@@ -97,7 +97,7 @@ export default class TitleBar extends React.Component {
                         {[
                             ['/onboard', 'Welcome to Tunga!'],
                             ...['/dashboard', '/work', '/proposal'].map(path => {
-                                return [path, <div>Hi {user.display_name}</div>, isLargeDevice?`/projects/new${isAdminOrPM()?`/stage`:''}`:null, null, {subTitle: moment().format('dddd, Do of MMMM')}]
+                                return [path, <div>Hi {user.display_name}</div>, isLargeDevice?'/projects/new':null, null, {subTitle: moment().format('dddd, Do of MMMM')}]
                             }),
                             ...(isLargeDevice?
                                 [

@@ -23,7 +23,7 @@ export default class InterestCard extends React.Component {
     }
 
     render() {
-        const { interest } = this.props;
+        const { interest, isSaving, isSaved } = this.props;
         return (
             <Row>
                 <Col md={5}>
@@ -36,14 +36,17 @@ export default class InterestCard extends React.Component {
                     {interest.status === STATUS_INTERESTED ? (
                         <div className="interest-actions">
                             <IconButton name='check'
-                                size='main'
-                                onClick={() => this.onUpdateApproval(STATUS_ACCEPTED)}
-                                className={interest.approval_status === STATUS_ACCEPTED ? 'btn-accepted' : ''}
+                                        size='main'
+                                        className={interest.approval_status === STATUS_ACCEPTED ? 'btn-accepted' : ''}
+                                        onClick={() => this.onUpdateApproval(STATUS_ACCEPTED)}
+                                        disabled={isSaving}
+
                             />
                             <IconButton name='times-circle'
-                                size='main'
-                                onClick={() => this.onUpdateApproval(STATUS_REJECTED)}
-                                className={interest.approval_status === STATUS_REJECTED ? 'btn-rejected' : ''}
+                                        size='main'
+                                        className={interest.approval_status === STATUS_REJECTED ? 'btn-rejected' : ''}
+                                        onClick={() => this.onUpdateApproval(STATUS_REJECTED)}
+                                        disabled={isSaving}
                             />
                         </div>
                     ): null}

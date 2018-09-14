@@ -63,8 +63,8 @@ export default class InterestList extends React.Component {
                             <InterestCard interest={interest}
                                           ProjectActions={ProjectActions}
                                           project={project}
-                                          isSaving={isSaving}
-                                          isSaved={isSaved}/>
+                                          isSaving={isSaving['remind']}
+                                          isSaved={isSaved['remind']}/>
                         );
                     })}
                 </div>

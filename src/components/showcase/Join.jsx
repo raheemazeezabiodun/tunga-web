@@ -81,7 +81,7 @@ class Join extends React.Component {
 
                                 <p>
                                     <strong>Next Steps</strong><br/>
-                                    If you pass the CV and/or portfolio screening, we’ll follow up with in introduction. We’ll explain a few details, such as our code of conduct, pay, and our background story. Furthermore, we’ll send you an invite for an informal chat. During this chat, someone from Tunga will ask you a few questions to get to know you a little better. If all goes well and it seems that we’re a fit so far, we’ll move on to the last step: the soft skills and hard skills tests. Once you pass these, we’ll start looking for your first Tunga project!
+                                    If you pass the CV and/or portfolio screening, we’ll follow up with an introduction. We’ll explain a few details, such as our code of conduct, pay, and our background story. Furthermore, we’ll send you an invite for an informal chat. During this chat, someone from Tunga will ask you a few questions to get to know you a little better. If all goes well and it seems that we’re a fit so far, we’ll move on to the last step: the soft skills and hard skills tests. Once you pass these, we’ll start looking for your first Tunga project!
                                 </p>
                             </div>
                         </div>

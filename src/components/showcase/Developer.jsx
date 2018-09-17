@@ -40,7 +40,7 @@ const Developer = (props) => {
             <UserDetailContainer {...props}>
                 <DeveloperHeader/>
 
-                <UserProfile showHeader={false}/>
+                <UserProfile showHeader={false} User={props.User} UserActions={props.UserActions}/>
 
                 <DeveloperFooter/>
 

@@ -60,6 +60,17 @@ export default class PaymentList extends React.Component {
             // Nothing
         });
     }
+    onMarkArchived(invoiceId) {
+        const { InvoiceActions } = this.props;
+        openConfirm(
+            <div className="font-weight-bold">Are you sure you want to archive this invoice?</div>, '',
+            true, {ok: 'Yes'}
+        ).then(response => {
+            InvoiceActions.updateInvoice(invoiceId, {archived: true}, this.props.selectionKey);
+        }, error => {
+            // Nothing
+        });
+    }
 
     onApprovePayout(invoices) {
         const { InvoiceActions } = this.props;
@@ -257,6 +268,12 @@ export default class PaymentList extends React.Component {
                                                                         <Button size="sm"
                                                                                 onClick={this.onMarkPaid.bind(this, invoice.id)}>
                                                                             Mark as paid
+                                                                        </Button>
+                                                                    ):null}
+                                                                    {isAdmin()?(
+                                                                        <Button size="sm"
+                                                                                onClick={this.onMarkArchived.bind(this, invoice.id)}>
+                                                                            Mark as Archived
                                                                         </Button>
                                                                     ):null}
                                                                 </div>

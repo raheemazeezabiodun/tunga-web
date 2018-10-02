@@ -28,6 +28,18 @@ function deleted(state = {}, action) {
     }
 }
 
+function archived(state = {}, action) {
+    let targetKey = action.target || action.id || 'default';
+    let newState = {};
+    switch (action.type) {
+        case InvoiceActions.ARCHIVE_INVOICE_SUCCESS:
+            newState[targetKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
 function ids(state = {}, action) {
     let selectionKey = action.selection || 'default';
     let targetKey = action.target || action.id || 'default';
@@ -60,11 +72,21 @@ function ids(state = {}, action) {
             ];
             return {...state, ...newState};
         case InvoiceActions.DELETE_INVOICE_SUCCESS:
-            if(state[targetKey]) {
+            if (state[targetKey]) {
                 let currentList = [...state[targetKey]];
                 let idx = currentList.indexOf(action.id);
-                if(idx > -1) {
-                    newState[targetKey] = [...currentList.slice(0, idx), ...currentList.slice(idx+1)];
+                if (idx > -1) {
+                    newState[targetKey] = [...currentList.slice(0, idx), ...currentList.slice(idx + 1)];
+                    return {...state, ...newState};
+                }
+            }
+            return state;
+        case InvoiceActions.ARCHIVE_INVOICE_SUCCESS:
+            if (state[targetKey]) {
+                let currentList = [...state[targetKey]];
+                let idx = currentList.indexOf(action.id);
+                if (idx > -1) {
+                    newState[targetKey] = [...currentList.slice(0, idx), ...currentList.slice(idx + 1)];
                     return {...state, ...newState};
                 }
             }
@@ -108,7 +130,7 @@ function isSaving(state = {}, action) {
         case InvoiceActions.UPDATE_INVOICE_START:
         case InvoiceActions.PAY_INVOICE_START:
             newState[targetKey] = true;
-            if(action.id) {
+            if (action.id) {
                 newState[action.id] = true;
             }
             return {...state, ...newState};
@@ -119,7 +141,7 @@ function isSaving(state = {}, action) {
         case InvoiceActions.PAY_INVOICE_SUCCESS:
         case InvoiceActions.PAY_INVOICE_FAILED:
             newState[targetKey] = false;
-            if(action.id) {
+            if (action.id) {
                 newState[action.id] = false;
             }
             return {...state, ...newState};
@@ -136,7 +158,7 @@ function isSaved(state = {}, action) {
         case InvoiceActions.UPDATE_INVOICE_SUCCESS:
         case InvoiceActions.PAY_INVOICE_SUCCESS:
             newState[targetKey] = true;
-            if(action.id) {
+            if (action.id) {
                 newState[action.id] = true;
             }
             return {...state, ...newState};
@@ -147,7 +169,7 @@ function isSaved(state = {}, action) {
         case InvoiceActions.PAY_INVOICE_START:
         case InvoiceActions.PAY_INVOICE_FAILED:
             newState[targetKey] = false;
-            if(action.id) {
+            if (action.id) {
                 newState[action.id] = false;
             }
             return {...state, ...newState};
@@ -183,6 +205,22 @@ function isDeleting(state = {}, action) {
             return {...state, ...newState};
         case InvoiceActions.DELETE_INVOICE_SUCCESS:
         case InvoiceActions.DELETE_INVOICE_FAILED:
+            newState[targetKey] = false;
+            return {...state, ...newState};
+        default:
+            return state;
+    }
+}
+
+function isarchiving(state = {}, action) {
+    let targetKey = action.target || action.id || 'default';
+    let newState = {};
+    switch (action.type) {
+        case InvoiceActions.ARCHIVE_INVOICE_START:
+            newState[targetKey] = true;
+            return {...state, ...newState};
+        case InvoiceActions.ARCHIVE_INVOICE_SUCCESS:
+        case InvoiceActions.ARCHIVE_INVOICE_FAILED:
             newState[targetKey] = false;
             return {...state, ...newState};
         default:
@@ -304,12 +342,14 @@ function errors(state = {}, action) {
 const Invoice = combineReducers({
     created,
     deleted,
+    archived,
     ids,
     invoices,
     isSaving,
     isSaved,
     isRetrieving,
     isDeleting,
+    isarchiving,
     isFetching,
     isFetchingMore,
     next,

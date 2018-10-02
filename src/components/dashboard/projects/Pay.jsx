@@ -121,6 +121,19 @@ export default class Pay extends React.Component {
         });
     }
 
+    onMarkArchived(invoiceId) {
+        this.onToggleActions(invoiceId);
+        const {InvoiceActions} = this.props;
+        openConfirm(
+            <div className="font-weight-bold">Are you sure you want to archive this invoice?</div>, '',
+            true, {ok: 'Yes'}
+        ).then(response => {
+            InvoiceActions.archiveInvoice(invoiceId, this.props.selectionKey);
+        }, error => {
+            // Nothing
+        });
+    }
+
     onUpdateInvoiceBatch(ref, invoices) {
         this.onToggleActions(ref);
         let invoice = invoices[0];
@@ -376,6 +389,12 @@ export default class Pay extends React.Component {
                                                                                                 Mark as paid
                                                                                             </Button>
                                                                                         ) : null}
+                                                                                        {isAdmin() && !invoice.paid ? (
+                                                                                            <Button size="sm"
+                                                                                                    onClick={this.onMarkArchived.bind(this, invoice.id)}>
+                                                                                                Mark as archived
+                                                                                            </Button>
+                                                                                        ) : null}
                                                                                     </div>
                                                                                 ) : null}
                                                                             </div>
@@ -526,7 +545,7 @@ export default class Pay extends React.Component {
                             </div>
                         )}
 
-                        {isAdmin()? (
+                        {isAdmin() ? (
                             <div className="section">
                                 <div className="section-title">Margin</div>
                                 <p>€{project.margin}</p>

@@ -60,7 +60,7 @@ export default class Select extends React.Component {
             <select className={`form-control ${this.props.className || ''} ${this.props.size ?`form-control-${this.props.size}`:''}`}
                     {...filterInputProps(this.props)}
                     {...filterEventProps(this.props)}
-                    value={this.state.selected}
+                    value={this.state.selected || ''}
                     onChange={this.onChange.bind(this)}>
                 {this.props.placeholder?(
                     <option value="">{this.props.placeholder}</option>

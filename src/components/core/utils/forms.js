@@ -2,7 +2,7 @@ export function filterValidProps(allowedPropKeys, props) {
     let filteredProps = {};
     (allowedPropKeys || []).forEach(item => {
         if(props[item] || props[item] === '' || typeof props[item] === 'boolean') {
-            filteredProps[item] = props[item];
+            filteredProps[item] = props[item] || '';
         }
     });
     return filteredProps;

@@ -27,7 +27,14 @@ class UserForm extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.User.hasInvited && !prevProps.User.hasInvited) {
-            this.setState({user: {}});
+            if(window) {
+                window.scrollTo(0, 0);
+            }
+            let newUserState = {};
+            Object.keys(this.state.user).forEach(key => {
+                newUserState[key] = '';
+            });
+            this.setState({user: newUserState});
         }
     }
 
@@ -47,6 +54,7 @@ class UserForm extends React.Component {
         const {UserActions} = this.props;
         if(this.state.type === TYPE_CLIENT) {
             let user = {
+                username: this.state.user.email,
                 type: USER_TYPE_PROJECT_OWNER,
                 source: 3,
                 company: {...this.state.user},
@@ -93,7 +101,11 @@ class UserForm extends React.Component {
                         <label>Email: *</label>
                         {errors && errors.invite && errors.invite.email ? (
                             <FieldError message={errors.invite.email} />
-                        ) : null}
+                        ) : (
+                            errors && errors.invite && errors.invite.username ? (
+                                <FieldError message={errors.invite.username} />
+                            ) : null
+                        )}
                         <CustomInputGroup variant="email"
                                           onChange={this.onChangeField.bind(this, 'email')}
                                           value={this.state.user.email}

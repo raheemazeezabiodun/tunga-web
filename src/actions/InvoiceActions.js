@@ -25,6 +25,9 @@ export const DELETE_INVOICE_FAILED = 'DELETE_INVOICE_FAILED';
 export const PAY_INVOICE_START = 'PAY_INVOICE_START';
 export const PAY_INVOICE_SUCCESS = 'PAY_INVOICE_SUCCESS';
 export const PAY_INVOICE_FAILED = 'PAY_INVOICE_FAILED';
+export const ARCHIVE_INVOICE_SUCCESS = 'ARCHIVE_INVOICE_SUCCESS';
+export const ARCHIVE_INVOICE_START = 'ARCHIVE_INVOICE_START';
+export const ARCHIVE_INVOICE_FAILED = 'ARCHIVE_INVOICE_FAILED';
 
 export function createInvoice(invoice, target) {
     return dispatch => {
@@ -34,10 +37,10 @@ export function createInvoice(invoice, target) {
 
         axios
             .post(ENDPOINT_INVOICES, invoice, {headers})
-            .then(function(response) {
+            .then(function (response) {
                 dispatch(createInvoiceSuccess(response.data, target));
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(
                     createInvoiceFailed(
                         (error.response ? error.response.data : null), invoice, target
@@ -79,11 +82,11 @@ export function createInvoiceBatch(invoices, target) {
         let headers = {};
 
         axios
-            .post(`${ENDPOINT_INVOICES}bulk/` , invoices, {headers})
-            .then(function(response) {
+            .post(`${ENDPOINT_INVOICES}bulk/`, invoices, {headers})
+            .then(function (response) {
                 dispatch(createInvoiceBatchSuccess(response.data, target));
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(
                     createInvoiceBatchFailed(
                         (error.response ? error.response.data : null), invoices, target
@@ -123,10 +126,10 @@ export function listInvoices(filter, selection, prev_selection) {
         dispatch(listInvoicesStart(filter, selection, prev_selection));
         axios
             .get(ENDPOINT_INVOICES, {params: filter})
-            .then(function(response) {
+            .then(function (response) {
                 dispatch(listInvoicesSuccess(response.data, filter, selection));
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(
                     listInvoicesFailed(
                         error.response ? error.response.data : null,
@@ -170,10 +173,10 @@ export function retrieveInvoice(id) {
         dispatch(retrieveInvoiceStart(id));
         axios
             .get(ENDPOINT_INVOICES + id + '/')
-            .then(function(response) {
+            .then(function (response) {
                 dispatch(retrieveInvoiceSuccess(response.data, id));
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(
                     retrieveInvoiceFailed(
                         error.response ? error.response.data : null, id
@@ -216,10 +219,10 @@ export function updateInvoice(id, invoice, target) {
             .patch(ENDPOINT_INVOICES + id + '/', invoice, {
                 headers: {...headers},
             })
-            .then(function(response) {
+            .then(function (response) {
                 dispatch(updateInvoiceSuccess(response.data, id, target));
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(
                     updateInvoiceFailed(
                         (error.response ? error.response.data : null), id, invoice, target
@@ -262,10 +265,10 @@ export function listMoreInvoices(url, selection) {
         dispatch(listMoreInvoicesStart(url, selection));
         axios
             .get(url)
-            .then(function(response) {
+            .then(function (response) {
                 dispatch(listMoreInvoicesSuccess(response.data, selection));
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(
                     listMoreInvoicesFailed(
                         error.response ? error.response.data : null,
@@ -311,7 +314,7 @@ export function deleteInvoice(id, target) {
             }).catch(function (response) {
             dispatch(deleteInvoiceFailed(response.data, id, target));
         });
-    }
+    };
 }
 
 export function deleteInvoiceStart(id, target) {
@@ -319,7 +322,7 @@ export function deleteInvoiceStart(id, target) {
         type: DELETE_INVOICE_START,
         id,
         target
-    }
+    };
 }
 
 export function deleteInvoiceSuccess(id, target) {
@@ -327,7 +330,7 @@ export function deleteInvoiceSuccess(id, target) {
         type: DELETE_INVOICE_SUCCESS,
         id,
         target
-    }
+    };
 }
 
 export function deleteInvoiceFailed(error, id, target) {
@@ -336,7 +339,45 @@ export function deleteInvoiceFailed(error, id, target) {
         error,
         id,
         target
-    }
+    };
+}
+
+export function archiveInvoice(id, target) {
+    return dispatch => {
+        dispatch(archiveInvoiceStart(id));
+
+        axios.post(`${ENDPOINT_INVOICES}${id}/archive/`,)
+            .then(function () {
+                dispatch(archiveInvoiceSuccess(id, target));
+            }).catch(function (response) {
+            dispatch(archiveInvoiceFailed(response.data, id, target));
+        });
+    };
+}
+
+export function archiveInvoiceStart(id, target) {
+    return {
+        type: ARCHIVE_INVOICE_START,
+        id,
+        target
+    };
+}
+
+export function archiveInvoiceSuccess(id, target) {
+    return {
+        type: ARCHIVE_INVOICE_SUCCESS,
+        id,
+        target
+    };
+}
+
+export function archiveInvoiceFailed(error, id, target) {
+    return {
+        type: ARCHIVE_INVOICE_FAILED,
+        error,
+        id,
+        target
+    };
 }
 
 export function payInvoice(id, payment, target) {
@@ -346,11 +387,11 @@ export function payInvoice(id, payment, target) {
         let headers = {};
 
         axios
-            .post(`${ENDPOINT_INVOICES}${id}/pay/` , payment, {headers})
-            .then(function(response) {
+            .post(`${ENDPOINT_INVOICES}${id}/pay/`, payment, {headers})
+            .then(function (response) {
                 dispatch(payInvoiceSuccess(response.data, id, payment, target));
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(
                     payInvoiceFailed(
                         (error.response ? error.response.data : null), id, payment, target

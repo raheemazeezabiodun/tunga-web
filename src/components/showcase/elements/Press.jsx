@@ -58,7 +58,7 @@ export default () => {
                                     href="https://www.nabc.nl/africa-business-news/5/technology/377/tunga-founder-ernesto-spruyt-we-create-21st-century-jobs-in-africa"
                                     target="_blank">
                                     <img
-                                        src={require('../../../assets/images/press/netherlands-african-business-council.png')}
+                                        src={require('../../../assets/images/press/NABC_New_LOGO.png')}
                                     />
                                 </a>
                             </li>

@@ -67,7 +67,7 @@ export default class Experience extends React.Component {
 
         let updatedCurrentSkills = [];
         cleanSkills(this.state.skills).forEach(skill => {
-            if(flattenedSkills.indexOf(skill.name) === -1) {
+            if(flattenedSkills.indexOf(skill.name) === -1 && skill.type !== category) {
                 updatedCurrentSkills.push(skill);
             }
         });

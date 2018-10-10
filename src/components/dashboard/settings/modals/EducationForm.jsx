@@ -41,16 +41,9 @@ export default class EducationForm extends React.Component {
     onSave(e) {
         e.preventDefault();
 
-        const {ProfileActions} = this.props;
-        const education = this.props.education || {};
-
-        if (education.id) {
-            ProfileActions.updateEducation(education.id, this.state.education);
-        } else {
-            ProfileActions.createEducation(this.state.education);
-        }
-        if(this.props.dismiss) {
-            this.props.dismiss();
+        const {proceed} = this.props;
+        if(proceed) {
+            proceed(this.state.education);
         }
         return;
     }

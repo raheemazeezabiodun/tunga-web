@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Provider} from 'react-redux';
+import {LOCATION_CHANGE} from "react-router-redux";
 import {confirmable} from 'react-confirm';
 import {Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
@@ -23,6 +24,10 @@ class GenericModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {response: null};
+    }
+
+    componentDidMount() {
+        store.dispatch({type: LOCATION_CHANGE});
     }
 
     toggle() {

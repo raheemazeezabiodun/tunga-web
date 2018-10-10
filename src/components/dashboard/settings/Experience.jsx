@@ -13,6 +13,7 @@ import Button from "../../core/Button";
 
 import {cleanSkills} from "../../../actions/utils/api";
 import Success from "../../core/Success";
+import Progress from "../../core/Progress";
 
 export default class Experience extends React.Component {
     static propTypes = {
@@ -83,10 +84,16 @@ export default class Experience extends React.Component {
         openModal(<WorkForm
             ProfileActions={ProfileActions}
             work={work}
-            isSaved={isSaved}
-            isSaving={isSaving}
+            isSaved={{}}
+            isSaving={{}}
             errors={errors}
-        />, 'Add work experience');
+        />, 'Add work experience').then(data => {
+            if (work && work.id) {
+                ProfileActions.updateWork(work.id, data);
+            } else {
+                ProfileActions.createWork(data);
+            }
+        });
     }
 
     onAddEducation(education = {}, e) {
@@ -97,10 +104,16 @@ export default class Experience extends React.Component {
         openModal(<EducationForm
             ProfileActions={ProfileActions}
             education={education}
-            isSaved={isSaved}
-            isSaving={isSaving}
+            isSaved={{}}
+            isSaving={{}}
             errors={errors}
-        />, 'Add education');
+        />, 'Add education').then(data => {
+            if (education && education.id) {
+                ProfileActions.updateEducation(education.id, data);
+            } else {
+                ProfileActions.createEducation(data);
+            }
+        });
     }
 
     onSave = (e) => {
@@ -115,7 +128,7 @@ export default class Experience extends React.Component {
     };
 
     render() {
-        const { errors, user } = this.props;
+        const { errors, user, isSaving, isSaved } = this.props;
 
         return (
             <div>
@@ -199,8 +212,17 @@ export default class Experience extends React.Component {
                             </FormGroup>
                         </div>
                     </div>
+
                     <div className="row">
                         <div className="col-sm-8">
+                            {isSaving.work?(
+                                <Progress message="Saving ..."/>
+                            ):null}
+
+                            {isSaved.work ? (
+                                <Success message="Work Experience saved successfully"/>
+                            ):null}
+
                             {user.work && user.work.length ? user.work.map((work) => {
                                 return (
                                     <div className="card work-education-wrapper">
@@ -237,8 +259,17 @@ export default class Experience extends React.Component {
                             </FormGroup>
                         </div>
                     </div>
+
                     <div className="row">
                         <div className="col-sm-8">
+                            {isSaving.education?(
+                                <Progress message="Saving ..."/>
+                            ):null}
+
+                            {isSaved.education ? (
+                                <Success message="Education saved successfully"/>
+                            ):null}
+
                             {user.education && user.education.length ? user.education.map((education) => {
                                 return (
                                     <div className="card work-education-wrapper">

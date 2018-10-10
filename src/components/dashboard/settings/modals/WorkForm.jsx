@@ -41,16 +41,9 @@ export default class WorkForm extends React.Component {
     onSave = (e) => {
         e.preventDefault();
 
-        const {ProfileActions} = this.props;
-        const work = this.props.work || {};
-
-        if (work.id) {
-            ProfileActions.updateWork(work.id, this.state.work);
-        } else {
-            ProfileActions.createWork(this.state.work);
-        }
-        if(this.props.dismiss) {
-            this.props.dismiss();
+        const {proceed} = this.props;
+        if(proceed) {
+            proceed(this.state.work);
         }
         return;
     };

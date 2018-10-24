@@ -28,7 +28,7 @@ export const TESTIMONIALS = [
     {
         name: 'Annemiek Pronk',
         company: 'Impulse',
-        position: 'Director',
+        position: 'Product owner',
         image: require('../images/testimonials/Annemiek.png'),
         message:
             "As a startup with a technical proposition but not being developers ourselves, we needed a reliable partner to develop our product with. Tunga has consulted us to figure out the best technical approach and developed our product in clear sprints ever since. For companies that don't have the technical know-how, Tunga is a reliable partner that can scale up easily with your software development needs.",

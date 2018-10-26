@@ -92,15 +92,13 @@ export default class ShowcaseLayout extends React.Component {
                             <Route exact path='/join' component={Join}/>
                         ]
                     )}
+                    <Route exact path='/developers'
+                           render={props => <DeveloperSearch {...props}/>}/>
                     {user && user.id?(
                         <Redirect from="/developer*" to="/network*"/>
                     ):(
-                        [
-                            <Route exact path='/developer/:username'
-                                   render={props => <Developer username={props.match.params.username} {...props}/>}/>,
-                            <Route exact path='/developers'
-                                   render={props => <DeveloperSearch {...props}/>}/>
-                        ]
+                        <Route exact path='/developer/:username'
+                               render={props => <Developer username={props.match.params.username} {...props}/>}/>
                     )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>

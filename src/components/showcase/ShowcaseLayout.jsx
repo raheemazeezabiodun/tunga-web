@@ -19,6 +19,7 @@ import SignUp from "./SignUp";
 import PasswordReset from "./PasswordReset";
 import PasswordResetConfirm from "./PasswordResetConfirm";
 import Developer from "./Developer";
+import DeveloperSearch from "./DeveloperSearch";
 import Join from "./Join";
 import InterestPollDetailContainer from "../dashboard/projects/InterestPollDetailContainer";
 import InterestPoll from "./InterestPoll";
@@ -94,7 +95,12 @@ export default class ShowcaseLayout extends React.Component {
                     {user && user.id?(
                         <Redirect from="/developer*" to="/network*"/>
                     ):(
-                        <Route exact path='/developer/:username' render={props => <Developer username={props.match.params.username} {...props}/>}/>
+                        [
+                            <Route exact path='/developer/:username'
+                                   render={props => <Developer username={props.match.params.username} {...props}/>}/>,
+                            <Route exact path='/developers'
+                                   render={props => <DeveloperSearch {...props}/>}/>
+                        ]
                     )}
                     <Route path={wrapPath('/our-story')} component={OurStory}/>
                     <Route path={wrapPath('/quality')} component={Quality}/>

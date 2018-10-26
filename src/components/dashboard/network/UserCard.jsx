@@ -5,6 +5,7 @@ import Linkify from '../../core/Linkify';
 
 import Avatar from "../../core/Avatar";
 import Button from "../../core/Button";
+import {isAuthenticated} from "../../utils/auth";
 
 export default class UserCard extends React.Component {
     static propTypes = {
@@ -16,10 +17,10 @@ export default class UserCard extends React.Component {
 
         return (
             user?(
-                <Link to={`/network/${user.username}`} className="user-card">
+                <Link to={`/${isAuthenticated()?'network':'developer'}/${user.username}`} className="user-card">
                     <div className="basic-profile">
                         <Avatar image={user.avatar_url} size="lg"/>
-                        <div className="font-weight-normal">{user.display_name}</div>
+                        <div className="font-weight-medium">{user.display_name}</div>
                         <div className="text text-sm">{user.profile.location}</div>
                     </div>
                     <div className="bio">
@@ -38,7 +39,7 @@ export default class UserCard extends React.Component {
                             </div>
                         ):null}
                     </div>
-                    <div className="text-center font-weight-normal">
+                    <div className="text-center font-weight-medium">
                         View full profile
                     </div>
                 </Link>

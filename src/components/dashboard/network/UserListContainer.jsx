@@ -31,7 +31,10 @@ export default class UserListContainer extends React.Component  {
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
-        if(!_.isEqual(prevProps.filters, this.props.filters)) {
+        if(!_.isEqual(prevProps.selectionKey, this.props.selectionKey)) {
+            this.setState({selectionKey: this.props.selectionKey});
+        }
+        if(!_.isEqual(prevProps.filters, this.props.filters) || !_.isEqual(prevState.selectionKey, this.state.selectionKey)) {
             this.getList();
         }
     }

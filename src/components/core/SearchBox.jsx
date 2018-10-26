@@ -31,6 +31,8 @@ class SearchBox extends React.Component {
         placeholder: PropTypes.string,
         branded: PropTypes.bool,
         selectionKey: PropTypes.string,
+        size: PropTypes.string,
+        onChange: PropTypes.func,
     };
 
     constructor(props) {
@@ -66,7 +68,10 @@ class SearchBox extends React.Component {
     };
 
     search(query) {
-        if(query) {
+        const {onChange} = this.props;
+        if(onChange) {
+            onChange(query);
+        } else if(query) {
             let searchKey = this.getSearchKey(query);
             const {SearchActions} = this.props;
             SearchActions.listUsers({search: query, page_size: 3}, searchKey);
@@ -97,7 +102,7 @@ class SearchBox extends React.Component {
     }
 
     render() {
-        const {User, Project, Invoice} = this.props;
+        const {User, Project, Invoice, onChange} = this.props;
 
         let searchKey = this.searchKey(),
             users = this.parseSearchEntity(User, 'users', searchKey),
@@ -109,7 +114,7 @@ class SearchBox extends React.Component {
                 <form>
                     <CustomInputGroup name="search"
                                       variant={`search${this.props.branded?'':'-plain'}`}
-                                      className={this.props.className}
+                                      className={`${this.props.className || ''} ${this.props.size?`input-search-${this.props.size}`:''}`}
                                       placeholder={this.props.placeholder}
                                       value={this.state.search}
                                       autoComplete="off"
@@ -118,7 +123,7 @@ class SearchBox extends React.Component {
                                       onChange={this.onChangeValue}/>
                 </form>
 
-                {this.state.search?(
+                {this.state.search && !onChange?(
                     <div className="search-results">
                         {users.isLoading && projects.isLoading && invoices.isLoading?(
                             <Progress/>

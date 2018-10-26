@@ -19,6 +19,7 @@
     "license": "MIT",
     "dependencies": {
         "Dante2": "^0.4.3",
+        "algoliasearch": "^3.30.0",
         "animate.css": "^3.5.2",
         "axios": "^0.15.3",
         "babel-runtime": "^6.9.2",

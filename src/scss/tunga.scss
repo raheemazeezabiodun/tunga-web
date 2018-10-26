@@ -403,6 +403,18 @@ b, strong {
             }
         }
 
+        &.input-search-lg {
+            .input-group-text {
+               padding-left: px-to-rem(12);
+                @include border-left-radius(px-to-rem(20));
+            }
+
+            .form-control {
+                @include border-right-radius(px-to-rem(20));
+                height: px-to-rem(40);
+            }
+        }
+
         .input-group-text, .form-control {
             @include padding-y(px-to-rem(3));
         }
@@ -3593,6 +3605,31 @@ textarea {
                 background-color: #eee;
                 padding: 5px 8px;
                 margin: 2px;
+            }
+        }
+    }
+
+    .developer-search-page {
+        header {
+            background-image: url('../assets/images/showcase/Africandeveloperworkingmobileweb.jpg');
+            padding-bottom: 0;
+
+            .input-search {
+                width: auto;
+                max-width: 500px;
+                margin: 40px auto;
+            }
+        }
+
+        .card-container {
+            position: relative;
+            padding: 60px 0;
+            min-height: 50px;
+            background-color: get-color('light-grey');
+
+            .result-count {
+                position: absolute;
+                top: 20px;
             }
         }
     }

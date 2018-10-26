@@ -13,7 +13,8 @@ export default class UserCard extends React.Component {
     };
 
     render() {
-        const {user} = this.props, {profile} = user;
+        const {user} = this.props,
+            profile = user.profile || {};
 
         return (
             user?(
@@ -21,7 +22,7 @@ export default class UserCard extends React.Component {
                     <div className="basic-profile">
                         <Avatar image={user.avatar_url} size="lg"/>
                         <div className="font-weight-medium">{user.display_name}</div>
-                        <div className="text text-sm">{user.profile.location}</div>
+                        <div className="text text-sm">{profile.location}</div>
                     </div>
                     <div className="bio">
                         <Linkify>

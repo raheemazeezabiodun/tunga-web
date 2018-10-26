@@ -41,7 +41,7 @@ class DeveloperSearch extends React.Component {
             hasLoaded: this.state.search === this.state.resultsFor?this.state.hasLoaded:false
         });
 
-        const resultsPerPage = 5;
+        const resultsPerPage = 50;
 
         algoliaUtils.index.search({
                 query: this.state.search,

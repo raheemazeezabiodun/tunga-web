@@ -141,7 +141,7 @@ export default class UserProfile extends React.Component {
                     </Row>
 
                     <Row className="profile-details">
-                        <Col>
+                        <Col xs={12} sm={4}>
                             <div className="profile-card">
                                 <div className="section-title">Experience</div>
                                 {(user.work || []).map(work => {
@@ -156,7 +156,7 @@ export default class UserProfile extends React.Component {
                                 })}
                             </div>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={4}>
                             <div className="profile-card">
                                 <div className="section-title">Skillset</div>
                                 {[
@@ -178,7 +178,7 @@ export default class UserProfile extends React.Component {
                                 })}
                             </div>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={4}>
                             <div className="profile-card">
                                 <div className="section-title">Education</div>
                                 {(user.education || []).map(education => {

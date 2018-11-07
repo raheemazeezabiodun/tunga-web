@@ -23,8 +23,9 @@ export default ({title, description, className, showCTA=true, ctaText='Schedule 
                     {showCTA?(
                         <Button className="cta" size={ctaSize} onClick={() => {ctaCallback?ctaCallback():openCalendlyWidget()}}>{ctaText}</Button>
                     ):null}
+
+                    {children}
                 </div>
-                {children}
             </header>
         </React.Fragment>
     );

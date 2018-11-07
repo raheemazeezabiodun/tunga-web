@@ -16,6 +16,8 @@ import JSXify from "../core/JSXify";
 import {proxySafeUrl} from "../utils/proxy";
 import {openCalendlyWidget} from "../utils/calendly";
 import {TESTIMONIALS} from "../utils/testimonials";
+import SearchBox from "../core/SearchBox";
+import IconButton from "../core/IconButton";
 
 const SLIDER_SETTINGS = {
     dots: true,
@@ -134,8 +136,42 @@ export default class Home extends React.Component {
 
         return (
             <div className={`landing-page ${skill_page?'skill-page':''}`}>
-                <Header className={`height-${skill_page?'80':'100'}`} title={title} description={description} ctaText={ctaText} ctaSize={'xxl'}>
-                    {isLoading || skill_page?null:(
+                <Header className={`height-${skill_page?'80':'100'}`}
+                        title={title} description={description} showCTA={false} ctaText={ctaText} ctaSize={'xxl'}>
+
+                    <div className="showcase-actions">
+                        <div className="action-group">
+                            Search our database of developers, UX engineers and project managers
+
+                            <form method="get" action="/developers">
+                                <div className="row">
+                                    <div className="col">
+                                        <SearchBox branded={false}
+                                                   placeholder="Search on skills or technology"
+                                                   disableResults={true}
+                                                   disableForm={true}/>
+                                    </div>
+                                    <div className="col col-auto">
+                                        <Button type="submit" size="sm">Go</Button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="action-group">
+                            <div className="row">
+                                <div className="col">
+                                    Talk to a project manager to discuss your project or development team needs
+                                </div>
+                                <div className="col col-auto">
+                                    <IconButton name="headphone" size="lg"
+                                                variant="primary"
+                                                className="btn-cta" onClick={() => {openCalendlyWidget()}}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/*isLoading || skill_page?null:(
                         <section id="services">
                             <div className="service">
                                 <div className="wrapper">
@@ -181,7 +217,7 @@ export default class Home extends React.Component {
                                 </div>
                             </div>
                         </section>
-                    )}
+                    )*/}
                 </Header>
 
                 <section id="unique-approach" className="clearfix">

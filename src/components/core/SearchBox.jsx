@@ -23,7 +23,10 @@ import LoadMore from "./LoadMore";
 
 class SearchBox extends React.Component {
     static defaultProps = {
-        branded: true
+        branded: true,
+        disableResults: false,
+        searchPath: '',
+        disableForm: false
     };
 
     static propTypes = {
@@ -33,6 +36,9 @@ class SearchBox extends React.Component {
         selectionKey: PropTypes.string,
         size: PropTypes.string,
         onChange: PropTypes.func,
+        disableResults: PropTypes.bool,
+        disableForm: PropTypes.bool,
+        searchPath: PropTypes.string,
     };
 
     constructor(props) {
@@ -102,28 +108,35 @@ class SearchBox extends React.Component {
     }
 
     render() {
-        const {User, Project, Invoice, onChange} = this.props;
+        const {User, Project, Invoice, onChange, disableResults, disableForm, searchPath} = this.props;
 
         let searchKey = this.searchKey(),
             users = this.parseSearchEntity(User, 'users', searchKey),
             projects = this.parseSearchEntity(Project, 'projects', searchKey),
             invoices = this.parseSearchEntity(Invoice, 'invoices', searchKey);
 
+        const searchInput = (
+            <CustomInputGroup name="search"
+                              variant={`search${this.props.branded?'':'-plain'}`}
+                              className={`${this.props.className || ''} ${this.props.size?`input-search-${this.props.size}`:''}`}
+                              placeholder={this.props.placeholder}
+                              value={this.state.search}
+                              autoComplete="off"
+                              {...filterInputProps(this.props)}
+                              {...filterEventProps(this.props)}
+                              onChange={this.onChangeValue}/>
+        );
+
         return (
             <div className="search-widget">
-                <form>
-                    <CustomInputGroup name="search"
-                                      variant={`search${this.props.branded?'':'-plain'}`}
-                                      className={`${this.props.className || ''} ${this.props.size?`input-search-${this.props.size}`:''}`}
-                                      placeholder={this.props.placeholder}
-                                      value={this.state.search}
-                                      autoComplete="off"
-                                      {...filterInputProps(this.props)}
-                                      {...filterEventProps(this.props)}
-                                      onChange={this.onChangeValue}/>
-                </form>
 
-                {this.state.search && !onChange?(
+                {disableForm?searchInput:(
+                    <form method="get" action={searchPath || ''}>
+                        {searchInput}
+                    </form>
+                )}
+
+                {this.state.search && !onChange && !disableResults?(
                     <div className="search-results">
                         {users.isLoading && projects.isLoading && invoices.isLoading?(
                             <Progress/>

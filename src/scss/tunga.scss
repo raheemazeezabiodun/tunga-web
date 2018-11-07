@@ -2567,6 +2567,34 @@ textarea {
             .showcase-desc {
                 max-width: 466px;
             }
+
+            .showcase-actions {
+                max-width: 355px;
+                margin-top: 40px;
+                font-weight: $font-weight-normal;
+
+                .action-group {
+                    background-color: transparentize(get-color('light-grey'), 0.7);
+                    padding: 20px;
+                    margin-bottom: 20px;
+                    border-radius: 15px;
+                    box-shadow: 2px 2px 3px 0 rgba(256, 256, 256, 0.4);
+
+                    form {
+                        margin-top: 10px;
+                    }
+
+                    .input-search {
+                        width: auto;
+                    }
+
+                    .btn-cta {
+                        padding: 7px !important;
+                        height: auto;
+                        border-radius: 8px;
+                    }
+                }
+            }
         }
 
         #services {

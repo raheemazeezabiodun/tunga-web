@@ -10,6 +10,7 @@ import SearchBox from './core/SearchBox';
 import Button from "./core/Button";
 import {proxySafeUrl} from "./utils/proxy";
 import OverlayTooltip from "./core/OverlayTooltip";
+import {openCalendlyWidget} from "./utils/calendly";
 
 
 export default class NavBar extends React.Component {
@@ -153,6 +154,10 @@ export default class NavBar extends React.Component {
                             <React.Fragment>
                                 {isLargeDevice?(
                                     <li>
+                                        <Button className="btn-call" onClick={() => { openCalendlyWidget() }}>
+                                            <Icon name="calendar"/>&nbsp;&nbsp;&nbsp;Schedule a call
+                                        </Button>
+                                        {/*
                                         <CopyToClipboard text="+31 20 220 2157">
                                             <OverlayTooltip placement="left"
                                                             overlay={
@@ -163,6 +168,7 @@ export default class NavBar extends React.Component {
                                                 </Button>
                                             </OverlayTooltip>
                                         </CopyToClipboard>
+                                        */}
                                     </li>
                                 ):null}
                                 <li>

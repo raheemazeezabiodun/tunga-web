@@ -2580,6 +2580,10 @@ textarea {
                     border-radius: 15px;
                     box-shadow: 2px 2px 3px 0 rgba(256, 256, 256, 0.4);
 
+                    .col + .col {
+                        padding-left: 0;
+                    }
+
                     form {
                         margin-top: 10px;
                     }

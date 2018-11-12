@@ -12,6 +12,10 @@ export function isAuthenticated() {
     return getAuth().isAuthenticated;
 }
 
+export function isEmailVisitor() {
+    return getAuth().isEmailVisitor;
+}
+
 export function getUserType() {
     return getUser().type || null;
 }

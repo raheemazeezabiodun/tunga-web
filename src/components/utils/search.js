@@ -13,7 +13,7 @@ export function getNumDevViews() {
     return parseInt(Cookies.get('numDevViews')) || 0;
 }
 
-export function updateProfileViews() {
+export function updateDevViews() {
     const searches = getNumDevViews() + 1;
     Cookies.set('numDevViews', searches);
 }

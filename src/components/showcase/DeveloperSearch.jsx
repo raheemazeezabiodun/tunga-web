@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import axios from 'axios';
+import randomstring from 'randomstring';
+import querystring from 'querystring';
 
 import UserList from "../dashboard/network/UserList";
 import SearchBox from "../core/SearchBox";
@@ -12,7 +14,10 @@ import connect from '../../connectors/AuthConnector';
 
 import algoliaUtils from '../utils/algolia';
 import {ENDPOINT_LOG_SEARCH} from "../../actions/utils/api";
+import {getNumSearches, updateSearches} from "../utils/search";
 const freeEmailDomains = require("../../utils/free-email-domains");
+
+let searchWatcher = null;
 
 class DeveloperSearch extends React.Component {
 
@@ -24,12 +29,22 @@ class DeveloperSearch extends React.Component {
             hasLoaded: false, isLoading: false,
             results: [], resultsFor: '', total: 0, currentPage: 0, maxPages: 0,
             emailUnlock: '', emailMore: '',
-            shouldLoadMore: false
+            shouldLoadMore: false,
+            hasSearched: false
         };
     }
 
     componentDidMount() {
         this.getPeople();
+
+        if(this.isLockable()) {
+            const queryParams = querystring.parse((window.location.search || '').replace('?', ''));
+            let query = queryParams.search || '';
+
+            if(query) {
+                this.refreshSearches();
+            }
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
@@ -45,8 +60,32 @@ class DeveloperSearch extends React.Component {
         }
     }
 
+    isLockable() {
+        const {Auth: {isAuthenticated, isEmailVisitor}} = this.props;
+        return !isAuthenticated && !isEmailVisitor;
+    }
+
+    isLocked() {
+        return getNumSearches() && this.isLockable();
+    }
+
+    refreshSearches() {
+        updateSearches();
+        this.setState({refreshKey: randomstring.generate()});
+    }
+
     onSearch(search) {
+        const self = this;
         this.setState({search});
+
+        if(this.isLockable() && search) {
+            if(searchWatcher) {
+                clearTimeout(searchWatcher);
+            }
+            searchWatcher = searchWatcher = setTimeout(function () {
+                self.refreshSearches();
+            }, 4000);
+        }
     }
 
     logSearch() {
@@ -61,6 +100,7 @@ class DeveloperSearch extends React.Component {
     }
 
     getPeople() {
+        return;
         if(this.state.search) {
             this.logSearch();
         }
@@ -69,12 +109,10 @@ class DeveloperSearch extends React.Component {
         self.setState({
             isLoading: true,
             hasLoaded: this.state.search === this.state.resultsFor?this.state.hasLoaded:false,
-            shouldLoadMore: false
+            shouldLoadMore: false, hasSearched: this.state.hasSearched || !!this.state.search
         });
 
-        const {Auth: {isAuthenticated, isEmailVisitor}} = this.props,
-            isLocked = !isAuthenticated && !isEmailVisitor,
-            resultsPerPage = isLocked?9:50;
+        const resultsPerPage = this.isLocked()?9:50;
 
         algoliaUtils.index.search({
                 query: this.state.search,
@@ -150,8 +188,7 @@ class DeveloperSearch extends React.Component {
 
     render() {
         const {results, total, isLoading, hasLoaded, currentPage, maxPages} = this.state,
-            {Auth: {isVerifying, isAuthenticated, isEmailVisitor}} = this.props,
-            isLocked = !isAuthenticated && !isEmailVisitor;
+            {Auth: {isVerifying}} = this.props;
 
         return (
             <div className="developer-search-page">
@@ -160,7 +197,7 @@ class DeveloperSearch extends React.Component {
                         <div className="showcase-title">Browse Africa's tech talent</div>
 
                         <div className="text-center">
-                            {isLocked?(
+                            {this.isLocked()?(
                                 <form className="unlock-container" onSubmit={this.onUnlock.bind(this, false)}>
                                     <p className={this.state.emailUnlockError?"alert alert-danger":"font-weight-normal"}>Please submit a business email to enable the search function</p>
                                     <div className="unlock-widget">
@@ -175,7 +212,7 @@ class DeveloperSearch extends React.Component {
 
                             <SearchBox branded={false}
                                        size="lg"
-                                       isLocked={isLocked}
+                                       isLocked={this.isLocked()}
                                        onChange={this.onSearch.bind(this)}/>
                         </div>
                     </div>
@@ -190,11 +227,11 @@ class DeveloperSearch extends React.Component {
                         <UserList users={results}
                                   showHeader={false}
                                   isLoading={isLoading && !hasLoaded}
-                                  isLoadingMore={isLoading && hasLoaded && !isLocked}
-                                  hasMore={currentPage < (maxPages - 1) && !isLocked}
+                                  isLoadingMore={isLoading && hasLoaded && !this.isLocked()}
+                                  hasMore={currentPage < (maxPages - 1) && !this.isLocked()}
                                   onLoadMore={this.getPeople.bind(this)}/>
 
-                        {isLocked && currentPage < (maxPages - 1)?(
+                        {this.isLocked() && currentPage < (maxPages - 1)?(
                             <form className="unlock-container" onSubmit={this.onUnlock.bind(this, true)}>
                                 <p className={this.state.emailMoreError?"alert alert-danger":"font-weight-normal"}>Enter your business email to view more profiles</p>
                                 <div className="unlock-widget">

@@ -27,7 +27,8 @@ class SearchBox extends React.Component {
         disableResults: false,
         searchPath: '',
         disableForm: false,
-        isLocked: false
+        isLocked: false,
+        delay: 250
     };
 
     static propTypes = {
@@ -41,6 +42,7 @@ class SearchBox extends React.Component {
         disableForm: PropTypes.bool,
         searchPath: PropTypes.string,
         isLocked: PropTypes.bool,
+        delay: PropTypes.number,
     };
 
     constructor(props) {
@@ -49,7 +51,7 @@ class SearchBox extends React.Component {
 
         const queryParams = querystring.parse((window.location.search || '').replace('?', ''));
         let query = queryParams.search || '';
-        this.search = _.debounce(this.search, 250);
+        this.search = _.debounce(this.search, this.props.delay);
 
         this.state = {search: query};
         if(query) {

@@ -3740,6 +3740,11 @@ textarea {
                 width: auto;
                 max-width: 500px;
                 margin: 40px auto;
+
+                .form-control:disabled, .form-control[readonly] {
+                    background-color: get-color('light-grey');
+                    opacity: 1;
+                }
             }
         }
 
@@ -3752,6 +3757,21 @@ textarea {
             .result-count {
                 position: absolute;
                 top: 20px;
+            }
+        }
+
+        .unlock-container {
+            text-align: center;
+            margin-top: 30px;
+
+            .unlock-widget {
+                display: flex;
+                justify-content: center;
+
+                .input-group {
+                    max-width: 230px;
+                    margin-right: 10px;
+                }
             }
         }
     }

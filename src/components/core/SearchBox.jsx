@@ -26,7 +26,8 @@ class SearchBox extends React.Component {
         branded: true,
         disableResults: false,
         searchPath: '',
-        disableForm: false
+        disableForm: false,
+        isLocked: false
     };
 
     static propTypes = {
@@ -39,6 +40,7 @@ class SearchBox extends React.Component {
         disableResults: PropTypes.bool,
         disableForm: PropTypes.bool,
         searchPath: PropTypes.string,
+        isLocked: PropTypes.bool,
     };
 
     constructor(props) {
@@ -124,6 +126,8 @@ class SearchBox extends React.Component {
                               autoComplete="off"
                               {...filterInputProps(this.props)}
                               {...filterEventProps(this.props)}
+                              prepend={this.props.isLocked?<Icon name="lock-alt" />:null}
+                              disabled={this.props.isLocked}
                               onChange={this.onChangeValue}/>
         );
 

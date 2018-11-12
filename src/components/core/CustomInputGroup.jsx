@@ -4,17 +4,18 @@ import React from 'react';
 import InputGroup from './InputGroup';
 import {filterEventProps} from "./utils/events";
 import {filterInputProps} from "./utils/forms";
+import Icon from "./Icon";
 
 const CUSTOM_INPUTS = {
     search: {
         className: 'input-search input-search-branded',
         placeholder: 'Search',
-        prepend: <i className="tg-ic-search" />
+        prepend: <Icon name="search" />
     },
     'search-plain': {
         className: 'input-search ',
         placeholder: 'Search',
-        prepend: <i className="tg-ic-search" />
+        prepend: <Icon name="search" />
     },
     message: {
         placeholder: 'Type message here',
@@ -22,34 +23,34 @@ const CUSTOM_INPUTS = {
         append: (
             <button className="btn"
                     type="button">
-                <i className="tg-ic-paper-plane" />
+                <Icon name="paper-plane" />
             </button>
         )
     },
     url: {
         placeholder: 'Paste URL here',
-        prepend: <i className="tg-ic-link" />
+        prepend: <Icon name="link" />
     },
     personal: {
         placeholder: 'Name',
-        prepend: <i className="tg-ic-avatar" />
+        prepend: <Icon name="avatar" />
     },
     address: {
         placeholder: 'Address',
-        prepend: <i className="tg-ic-map-marker" />
+        prepend: <Icon name="map-marker" />
     },
     tel: {
         placeholder: 'Phone number',
-        prepend: <i className="tg-ic-phone" />
+        prepend: <Icon name="phone" />
     },
     email: {
         placeholder: 'Email address',
-        prepend: <i className="tg-ic-envelope" />
+        prepend: <Icon name="envelope" />
     },
     password: {
         type: 'password',
         placeholder: 'Password',
-        prepend: <i className="tg-ic-lock" />
+        prepend: <Icon name="lock" />
     },
 };
 
@@ -78,7 +79,7 @@ export default class CustomInputGroup extends React.Component {
     }
 
     cleanProps() {
-        const allowedProps = ['className', 'placeholder'],
+        const allowedProps = ['className', 'placeholder', 'prepend', 'type'],
             cleanedProps = {};
         allowedProps.forEach(key => {
             if(this.props[key]) {

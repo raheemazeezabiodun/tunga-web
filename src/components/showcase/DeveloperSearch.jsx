@@ -60,7 +60,23 @@ class DeveloperSearch extends React.Component {
                 } else {
                     if(content.query === self.state.search) {
                         self.setState({
-                            results: [...(content.query === this.state.resultsFor?this.state.results:[]), ...(content.hits || [])],
+                            results: [...(content.query === this.state.resultsFor?this.state.results:[]), ...(content.hits || [])].map(item => {
+                                return item.profile && item.profile.skills?{
+                                    ...item,
+                                    profile: {
+                                        ...item.profile,
+                                        skills: _.orderBy(
+                                            (item.profile.skills|| []).map((skill, idx) => {
+                                                return {
+                                                    ...skill,
+                                                    rank: item._highlightResult.profile.skills[idx].name.matchedWords.length
+                                                };
+                                            }),
+                                            ['rank', 'name'], ['desc', 'asc']
+                                        )
+                                    }
+                                }:item
+                            }),
                             resultsFor: content.query,
                             isLoading: false,
                             hasLoaded: true,

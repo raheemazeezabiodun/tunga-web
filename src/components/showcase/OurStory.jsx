@@ -1,5 +1,4 @@
 import React from 'react';
-import Reveal from 'react-reveal';
 import YouTube from 'react-youtube';
 
 import Header from "./elements/Header";
@@ -138,8 +137,7 @@ export default () => {
                         international software teams and projects.
                     </p>
                     <div className="video-wrapper">
-                        <YouTube videoId="RVVtyapBmuo"
-                                 opts={{height: '360px'}}/>
+                        <YouTube videoId="RVVtyapBmuo"/>
                     </div>
                 </div>
             </section>

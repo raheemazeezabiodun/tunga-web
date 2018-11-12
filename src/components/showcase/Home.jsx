@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col} from 'reactstrap';
 import Slider from 'react-slick';
+import YouTube from 'react-youtube';
+import axios from 'axios';
 
 import Header from "./elements/Header";
 import ContactUs from "./elements/ContactUs";
@@ -13,7 +15,6 @@ import Button from "../core/Button";
 import Icon from "../core/Icon";
 import JSXify from "../core/JSXify";
 
-import {proxySafeUrl} from "../utils/proxy";
 import {openCalendlyWidget} from "../utils/calendly";
 import {TESTIMONIALS} from "../utils/testimonials";
 import SearchBox from "../core/SearchBox";
@@ -106,11 +107,29 @@ const HOME_DEFAULTS = {
 
 export default class Home extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {videos: []};
+    }
+
     componentDidMount() {
         const {showCall} = this.props;
         if(showCall) {
             openCalendlyWidget();
         }
+
+        axios.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyAuIXqeLrUkyZhsau0WpAVzWlyuv_P9YE8&channelId=UC_Pl6wmR-t9Zv9z7_s1aWNg&part=snippet,id&order=date&maxResults=6').then(res => {
+            const videos = res.data.items;
+            if(videos) {
+                this.setState({
+                    videos: videos.map(item => {
+                        return item.id.videoId;
+                    })
+                });
+            }
+        }).catch(err => {
+
+        });
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
@@ -299,6 +318,7 @@ export default class Home extends React.Component {
                             </div>
                         </section>
 
+                        {/*
                         <section id="meet-developers">
                             <div>
                                 <Link to="/quality" className="headline">
@@ -310,8 +330,20 @@ export default class Home extends React.Component {
                                 </p>
                             </div>
                         </section>
+                        */}
                     </React.Fragment>
                 )}
+
+                <div id="video-slideshow">
+                    {(this.state.videos || []).map(videoId => {
+                        return (
+                            <div className="video-wrapper">
+                                <YouTube videoId={videoId}/>
+                            </div>
+                        );
+                    })}
+                </div>
+
 
                 <Press/>
 

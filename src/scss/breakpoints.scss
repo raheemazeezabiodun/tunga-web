@@ -250,6 +250,19 @@
                     text-align: center;
                 }
             }
+
+            #video-slideshow {
+
+                .video-wrapper {
+                    flex-grow: 1;
+                    width: 50%;
+                    margin-bottom: -23%;
+
+                    iframe {
+                        max-height: 60%;
+                    }
+                }
+            }
         }
 
         .our-story-page {
@@ -492,6 +505,18 @@
                         &:last-child {
                             margin-right: 0;
                         }
+                    }
+                }
+            }
+
+            #video-slideshow {
+
+                .video-wrapper {
+                    width: 33%;
+                    margin-bottom: -34%;
+
+                    iframe {
+                        max-height: 40%;
                     }
                 }
             }

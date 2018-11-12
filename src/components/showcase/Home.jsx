@@ -182,7 +182,7 @@ export default class Home extends React.Component {
                                     Talk to a project manager to discuss your project or development team needs
                                 </div>
                                 <div className="col col-auto">
-                                    <IconButton name="headphone" size="lg"
+                                    <IconButton name="headphone-alt" size="lg"
                                                 variant="primary"
                                                 className="btn-cta" onClick={() => {openCalendlyWidget()}}/>
                                 </div>

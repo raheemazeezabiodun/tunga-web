@@ -171,6 +171,8 @@ export default class Home extends React.Component {
                         </div>
                     </div>
 
+                    <div className='icon-scroll'/>
+
                     {/*isLoading || skill_page?null:(
                         <section id="services">
                             <div className="service">

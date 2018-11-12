@@ -12,6 +12,7 @@ import connect from '../../connectors/AuthConnector';
 
 import algoliaUtils from '../utils/algolia';
 import {ENDPOINT_LOG_SEARCH} from "../../actions/utils/api";
+const freeEmailDomains = require("../../utils/free-email-domains");
 
 class DeveloperSearch extends React.Component {
 
@@ -132,11 +133,17 @@ class DeveloperSearch extends React.Component {
 
         const email = this.state[loadMore?'emailMore':'emailUnlock'];
         if(email) {
-            const {AuthActions} = this.props;
-            AuthActions.authenticateEmailVisitor({email, via_search: true, search: this.state.search});
+            const regex = new RegExp(`(${freeEmailDomains.map(domain => {return domain}).join('|')})$`, "g");
 
-            if(loadMore) {
-                this.setState({shouldLoadMore: true});
+            if(regex.test(email)) {
+                this.setState({[`${loadMore?'emailMore':'emailUnlock'}Error`]: 'Please enter a business email.'});
+            } else {
+                const {AuthActions} = this.props;
+                AuthActions.authenticateEmailVisitor({email, via_search: true, search: this.state.search});
+
+                if(loadMore) {
+                    this.setState({shouldLoadMore: true});
+                }
             }
         }
     }
@@ -155,7 +162,7 @@ class DeveloperSearch extends React.Component {
                         <div className="text-center">
                             {isLocked?(
                                 <form className="unlock-container" onSubmit={this.onUnlock.bind(this, false)}>
-                                    <p className="font-weight-normal">Please submit a business email to enable the search function</p>
+                                    <p className={this.state.emailUnlockError?"alert alert-danger":"font-weight-normal"}>Please submit a business email to enable the search function</p>
                                     <div className="unlock-widget">
                                         <CustomInputGroup variant="email"
                                                           required
@@ -189,14 +196,13 @@ class DeveloperSearch extends React.Component {
 
                         {isLocked && currentPage < (maxPages - 1)?(
                             <form className="unlock-container" onSubmit={this.onUnlock.bind(this, true)}>
-                                <p className="font-weight-normal">Enter your email to view more profiles</p>
+                                <p className={this.state.emailMoreError?"alert alert-danger":"font-weight-normal"}>Enter your business email to view more profiles</p>
                                 <div className="unlock-widget">
                                     <CustomInputGroup variant="email"
                                                       required
                                                       onChange={this.onChangeEmail.bind(this, 'emailMore')}
                                                       disabled={isVerifying}/>
                                     <Button type="submit"
-                                            onClick={this.getPeople.bind(this)}
                                             disabled={isVerifying}>Load more</Button>
                                 </div>
                             </form>

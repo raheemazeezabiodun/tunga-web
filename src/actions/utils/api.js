@@ -93,6 +93,7 @@ export const ENDPOINT_SKILL_PAGES = getEndpointUrl('skill-pages/');
 export const ENDPOINT_BLOGS = getEndpointUrl('blogs/');
 export const ENDPOINT_MIGRATE = getEndpointUrl('migrate/');
 export const ENDPOINT_NOTIFICATION_LOG = getEndpointUrl('notification-log/');
+export const ENDPOINT_LOG_SEARCH = getEndpointUrl('log/search/');
 
 export function flattenJson(jsonData, key) {
     let flattenedData = {};

@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import axios from 'axios';
 
 import UserList from "../dashboard/network/UserList";
 import SearchBox from "../core/SearchBox";
@@ -10,6 +11,7 @@ import Button from "../core/Button";
 import connect from '../../connectors/AuthConnector';
 
 import algoliaUtils from '../utils/algolia';
+import {ENDPOINT_LOG_SEARCH} from "../../actions/utils/api";
 
 class DeveloperSearch extends React.Component {
 
@@ -35,6 +37,10 @@ class DeveloperSearch extends React.Component {
             (this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor && this.state.shouldLoadMore)
         ) {
             this.getPeople();
+
+            if(this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor && this.state.search) {
+                this.logSearch();
+            }
         }
     }
 
@@ -42,7 +48,22 @@ class DeveloperSearch extends React.Component {
         this.setState({search});
     }
 
+    logSearch() {
+        const {Auth: {isAuthenticated, isEmailVisitor}} = this.props, {search} = this.state;
+        if(search && (isAuthenticated || isEmailVisitor)) {
+            axios.post(ENDPOINT_LOG_SEARCH, {search}).then(res => {
+                console.log(`Logged search: ${search}`);
+            }).catch(err => {
+                console.error(`Failed to log search: ${search}`);
+            });
+        }
+    }
+
     getPeople() {
+        if(this.state.search) {
+            this.logSearch();
+        }
+
         let self = this;
         self.setState({
             isLoading: true,
@@ -112,7 +133,7 @@ class DeveloperSearch extends React.Component {
         const email = this.state[loadMore?'emailMore':'emailUnlock'];
         if(email) {
             const {AuthActions} = this.props;
-            AuthActions.authenticateEmailVisitor({email, via_search: true});
+            AuthActions.authenticateEmailVisitor({email, via_search: true, search: this.state.search});
 
             if(loadMore) {
                 this.setState({shouldLoadMore: true});

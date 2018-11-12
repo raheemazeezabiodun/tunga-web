@@ -100,7 +100,6 @@ class DeveloperSearch extends React.Component {
     }
 
     getPeople() {
-        return;
         if(this.state.search) {
             this.logSearch();
         }

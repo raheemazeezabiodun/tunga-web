@@ -44,6 +44,7 @@ const CUSTOM_INPUTS = {
         prepend: <Icon name="phone" />
     },
     email: {
+        type: 'email',
         placeholder: 'Email address',
         prepend: <Icon name="envelope" />
     },

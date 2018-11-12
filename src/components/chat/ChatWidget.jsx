@@ -420,89 +420,116 @@ class ChatWidget extends React.Component {
         }
 
         return (
-            <div className="chat-widget">
+            <React.Fragment>
                 {this.state.open?(
-                    <div className="message-box">
-                        <div className="chat-header">
-                            <IconButton name="close" size="sm" className="chat-close" onClick={this.closeChat}/>
+                    <div className="chat-widget">
 
-                            <div className="heading">Hi there, we are Tunga. How can we help?</div>
+                        <div className="message-box">
+                            <div className="chat-header">
+                                <IconButton name="close" size="sm" className="chat-close" onClick={this.closeChat}/>
+
+                                <div className="heading">Hi there, we are Tunga. How can we help?</div>
+                            </div>
+
+                            {!isAuthenticated() && this.state.step !== CHAT_SCREEN_CHAT?(
+                                <div className="chat-options">
+                                    {this.state.step === CHAT_SCREEN_DEVELOPER?(
+                                        <React.Fragment>
+                                            <Link to="/join" className="btn btn-primary btn-xl btn-block">
+                                                I want to join Tunga as a developer
+                                            </Link>
+                                            <a href="mailto:hello@tunga.io" className="btn btn-primary btn-xl btn-block">
+                                                I would like to email Tunga
+                                            </a>
+                                        </React.Fragment>
+                                    ):(
+                                        <React.Fragment>
+                                            <Button size="xl"
+                                                    block={true}
+                                                    onClick={this.changeStep.bind(this, CHAT_SCREEN_CHAT)}>
+                                                I have a software need
+                                            </Button>
+                                            <Button size="xl"
+                                                    block={true}
+                                                    onClick={this.changeStep.bind(this, CHAT_SCREEN_DEVELOPER)}>
+                                                I am a developer
+                                            </Button>
+                                        </React.Fragment>
+                                    )}
+                                </div>
+                            ):(
+                                <React.Fragment>
+                                    <ActivityList activities={activities}
+                                                  onLoadMore={() => {
+                                                      ActivityActions.listMoreActivities(Activity.next[selectionKey], selectionKey);
+                                                  }}
+                                                  isLoading={Activity.isFetching[selectionKey]}
+                                                  isLoadingMore={Activity.isFetchingMore[selectionKey]}
+                                                  hasMore={!!Activity.next[selectionKey]}
+                                                  contentSelector=".chat-widget"
+                                                  heightOffset={160}/>
+
+                                    {channel && channel.id?(
+                                        <MessageWidget onSendMessage={this.onSendMessage} canUpload={false}/>
+                                    ):null}
+                                </React.Fragment>
+                            )}
                         </div>
 
-                        {!isAuthenticated() && this.state.step !== CHAT_SCREEN_CHAT?(
-                            <div className="chat-options">
-                                {this.state.step === CHAT_SCREEN_DEVELOPER?(
-                                    <React.Fragment>
-                                        <Link to="/join" className="btn btn-primary btn-xl btn-block">
-                                            I want to join Tunga as a developer
-                                        </Link>
-                                        <a href="mailto:hello@tunga.io" className="btn btn-primary btn-xl btn-block">
-                                            I would like to email Tunga
-                                        </a>
-                                    </React.Fragment>
-                                ):(
-                                    <React.Fragment>
-                                        <Button size="xl"
-                                                block={true}
-                                                onClick={this.changeStep.bind(this, CHAT_SCREEN_CHAT)}>
-                                            I have a software need
-                                        </Button>
-                                        <Button size="xl"
-                                                block={true}
-                                                onClick={this.changeStep.bind(this, CHAT_SCREEN_DEVELOPER)}>
-                                            I am a developer
-                                        </Button>
-                                    </React.Fragment>
-                                )}
-                            </div>
-                        ):(
-                            <React.Fragment>
-                                <ActivityList activities={activities}
-                                              onLoadMore={() => {
-                                                  ActivityActions.listMoreActivities(Activity.next[selectionKey], selectionKey);
-                                              }}
-                                              isLoading={Activity.isFetching[selectionKey]}
-                                              isLoadingMore={Activity.isFetchingMore[selectionKey]}
-                                              hasMore={!!Activity.next[selectionKey]}
-                                              contentSelector=".chat-widget"
-                                              heightOffset={160}/>
+                        <div className="controls text-right">
 
-                                {channel && channel.id?(
-                                    <MessageWidget onSendMessage={this.onSendMessage} canUpload={false}/>
-                                ):null}
-                            </React.Fragment>
-                        )}
-                    </div>
-                ):null}
+                            <IconButton name={this.state.open?'close':'chat'}
+                                        className="chat-btn"
+                                        onClick={this.state.open?this.closeChat:this.startChat}/>
 
-                <div className="controls text-right">
-                    <IconButton name={this.state.open?'close':'chat'}
-                                className="chat-btn"
-                                onClick={this.state.open?this.closeChat:this.startChat}/>
-
-                    {this.state.new && !this.state.open ? (
-                        <span className="badge">
+                            {this.state.new && !this.state.open ? (
+                                <span className="badge">
                                         {this.state.new}
                                     </span>
-                    ) : null}
+                            ) : null}
 
-                    <audio
-                        autoPlay={false}
-                        controls={false}
-                        ref={audio => {
-                            this.audio = audio;
-                        }}>
-                        <source
-                            src={require('../../assets/audio/chat.mp3')}
-                            type="audio/mpeg"
-                        />
-                        <source
-                            src={require('../../assets/audio/chat.wav')}
-                            type="audio/wav"
-                        />
-                    </audio>
-                </div>
-            </div>
+                            <audio
+                                autoPlay={false}
+                                controls={false}
+                                ref={audio => {
+                                    this.audio = audio;
+                                }}>
+                                <source
+                                    src={require('../../assets/audio/chat.mp3')}
+                                    type="audio/mpeg"
+                                />
+                                <source
+                                    src={require('../../assets/audio/chat.wav')}
+                                    type="audio/wav"
+                                />
+                            </audio>
+                        </div>
+                    </div>
+                ):(
+                    <div className="cta-widget">
+                        <div className="option">
+                            <span>Search database</span>
+                            <Link to="developers" className="btn btn-primary">
+                                <Icon name="search-alt" size="md"/>
+                            </Link>
+                        </div>
+
+                        <div className="option">
+                            <span>Chat with us</span>
+                            <Button onClick={this.startChat}>
+                                <Icon name="chat-alt" size="md"/>
+                            </Button>
+                        </div>
+
+                        <div className="option">
+                            <span>Schedule a call</span>
+                            <Button onClick={() => { openCalendlyWidget() }}>
+                                <Icon name="headphone-alt" size="md"/>
+                            </Button>
+                        </div>
+                    </div>
+                )}
+            </React.Fragment>
         );
     }
 }

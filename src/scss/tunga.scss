@@ -2886,8 +2886,8 @@ textarea {
                     position: absolute;
                     top: 50%;
                     left: 50%;
-                    margin-top: -30px;
-                    margin-left: -30px;
+                    margin-top: -35px;
+                    margin-left: -35px;
                     font-size: px-to-rem(70);
                     cursor: pointer;
                     opacity: 0.9;
@@ -2898,8 +2898,8 @@ textarea {
 
                     &:after {
                         position: absolute;
-                        top: 10px;
-                        left: 10px;
+                        top: 15px;
+                        left: 15px;
                         display: block;
                         content: '';
                         width: 40px;

@@ -2221,6 +2221,10 @@ table {
             padding: 5px 0 !important;
             margin: 5px 0;
             //box-shadow: none;
+
+            &:hover {
+                transform: scale(1.1);
+            }
         }
 
         span {

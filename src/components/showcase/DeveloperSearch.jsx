@@ -230,7 +230,7 @@ class DeveloperSearch extends React.Component {
                         {this.isLocked() && currentPage < (maxPages - 1)?(
                             <form className="unlock-container" onSubmit={this.onUnlock.bind(this, true)}>
                                 <p className={this.state.emailMoreError?"alert alert-danger":"font-weight-normal"}>Enter your business email to view more profiles</p>
-                                <div className="unlock-widget">
+                                <div className="unlock-widget unlock-more">
                                     <CustomInputGroup variant="email"
                                                       required
                                                       onChange={this.onChangeEmail.bind(this, 'emailMore')}

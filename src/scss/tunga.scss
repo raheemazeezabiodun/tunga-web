@@ -2209,7 +2209,7 @@ table {
     bottom: 20px;
     z-index: 1040;
     background-color: transparentize(get-color('white'), 0.5);
-    padding: 20px;
+    padding: 15px 20px;
     border-radius: 20px;
     box-shadow: 0 0 3px 0 rgba(192, 192, 192, 0.4);
     transition: width 2s;
@@ -2219,6 +2219,7 @@ table {
             width: 50px;
             height: 50px;
             padding: 5px 0 !important;
+            margin: 5px 0;
             //box-shadow: none;
         }
 
@@ -2226,15 +2227,9 @@ table {
             display: none;
             color: $brand-color;
             font-weight: $font-weight-normal;
-            line-height: 50px;
+            line-height: 60px;
             margin-right: 20px;
             min-width: 110px;
-        }
-
-        & + .option {
-            .btn {
-                margin-top: 10px;
-            }
         }
     }
 

@@ -507,7 +507,7 @@ class ChatWidget extends React.Component {
                     </div>
                 ):(
                     <div className="cta-widget">
-                        <div className="option">
+                        <div className="option d-none d-sm-block">
                             <span>Search database</span>
                             <Link to="developers" className="btn btn-primary">
                                 <Icon name="search-alt" size="md"/>
@@ -521,7 +521,7 @@ class ChatWidget extends React.Component {
                             </Button>
                         </div>
 
-                        <div className="option">
+                        <div className="option d-none d-sm-block">
                             <span>Schedule a call</span>
                             <Button onClick={() => { openCalendlyWidget() }}>
                                 <Icon name="headphone-alt" size="md"/>

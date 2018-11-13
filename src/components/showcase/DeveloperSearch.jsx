@@ -14,8 +14,7 @@ import connect from '../../connectors/AuthConnector';
 
 import algoliaUtils from '../utils/algolia';
 import {ENDPOINT_LOG_SEARCH} from "../../actions/utils/api";
-import {getNumSearches, updateSearches} from "../utils/search";
-const freeEmailDomains = require("../../utils/free-email-domains");
+import {getNumSearches, updateSearches, isBusinessEmail} from "../utils/search";
 
 let searchWatcher = null;
 
@@ -170,17 +169,15 @@ class DeveloperSearch extends React.Component {
 
         const email = this.state[loadMore?'emailMore':'emailUnlock'];
         if(email) {
-            const regex = new RegExp(`(${freeEmailDomains.map(domain => {return domain}).join('|')})$`, "g");
-
-            if(regex.test(email)) {
-                this.setState({[`${loadMore?'emailMore':'emailUnlock'}Error`]: 'Please enter a business email.'});
-            } else {
+            if(isBusinessEmail(email)) {
                 const {AuthActions} = this.props;
                 AuthActions.authenticateEmailVisitor({email, via_search: true, search: this.state.search});
 
                 if(loadMore) {
                     this.setState({shouldLoadMore: true});
                 }
+            } else {
+                this.setState({[`${loadMore?'emailMore':'emailUnlock'}Error`]: 'Please enter a business email.'});
             }
         }
     }

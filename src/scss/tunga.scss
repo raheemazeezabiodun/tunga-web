@@ -919,6 +919,31 @@ table {
         }
     }
 
+    &.modal-youtube {
+        max-width: 1000px;
+
+        .modal-title {
+            display: none;
+        }
+
+        .modal-content {
+            background-color: transparent;
+            padding: 0;
+            box-shadow: none;
+            border: 0;
+
+            .modal-body {
+                padding: 0;
+                text-align: center;
+
+                .video-wrapper {
+                    max-width: 100%;
+                    margin: 0 auto;
+                }
+            }
+        }
+    }
+
     .modal-content {
         border-radius: 0;
 
@@ -2838,6 +2863,52 @@ textarea {
         #video-slideshow {
             display: flex;
             flex-wrap: wrap;
+
+            .thumbnail {
+                position: relative;
+
+                img {
+                    width: 100%;
+                }
+
+                .title {
+                    position: absolute;
+                    background-color: transparent;
+                    top: 0;
+                    padding: 20px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #fff;
+                    text-shadow: 1px 1px #666;
+                }
+
+                .play-icon {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -30px;
+                    margin-left: -30px;
+                    font-size: px-to-rem(70);
+                    cursor: pointer;
+                    opacity: 0.9;
+
+                    &:hover {
+                        color: red;
+                    }
+
+                    &:after {
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        display: block;
+                        content: '';
+                        width: 40px;
+                        height: 40px;
+                        background-color: #fff;
+                        z-index: -1;
+                    }
+                }
+            }
         }
 
         #press {

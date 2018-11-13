@@ -19,6 +19,7 @@ import {openCalendlyWidget} from "../utils/calendly";
 import {TESTIMONIALS} from "../utils/testimonials";
 import SearchBox from "../core/SearchBox";
 import IconButton from "../core/IconButton";
+import {openModal} from "../core/utils/modals";
 
 const SLIDER_SETTINGS = {
     dots: true,
@@ -109,7 +110,7 @@ export default class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {videos: []};
+        this.state = {videos: [], playerMap: {}};
     }
 
     componentDidMount() {
@@ -119,12 +120,10 @@ export default class Home extends React.Component {
         }
 
         axios.get('https://www.googleapis.com/youtube/v3/search?key=AIzaSyAuIXqeLrUkyZhsau0WpAVzWlyuv_P9YE8&channelId=UC_Pl6wmR-t9Zv9z7_s1aWNg&part=snippet,id&order=date&maxResults=6').then(res => {
-            const videos = res.data.items;
+            const videos = res.data.items || [];
             if(videos) {
                 this.setState({
-                    videos: videos.map(item => {
-                        return item.id.videoId;
-                    })
+                    videos
                 });
             }
         }).catch(err => {
@@ -136,6 +135,17 @@ export default class Home extends React.Component {
         if(this.props.showCall && !prevProps.showCall) {
             openCalendlyWidget();
         }
+    }
+
+    onPlay(video) {
+        const videoId = video.id.videoId;
+
+        openModal(
+            <div className="video-wrapper">
+                <YouTube videoId={videoId} onReady={event => { event.target.playVideo(); }}/>
+            </div>,
+            null, true, {className: 'modal-youtube'}
+        );
     }
 
     render() {
@@ -335,10 +345,12 @@ export default class Home extends React.Component {
                 )}
 
                 <div id="video-slideshow">
-                    {(this.state.videos || []).map(videoId => {
+                    {(this.state.videos || []).map(video => {
                         return (
-                            <div className="video-wrapper">
-                                <YouTube videoId={videoId}/>
+                            <div className="thumbnail">
+                                <img src={video.snippet.thumbnails.medium.url}/>
+                                <div className="title">{video.snippet.title}</div>
+                                <Icon name="youtube-play" className="play-icon" onClick={this.onPlay.bind(this, video)}/>
                             </div>
                         );
                     })}

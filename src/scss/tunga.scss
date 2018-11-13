@@ -2211,7 +2211,7 @@ table {
     background-color: transparentize(get-color('white'), 0.5);
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 2px 2px 3px 0 rgba(256, 256, 256, 0.4);
+    box-shadow: 0 0 3px 0 rgba(192, 192, 192, 0.4);
     transition: width 2s;
 
     .option {
@@ -2640,7 +2640,7 @@ textarea {
                     padding: 20px;
                     margin-bottom: 20px;
                     border-radius: 15px;
-                    box-shadow: 2px 2px 3px 0 rgba(256, 256, 256, 0.4);
+                    box-shadow: 2px 2px 3px 0 rgba(128, 128, 128, 0.4);
 
                     .col + .col {
                         padding-left: 0;

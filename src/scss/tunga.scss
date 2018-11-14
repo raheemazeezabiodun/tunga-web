@@ -2899,12 +2899,12 @@ textarea {
 
                     &:after {
                         position: absolute;
-                        top: 15px;
-                        left: 15px;
+                        top: 20px;
+                        left: 20px;
                         display: block;
                         content: '';
-                        width: 40px;
-                        height: 40px;
+                        width: 30px;
+                        height: 30px;
                         background-color: #fff;
                         z-index: -1;
                     }

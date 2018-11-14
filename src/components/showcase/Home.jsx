@@ -201,71 +201,21 @@ export default class Home extends React.Component {
                     </div>
 
                     <div className='icon-scroll'/>
-
-                    {/*isLoading || skill_page?null:(
-                        <section id="services">
-                            <div className="service">
-                                <div className="wrapper">
-                                    <div className="headline">
-                                        Effortless software projects
-                                    </div>
-                                    <div>
-                                        Need an app or website? We can build software for
-                                        you on-demand and turn-key.
-                                        <Link
-                                            to={proxySafeUrl('/effortless-software-projects')}>
-                                            find out more
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="service">
-                                <div className="wrapper">
-                                    <div className="headline">Dedicated developers</div>
-                                    <div>
-                                        Use Tunga to quickly mobilize developers. Parttime
-                                        or fulltime. Individuals or entire teams.
-                                        <Link
-                                            to={proxySafeUrl('/dedicated-developers')}>
-                                            find out more
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="service">
-                                <div className="wrapper">
-                                    <div className="headline">Recruitment services</div>
-                                    <div>
-                                        Tap into our network of top African software
-                                        programmers to reinforce your own tech team.
-                                        <Link
-                                            to={proxySafeUrl('/it-recruitment')}>
-                                            find out more
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    )*/}
                 </Header>
 
                 <section id="unique-approach" className="clearfix">
-                    <Row>
-                        <Col lg={8}>
-                            <div className="approach-body">
-                                <Title>
-                                    {getSafeValue('pitch_header')}
-                                </Title>
+                    <div className="col-body clearfix">
+                        <div className="approach-body">
+                            <Title>
+                                {getSafeValue('pitch_header')}
+                            </Title>
 
-                                <div>
-                                    {getSafeValue('pitch_body')}
-                                </div>
+                            <div>
+                                {getSafeValue('pitch_body')}
                             </div>
-                        </Col>
-                        <Col className="side-pic" style={pitchImage?{backgroundImage: `url(${pitchImage})`}:{}}/>
-                    </Row>
+                        </div>
+                    </div>
+                    <div className="col-pic" style={pitchImage?{backgroundImage: `url(${pitchImage})`}:{}}/>
                 </section>
 
                 {isLoading || skill_page?null:(

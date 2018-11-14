@@ -2765,6 +2765,11 @@ textarea {
 
         #unique-approach {
             @include padding-x(px-to-rem(15));
+            padding-bottom: 40px;
+
+            .col-pic {
+                display: none;
+            }
 
             .approach-body {
                 @include clearfix();
@@ -2778,10 +2783,6 @@ textarea {
                         max-width: 420px;
                     }
                 }
-            }
-
-            .side-pic {
-                display: none;
             }
 
             .btn {
@@ -3062,6 +3063,7 @@ textarea {
             }
 
             img {
+                max-width: 100%;
                 margin-top: 50px;
                 margin-bottom: 50px;
             }

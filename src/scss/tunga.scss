@@ -405,7 +405,7 @@ b, strong {
 
         &.input-search-lg {
             .input-group-text {
-               padding-left: px-to-rem(12);
+                padding-left: px-to-rem(20);
                 @include border-left-radius(px-to-rem(20));
             }
 

@@ -77,7 +77,7 @@ class DeveloperSearch extends React.Component {
             }
             searchWatcher = searchWatcher = setTimeout(function () {
                 self.refreshSearches();
-            }, 4000);
+            }, 2000);
         }
     }
 
@@ -106,7 +106,7 @@ class DeveloperSearch extends React.Component {
             shouldLoadMore: false, hasSearched: this.state.hasSearched || !!this.state.search
         });
 
-        const resultsPerPage = this.isLocked()?9:50;
+        const resultsPerPage = this.isLockable()?9:50;
 
         algoliaUtils.index.search({
                 query: this.state.search,
@@ -220,11 +220,11 @@ class DeveloperSearch extends React.Component {
                         <UserList users={results}
                                   showHeader={false}
                                   isLoading={isLoading && !hasLoaded}
-                                  isLoadingMore={isLoading && hasLoaded && !this.isLocked()}
-                                  hasMore={currentPage < (maxPages - 1) && !this.isLocked()}
+                                  isLoadingMore={isLoading && hasLoaded && !this.isLockable()}
+                                  hasMore={currentPage < (maxPages - 1) && !this.isLockable()}
                                   onLoadMore={this.getPeople.bind(this)}/>
 
-                        {this.isLocked() && currentPage < (maxPages - 1)?(
+                        {this.isLockable() && currentPage < (maxPages - 1)?(
                             <form className="unlock-container" onSubmit={this.onUnlock.bind(this, true)}>
                                 <p className={this.state.emailMoreError?"alert alert-danger":"font-weight-normal"}>Enter your business email to view more profiles</p>
                                 <div className="unlock-widget unlock-more">

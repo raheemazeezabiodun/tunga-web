@@ -20,7 +20,6 @@ export function updateDevViews() {
 }
 
 export function isBusinessEmail(email) {
-    console.log(freeEmailDomains);
     const [match, domain] = (email || '').match(/[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,})/i) || [];
     if(!domain) {
         return false;

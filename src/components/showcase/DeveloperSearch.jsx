@@ -23,8 +23,11 @@ class DeveloperSearch extends React.Component {
     constructor(props) {
         super(props);
 
+        const queryParams = querystring.parse((window.location.search || '').replace('?', ''));
+        let query = queryParams.search || '';
+
         this.state = {
-            search: '',
+            search: query || '',
             hasLoaded: false, isLoading: false,
             results: [], resultsFor: '', total: 0, currentPage: 0, maxPages: 0,
             emailUnlock: '', emailMore: '',
@@ -35,27 +38,18 @@ class DeveloperSearch extends React.Component {
 
     componentDidMount() {
         this.getPeople();
-
-        if(this.isLockable()) {
-            const queryParams = querystring.parse((window.location.search || '').replace('?', ''));
-            let query = queryParams.search || '';
-
-            if(query) {
-                this.refreshSearches();
-            }
-        }
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
-        if(
-            this.state.search !== prevState.search ||
-            (this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor && this.state.shouldLoadMore)
-        ) {
-            this.getPeople();
+        const searchUpdate = this.state.search !== prevState.search,
+            hasSubmittedEmail = this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor;
 
-            if(this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor && this.state.search) {
-                this.logSearch();
-            }
+        if(hasSubmittedEmail && this.state.search) {
+            this.logSearch(false);
+        }
+
+        if(searchUpdate || (hasSubmittedEmail && this.state.shouldLoadMore)) {
+            this.getPeople();
         }
     }
 
@@ -87,10 +81,11 @@ class DeveloperSearch extends React.Component {
         }
     }
 
-    logSearch() {
+    logSearch(page=1) {
         const {Auth: {isAuthenticated, isEmailVisitor}} = this.props, {search} = this.state;
         if(search && (isAuthenticated || isEmailVisitor)) {
-            axios.post(ENDPOINT_LOG_SEARCH, {search}).then(res => {
+            console.log(`Logging search: ${search}`);
+            axios.post(ENDPOINT_LOG_SEARCH, {search, page}).then(res => {
                 console.log(`Logged search: ${search}`);
             }).catch(err => {
                 console.error(`Failed to log search: ${search}`);
@@ -99,8 +94,9 @@ class DeveloperSearch extends React.Component {
     }
 
     getPeople() {
+        const nextPage = this.state.hasLoaded && this.state.search === this.state.resultsFor?(this.state.currentPage+1):0;
         if(this.state.search) {
-            this.logSearch();
+            this.logSearch(nextPage+1); // Add 1 because Algolia pages are zero indexed
         }
 
         let self = this;
@@ -115,11 +111,11 @@ class DeveloperSearch extends React.Component {
         algoliaUtils.index.search({
                 query: this.state.search,
                 hitsPerPage: resultsPerPage,
-                page: this.state.hasLoaded && this.state.search === this.state.resultsFor?(this.state.currentPage+1):0,
+                page: nextPage,
             },
             (err, content) => {
                 if (err) {
-                    console.log(err);
+                    console.error(err);
 
                     self.setState({
                         isLoading: false,

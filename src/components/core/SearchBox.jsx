@@ -78,10 +78,10 @@ class SearchBox extends React.Component {
     };
 
     search(query) {
-        const {onChange} = this.props;
+        const {onChange, disableResults} = this.props;
         if(onChange) {
             onChange(query);
-        } else if(query) {
+        } else if(query && !disableResults) {
             let searchKey = this.getSearchKey(query);
             const {SearchActions} = this.props;
             SearchActions.listUsers({search: query, page_size: 3}, searchKey);

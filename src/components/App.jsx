@@ -49,10 +49,10 @@ class App extends React.Component {
     componentDidUpdate(prevProps, prevState, snapShot) {
         const {Auth, history} = this.props;
         if (
-            prevProps.Auth.isAuthenticating !== Auth.isAuthenticating && !Auth.isAuthenticating ||
-            (prevProps.Auth.isVerifying !== Auth.isVerifying && !Auth.isVerifying)
+            prevProps.Auth.isAuthenticating && !Auth.isAuthenticating ||
+            (prevProps.Auth.isVerifying && !Auth.isVerifying)
         ) {
-            this.setState({isVerified: true});
+            this.setState({hasVerified: true});
         }
 
         if (this.props.location !== prevProps.location) {
@@ -77,7 +77,7 @@ class App extends React.Component {
             {logout} = AuthActions;
 
         return (
-            !this.state.isVerified || this.state.showProgress?(
+            !this.state.hasVerified || this.state.showProgress?(
                 <BootLogo/>
             ):(
                 <Media query="(min-width: 992px)">

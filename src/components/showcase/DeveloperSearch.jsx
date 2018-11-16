@@ -23,8 +23,11 @@ class DeveloperSearch extends React.Component {
     constructor(props) {
         super(props);
 
+        const queryParams = querystring.parse((window.location.search || '').replace('?', ''));
+        let query = queryParams.search || '';
+
         this.state = {
-            search: '',
+            search: query || '',
             hasLoaded: false, isLoading: false,
             results: [], resultsFor: '', total: 0, currentPage: 0, maxPages: 0,
             emailUnlock: '', emailMore: '',
@@ -35,26 +38,18 @@ class DeveloperSearch extends React.Component {
 
     componentDidMount() {
         this.getPeople();
-
-        if(this.isLockable()) {
-            const queryParams = querystring.parse((window.location.search || '').replace('?', ''));
-            let query = queryParams.search || '';
-
-            if(query) {
-                this.refreshSearches();
-            }
-        }
     }
 
     componentDidUpdate(prevProps, prevState, snapShot) {
-        if(
-            this.state.search !== prevState.search ||
-            (this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor && this.state.shouldLoadMore)
-        ) {
-            this.getPeople();
-
-            if(this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor && this.state.search) {
-                this.logSearch();
+        const hasSubmittedEmail = this.props.Auth.isEmailVisitor && !prevProps.Auth.isEmailVisitor;
+        if(this.state.search !== prevState.search || hasSubmittedEmail) {
+            if(hasSubmittedEmail) {
+                if(this.state.search) {
+                    this.logSearch(false);
+                }
+                if(this.state.shouldLoadMore) {
+                    this.getPeople();
+                }
             }
         }
     }
@@ -87,10 +82,11 @@ class DeveloperSearch extends React.Component {
         }
     }
 
-    logSearch() {
+    logSearch(pagination=false) {
         const {Auth: {isAuthenticated, isEmailVisitor}} = this.props, {search} = this.state;
         if(search && (isAuthenticated || isEmailVisitor)) {
-            axios.post(ENDPOINT_LOG_SEARCH, {search}).then(res => {
+            console.log(`Logging search: ${search}`);
+            axios.post(ENDPOINT_LOG_SEARCH, {search, pagination: pagination?'True':'False'}).then(res => {
                 console.log(`Logged search: ${search}`);
             }).catch(err => {
                 console.error(`Failed to log search: ${search}`);
@@ -100,7 +96,7 @@ class DeveloperSearch extends React.Component {
 
     getPeople() {
         if(this.state.search) {
-            this.logSearch();
+            this.logSearch(this.state.hasLoaded && this.state.search === this.state.resultsFor);
         }
 
         let self = this;
@@ -119,7 +115,7 @@ class DeveloperSearch extends React.Component {
             },
             (err, content) => {
                 if (err) {
-                    console.log(err);
+                    console.error(err);
 
                     self.setState({
                         isLoading: false,
@@ -209,7 +205,8 @@ class DeveloperSearch extends React.Component {
                             <SearchBox branded={false}
                                        size="lg"
                                        isLocked={this.isLocked()}
-                                       onChange={this.onSearch.bind(this)}/>
+                                       onChange={this.onSearch.bind(this)}
+                                       delay={1000}/>
                         </div>
                     </div>
                 </header>

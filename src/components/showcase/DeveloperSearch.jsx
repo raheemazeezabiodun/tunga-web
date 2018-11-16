@@ -209,7 +209,8 @@ class DeveloperSearch extends React.Component {
                             <SearchBox branded={false}
                                        size="lg"
                                        isLocked={this.isLocked()}
-                                       onChange={this.onSearch.bind(this)}/>
+                                       onChange={this.onSearch.bind(this)}
+                                       delay={1000}/>
                         </div>
                     </div>
                 </header>

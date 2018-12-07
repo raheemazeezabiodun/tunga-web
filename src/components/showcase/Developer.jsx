@@ -46,7 +46,7 @@ class Developer extends React.Component {
                     history.replace('/developers');
                 }
                 */
-                window.location.href = '/developers';
+                window.location.href = '/developers?error=unlock';
             } else {
                 updateDevViews();
             }

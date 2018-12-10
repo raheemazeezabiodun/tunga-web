@@ -109,7 +109,7 @@ export default class ShowcaseLayout extends React.Component {
                     <Route path={wrapPath('/privacy')} component={Privacy}/>
                     <Route path={wrapPath('/agreement')} component={Agreement}/>
                     <Route path={wrapPath('/code-of-conduct')} component={CodeOfConduct}/>
-                    <Route path={wrapPath('/white-paper')} component={WhitePaper} />
+                    <Route path={wrapPath('/whitepapers/best-african-countries-for-sourcing-software-developers-in-2019')} component={WhitePaper} />
                     <Route exact path='/poll/:id/:token' render={props =>
                         <InterestPollDetailContainer pollId={props.match.params.id} >
                             <InterestPoll {...props}/>

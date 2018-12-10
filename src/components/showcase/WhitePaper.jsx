@@ -8,6 +8,8 @@ import Button from "../core/Button";
 import PreviewImage from "../../assets/images/showcase/preview.png";
 import CountrySelector from '../core/CountrySelector';
 import connect from '../../connectors/ProfileConnector';
+import { isBusinessEmail } from '../utils/search';
+import  FieldError from '../core/FieldError;'
 
 class WhitePaper extends React.Component {
     constructor(props) {
@@ -18,7 +20,8 @@ class WhitePaper extends React.Component {
             company: '',
             country: '',
             email: '',
-            phone_number: ''
+            phone_number: '',
+            error: false
         }
     }
 
@@ -31,15 +34,18 @@ class WhitePaper extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const { first_name, last_name, email, phone_number, country, company } = this.state;
-        this.props.ProfileActions.createVisitor({
-            first_name,
-            last_name,
-            email,
-            phone_number,
-            country,
-            company
-        });
-        console.log(this.state);
+        if (isBusinessEmail(email)) {
+            this.props.ProfileActions.createVisitor({
+                first_name,
+                last_name,
+                email,
+                phone_number,
+                country,
+                company
+            });
+        } else {
+            this.setState({ error: true })
+        }
     }
 
     onChangeField(key, e) {
@@ -63,9 +69,8 @@ class WhitePaper extends React.Component {
                         <Col sm={7} className="spacing">
                             <p>The African continent is emerging as a region for sourcing software developers that
                                 still has a lot of untapped potential. Tech giants like Google and Microsoft are investing
-                                significantly to get African tech talent into their ecosystems. And an outsourcing company
-                                like Andela has received no less than $65 million of investments of among others Facebook
-                                to train and deploy African software developers into international companies’ operations.</p>
+                                significantly to get African tech talent into their ecosystems. It's getting increasingly difficult to hire good
+                                software developers, so the African talent pool could turn out to be an interesting opportunity.</p>
                             <p>But where to start? Download our whitepaper and get the hard numbers on sourcing software programmers from Africa:</p>
                             <ul>
                                 <li>Which African countries have the largest software developers pool?</li>
@@ -77,6 +82,7 @@ class WhitePaper extends React.Component {
                         </Col>
                         <Col sm={1}/>
                         <Col sm={4} className="spacing">
+                            <p>Please fill in this form to download the Whitepaper</p>
                             <form onSubmit={this.handleSubmit}>
                                 <FormGroup>
                                     <Input placeholder="First name"
@@ -100,6 +106,7 @@ class WhitePaper extends React.Component {
                                     />
                                 </FormGroup>
                                 <FormGroup>
+                                    {this.state.error && <FieldError message="Please fill in valid business email"/>}
                                     <Input placeholder="Business email"
                                         required
                                         type="email"
@@ -125,10 +132,10 @@ class WhitePaper extends React.Component {
                                 By submitting this form, you agree that we may contact you by mail,
                                 phone or otherwise with information related to this report and the relevant
                                 Tunga services. If you already have an account at Tunga, you can control the
-                                message you receive from us in your settings. If you are a guest visitor,
+                                messages you receive from us in your settings. If you are a guest visitor,
                                 you can unsubscribe from Tunga marketing messages any time by clicking the
                                 unsubscribe button in the e-mail or by sending us an e-mail to <a href="mailto:hello@tunga.io">hello@tunga.io</a>
-                                with the word “Unsubscribe” in the subject. To learn more, please visit Tunga’s
+                                &nbsp;with the word “Unsubscribe” in the subject. To learn more, please visit Tunga’s
                                 privacy policy page.
                             </p>
                         </Col>

@@ -119,7 +119,7 @@ class WhitePaper extends React.Component {
                                         onChange={this.onChangeField.bind(this, 'country')}
                                         required/>
                                 </FormGroup>
-                                <Button type="submit">Download</Button>
+                                <Button className="btn-block" type="submit" disabled={this.props.Profile.isSaving.visitors}>Download</Button>
                             </form>
                             <p className="subscribe">
                                 By submitting this form, you agree that we may contact you by mail,

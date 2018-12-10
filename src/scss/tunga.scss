@@ -3780,6 +3780,58 @@ textarea {
         }
     }
 
+    .white-paper {
+        header {
+            background-image: url('../assets/images/showcase/bgwhitepaper.jpg');
+        }
+        .showcase-title {
+            text-align: center;
+            line-height: 5rem;
+        }
+        .paper-container {
+            margin-top: 4rem;
+            margin-bottom: 4rem;
+            background-color: #FFF;
+
+            .subscribe {
+                font-style: italic;
+                font-size: 0.7rem;
+                color: gray;
+                padding-top: 2rem;
+            }
+        }
+
+        .spacing {
+            margin-bottom: 0rem;
+        }
+
+        .preview-image {
+            margin-top: -12rem;
+        }
+        
+    }
+
+    @media only screen and (max-width: 767px) {
+        .white-paper {
+
+            .showcase-title {
+                text-align: center;
+                line-height: 3rem;
+                font-size: 2rem;
+            }
+
+            .preview-image {
+                margin-top: 0rem;
+            }
+    
+            .spacing {
+                margin-bottom: 2rem;
+            }
+        }
+    
+    }
+    
+
     .agreement-page {
         padding-top: 100px;
 

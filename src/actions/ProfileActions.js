@@ -10,6 +10,7 @@ import {
     ENDPOINT_COMPANY,
     ENDPOINT_NOTIFICATIONS,
     ENDPOINT_NOTIFICATION_LOG,
+    ENDPOINT_VISITORS,
     composeFormData
 } from './utils/api';
 
@@ -54,6 +55,9 @@ export const GET_NOTIFICATIONS_FAILED = 'GET_NOTIFICATIONS_FAILED';
 export const CREATE_NOTIFICATION_LOG_START = 'CREATE_NOTIFICATION_LOG_START';
 export const CREATE_NOTIFICATION_LOG_SUCCESS = 'CREATE_NOTIFICATION_LOG_SUCCESS';
 export const CREATE_NOTIFICATION_LOG_FAILED = 'CREATE_NOTIFICATION_LOG_FAILED';
+export const CREATE_VISITORS_START = 'CREATE_VISITORS_START';
+export const CREATE_VISITORS_SUCCESS = 'CREATE_VISITORS_SUCCESS';
+export const CREATE_VISITORS_FAILED = 'CREATE_VISITORS_FAILED';
 
 export function updateAccountInfo(user) {
     // Requires password and limited to a few account fields
@@ -599,6 +603,45 @@ export function createNotificationLogSuccess(notification_log) {
 export function createNotificationLogFailed(error) {
     return {
         type: CREATE_NOTIFICATION_LOG_FAILED,
+        error,
+    };
+}
+
+export function createVisitor(data) {
+    return dispatch => {
+        dispatch(createVisitorStart(data));
+        axios
+            .post(ENDPOINT_VISITORS, data)
+            .then(function(response) {
+                dispatch(createVisitorSuccess(response.data));
+            })
+            .catch(function(error) {
+                dispatch(
+                    createVisitorFailure(
+                        error.response ? error.response.data : null,
+                    ),
+                );
+            });
+    };
+}
+
+export function createVisitorStart(data) {
+    return {
+        type: CREATE_VISITORS_START,
+        data,
+    };
+}
+
+export function createVisitorSuccess(data) {
+    return {
+        type: CREATE_VISITORS_SUCCESS,
+        data,
+    };
+}
+
+export function createVisitorFailure(error) {
+    return {
+        type: CREATE_VISITORS_FAILED,
         error,
     };
 }

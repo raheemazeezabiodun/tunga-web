@@ -23,6 +23,7 @@ import DeveloperSearch from "./DeveloperSearch";
 import Join from "./Join";
 import InterestPollDetailContainer from "../dashboard/projects/InterestPollDetailContainer";
 import InterestPoll from "./InterestPoll";
+import WhitePaper from "./WhitePaper";
 
 export default class ShowcaseLayout extends React.Component {
 
@@ -108,6 +109,7 @@ export default class ShowcaseLayout extends React.Component {
                     <Route path={wrapPath('/privacy')} component={Privacy}/>
                     <Route path={wrapPath('/agreement')} component={Agreement}/>
                     <Route path={wrapPath('/code-of-conduct')} component={CodeOfConduct}/>
+                    <Route path={wrapPath('/white-paper')} component={WhitePaper} />
                     <Route exact path='/poll/:id/:token' render={props =>
                         <InterestPollDetailContainer pollId={props.match.params.id} >
                             <InterestPoll {...props}/>

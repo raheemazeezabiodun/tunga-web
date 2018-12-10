@@ -94,6 +94,7 @@ export const ENDPOINT_BLOGS = getEndpointUrl('blogs/');
 export const ENDPOINT_MIGRATE = getEndpointUrl('migrate/');
 export const ENDPOINT_NOTIFICATION_LOG = getEndpointUrl('notification-log/');
 export const ENDPOINT_LOG_SEARCH = getEndpointUrl('log/search/');
+export const ENDPOINT_VISITORS = getEndpointUrl('visitors/');
 
 export function flattenJson(jsonData, key) {
     let flattenedData = {};

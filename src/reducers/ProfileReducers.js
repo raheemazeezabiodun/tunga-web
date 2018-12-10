@@ -107,6 +107,11 @@ function isSaving(state = defaultIsRetrieving, action) {
         case ProfileActions.UPDATE_COMPANY_SUCCESS:
         case ProfileActions.UPDATE_COMPANY_FAILED:
             return {...state, company: false};
+        case ProfileActions.CREATE_VISITORS_START:
+            return {...state, visitors: true};
+        case ProfileActions.CREATE_VISITORS_SUCCESS:
+        case ProfileActions.CREATE_VISITORS_FAILED:
+            return {...state, visitors: false};
         case SettingsActions.UPDATE_SETTINGS_START:
             return {...state, settings: true};
         case SettingsActions.UPDATE_SETTINGS_SUCCESS:
@@ -160,6 +165,11 @@ function isSaved(state = defaultIsRetrieving, action) {
         case ProfileActions.UPDATE_COMPANY_START:
         case ProfileActions.UPDATE_COMPANY_FAILED:
             return {...state, company: false};
+        case ProfileActions.CREATE_VISITORS_SUCCESS:
+            return {...state, visitors: action.data};
+        case ProfileActions.CREATE_VISITORS_START:
+        case ProfileActions.CREATE_VISITORS_SUCCESS:
+            return {...state, visitors: false};
         case SettingsActions.UPDATE_SETTINGS_SUCCESS:
             return {...state, settings: true};
         case SettingsActions.UPDATE_SETTINGS_START:

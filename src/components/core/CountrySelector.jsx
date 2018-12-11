@@ -54,9 +54,9 @@ class CountrySelector extends React.Component {
         const {countries} = this.props;
 
         if(countries && countries.length) {
-            countries.forEach(country => {
-                if(country.code) {
-                    options.push([country.code, country.name]);
+            countries.forEach((country, idx) => {
+                if(country.code || idx) {
+                    options.push([country.code, country.name === 'The Netherlands'?'Netherlands':country.name]);
                 }
             })
         }

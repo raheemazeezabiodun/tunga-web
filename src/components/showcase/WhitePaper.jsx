@@ -28,6 +28,11 @@ class WhitePaper extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.Profile && nextProps.Profile.isSaved.visitors) {
             window.open(nextProps.Profile.isSaved.visitors.download_url, '_blank');
+
+            if(this.downloadLink) {
+                this.downloadLink.href = nextProps.Profile.isSaved.visitors.download_url;
+                this.downloadLink.click();
+            }
         }
     }
 
@@ -46,7 +51,7 @@ class WhitePaper extends React.Component {
         } else {
             this.setState({ error: true })
         }
-    }
+    };
 
     onChangeField(key, e) {
         let newState = {};
@@ -64,6 +69,7 @@ class WhitePaper extends React.Component {
         return (
             <div className="white-paper">
                 <Header title={title} description={null} showCTA={false} className="txt-center" />
+                <a id="whitepaper-link" href="#" target="_blank" ref={e => {this.downloadLink = e}}>Download Link</a>
                 <Container className="paper-container">
                     <Row>
                         <Col sm={7} className="spacing">

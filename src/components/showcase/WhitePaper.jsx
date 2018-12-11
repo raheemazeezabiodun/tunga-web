@@ -27,7 +27,7 @@ class WhitePaper extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.Profile && nextProps.Profile.isSaved.visitors) {
-            window.location.href = nextProps.Profile.isSaved.visitors.download_url;
+            window.open(nextProps.Profile.isSaved.visitors.download_url, '_blank');
         }
     }
 

@@ -27,12 +27,10 @@ class WhitePaper extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.Profile && nextProps.Profile.isSaved.visitors) {
-            if(this.downloadLink) {
-                const downloadLink = nextProps.Profile.isSaved.visitors.download_url;
+            const downloadLink = nextProps.Profile.isSaved.visitors.download_url;
 
-                if(!window.open(downloadLink)) {
-                    window.location.href = downloadLink;
-                }
+            if(!window.open(downloadLink)) {
+                window.location.href = downloadLink;
             }
         }
     }

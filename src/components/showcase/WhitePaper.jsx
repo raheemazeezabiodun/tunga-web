@@ -9,7 +9,7 @@ import PreviewImage from "../../assets/images/showcase/preview.png";
 import CountrySelector from '../core/CountrySelector';
 import connect from '../../connectors/ProfileConnector';
 import { isBusinessEmail } from '../utils/search';
-import  FieldError from '../core/FieldError;'
+import  FieldError from '../core/FieldError';
 
 class WhitePaper extends React.Component {
     constructor(props) {

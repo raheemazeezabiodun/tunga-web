@@ -69,7 +69,7 @@ class WhitePaper extends React.Component {
         return (
             <div className="white-paper">
                 <Header title={title} description={null} showCTA={false} className="txt-center" />
-                <a id="whitepaper-link" href="#" target="_blank" ref={e => {this.downloadLink = e}}>Download Link</a>
+                <a id="whitepaper-link" href="#" target="_blank" ref={e => {this.downloadLink = e}} style={{display: 'none'}}>Download</a>
                 <Container className="paper-container">
                     <Row>
                         <Col sm={7} className="spacing">

@@ -12,7 +12,10 @@ import Progress from "../../core/Progress";
 import PaymentOptions from "../../dashboard/payments/PaymentOptions";
 import InvoiceDetails from "../../dashboard/payments/InvoiceDetails";
 
-import {isAdmin, isAdminOrPM, isClient, isDev, isDevOrClient, getUser} from "../../utils/auth";
+import {
+    isAdmin, isAdminOrPM, isClient, isDev, isDevOrClient, getUser, isPayAdmin,
+    isPayAdminOrPM, isProjectClient
+} from "../../utils/auth";
 import {openConfirm, openModal} from "../../core/utils/modals";
 import {ENDPOINT_INVOICES, INVOICE_TYPE_PURCHASE, INVOICE_TYPE_SALE} from "../../../actions/utils/api";
 import {batchInvoices, sumInvoices, filterInvoices} from "../../utils/payments";
@@ -278,7 +281,7 @@ export default class Pay extends React.Component {
                             <div className="section">
                                 <div className="section-title">Payments</div>
 
-                                {isAdminOrPM() && !project.archived ? (
+                                {isPayAdminOrPM() && !project.archived ? (
                                     <div className="section-action">
                                         <Button size="sm"
                                                 onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_SALE)}>
@@ -355,7 +358,7 @@ export default class Pay extends React.Component {
                                                                 </div>
                                                             ) : (
                                                                 <div className="clearfix">
-                                                                    {isClient() ? (
+                                                                    {isProjectClient(invoice.project) ? (
                                                                         <React.Fragment>
                                                                             <StripeButton size="sm"
                                                                                           amount={invoice.total_amount}
@@ -368,7 +371,7 @@ export default class Pay extends React.Component {
                                                                                 name="cash"/> Pay</Button>
                                                                         </React.Fragment>
                                                                     ) : null}
-                                                                    {isAdminOrPM() && !project.archived ? (
+                                                                    {isPayAdminOrPM() && !project.archived ? (
                                                                         <div className="float-right">
                                                                             <div className="actions">
                                                                                 <IconButton name="colon" size={null}
@@ -383,13 +386,13 @@ export default class Pay extends React.Component {
                                                                                                 onClick={this.onDeleteInvoice.bind(this, invoice.id)}>
                                                                                             Delete payment
                                                                                         </Button>
-                                                                                        {isAdmin() && !invoice.paid ? (
+                                                                                        {isPayAdmin() && !invoice.paid ? (
                                                                                             <Button size="sm"
                                                                                                     onClick={this.onMarkPaid.bind(this, invoice.id)}>
                                                                                                 Mark as paid
                                                                                             </Button>
                                                                                         ) : null}
-                                                                                        {isAdmin() && !invoice.paid ? (
+                                                                                        {isPayAdmin() && !invoice.paid ? (
                                                                                             <Button size="sm"
                                                                                                     onClick={this.onMarkArchived.bind(this, invoice.id)}>
                                                                                                 Mark as archived
@@ -427,7 +430,7 @@ export default class Pay extends React.Component {
                         {isClient() && !isAdmin() ? null : (
                             <div className="section">
                                 <div className="section-title">Payouts</div>
-                                {isAdminOrPM() && !project.archived ? (
+                                {isPayAdminOrPM() && !project.archived ? (
                                     <div className="section-action">
                                         <Button size="sm"
                                                 onClick={this.onCreateInvoice.bind(this, INVOICE_TYPE_PURCHASE)}>
@@ -492,7 +495,7 @@ export default class Pay extends React.Component {
                                                             )}
                                                         </td>
                                                         <td>
-                                                            {isAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved' ? (
+                                                            {isPayAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved' ? (
                                                                 <div className="actions text-right">
                                                                     <IconButton name="colon" size={null}
                                                                                 onClick={this.onToggleActions.bind(this, batch.ref)}/>
@@ -506,7 +509,7 @@ export default class Pay extends React.Component {
                                                                                     onClick={this.onDeleteInvoiceBatch.bind(this, batch.ref, batch.invoices)}>
                                                                                 Delete payout
                                                                             </Button>
-                                                                            {isAdmin() && !batch.paid ? (
+                                                                            {isPayAdmin() && !batch.paid ? (
                                                                                 <Button size="sm"
                                                                                         onClick={this.onApprovePayout.bind(this, batch.ref, batch.invoices)}>
                                                                                     Approve payout

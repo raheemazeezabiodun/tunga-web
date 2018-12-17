@@ -25,6 +25,11 @@ export function isAdmin() {
     return user.is_admin;
 }
 
+export function isPayAdmin() {
+    let user = getUser();
+    return user.is_pay_admin;
+}
+
 export function isDev() {
     return getUser().is_developer;
 }
@@ -43,6 +48,10 @@ export function isAdminOrClient() {
 
 export function isAdminOrPM() {
     return isAdmin() || isPM();
+}
+
+export function isPayAdminOrPM() {
+    return isPayAdmin() || isPM();
 }
 
 export function isAdminOrPMOrClient() {
@@ -95,4 +104,17 @@ export function hasProjectAccess(project) {
         });
     }
     return isAdmin() || allowedUserIds.includes(getUser().id);
+}
+
+export function isProjectClient(project) {
+    let allowedUserIds = [];
+    const userId = getUser().id;
+    if(project.owner && project.owner.id === userId) {
+        return true;
+    }
+
+    if(project.user) {
+        return (project.user.id === userId) && (!project.owner || !isAdmin())
+    }
+    return false;
 }

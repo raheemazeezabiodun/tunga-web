@@ -11,7 +11,7 @@ import PaymentOptions from "./PaymentOptions";
 import InvoiceDetails from "./InvoiceDetails";
 
 import {openConfirm, openModal} from "../../core/utils/modals";
-import {getUser, isAdmin, isClient, isDev} from "../../utils/auth";
+import {getUser, isAdmin, isClient, isDev, isPayAdmin, isProjectClient} from "../../utils/auth";
 import {batchInvoices} from "../../utils/payments";
 import {ENDPOINT_INVOICES} from "../../../actions/utils/api";
 import {parsePaymentObject} from "../../utils/stripe";
@@ -258,24 +258,28 @@ export default class PaymentList extends React.Component {
                                                                 <Progress message="Processing"/>
                                                             ):(
                                                                 <div>
-                                                                    <StripeButton size="sm"
-                                                                                  amount={invoice.total_amount}
-                                                                                  email={getUser().email}
-                                                                                  description={invoice.title}
-                                                                                  onPay={this.onPay.bind(this, invoice)}
-                                                                                  className={`pay_stripe_${invoice.id}`}/>
-                                                                    <Button size="sm" onClick={this.openPay.bind(this, invoice)}><Icon name="cash"/> Pay</Button>
-                                                                    {isAdmin()?(
-                                                                        <Button size="sm"
-                                                                                onClick={this.onMarkPaid.bind(this, invoice.id)}>
-                                                                            Mark as paid
-                                                                        </Button>
+                                                                    {isProjectClient(invoice.project) || isPayAdmin()?(
+                                                                        <React.Fragment>
+                                                                            <StripeButton size="sm"
+                                                                                          amount={invoice.total_amount}
+                                                                                          email={getUser().email}
+                                                                                          description={invoice.title}
+                                                                                          onPay={this.onPay.bind(this, invoice)}
+                                                                                          className={`pay_stripe_${invoice.id}`}/>
+                                                                            <Button size="sm" onClick={this.openPay.bind(this, invoice)}><Icon name="cash"/> Pay</Button>
+                                                                        </React.Fragment>
                                                                     ):null}
-                                                                    {isAdmin()?(
-                                                                        <Button size="sm"
-                                                                                onClick={this.onMarkArchived.bind(this, invoice.id)}>
-                                                                            Mark as archived
-                                                                        </Button>
+                                                                    {isPayAdmin()?(
+                                                                        <React.Fragment>
+                                                                            <Button size="sm"
+                                                                                    onClick={this.onMarkPaid.bind(this, invoice.id)}>
+                                                                                Mark as paid
+                                                                            </Button>
+                                                                            <Button size="sm"
+                                                                                    onClick={this.onMarkArchived.bind(this, invoice.id)}>
+                                                                                Mark as archived
+                                                                            </Button>
+                                                                        </React.Fragment>
                                                                     ):null}
                                                                 </div>
                                                             )}
@@ -295,7 +299,7 @@ export default class PaymentList extends React.Component {
                                                     );
                                                 })}</td>
                                                 <td>
-                                                    {isAdmin() && !invoice.paid && invoice.status !== 'approved'?(
+                                                    {isPayAdmin() && !invoice.paid && invoice.status !== 'approved'?(
                                                         <Button size="sm"
                                                                 onClick={this.onApprovePayout.bind(this, invoice.invoices)}>
                                                             Approve payout

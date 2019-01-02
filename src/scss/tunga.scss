@@ -455,6 +455,10 @@ table {
         th {
             font-weight: $font-weight-normal;
         }
+
+        td, th {
+            min-width: 150px;
+        }
     }
 
     .loading {
@@ -1802,6 +1806,7 @@ table {
             table {
                 &.table th, &.table td {
                     padding: 5px 15px;
+                    min-width: 110px;
                 }
 
                 a {
@@ -3808,7 +3813,7 @@ textarea {
         .preview-image {
             margin-top: -17rem;
         }
-        
+
     }
 
     @media only screen and (max-width: 767px) {
@@ -3823,14 +3828,14 @@ textarea {
             .preview-image {
                 margin-top: 0rem;
             }
-    
+
             .spacing {
                 margin-bottom: 2rem;
             }
         }
-    
+
     }
-    
+
 
     .agreement-page {
         padding-top: 100px;

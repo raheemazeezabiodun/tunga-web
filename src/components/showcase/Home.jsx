@@ -166,7 +166,7 @@ export default class Home extends React.Component {
         return (
             <div className={`landing-page ${skill_page?'skill-page':''}`}>
                 <Header className={`height-${skill_page?'90':'100'}`}
-                        title={title} description={description} showCTA={false} ctaText={ctaText} ctaSize={'xxl'} videoBg={!__PRODUCTION__}>
+                        title={title} description={description} showCTA={false} ctaText={ctaText} ctaSize={'xxl'} videoBg={true}>
 
                     <div className="showcase-actions">
                         <div className="action-group">

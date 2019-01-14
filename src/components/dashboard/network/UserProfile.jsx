@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col} from 'reactstrap';
-import Linkify from '../../core/Linkify';
+import _ from 'lodash';
 
+import Linkify from '../../core/Linkify';
 import Avatar from "../../core/Avatar";
 import Button from "../../core/Button";
 import Success from "../../core/Success";
@@ -27,6 +28,12 @@ export default class UserProfile extends React.Component {
 
     componentDidMount(){
         this.initMap();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapShot){
+        if(!_.isEqual(prevProps.user, this.props.user)) {
+            this.initMap();
+        }
     }
 
     initMap() {

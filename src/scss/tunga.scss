@@ -34,6 +34,11 @@ b, strong {
     font-weight: $font-weight-medium;
 }
 
+.collapsed-bar {
+    width: 100% !important;
+    max-width: 920px !important;
+}
+
 // Social links
 .facebook {
     @include brand-link(get-color('facebook'));
@@ -341,6 +346,13 @@ b, strong {
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
         border-radius: 8px !important;
     }
+}
+
+.btn-no-outline {
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
 // Input

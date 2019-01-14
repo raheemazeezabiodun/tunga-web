@@ -291,7 +291,7 @@ export default class Pay extends React.Component {
                                 ) : null}
 
                                 {payments.length ? (
-                                    <div className="payment-list">
+                                    <div className="payment-list table-responsive">
                                         <Table striped>
                                             <thead>
                                             <tr>
@@ -306,15 +306,15 @@ export default class Pay extends React.Component {
                                             {payments.map(invoice => {
                                                 return (
                                                     <tr key={invoice.id}>
-                                                        <td>{invoice.title}</td>
-                                                        <td>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
-                                                        <td>
+                                                        <td style={{width: "35%"}}>{invoice.title}</td>
+                                                        <td style={{width: "20%"}}>{moment.utc(invoice.issued_at).format('DD/MMM/YYYY')}</td>
+                                                        <td style={{width: "10%"}}>
                                                             <a href={`${ENDPOINT_INVOICES}${invoice.id}/download/?format=pdf`}
                                                                target="_blank">
                                                                 {invoice.number}
                                                             </a>
                                                         </td>
-                                                        <td>
+                                                        <td style={{width: "15%"}}>
                                                             {invoice.total_amount === invoice.amount ? (
                                                                 <div>€{invoice.amount}</div>
                                                             ) : (
@@ -347,7 +347,7 @@ export default class Pay extends React.Component {
                                                                 </div>
                                                             )}
                                                         </td>
-                                                        <td>
+                                                        <td style={{width: "20%"}}>
                                                             {invoice.paid ? (
                                                                 <div>
                                                                     <Icon name="check" className="green"/> Paid
@@ -440,7 +440,7 @@ export default class Pay extends React.Component {
                                 ) : null}
 
                                 {batchPayouts.length ? (
-                                    <div className="payment-list">
+                                    <div className="payment-list table-responsive">
                                         <Table striped>
                                             <thead>
                                             <tr>
@@ -456,8 +456,8 @@ export default class Pay extends React.Component {
                                             {batchPayouts.map(batch => {
                                                 return (
                                                     <tr key={batch.id}>
-                                                        <td>{batch.title}</td>
-                                                        <td>
+                                                        <td style={{width: "30%"}}>{batch.title}</td>
+                                                        <td style={{width: "20%"}}>
                                                             {batch.invoices.map(item => {
                                                                 return (
                                                                     <div
@@ -465,14 +465,14 @@ export default class Pay extends React.Component {
                                                                 );
                                                             })}
                                                         </td>
-                                                        <td>
+                                                        <td style={{width: "25%"}}>
                                                             {batch.invoices.map(item => {
                                                                 return (
                                                                     <div key={item.id}>{item.user.display_name}</div>
                                                                 );
                                                             })}
                                                         </td>
-                                                        <td>
+                                                        <td style={{width: "10%"}}>
                                                             {batch.invoices.map(item => {
                                                                 return (
                                                                     <div key={item.id}>
@@ -484,7 +484,7 @@ export default class Pay extends React.Component {
                                                                 );
                                                             })}
                                                         </td>
-                                                        <td>
+                                                        <td style={{width: "15%"}}>
                                                             {batch.invoices.map(item => {
                                                                 return (
                                                                     <div key={item.id}>€{item.amount}</div>
@@ -494,7 +494,7 @@ export default class Pay extends React.Component {
                                                                 <div className="subtotal">€{batch.amount}</div>
                                                             )}
                                                         </td>
-                                                        <td>
+                                                        <td style={{width: "10%"}}>
                                                             {isPayAdminOrPM() && !project.archived && !batch.paid && batch.status !== 'approved' ? (
                                                                 <div className="actions text-right">
                                                                     <IconButton name="colon" size={null}

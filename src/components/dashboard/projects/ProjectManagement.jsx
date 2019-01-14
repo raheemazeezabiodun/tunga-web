@@ -29,6 +29,13 @@ export default class ProjectManagement extends React.Component {
         match: PropTypes.object
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            collapsed: false
+        }
+    }
+
     componentDidMount() {
         const {project} = this.props, self = this;
         if(isPendingProjectParticipant(project)) {
@@ -55,6 +62,10 @@ export default class ProjectManagement extends React.Component {
         }
     }
 
+    collapseProjectDetails(collapsed) {
+        this.setState({ collapsed })
+    }
+
     render() {
         const {project, isSaving, isSaved, ProjectActions, match} = this.props;
         const projectProps = {project, isSaving, isSaved, ProjectActions};
@@ -64,7 +75,7 @@ export default class ProjectManagement extends React.Component {
                 <Media query="(min-width: 992px)">
                     {isLargeDevice =>
                         <div className="project-page clearfix">
-                            <div className="project-activity">
+                            <div className={`${this.state.collapsed && 'collapsed-bar'} project-activity`}>
                                 {isLargeDevice?(
                                     <div className="project-filters">
                                         {[
@@ -115,8 +126,22 @@ export default class ProjectManagement extends React.Component {
                             </div>
 
                             {isLargeDevice?(
-                                <div className="project-details">
-                                    <div className="section font-weight-normal">{project.title}</div>
+                                <React.Fragment>
+                                {this.state.collapsed ? (
+                                    <button className="float-right btn-no-outline" onClick={() => this.collapseProjectDetails(false)}>
+                                    <img src={require('../../../assets/images/icons/Menu.svg')} />
+                                </button>
+                                ) : (
+                                    <div className="project-details">
+                                    <div className="section">
+                                        <div className="font-weight-normal">
+                                            Name
+                                            <button className="float-right btn-no-outline" onClick={() => this.collapseProjectDetails(true)}>
+                                                <img src={require('../../../assets/images/icons/Collapse.svg')} />
+                                            </button>
+                                        </div>
+                                        <div>{project.title}</div>
+                                    </div>
 
                                     <div className="section">
                                         <div className="font-weight-normal">Description</div>
@@ -152,7 +177,9 @@ export default class ProjectManagement extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            ):null}
+                                )}
+                                
+                            </React.Fragment>):null}
                         </div>
                     }
                 </Media>

@@ -39,7 +39,7 @@ class Developer extends React.Component {
 
     componentDidMount() {
         if(!isAuthenticated() && !isEmailVisitor()) {
-            if(getNumDevViews() >= 2) {
+            if(getNumDevViews() >= 6) {
                 /*
                 const {history} = this.props;
                 if(history) {

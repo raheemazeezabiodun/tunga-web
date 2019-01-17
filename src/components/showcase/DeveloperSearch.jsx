@@ -84,9 +84,7 @@ class DeveloperSearch extends React.Component {
     logSearch(page=1) {
         const {Auth: {isAuthenticated, isEmailVisitor}} = this.props, {search} = this.state;
         if(search && (isAuthenticated || isEmailVisitor)) {
-            console.log(`Logging search: ${search}`);
             axios.post(ENDPOINT_LOG_SEARCH, {search, page}).then(res => {
-                console.log(`Logged search: ${search}`);
             }).catch(err => {
                 console.error(`Failed to log search: ${search}`);
             });
@@ -189,7 +187,7 @@ class DeveloperSearch extends React.Component {
                         <div className="showcase-title">Browse Africa's tech talent</div>
 
                         <div className="text-center">
-                            {this.isLocked() || getNumDevViews() >= 2?(
+                            {this.isLocked() || getNumDevViews() >= 6?(
                                 <form className="unlock-container" onSubmit={this.onUnlock.bind(this, false)}>
                                     <p className={this.state.emailUnlockError?"alert alert-danger":"font-weight-normal"}>Please submit a business email to enable the search function</p>
                                     <div className="unlock-widget">

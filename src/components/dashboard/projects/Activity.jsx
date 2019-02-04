@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import randomstring from "randomstring";
+import randomstring from 'randomstring';
+import { Link } from 'react-router-dom';
 
 import connect from "../../../connectors/ActivityConnector";
 
@@ -27,7 +28,7 @@ class Activity extends React.Component {
             notifications: true,
             files: true,
             progress_reports: true,
-            showFilter: false,
+            showFilter: false
         };
     }
 
@@ -120,8 +121,15 @@ class Activity extends React.Component {
                 <div className="hidden-xs">
                     <div className={`clearfix activity-filter ${this.state.showFilter ?'open':''}`}>
                         <div className="float-left">
-                            <IconButton name="filter" size="sm"
-                                        className="btn-filter" onClick={() => {this.setState({showFilter: !this.state.showFilter})}}/>
+                            <div>
+                                <IconButton name="filter" size="sm"
+                                            className="btn-filter" onClick={() => {this.setState({showFilter: !this.state.showFilter})}}/>
+                            </div>
+                            <div>
+                                <Link to={`/projects/${project.id}/emails`}>
+                                    <Icon name="envelope-o" size="sm" className="btn-filter"/>
+                                </Link>
+                            </div>
                         </div>
                         <div className="switches clearfix">
                             {[

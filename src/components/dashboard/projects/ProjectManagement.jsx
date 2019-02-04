@@ -13,6 +13,7 @@ import Plan from './Plan';
 import PayContainer from './PayContainer';
 import Settings from './Settings';
 import ProgressEventsContainer from './ProgressEventsContainer';
+import EmailContainer from './EmailContainer';
 import Warning from "../../core/Warning";
 
 import {openConfirm} from "../../core/utils/modals";
@@ -105,6 +106,7 @@ export default class ProjectManagement extends React.Component {
                                                     ['team', <Team {...projectProps}/>],
                                                     ['plan', <Plan {...projectProps}/>],
                                                     ['pay', <PayContainer {...projectProps}/>],
+                                                    ['emails', <EmailContainer {...projectProps} />]
                                                 ]:[])
                                             ].map(path => {
                                                 return (

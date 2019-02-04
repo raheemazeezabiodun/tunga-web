@@ -1867,6 +1867,25 @@ table {
         }
     }
 
+    .project-emails {
+
+        .email-body-wrapper {
+            margin: 10px;
+            background-color: get-color('showcase-grey');
+            padding: 10px;
+
+            .email-body {
+                background-color: white;
+                padding: 10px;
+                margin: 10px;
+            }
+
+            .btn-email-thread {
+                margin-left: 10px;
+            }
+        }
+    }
+
     .content-card {
         padding: 30px;
     }

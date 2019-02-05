@@ -621,6 +621,16 @@
     }
 
     .showcase {
+        header {
+            &.no-bg {
+                background: transparent none;
+
+                video {
+                    display: block;
+                }
+            }
+        }
+
         .landing-page {
             #development-style {
                 .development-style-cases {

@@ -2426,7 +2426,11 @@ textarea {
         }
 
         &.no-bg {
-            background: transparent none;
+            // Allow BG and hide video on mobile and tablet
+
+            video {
+                display: none;
+            }
         }
 
         .container {

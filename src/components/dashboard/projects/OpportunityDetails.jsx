@@ -98,8 +98,9 @@ export default class OpportunityDetails extends Component {
                 </div>
 
                 <div className="clearfix opportunity-actions">
-                    {isDev()?(
-                        <div className="float-right">
+                    {isDev()?
+                        myInterest ? (
+                            <div className="float-right">
                             {myInterest.status !== STATUS_INTERESTED?(
                                 <Button onClick={() => this.onInterestUpdate(myInterest, STATUS_INTERESTED)}>
                                     I'm available {myInterest.status === STATUS_UNINTERESTED?'again':'and interested'}
@@ -111,7 +112,17 @@ export default class OpportunityDetails extends Component {
                                 </Button>
                             ):null}
                         </div>
-                    ):null}
+                        )
+                    :(
+                        <React.Fragment>
+                            <Button onClick={() => this.onInterestUpdate(myInterest, STATUS_INTERESTED)}>
+                                I'm available and interested
+                            </Button>
+                            <Button variant='secondary' onClick={() => this.onInterestUpdate(myInterest, STATUS_UNINTERESTED)}>
+                                I'm not available for this project
+                            </Button>
+                        </React.Fragment>
+                    ) : null}
 
                     {isAdminOrPM()?(
                         <div className="float-right interests-btn-wrapper">
